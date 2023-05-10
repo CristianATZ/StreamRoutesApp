@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">StreamRoutesApp</string>
+    <string name="titulo">Stream Routes</string>
+    <string name="encabezadoUser">Telefono</string>
+    <string name="encabezadoPass">Contraseña</string>
+    <string name="number_text">Telefono</string>
+    <string name="forgot_text">Olvide mi contraseña</string>
+    <string name="register_text">Registrarme</string>
+    <string name="user_tittle_text">Ingresa tu telefono</string>
+    <string name="password_tittle_text">Ingresa tu contraseña</string>
+</resources>
