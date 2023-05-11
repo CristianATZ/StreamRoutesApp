@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color(0xFFFFE5B4)
+                    color = Color(0xFFFFF7E7)
                 ) {
                     AppNavigation()
                 }

@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @Composable
 fun MainScreen(navController: NavController) {
@@ -29,6 +30,11 @@ fun Main(navController: NavController){
             navController.popBackStack()
         }) {
             Text(text = "Regresar al login")
+        }
+        Button(onClick = {
+            navController.navigate(route = AppScreens.HelpScreen.route)
+        }) {
+            Text(text = "Ayuda")
         }
     }
 }

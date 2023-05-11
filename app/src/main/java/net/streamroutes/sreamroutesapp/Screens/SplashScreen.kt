@@ -66,16 +66,15 @@ fun Splash() {
 
             CustomLinearProgressIndicator(
                 modifier = Modifier
-                    .fillMaxWidth(0.6f),
-                    progress = 0.1f
+                    .fillMaxWidth(0.6f)
             )
-
             Text(text = "Cargando...",
-                fontSize = 18.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = Color(0xFF231955)
             )
         }
 
@@ -86,7 +85,8 @@ fun Splash() {
             fontWeight = FontWeight.Bold,
             modifier = Modifier
                 .fillMaxWidth(),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = Color(0xFF231955)
         )
     }
 }
@@ -95,12 +95,19 @@ fun Splash() {
 @Composable
 fun CustomLinearProgressIndicator(
     modifier: Modifier = Modifier,
-    progress: Float,
-    progressColor: Color = Color(0xFF4CAF50),
-    backgroundColor: Color = Color(0xFFA8D179),
+    progressColor: Color = Color(0xFFFFFFFF),
+    backgroundColor: Color = Color(0xFF231955),
     clipShape: Shape = RoundedCornerShape(16.dp)
 ) {
     var progress by remember { mutableStateOf(0.0f) }
+
+    LaunchedEffect(key1 = true){
+        for(i in 10..100 step 10){
+            delay(300)
+            progress = i/100f
+        }
+    }
+
     Box(
         modifier = modifier
             .clip(clipShape)
