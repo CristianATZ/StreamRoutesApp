@@ -16,4 +16,5 @@
     <string name="help_information_subtittle">Versión.</string>
     <string name="help_contact_tittle">Contactanos</string>
     <string name="help_contact_subtittle">Cuentanos tu opinión</string>
+    <string name="help_topbar_tittle">Ayuda</string>
 </resources>

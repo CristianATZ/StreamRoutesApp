@@ -30,7 +30,7 @@ import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun HelpScreen(navController: NavController){
+fun HelpScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .padding(top = 50.dp, start = 10.dp, end = 10.dp, bottom = 10.dp)

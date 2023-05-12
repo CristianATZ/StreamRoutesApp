@@ -205,8 +205,8 @@ fun Login(navController: NavController){
         }
 
         // button login
-        val gradientColors = listOf(Color(0xFF192833), Color(0xFFE8AA42))
-        val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp)
+        val gradientColors = listOf(Color(0xFF192833),Color(0xFF192833))
+        val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
         Box(
             modifier = Modifier
                 .background(
