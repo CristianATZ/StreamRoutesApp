@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Navigation
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +22,7 @@ import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileVariedInfoS
 import net.streamroutes.sreamroutesapp.Screens.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.SplashScreen
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppNavigation() {
     val NavController = rememberNavController()

@@ -17,4 +17,11 @@
     <string name="help_contact_tittle">Contactanos</string>
     <string name="help_contact_subtittle">Cuentanos tu opinión</string>
     <string name="help_topbar_tittle">Ayuda</string>
+    <string name="user_name">Cristian Alexis Torres Zavala</string>
+    <string name="phone">Telefono</string>
+    <string name="birthday">Fecha de Nacimiento</string>
+    <string name="email">Correo Electrónico</string>
+    <string name="configuration">Configuración</string>
+    <string name="personal_info">Datos Personales</string>
+    <string name="password_profile">Contraseña</string>
 </resources>

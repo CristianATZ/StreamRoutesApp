@@ -39,5 +39,10 @@ fun Main(navController: NavController){
         }) {
             Text(text = "Ayuda")
         }
+        Button(onClick = {
+            navController.navigate(route = AppScreens.ProfileScreen.route)
+        }) {
+            Text(text = "Perfil")
+        }
     }
 }
