@@ -82,7 +82,9 @@ fun ProfileConfigureScreen(navController: NavController){
             }
             Spacer(modifier = Modifier.width(5.dp))
             Button(
-                onClick = { },
+                onClick = {
+                    navController.navigate(route = AppScreens.ProfileDataInfoScreen.route)
+                },
                 modifier = Modifier.padding(top = 15.dp, start = 15.dp)
             )
             {
@@ -127,7 +129,6 @@ fun ProfileConfigureScreen(navController: NavController){
                     fontFamily = FontFamily.SansSerif
                 )
             }
-            Spacer(modifier = Modifier.width(5.dp))
             Button(
                 onClick = { },
                 modifier = Modifier.padding(top = 15.dp, start = 75.dp)
@@ -136,7 +137,8 @@ fun ProfileConfigureScreen(navController: NavController){
                 Icon(
                     imageVector = Icons.Default.KeyboardArrowRight,
                     contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
+                    modifier = Modifier
+                        .size(ButtonDefaults.IconSize)
                 )
                 Spacer(Modifier.size(ButtonDefaults.IconSpacing))
             }

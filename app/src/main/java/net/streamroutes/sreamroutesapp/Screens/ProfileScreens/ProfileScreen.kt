@@ -151,7 +151,7 @@ fun ProfileScreen(navController: NavController){
             Column() {
                 Text(
                     modifier = Modifier.padding(top = 8.dp),
-                    text = stringResource(id = R.string.password_profile),
+                    text = stringResource(id = R.string.email),
                     color = Color(0xFF231955),
                     fontSize =20.sp,
                     fontFamily = FontFamily.SansSerif,

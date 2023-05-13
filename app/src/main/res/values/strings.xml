@@ -19,9 +19,15 @@
     <string name="help_topbar_tittle">Ayuda</string>
     <string name="user_name">Cristian Alexis Torres Zavala</string>
     <string name="phone">Telefono</string>
-    <string name="birthday">Fecha de Nacimiento</string>
-    <string name="email">Correo Electrónico</string>
+    <string name="birthday">Fecha Nac.</string>
+    <string name="email">E-Mail</string>
     <string name="configuration">Configuración</string>
     <string name="personal_info">Datos Personales</string>
     <string name="password_profile">Contraseña</string>
+    <string name="contact_info">Información de Contacto</string>
+    <string name="varied_info">Información Variada</string>
+    <string name="ocupation">Ocupación</string>
+    <string name="interests">Intereses</string>
+    <string name="change_phone_number">Cambiar Teléfono</string>
+    <string name="change_email">Cambiar Correo</string>
 </resources>
