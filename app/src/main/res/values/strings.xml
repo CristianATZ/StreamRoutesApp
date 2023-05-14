@@ -30,4 +30,6 @@
     <string name="interests">Intereses</string>
     <string name="change_phone_number">Cambiar Teléfono</string>
     <string name="change_email">Cambiar Correo</string>
+    <string name="tittle_help_screen">Ayuda</string>
+    <string name="tittle_comments_screen">Comentarios</string>
 </resources>
