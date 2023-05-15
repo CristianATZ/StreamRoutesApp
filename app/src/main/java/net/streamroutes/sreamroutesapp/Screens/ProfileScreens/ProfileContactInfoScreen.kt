@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Screens.ProfileScreens
 
+import android.app.appsearch.AppSearchSchema
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -122,7 +123,7 @@ fun ProfileContactInfoScreen(navController: NavController){
             Spacer(modifier = Modifier.width(25.dp))
             Button(
                 onClick = {
-                    navController.navigate(route = AppScreens.ProfileVariedInfoScreen.route)
+                    navController.navigate(route = AppScreens.ProfileChangeEmailScreen.route)
                 },
                 modifier = Modifier.padding(top = 15.dp, start = 15.dp)
             )
