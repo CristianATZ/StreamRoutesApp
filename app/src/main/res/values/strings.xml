@@ -40,7 +40,7 @@
     <string name="verify">Verificar</string>
 
     //////////////////////////////////////////////////////////
-    PROFILE CHANGE EMAIL SCREEN TEXTS
+        PROFILE CHANGE EMAIL SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="new_email">Correo Nuevo</string>
 
@@ -82,7 +82,7 @@
     //////////////////////////////////////////////////////////
     <string name="tittle_aboutapp_screen">Acerca de</string>
     <string name="aboutapp_version">Version 2.0</string>
-    <string name="aboutapp_reserved"> Stream Rutas. ® Todos los derechos reservados 2023-2024.</string>
+    <string name="aboutapp_reserved"> Stream Routes. ® Todos los derechos reservados 2023-2024.</string>
 
     //////////////////////////////////////////////////////////
         ABOUT APP SCREEN TEXTS
