@@ -103,14 +103,14 @@ fun HelpScreen(navController: NavController) {
             )
         }
 
-        // about app button
+        // contact button
         Row (
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .wrapContentHeight()
                 .clickable {
-                    navController.navigate(route = AppScreens.HelpAboutAppScreen.route)
+                    navController.navigate(route = AppScreens.HelpContactScreen.route)
                 }
         ){
             Icon(
@@ -156,14 +156,14 @@ fun HelpScreen(navController: NavController) {
             )
         }
 
-        // Contact button
+        // About app button
         Row (
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
                 .wrapContentHeight()
                 .clickable {
-                    navController.navigate(route = AppScreens.HelpContactScreen.route)
+                    navController.navigate(route = AppScreens.HelpAboutAppScreen.route)
                 }
         ){
             Icon(
