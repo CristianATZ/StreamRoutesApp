@@ -13,6 +13,7 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.LoginScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
+import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigureScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileContactInfoScreen
@@ -53,6 +54,9 @@ fun AppNavigation() {
         }
         composable(AppScreens.ProfileChangePhoneScreen.route){
             ProfileChangePhoneScreen(NavController)
+        }
+        composable(AppScreens.ProfileChangeEmailScreen.route){
+            ProfileChangeEmailScren(NavController)
         }
         composable(AppScreens.ProfileConfigureScreen.route){
             ProfileConfigureScreen(NavController)

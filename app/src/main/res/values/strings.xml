@@ -1,19 +1,48 @@
 <resources>
     <string name="app_name">StreamRoutesApp</string>
     <string name="titulo">Stream Routes</string>
+
+    //////////////////////////////////////////////////////////
+        PROFILE SCREEN TEXTS
+    //////////////////////////////////////////////////////////
     <string name="user_name">Cristian Alexis Torres Zavala</string>
     <string name="phone">Telefono</string>
     <string name="birthday">Fecha Nac.</string>
     <string name="email">E-Mail</string>
     <string name="configuration">Configuración</string>
+
+    //////////////////////////////////////////////////////////
+        PROFILE CONFIGURE SCREEN TEXTS
+    //////////////////////////////////////////////////////////
     <string name="personal_info">Datos Personales</string>
     <string name="password_profile">Contraseña</string>
+
+    //////////////////////////////////////////////////////////
+        PROFILE DATA INFO SCREEN TEXTS
+    //////////////////////////////////////////////////////////
     <string name="contact_info">Información de Contacto</string>
     <string name="varied_info">Información Variada</string>
     <string name="ocupation">Ocupación</string>
     <string name="interests">Intereses</string>
+
+    //////////////////////////////////////////////////////////
+        PROFILE CONTACT INFO SCREEN TEXTS
+    //////////////////////////////////////////////////////////
     <string name="change_phone_number">Cambiar Teléfono</string>
     <string name="change_email">Cambiar Correo</string>
+
+    //////////////////////////////////////////////////////////
+        PROFILE CHANGE PHONE SCREEN TEXTS
+    //////////////////////////////////////////////////////////
+    <string name="new_phone">Teléfono Nuevo</string>
+    <string name="security_code">Código de Seguridad</string>
+    <string name="send_code">Enviar Código</string>
+    <string name="verify">Verificar</string>
+
+    //////////////////////////////////////////////////////////
+    PROFILE CHANGE EMAIL SCREEN TEXTS
+    //////////////////////////////////////////////////////////
+    <string name="new_email">Correo Nuevo</string>
 
     //////////////////////////////////////////////////////////
         LOGIN SCREEN TEXTS
@@ -66,4 +95,9 @@
     <string name="contact_body_message">Escribe tu incertidumbre</string>
     <string name="contact_bottom_text1">ITSUR, Uriangato, Gto.</string>
     <string name="contact_bottom_text2">¿Como llegar?</string>
+
+    //////////////////////////////////////////////////////////
+        ´PROFILE CHANGE PHONE SCREEN TEXTS
+    //////////////////////////////////////////////////////////
+
 </resources>
