@@ -16,7 +16,8 @@ sealed class AppScreens (val route: String) {
     object HelpScreen: AppScreens("help_screen")
     object HelpCommentsScreen: AppScreens("help_comments_screen")
     object HelpContactScreen: AppScreens("help_contact_screen")
-    object HelpAboutAppScreen: AppScreens("help_    about_screen")
+    object HelpAboutAppScreen: AppScreens("help_about_screen")
     object CustomerScreen: AppScreens("customer_screen")
+    object RoutesScreen: AppScreens("routes_screen")
 }
 

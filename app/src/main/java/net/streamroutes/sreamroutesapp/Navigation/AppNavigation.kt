@@ -21,6 +21,7 @@ import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileDataInfoScr
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileVariedInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.RegistrationScreen
+import net.streamroutes.sreamroutesapp.Screens.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.SplashScreen
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -86,6 +87,10 @@ fun AppNavigation() {
         // CUSTOMER
         composable(AppScreens.CustomerScreen.route){
             CustomerScreen(NavController)
+        }
+        // ROUTES
+        composable(AppScreens.RoutesScreen.route){
+            RoutesScreen(NavController)
         }
     }
 }
