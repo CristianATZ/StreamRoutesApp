@@ -1,10 +1,13 @@
 package net.streamroutes.sreamroutesapp.Screens.HelpScreens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,6 +16,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -43,37 +47,44 @@ fun HelpAboutAppScreen(navController: NavController){
             }
         )
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(20.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.streamrouteslogowimage),
-                contentDescription = "Logo Stream Routes",
+        Column( modifier = Modifier.fillMaxSize() ) {
+            Column(
                 modifier = Modifier
-                    .weight(1.4f)
                     .fillMaxSize()
-            )
+                    .weight(0.7f)
+                    .padding(20.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.logo_image),
+                    contentDescription = "Logo Stream Routes",
+                    modifier = Modifier
+                        .size(200.dp),
+                )
 
-            Text(
-                text = stringResource(id = R.string.aboutapp_version),
-                textAlign = TextAlign.Center,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
+                Text(
+                    text = stringResource(id = R.string.aboutapp_version),
+                    textAlign = TextAlign.Center,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+            Row(
                 modifier = Modifier
-                    .weight(0.4f)
-                    .fillMaxWidth()
-            )
-
-            Text(
-                text = stringResource(id = R.string.aboutapp_reserved),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .weight(0.2f)
-                    .fillMaxSize()
-            )
+                    .weight(0.3f)
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.Bottom
+            ) {
+                Text(
+                    text = stringResource(id = R.string.aboutapp_reserved),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }

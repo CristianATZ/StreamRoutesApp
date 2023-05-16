@@ -76,21 +76,22 @@ fun Registration (navController: NavController) {
 
         // logo
         Row( modifier = Modifier
-            .fillMaxWidth()
-            .weight(0.25f),
+            .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.streamrouteslogo),
-                contentDescription = null
+                painter = painterResource(id = R.drawable.logo_no_image),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(200.dp)
             )
         }
 
         // telefono
         Column(modifier = Modifier
             .fillMaxWidth()
-            .weight(0.2f)
+            //.weight(0.2f)
             .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -152,7 +153,7 @@ fun Registration (navController: NavController) {
         // password
         Column(modifier = Modifier
             .fillMaxWidth()
-            .weight(0.2f)
+            //.weight(0.2f)
             .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -215,8 +216,7 @@ fun Registration (navController: NavController) {
 
             // ver contraseña
             Row(modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .weight(0.1f),
+                .fillMaxWidth(0.85f),
                 horizontalArrangement = Arrangement.End
             ) {
                 IconButton(onClick = {
@@ -236,7 +236,7 @@ fun Registration (navController: NavController) {
         // confirmar password
         Column(modifier = Modifier
             .fillMaxWidth()
-            .weight(0.2f)
+            //.weight(0.2f)
             .padding(10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -299,8 +299,7 @@ fun Registration (navController: NavController) {
 
             // ver contraseña confirmada
             Row(modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .weight(0.1f),
+                .fillMaxWidth(0.85f),
                 horizontalArrangement = Arrangement.End
             ) {
                 IconButton(onClick = {
@@ -319,10 +318,9 @@ fun Registration (navController: NavController) {
 
         // boton registrar
         Column(modifier = Modifier
-            .fillMaxSize()
-            .weight(0.1f),
+            .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             val gradientColors = listOf(Color(0xFF192833),Color(0xFF192833))
             val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)

@@ -236,12 +236,12 @@ fun HelpContactScreen(navController: NavController){
                 }
 
                 // ubicacion
-                Column(modifier = Modifier
+                Row(modifier = Modifier
                     .fillMaxWidth()
                     .weight(0.2f)
                     .padding(10.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.Bottom
                 ) {
                     // text ubicacion
                     Text(

@@ -58,7 +58,7 @@ fun Splash() {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
-                painter = painterResource(id = R.drawable.streamrouteslogowimage),
+                painter = painterResource(id = R.drawable.logo_image),
                 contentDescription = "Logo Stream Routes",
                 modifier = Modifier
                     .size(300.dp)

@@ -62,7 +62,7 @@ fun Login(navController: NavController){
     ){
 
         Image(
-            painter = painterResource(id = R.drawable.streamrouteslogo),
+            painter = painterResource(id = R.drawable.logo_no_image),
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp)
