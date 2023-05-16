@@ -90,7 +90,7 @@ fun HelpContactScreen(navController: NavController){
                     onValueChange = {name = it},
                     singleLine = true,
                     modifier = Modifier
-                        .height(70.dp)
+                        .height(85.dp)
                         .fillMaxWidth()
                         .padding(10.dp),
                     keyboardOptions = KeyboardOptions(
@@ -136,7 +136,7 @@ fun HelpContactScreen(navController: NavController){
                     singleLine = true,
                     readOnly = true,
                     modifier = Modifier
-                        .height(70.dp)
+                        .height(85.dp)
                         .fillMaxWidth()
                         .padding(10.dp),
                     keyboardOptions = KeyboardOptions(

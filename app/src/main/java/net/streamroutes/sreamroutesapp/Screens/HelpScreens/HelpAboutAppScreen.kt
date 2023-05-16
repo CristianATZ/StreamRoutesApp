@@ -52,7 +52,7 @@ fun HelpAboutAppScreen(navController: NavController){
                 painter = painterResource(id = R.drawable.streamrouteslogowimage),
                 contentDescription = "Logo Stream Routes",
                 modifier = Modifier
-                    .weight(1.6f)
+                    .weight(1.4f)
                     .fillMaxSize()
             )
 
@@ -71,14 +71,15 @@ fun HelpAboutAppScreen(navController: NavController){
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier
-                    .weight(0.1f)
-                    .fillMaxWidth()
+                    .weight(0.2f)
+                    .fillMaxSize()
             )
         }
     }
 }
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun HelpAboutAppView(){

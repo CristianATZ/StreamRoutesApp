@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -41,7 +40,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -64,7 +65,7 @@ fun Registration (navController: NavController) {
         TopAppBar(
             title = { Text("Registrarme") },
             navigationIcon = {
-                IconButton(onClick = { /*navController.popBackStack()*/ }) {
+                IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Regresara al menu de ayuda"
@@ -76,7 +77,7 @@ fun Registration (navController: NavController) {
         // logo
         Row( modifier = Modifier
             .fillMaxWidth()
-            .weight(0.3f),
+            .weight(0.25f),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -108,7 +109,8 @@ fun Registration (navController: NavController) {
                         .wrapContentWidth(Alignment.Start),
                     color = Color(0xFF231955),
                     fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
                 )
             }
 
@@ -169,12 +171,14 @@ fun Registration (navController: NavController) {
                         .wrapContentWidth(Alignment.Start),
                     color = Color(0xFF231955),
                     fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
                 )
             }
 
             // textfield password
             var password by rememberSaveable { mutableStateOf("") }
+            var passwordVisibility = remember { mutableStateOf(true) }
             BasicTextField(
                 value = password,
                 onValueChange = {password = it},
@@ -204,8 +208,29 @@ fun Registration (navController: NavController) {
                         }
                         innerTextField()
                     }
-                }
+                },
+                visualTransformation = if (passwordVisibility.value)
+                    PasswordVisualTransformation() else VisualTransformation.None
             )
+
+            // ver contraseña
+            Row(modifier = Modifier
+                .fillMaxWidth(0.85f)
+                .weight(0.1f),
+                horizontalArrangement = Arrangement.End
+            ) {
+                IconButton(onClick = {
+                    passwordVisibility.value = !passwordVisibility.value
+                }) {
+                    Icon(
+                        painter = if (passwordVisibility.value)
+                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                        contentDescription = "visibilidad contraseña",
+                        modifier = Modifier
+                            .size(32.dp)
+                    )
+                }
+            }
         }
 
         // confirmar password
@@ -230,15 +255,17 @@ fun Registration (navController: NavController) {
                         .wrapContentWidth(Alignment.Start),
                     color = Color(0xFF231955),
                     fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
                 )
             }
 
-            // textfield password
-            var password by rememberSaveable { mutableStateOf("") }
+            // textfield password confirmar
+            var passwordConfirm by rememberSaveable { mutableStateOf("") }
+            var passwordVisibilityConfirm = remember { mutableStateOf(true) }
             BasicTextField(
-                value = password,
-                onValueChange = {password = it},
+                value = passwordConfirm,
+                onValueChange = {passwordConfirm = it},
                 singleLine = true,
                 modifier = Modifier
                     .height(70.dp)
@@ -254,7 +281,7 @@ fun Registration (navController: NavController) {
                             .padding(16.dp)
                             .fillMaxWidth(0.8f)
                     ){
-                        if (password.isEmpty()){
+                        if (passwordConfirm.isEmpty()){
                             Text(
                                 text = "Confirmar Contraseña",
                                 color = Color(0xFFFFF7E7),
@@ -265,18 +292,38 @@ fun Registration (navController: NavController) {
                         }
                         innerTextField()
                     }
-                }
+                },
+                visualTransformation = if (passwordVisibilityConfirm.value)
+                    PasswordVisualTransformation() else VisualTransformation.None
             )
+
+            // ver contraseña confirmada
+            Row(modifier = Modifier
+                .fillMaxWidth(0.85f)
+                .weight(0.1f),
+                horizontalArrangement = Arrangement.End
+            ) {
+                IconButton(onClick = {
+                    passwordVisibilityConfirm.value = !passwordVisibilityConfirm.value
+                }) {
+                    Icon(
+                        painter = if (passwordVisibilityConfirm.value)
+                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                        contentDescription = "visbilidad confirmar contraseña",
+                        modifier = Modifier
+                            .size(32.dp)
+                    )
+                }
+            }
         }
 
         // boton registrar
         Column(modifier = Modifier
             .fillMaxSize()
-            .weight(0.3f),
-            horizontalAlignment = Alignment.CenterHorizontally
+            .weight(0.1f),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Spacer(modifier = Modifier.height(40.dp))
-
             val gradientColors = listOf(Color(0xFF192833),Color(0xFF192833))
             val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
             Box(
