@@ -157,7 +157,7 @@ fun HelpCommentsScreen(navController: NavController){
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "INGRESAR",
+                        text = "ENVIAR",
                         fontSize = 26.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold

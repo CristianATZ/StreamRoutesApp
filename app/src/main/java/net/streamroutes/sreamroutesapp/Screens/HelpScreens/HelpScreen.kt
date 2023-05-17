@@ -151,7 +151,7 @@ fun HelpScreen(navController: NavController) {
                         .fillMaxWidth()
                         .wrapContentWidth(Alignment.Start),
                     color = Color(0xFF231955),
-                    fontSize = 15.sp,
+                    fontSize = 12.sp,
                     fontFamily = FontFamily.SansSerif
                 )
             }
