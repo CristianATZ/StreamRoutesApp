@@ -18,11 +18,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,13 +51,24 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileChangeEmailScren(navController: NavController){
     val gradientColors = listOf(Color(0xFF192833), Color(0xFF192833))
     val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
 
+    TopAppBar(
+        title = { Text(stringResource(id = R.string.title_profile_change_email_screen)) },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack()  }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Regresara a la ventana de información de contacto"
+                )
+            }
+        })
     Column(
-        modifier = Modifier.padding(top = 30.dp, start = 30.dp, end = 30.dp)
+        modifier = Modifier.padding(top = 80.dp, start = 30.dp, end = 30.dp)
     ) {
         // CORREO NUEVO
         Text(

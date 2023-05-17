@@ -12,11 +12,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,12 +35,23 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileContactInfoScreen(navController: NavController){
+    TopAppBar(
+        title = { Text(stringResource(id = R.string.title_profile_contact_info_screen)) },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack()  }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Regresara a la ventana de datos personales del perfil"
+                )
+            }
+        })
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 35.dp, start = 30.dp)
+            .padding(top = 60.dp, start = 30.dp)
     )
     {
         // CAMBIAR TELEFONO

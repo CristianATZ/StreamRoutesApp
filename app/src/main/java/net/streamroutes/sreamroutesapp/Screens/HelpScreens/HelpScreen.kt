@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -60,12 +61,15 @@ fun HelpScreen(navController: NavController) {
                     navController.navigate(route = AppScreens.HelpCommentsScreen.route)
                 }
         ){
+            Spacer(modifier = Modifier.width(10.dp))
             Icon(
-                painter = painterResource(id = R.drawable.streamrouteslogo),
+                painter = painterResource(id = R.drawable.comentarios),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(60.dp)
+                    .padding(top = 15.dp)
             )
+            Spacer(modifier = Modifier.width(25.dp))
             Column(
                 modifier = Modifier
                     .height(80.dp)
@@ -95,11 +99,12 @@ fun HelpScreen(navController: NavController) {
                 )
             }
             Icon(
-                painter = painterResource(id = R.drawable.streamrouteslogo),
+                painter = painterResource(id = R.drawable.siguiente),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(55.dp)
                     .wrapContentWidth(Alignment.End)
+                    .padding(top = 25.dp)
             )
         }
 
@@ -113,12 +118,15 @@ fun HelpScreen(navController: NavController) {
                     navController.navigate(route = AppScreens.HelpContactScreen.route)
                 }
         ){
+            Spacer(modifier = Modifier.width(10.dp))
             Icon(
-                painter = painterResource(id = R.drawable.streamrouteslogo),
+                painter = painterResource(id = R.drawable.usuarios),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(60.dp)
+                    .padding(top = 15.dp)
             )
+            Spacer(modifier = Modifier.width(25.dp))
             Column(
                 modifier = Modifier
                     .height(80.dp)
@@ -148,11 +156,12 @@ fun HelpScreen(navController: NavController) {
                 )
             }
             Icon(
-                painter = painterResource(id = R.drawable.streamrouteslogo),
+                painter = painterResource(id = R.drawable.siguiente),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(55.dp)
                     .wrapContentWidth(Alignment.End)
+                    .padding(top = 25.dp)
             )
         }
 
@@ -166,12 +175,15 @@ fun HelpScreen(navController: NavController) {
                     navController.navigate(route = AppScreens.HelpAboutAppScreen.route)
                 }
         ){
+            Spacer(modifier = Modifier.width(10.dp))
             Icon(
-                painter = painterResource(id = R.drawable.streamrouteslogo),
+                painter = painterResource(id = R.drawable.informacion),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(60.dp)
+                    .padding(top = 15.dp)
             )
+            Spacer(modifier = Modifier.width(25.dp))
             Column(
                 modifier = Modifier
                     .height(80.dp)
@@ -201,11 +213,12 @@ fun HelpScreen(navController: NavController) {
                 )
             }
             Icon(
-                painter = painterResource(id = R.drawable.streamrouteslogo),
+                painter = painterResource(id = R.drawable.siguiente),
                 contentDescription = null,
                 modifier = Modifier
-                    .size(80.dp)
+                    .size(55.dp)
                     .wrapContentWidth(Alignment.End)
+                    .padding(top = 25.dp)
             )
         }
     }

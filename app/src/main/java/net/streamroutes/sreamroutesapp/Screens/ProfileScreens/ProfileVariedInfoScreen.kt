@@ -17,12 +17,15 @@ import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -45,13 +48,24 @@ import androidx.compose.ui.platform.LocalContext
 import java.util.Calendar
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileVariedInfoScreen(navController: NavController){
-    val ocupaciones = listOf("Ingeniero","Licenciado","Taquero","Músico","Teibolero","Maestro")
-    val intereses = listOf("Escuelas","Restaurantes","Bares","Lugares Turísticos")
+    val ocupaciones = listOf("Estudiante","Ama de Casa","Profesión","Obrero","Jubilado","Otro")
+    val intereses = listOf("Entretenimiento","Comida","Ropa","Víveres","Salud")
 
+    TopAppBar(
+        title = { Text(stringResource(id = R.string.title_profile_varied_info_screen)) },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack()  }) {
+                androidx.compose.material.Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Regresara a la ventana de datos personales"
+                )
+            }
+        })
     Column(
-        modifier = Modifier.padding(top = 30.dp, start = 30.dp, end = 30.dp)
+        modifier = Modifier.padding(top = 80.dp, start = 30.dp, end = 30.dp)
     ) {
         Text(
             modifier = Modifier,

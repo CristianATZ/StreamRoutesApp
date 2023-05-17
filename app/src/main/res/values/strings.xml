@@ -10,12 +10,14 @@
     <string name="birthday">Fecha Nac.</string>
     <string name="email">E-Mail</string>
     <string name="configuration">Configuración</string>
+    <string name="title_profile_screen">Perfil</string>
 
     //////////////////////////////////////////////////////////
         PROFILE CONFIGURE SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="personal_info">Datos Personales</string>
     <string name="password_profile">Contraseña</string>
+    <string name="title_profile_configure_screen">Configuración del Perfil</string>
 
     //////////////////////////////////////////////////////////
         PROFILE DATA INFO SCREEN TEXTS
@@ -24,12 +26,14 @@
     <string name="varied_info">Información Variada</string>
     <string name="ocupation">Ocupación</string>
     <string name="interests">Intereses</string>
+    <string name="title_profile_data_info_screen">Datos Personales</string>
 
     //////////////////////////////////////////////////////////
         PROFILE CONTACT INFO SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="change_phone_number">Cambiar Teléfono</string>
     <string name="change_email">Cambiar Correo</string>
+    <string name="title_profile_contact_info_screen">Información de Contacto</string>
 
     //////////////////////////////////////////////////////////
         PROFILE CHANGE PHONE SCREEN TEXTS
@@ -38,11 +42,18 @@
     <string name="security_code">Código de Seguridad</string>
     <string name="send_code">Enviar Código</string>
     <string name="verify">Verificar</string>
+    <string name="title_profile_change_phone_screen">Cambiar teléfono</string>
 
     //////////////////////////////////////////////////////////
         PROFILE CHANGE EMAIL SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="new_email">Correo Nuevo</string>
+    <string name="title_profile_change_email_screen">Cambiar E-Mail</string>
+
+    //////////////////////////////////////////////////////////
+        PROFILE VARIED INFO SCREEN TEXTS
+    //////////////////////////////////////////////////////////
+    <string name="title_profile_varied_info_screen">Información Variada</string>
 
     //////////////////////////////////////////////////////////
         LOGIN SCREEN TEXTS

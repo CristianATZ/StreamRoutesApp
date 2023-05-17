@@ -11,15 +11,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,12 +43,23 @@ import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import kotlin.random.Random
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileConfigureScreen(navController: NavController){
+    TopAppBar(
+        title = { Text(stringResource(id = R.string.title_profile_configure_screen)) },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack()  }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Regresara a la ventana de perfil"
+                )
+            }
+        })
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 35.dp, start = 30.dp)
+            .padding(top = 70.dp, start = 30.dp)
     )
     {
         // DATOS PERSONALES
@@ -130,7 +144,9 @@ fun ProfileConfigureScreen(navController: NavController){
                 )
             }
             Button(
-                onClick = { },
+                onClick = {
+                    navController.navigate(route = AppScreens.ForgotScreen.route)
+                },
                 modifier = Modifier.padding(top = 15.dp, start = 75.dp)
             )
             {
