@@ -1,0 +1,19 @@
+PALETA DE COLORES
+
+Background = #FFF7E7
+Background alterno = #153040
+
+Botones background = #153040
+Color de letra botones = #FFFFFF
+
+Caja de texto background = FFE5B4
+Color de letra de la caja de texto = #E8AA42
+
+Color de letra = #153040
+Color alterno de letra = #E8AA42
+
+Colo topAppBar = #153040
+Color de la letra de topAppBar = #FFFFFF
+
+RadioButtons = #E8AA42
+CheckBox = #E8AA42
