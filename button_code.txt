@@ -1,0 +1,21 @@
+val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
+        Button(
+            onClick = {
+                navController.navigate(route = AppScreens.MainScreen.route)
+            },
+            colors = ButtonDefaults.buttonColors(
+                backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+                contentColor = Color.White
+            ),
+            shape = roundCornerShape,
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "INGRESAR",
+                fontSize = 26.sp,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+        }

@@ -1,0 +1,51 @@
+var variable by remember { mutableStateOf(TextFieldValue("")) }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.85f)
+                .background(
+                    Color(0xFFFFE5B4),
+                    RoundedCornerShape(percent = 30)
+                )
+        ){
+            BasicTextField(
+                value = variable,
+                onValueChange = {variable = it},
+                singleLine = true,
+                modifier = Modifier
+                    .height(70.dp)
+                    .fillMaxWidth(0.85f)
+                    .padding(4.dp),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+			// aqui puede ser ImeAction.Next
+                ),
+                textStyle = LocalTextStyle.current.copy(
+                    fontSize = 18.sp,
+                    color = Color(0xFFE8AA42),
+                    textAlign = TextAlign.Left,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
+                ),
+                decorationBox = { innerTextField ->
+                    Row(
+                        Modifier
+                            .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
+                            .padding(16.dp)
+                            .fillMaxWidth(0.8f)
+                    ){
+                        if (variable.text.isEmpty()){
+                            Text(
+                                text = "Contraseña",
+                                fontSize = 18.sp,
+                                color = Color(0xFFFFF7E7),
+                                letterSpacing = 3.sp,
+                                modifier = Modifier
+                                    .align(Alignment.CenterVertically)
+
+                                )
+                        }
+                        innerTextField()
+                    }
+                }
+            )
+        }

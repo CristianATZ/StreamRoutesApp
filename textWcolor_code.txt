@@ -1,0 +1,33 @@
+Row (
+            modifier = Modifier
+                .fillMaxWidth(0.8f) // el tamaño puede ser variable, el que ustedes elijan o necesiten
+                .size(48.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            // forgot
+            Text(
+                text = buildAnnotatedString{
+                    withStyle(style = SpanStyle(color = Color.DarkGray, // pueden cambiar el color de la primer parte del texto
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.SansSerif)) {
+                        append(stringResource(id = R.string.forgot_text_part1)) // aqui pueden elegir el texto
+                    }
+                    append(" ") // esto se agrega para separar los textos
+                    withStyle(style = SpanStyle(color = Color(0xFFE8AA42),
+                        textDecoration = TextDecoration.Underline,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.SansSerif)) {
+                        append(stringResource(id = R.string.forgot_text_part2))
+                    }
+                },
+                style = TextStyle(textAlign = TextAlign.End), // esto es para colocar el texto al final, ustedes elijen
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.End)
+                    .clickable {
+                        navController.navigate(route = AppScreens.ForgotScreen.route) // ruta de la siguiente pestaña
+                    }
+            )
+        }
