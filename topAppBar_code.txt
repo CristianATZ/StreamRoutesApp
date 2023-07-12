@@ -1,0 +1,24 @@
+TopAppBar(
+            title = {
+                Text(text = "Ciudad",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        Icons.Filled.Menu,
+                        contentDescription = "Te enviara al menu de opciones"
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        Icons.Filled.Notifications,
+                        contentDescription = "Te dira tus notificaciones del dia"
+                    )
+                }
+            }
+        )
