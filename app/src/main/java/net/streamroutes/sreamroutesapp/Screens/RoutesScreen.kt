@@ -61,69 +61,7 @@ fun RoutesScreen(navController: NavController){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Routes(navController: NavController){
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
-    ){
-        val jardin = LatLng(20.141624881223645, -101.17883478807325)
-        val jardinState = MarkerState(position = jardin)
-        val cameraPositionState = rememberCameraPositionState(){
-            position = CameraPosition.fromLatLngZoom(jardin,17f)
-        }
-        GoogleMap(
-            modifier = Modifier
-                .fillMaxSize(),
-            cameraPositionState = cameraPositionState
-        ){
-            Marker(
-                state = jardinState,
-                title = "Jardín Principal De Uriangato"
-            )
-        }
 
-        val roundCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 15.dp, topStart = 15.dp, bottomEnd = 15.dp)
-        Row(
-            modifier = Modifier
-                .padding(5.dp, 10.dp)
-                .fillMaxWidth()
-                .clip(roundCornerShape),
-            verticalAlignment = Alignment.Bottom
-        ) {
-           // textfield destino
-            var destiny by remember { mutableStateOf(TextFieldValue("")) }
-            BasicTextField(
-                value = destiny,
-                onValueChange = {destiny = it},
-                singleLine = true,
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth(),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (destiny.text.isEmpty()){
-                            Text(
-                                text = "Destino",
-                                color = Color(0xFF807B71),
-                                letterSpacing = 3.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                            )
-                        }
-                        innerTextField()
-                    }
-                }
-            )
-        }
-    }
 }
 @Preview(showBackground = true)
 @Composable

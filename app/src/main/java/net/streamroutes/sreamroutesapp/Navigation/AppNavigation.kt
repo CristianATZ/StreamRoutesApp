@@ -5,14 +5,12 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import net.streamroutes.sreamroutesapp.Screens.CustomerScreen
-import net.streamroutes.sreamroutesapp.Screens.ForgotScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpAboutAppScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
-import net.streamroutes.sreamroutesapp.Screens.LoginScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigureScreen
@@ -20,9 +18,12 @@ import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileContactInfo
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileDataInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileVariedInfoScreen
-import net.streamroutes.sreamroutesapp.Screens.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.RoutesScreen
-import net.streamroutes.sreamroutesapp.Screens.SplashScreen
+import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
+import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
+import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
+import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
+import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -41,9 +42,13 @@ fun AppNavigation() {
         composable(AppScreens.RegistrationScreen.route){
             RegistrationScreen(NavController)
         }
+        // confirmar telefono pantalla
+        composable(AppScreens.VerificationScreen.route){
+            VerificationScreen(NavController)
+        }
         // cambiar contraseña pantalla
-        composable(AppScreens.ForgotScreen.route){
-            ForgotScreen(NavController)
+        composable(AppScreens.ChangeScreen.route){
+            ChangeScreen(NavController)
         }
         // inicio de sesion pantalla
         composable(AppScreens.LoginScreen.route){
@@ -84,13 +89,13 @@ fun AppNavigation() {
         composable(AppScreens.HelpScreen.route){
             HelpScreen(NavController)
         }
-        // CUSTOMER
-        composable(AppScreens.CustomerScreen.route){
-            CustomerScreen(NavController)
-        }
         // ROUTES
         composable(AppScreens.RoutesScreen.route){
             RoutesScreen(NavController)
+        }
+        // MENU
+        composable(AppScreens.MenuScreen.route){
+            MenuScreen(NavController)
         }
     }
 }

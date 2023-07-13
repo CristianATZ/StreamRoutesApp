@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.Screens
+package net.streamroutes.sreamroutesapp.Screens.Start
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

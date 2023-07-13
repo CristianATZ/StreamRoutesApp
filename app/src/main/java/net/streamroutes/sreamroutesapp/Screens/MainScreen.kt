@@ -19,6 +19,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.rounded.AccountBox
 import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.Info
@@ -28,7 +31,9 @@ import androidx.compose.material.icons.twotone.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,7 +41,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -49,19 +56,45 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.R
 
 @Composable
 fun MainScreen(navController: NavController) {
     Main(navController)
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Main(navController: NavController){
-    Box(
+fun Main( navController: NavController ){
+    Column (
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
+            .fillMaxSize()
     ){
+        TopAppBar(
+            title = {
+                Text(text = "Ciudad",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = {  navController.navigate(route = AppScreens.MenuScreen.route)}) {
+                    Icon(
+                        Icons.Filled.Menu,
+                        contentDescription = "Te enviara al menu de opciones"
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        Icons.Filled.Notifications,
+                        contentDescription = "Te dira tus notificaciones del dia"
+                    )
+                }
+            }
+        )
+
         val itsur = LatLng(20.139468718311957, -101.15069924573676)
         val itsurState = MarkerState(position = itsur)
         val cameraPositionState = rememberCameraPositionState(){
@@ -77,166 +110,61 @@ fun Main(navController: NavController){
                 title = "Nuetra Universidad"
             )
         }
-
-        val gradientColors = listOf(Color(0xFFE8AA42), Color(0xFFE8AA42))
-        val roundCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 15.dp, topStart = 15.dp, bottomEnd = 15.dp)
-        Row(
-            modifier = Modifier
-                .padding(5.dp, 10.dp)
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
-                    shape = roundCornerShape
-                )
-                .clip(roundCornerShape),
-            verticalAlignment = Alignment.Bottom
-        ) {
-            // perfil
-            Box(
-                modifier = Modifier
-                    .weight(0.25f)
-                    .background(
-                        brush = Brush.horizontalGradient(colors = gradientColors)
-                    )
-                    .padding(PaddingValues(horizontal = 5.dp, vertical = 5.dp))
-                    .clickable {
-                        navController.navigate(route = AppScreens.ProfileScreen.route)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Image(imageVector = Icons.Rounded.AccountBox, contentDescription = null)
-                    Text(
-                        text = "Perfil",
-                        fontSize = 20.sp,
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .padding(0.dp,10.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Box(modifier = Modifier
-                    .height(50.dp)
-                    .width(0.5.dp)
-                    .background(Color(0xFF153040)))
-            }
-
-            // rutas
-            Box(
-                modifier = Modifier
-                    .weight(0.25f)
-                    .background(
-                        brush = Brush.horizontalGradient(colors = gradientColors)
-                    )
-                    .padding(PaddingValues(horizontal = 5.dp, vertical = 5.dp))
-                    .clickable {
-                        navController.navigate(route = AppScreens.RoutesScreen.route)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Image(imageVector = Icons.Rounded.Place, contentDescription = null)
-                    Text(
-                        text = "Rutas",
-                        fontSize = 20.sp,
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .padding(0.dp,10.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Box(modifier = Modifier
-                    .height(50.dp)
-                    .width(0.5.dp)
-                    .background(Color(0xFF153040)))
-            }
-
-            // clientes
-            Box(
-                modifier = Modifier
-                    .weight(0.25f)
-                    .background(
-                        brush = Brush.horizontalGradient(colors = gradientColors)
-                    )
-                    .padding(PaddingValues(horizontal = 5.dp, vertical = 5.dp))
-                    .clickable {
-                        navController.navigate(route = AppScreens.CustomerScreen.route)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Image(imageVector = Icons.Rounded.Person, contentDescription = null)
-                    Text(
-                        text = "Cliente",
-                        fontSize = 20.sp,
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .padding(0.dp,10.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Box(modifier = Modifier
-                    .height(50.dp)
-                    .width(0.5.dp)
-                    .background(Color(0xFF153040)))
-            }
-
-            // ayuda
-            Box(
-                modifier = Modifier
-                    .weight(0.25f)
-                    .background(
-                        brush = Brush.horizontalGradient(colors = gradientColors)
-                    )
-                    .padding(PaddingValues(horizontal = 5.dp, vertical = 5.dp))
-                    .clickable {
-                        navController.navigate(route = AppScreens.HelpScreen.route)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    Image(imageVector = Icons.Rounded.Info, contentDescription = null)
-                    Text(
-                        text = "Ayuda",
-                        fontSize = 20.sp,
-                        color = Color.Black,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
-            }
-        }
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun MainView(){
+    preview()
+}
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun preview(){
+    Column (
+        modifier = Modifier
+            .fillMaxSize()
+    ){
+        TopAppBar(
+            title = {
+                Text(text = "Ciudad",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        Icons.Filled.Menu,
+                        contentDescription = "Te enviara al menu de opciones"
+                    )
+                }
+            },
+            actions = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        Icons.Filled.Notifications,
+                        contentDescription = "Te dira tus notificaciones del dia"
+                    )
+                }
+            }
+        )
+
+        val itsur = LatLng(20.139468718311957, -101.15069924573676)
+        val itsurState = MarkerState(position = itsur)
+        val cameraPositionState = rememberCameraPositionState(){
+            position = CameraPosition.fromLatLngZoom(itsur,17f)
+        }
+        GoogleMap(
+            modifier = Modifier
+                .fillMaxSize(),
+            cameraPositionState = cameraPositionState
+        ){
+            Marker(
+                state = itsurState,
+                title = "Nuetra Universidad"
+            )
+        }
+    }
 }

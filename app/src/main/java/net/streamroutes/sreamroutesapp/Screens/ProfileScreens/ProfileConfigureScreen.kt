@@ -145,7 +145,7 @@ fun ProfileConfigureScreen(navController: NavController){
             }
             Button(
                 onClick = {
-                    navController.navigate(route = AppScreens.ForgotScreen.route)
+                    navController.navigate(route = AppScreens.ChangeScreen.route)
                 },
                 modifier = Modifier.padding(top = 15.dp, start = 75.dp)
             )

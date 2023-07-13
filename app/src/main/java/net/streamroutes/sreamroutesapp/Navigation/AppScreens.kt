@@ -4,7 +4,8 @@ sealed class AppScreens (val route: String) {
     object SplashScreen: AppScreens("splash_screen")
     object LoginScreen: AppScreens("login_screen")
     object RegistrationScreen: AppScreens("registration_screen")
-    object ForgotScreen: AppScreens("forgot_screen")
+    object VerificationScreen: AppScreens("verification_screen")
+    object ChangeScreen: AppScreens("change_screen")
     object MainScreen: AppScreens("main_screen")
     object ProfileScreen: AppScreens("profile_screen")
     object ProfileConfigureScreen: AppScreens("profile_configure_screen")
@@ -17,7 +18,7 @@ sealed class AppScreens (val route: String) {
     object HelpCommentsScreen: AppScreens("help_comments_screen")
     object HelpContactScreen: AppScreens("help_contact_screen")
     object HelpAboutAppScreen: AppScreens("help_about_screen")
-    object CustomerScreen: AppScreens("customer_screen")
     object RoutesScreen: AppScreens("routes_screen")
+    object MenuScreen: AppScreens("menu_screen")
 }
 
