@@ -1,17 +1,19 @@
 Row (
-            modifier = Modifier
-                .fillMaxWidth(0.8f) // lo modifican dependiendo de su textfield
-                .size(48.dp),
-            horizontalArrangement = Arrangement.Start // alineamiento
-        ){
-            // forgot
-            Text(
-                text = stringResource(id = R.string.password_tittle_text), // texto
-                modifier = Modifier
-                    .fillMaxWidth(), // esto acapara el tamaño completo del Row=0.8f
-                color = Color.DarkGray,
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-        }
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(48.dp), // lo modifican dependiendo de su textfield
+                    verticalAlignment = Alignment.CenterVertically, // alineamiento
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    // forgot
+                    Text(
+                        modifier = Modifier
+                            .fillMaxWidth(0.8f),
+                        text = "Telefono",
+                        color = Color.DarkGray,
+                        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 20.sp,
+                        textAlign = TextAlign.Left
+                    )
+                }
