@@ -1,3 +1,7 @@
+EN DADO CASO SE LAS HAGA DE PEDO PORQUE NO EXISTE EL 'backgroundcolor' EN EL APARTADO DE 'ButtonDefaults.buttonColors'
+CAMBIEN EL 'backgroundColor' por 'containerColor'.
+
+
 val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
         Button(
             onClick = {
