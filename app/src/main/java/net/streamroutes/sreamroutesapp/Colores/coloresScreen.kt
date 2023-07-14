@@ -19,3 +19,6 @@ val color_letra_topappbar = color_letra_botones
 
 val color_fondo_radiobuttons = color_letra_textfield
 val color_fondo_checkbox = color_letra_textfield
+
+val color_fondo_rows = color_fondo_textfield
+val color_fondo_rows_alterno = Color(0xfffffff)
