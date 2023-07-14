@@ -21,7 +21,7 @@ TopAppBar(
                     )
                 }
             },
-            colors = colors = TopAppBarDefaults
+            colors = TopAppBarDefaults
                 .smallTopAppBarColors(
                     containerColor = color_text,
                     titleContentColor = color_titulo
