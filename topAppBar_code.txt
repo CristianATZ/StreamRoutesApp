@@ -20,5 +20,10 @@ TopAppBar(
                         contentDescription = "Te dira tus notificaciones del dia"
                     )
                 }
-            }
+            },
+            colors = colors = TopAppBarDefaults
+                .smallTopAppBarColors(
+                    containerColor = color_text,
+                    titleContentColor = color_titulo
+                ) // esto es para cambiar el color de fondo y el de la letra
         )
