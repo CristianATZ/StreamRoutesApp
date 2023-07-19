@@ -80,7 +80,8 @@ fun CambiarCiudad(modifier: Modifier = Modifier) {
                 IconButton(
                     onClick = {},
                     modifier = Modifier
-                        .fillMaxWidth(0.2f)
+                        .fillMaxWidth(0.13f)
+                        .padding(start = 15.dp)
                         .align(Alignment.CenterStart)
                 ) {
                     Image(
@@ -96,6 +97,7 @@ fun CambiarCiudad(modifier: Modifier = Modifier) {
                     fontSize = 30.sp,
                     color = Color.White,
                     modifier = Modifier.align(Alignment.Center)
+                        .padding(end = 65.dp)
                 )
             }
         }
