@@ -7,13 +7,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -21,7 +27,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,187 +53,112 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpContactScreen(navController: NavController){
+    var nombre by remember { mutableStateOf(TextFieldValue()) }
+    var mensaje by remember { mutableStateOf(TextFieldValue()) }
+    var mail by remember { mutableStateOf(TextFieldValue("streamroutes2.0@gmail.com")) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color_fondo_claro)
     ) {
+        // top app bar
         TopAppBar(
-            title = { Text(stringResource(id = R.string.tittle_contact_screen)) },
+            title = {
+                Text(text = "Contactanos",
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
             navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Regresara al menu de ayuda"
+                        contentDescription = "Te enviara al menu de opciones"
                     )
                 }
-            }
+            },
+            colors = TopAppBarDefaults
+                .smallTopAppBarColors(
+                    containerColor = color_fondo_topappbar_alterno,
+                    titleContentColor = color_letra_topappbar
+                )
         )
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.size(30.dp))
+
             // nombre
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.4f)
-                .padding(10.dp),
-                verticalArrangement = Arrangement.Bottom
-            ) {
-                Text(
-                    text = stringResource(id = R.string.contact_head_name),
-                    modifier = Modifier
-                        .padding(10.dp,0.dp)
-                        .fillMaxWidth()
-                )
-                // textfield name
-                var name by remember { mutableStateOf(TextFieldValue("")) }
-                BasicTextField(
-                    value = name,
-                    onValueChange = {name = it},
-                    singleLine = true,
-                    modifier = Modifier
-                        .height(85.dp)
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next
-                    ),
-                    decorationBox = { innerTextField ->
-                        Row(
-                            Modifier
-                                .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 5))
-                                .padding(16.dp)
-                                .fillMaxWidth(0.8f)
-                        ){
-                            if (name.text.isEmpty()){
-                                Text(
-                                    text = stringResource(id = R.string.contact_body_name),
-                                    color = Color(0xFFFFF7E7),
-                                    letterSpacing = 3.sp
-                                )
-                            }
-                            innerTextField()
-                        }
-                    }
-                )
-            }
+            TextWTittle(
+                tittle = "Nombre",
+                placeholder = "Nombre",
+                readOnly = false,
+                size = 70,
+                variable = nombre,
+                onVariableChange = { newValue -> nombre = newValue }
+            )
+
+            Spacer(modifier = Modifier.size(30.dp))
 
             // destinatario
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.4f)
-                .padding(10.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.contact_head_mail),
-                    modifier = Modifier
-                        .padding(10.dp,0.dp)
-                )
-                // textfield destinatario
-                val mail = "streamroutes2.0@gmail.com"
-                BasicTextField(
-                    value = mail,
-                    onValueChange = { },
-                    singleLine = true,
-                    readOnly = true,
-                    modifier = Modifier
-                        .height(85.dp)
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next
-                    ),
-                    decorationBox = {
-                        Row(
-                            Modifier
-                                .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 5))
-                                .padding(16.dp)
-                                .fillMaxWidth(0.8f)
-                        ){
-                            Text(
-                                text = "streamroutes2.0@gmail.com",
-                                color = Color(0xFF192833),
-                                letterSpacing = 3.sp
-                            )
-                        }
-                    }
-                )
-            }
+            TextWTittle(
+                tittle = "Nuestro correo",
+                placeholder = "",
+                readOnly = true,
+                size = 70,
+                variable = mail,
+                onVariableChange = { newValue -> mail = newValue }
+            )
+
+            Spacer(modifier = Modifier.size(30.dp))
 
             // mensaje
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.6f)
-                .padding(10.dp)
-            ) {
-                Text(
-                    text = stringResource(id = R.string.contact_head_message),
-                    modifier = Modifier
-                        .padding(10.dp,0.dp)
-                )
-                // textfield mensaje
-                var message by remember { mutableStateOf(TextFieldValue("")) }
-                BasicTextField(
-                    value = message,
-                    onValueChange = {message = it},
-                    singleLine = false,
-                    modifier = Modifier
-                        .height(200.dp)
-                        .fillMaxWidth()
-                        .padding(10.dp),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    ),
-                    decorationBox = { innerTextField ->
-                        Row(
-                            Modifier
-                                .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 5))
-                                .padding(16.dp)
-                                .fillMaxWidth(0.8f)
-                        ){
-                            if (message.text.isEmpty()){
-                                Text(
-                                    text = stringResource(id = R.string.contact_body_message),
-                                    color = Color(0xFFFFF7E7),
-                                    letterSpacing = 3.sp
-                                )
-                            }
-                            innerTextField()
-                        }
-                    }
-                )
-            }
+            TextWTittle(
+                tittle = "Mensaje",
+                placeholder = "",
+                readOnly = false,
+                singleLine = false,
+                size = 150,
+                variable = mensaje,
+                onVariableChange = { newValue -> mensaje = newValue },
+                roundedCornerShape = RoundedCornerShape(percent = 5)
+            )
+
 
             //boton
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.4f)
-                .padding(10.dp),
-                verticalArrangement = Arrangement.Center,
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // button login
-                val gradientColors = listOf(Color(0xFF192833),Color(0xFF192833))
+                // button enviar
                 val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                Box(
+                Button(
+                    onClick = {
+
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+                        contentColor = Color.White
+                    ),
+                    shape = roundCornerShape,
                     modifier = Modifier
-                        .background(
-                            brush = Brush.horizontalGradient(colors = gradientColors),
-                            shape = roundCornerShape
-                        )
-                        .clip(roundCornerShape)
-                        .padding(PaddingValues(horizontal = 30.dp, vertical = 8.dp))
-                        .clickable {
-                            //navController.navigate(route = AppScreens.MainScreen.route)
-                        },
-                    contentAlignment = Alignment.Center
+                        .wrapContentSize()
+                        .padding(16.dp)
                 ) {
                     Text(
                         text = "ENVIAR",
@@ -237,10 +170,8 @@ fun HelpContactScreen(navController: NavController){
 
                 // ubicacion
                 Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(0.2f)
-                    .padding(10.dp),
-                    horizontalArrangement = Arrangement.Center,
+                    .fillMaxSize()
+                    .padding(vertical = 15.dp),
                     verticalAlignment = Alignment.Bottom
                 ) {
                     // text ubicacion
@@ -263,7 +194,7 @@ fun HelpContactScreen(navController: NavController){
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clickable {  },
+                            .clickable { },
                         textAlign = TextAlign.Center
                     )
                 }
@@ -272,6 +203,87 @@ fun HelpContactScreen(navController: NavController){
     }
 }
 
+@Composable
+private fun TextWTittle(
+    tittle: String,
+    placeholder: String,
+    readOnly: Boolean,
+    singleLine: Boolean = true,
+    size: Int,
+    variable: TextFieldValue,
+    onVariableChange: (TextFieldValue) -> Unit,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30)
+) {
+    // nombre
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        // forgot
+        Text(
+            text = tittle,
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = Color.DarkGray,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .background(
+                Color(0xFFFFE5B4),
+                roundedCornerShape
+            )
+    ){
+        BasicTextField(
+            value = variable,
+            onValueChange = onVariableChange,
+            singleLine = singleLine,
+            readOnly = readOnly,
+            modifier = Modifier
+                .height(size.dp)
+                .fillMaxWidth()
+                .padding(4.dp),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
+            ),
+            textStyle = LocalTextStyle.current.copy(
+                fontSize = 18.sp,
+                color = Color(0xFFE8AA42),
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            ),
+            decorationBox = { innerTextField ->
+                Row(
+                    Modifier
+                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
+                        .padding(16.dp)
+                        .fillMaxWidth(0.8f)
+                ){
+                    if (variable.text.isEmpty()){
+                        Text(
+                            text = placeholder,
+                            fontSize = 18.sp,
+                            color = Color(0xFFFFF7E7),
+                            letterSpacing = 3.sp,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+        )
+    }
+}
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable

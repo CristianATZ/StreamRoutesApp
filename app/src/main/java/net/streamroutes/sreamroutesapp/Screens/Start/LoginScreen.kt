@@ -149,13 +149,14 @@ fun Login(navController: NavController  ){
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .size(48.dp),
-            horizontalArrangement = Arrangement.Start
-        ){
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             // forgot
             Text(
                 text = stringResource(id = R.string.password_tittle_text),
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.Start),
                 color = Color.DarkGray,
                 fontFamily = FontFamily.SansSerif,
                 fontWeight = FontWeight.Bold,
