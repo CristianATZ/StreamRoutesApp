@@ -5,8 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ChangeCityScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.MapOptionsScreen
+import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.NotificationsScreen
+import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.PrivacityScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpAboutAppScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
@@ -109,5 +112,21 @@ fun AppNavigation() {
         composable(AppScreens.MapOptionsScreen.route){
             MapOptionsScreen(NavController)
         }
+
+        // CAMBIAR CIUDAD
+        composable(AppScreens.ChangeCityScreen.route){
+            ChangeCityScreen(NavController)
+        }
+
+        // NOTIFICACIONES
+        composable(AppScreens.NotificationsScreen.route){
+            NotificationsScreen(NavController)
+        }
+
+        // PRIVACIDAD
+        composable(AppScreens.PrivacityScreen.route){
+            PrivacityScreen(NavController)
+        }
+
     }
 }

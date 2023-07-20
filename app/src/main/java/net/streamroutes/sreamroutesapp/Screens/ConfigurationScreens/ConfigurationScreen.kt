@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -73,7 +72,7 @@ fun ConfigurationScreen(navController: NavController){
                 color_texto = color_letra,
                 color_icon = Color.Black,
                 onClick = {
-
+                    navController.navigate(route = AppScreens.ChangeCityScreen.route)
                 }
             )
 
@@ -85,7 +84,7 @@ fun ConfigurationScreen(navController: NavController){
                 color_texto = color_letra,
                 color_icon = Color.Black,
                 onClick = {
-
+                    navController.navigate(route = AppScreens.NotificationsScreen.route)
                 }
             )
 
@@ -109,7 +108,7 @@ fun ConfigurationScreen(navController: NavController){
                 color_texto = color_letra,
                 color_icon = Color.Black,
                 onClick = {
-
+                    navController.navigate(route = AppScreens.PrivacityScreen.route)
                 }
             )
         }
