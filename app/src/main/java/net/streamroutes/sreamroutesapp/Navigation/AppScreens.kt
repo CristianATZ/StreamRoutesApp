@@ -25,5 +25,8 @@ sealed class AppScreens (val route: String) {
     object ChangeCityScreen: AppScreens("change_city_screen")
     object NotificationsScreen: AppScreens("notifications_screen")
     object PrivacityScreen: AppScreens("privacity_screen")
+    object TripScreen: AppScreens("trip_screen")
+    object SuscripcionScreen: AppScreens("premium_screen")
+    object ValoranoScreen: AppScreens("valoranos_screen")
 }
 

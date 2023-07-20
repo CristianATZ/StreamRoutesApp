@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.Screens
+package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
 import android.Manifest
 import android.content.Context
@@ -161,7 +161,7 @@ fun Menu(navController: NavController){
             // version premium
             Options(
                 text = "Version Premium",
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(route = AppScreens.SuscripcionScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 15.dp, topStart = 15.dp, bottomEnd = 15.dp))
 
             Spacer(modifier = Modifier.size(30.dp))
@@ -169,13 +169,13 @@ fun Menu(navController: NavController){
             // rutas
             Options(
                 text = "Rutas",
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(route = AppScreens.RoutesScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 0.dp, topStart = 15.dp, bottomEnd = 0.dp))
 
             // planifica tu viaje
             Options(
                 text = "Planifica tu viaje",
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(route = AppScreens.TripScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 0.dp, topStart = 0.dp, bottomEnd = 0.dp))
 
             // compartir ubicacion
@@ -231,7 +231,7 @@ fun Menu(navController: NavController){
             // valoranos
             Options(
                 text = "Valoranos",
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(route = AppScreens.ValoranoScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 0.dp, topStart = 0.dp, bottomEnd = 0.dp))
 
             // configuracion
@@ -243,7 +243,7 @@ fun Menu(navController: NavController){
             // ayuda y soporte
             Options(
                 text = "Ayuda y soporte",
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(route = AppScreens.HelpScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 15.dp, topStart = 0.dp, bottomEnd = 15.dp))
         }
     }

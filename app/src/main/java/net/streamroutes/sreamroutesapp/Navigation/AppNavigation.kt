@@ -15,7 +15,7 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
-import net.streamroutes.sreamroutesapp.Screens.MenuScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.MenuScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigureScreen
@@ -23,7 +23,10 @@ import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileContactInfo
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileDataInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileVariedInfoScreen
-import net.streamroutes.sreamroutesapp.Screens.RoutesScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.RoutesScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
@@ -128,5 +131,19 @@ fun AppNavigation() {
             PrivacityScreen(NavController)
         }
 
+        // PLANIFICA TU VIAJE
+        composable(AppScreens.TripScreen.route){
+            //TripScreen(NavController)
+        }
+
+        // VERSION PREMIUM
+        composable(AppScreens.SuscripcionScreen.route){
+            SuscripcionScreen(NavController)
+        }
+
+        // VALORANOS SCREEN
+        composable(AppScreens.ValoranoScreen.route){
+            ValoranoScreen(NavController)
+        }
     }
 }

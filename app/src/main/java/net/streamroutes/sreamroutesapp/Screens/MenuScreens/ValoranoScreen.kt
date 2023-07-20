@@ -1,18 +1,15 @@
-package net.streamroutes.sreamroutesapp.Screens
+package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,16 +17,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,73 +36,57 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.R
 
-class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContent {
-            desing()
-        }
-    }
+@Composable
+fun ValoranoScreen(navController: NavController){
+    TopBar()
 }
 
-@Preview
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun desing(){
-    TopBar(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(android.graphics.Color.parseColor("#FFF7E7")))
-        .wrapContentSize(Alignment.Center))
-
-}
-
-@Composable
-fun TopBar(modifier: Modifier = Modifier) {
+fun TopBar() {
     //Fondo
-    Column(modifier = modifier){
-        Row {
-            Box(
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth()
-                    .background(Color(android.graphics.Color.parseColor("#153040")))
-            ){
-                IconButton(
-                    onClick = {},
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color_fondo_claro)
+    ){
+        TopAppBar(
+            title = {
+                Text(text = "Valoranos",
                     modifier = Modifier
-                        .fillMaxWidth(0.13f)
-                        .padding(start = 15.dp)
-                        .align(Alignment.CenterStart)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.back),
-                        contentDescription = stringResource(id = R.string.back),
-                        modifier = Modifier.fillMaxSize()
-                            .background(Color(android.graphics.Color.parseColor("#153040"))),
-                        contentScale = ContentScale.FillBounds
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = {  }) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Te enviara al menu de opciones",
+                        tint = Color.White
                     )
                 }
-                Text(
-                    text = "Valoranos",
-                    fontSize = 30.sp,
-                    color = Color.White,
-                    modifier = Modifier.align(Alignment.Center)
-                        .padding(end = 120.dp)
+            },
+            colors = TopAppBarDefaults
+                .smallTopAppBarColors(
+                    containerColor = color_fondo_topappbar_alterno,
+                    titleContentColor = color_letra_topappbar
                 )
-            }
-        }
+        )
         Down()
         // Espacio para empujar el contenido hacia abajo
         Spacer(modifier = Modifier.weight(1f))
@@ -181,7 +163,7 @@ fun Down(modifier: Modifier = Modifier) {
                         .align(Alignment.Center)
                 ) {
                     Text(
-                        text = "INGRESAR",
+                        text = "ENVIAR",
                         fontSize = 26.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
