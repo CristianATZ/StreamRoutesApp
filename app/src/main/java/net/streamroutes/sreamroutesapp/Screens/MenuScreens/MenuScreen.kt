@@ -103,17 +103,19 @@ fun Menu(navController: NavController){
     ) {
         TopAppBar(
             title = {
-                Text(text = "Menu",
+                androidx.compose.material3.Text(
+                    text = "Menu",
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
             },
             navigationIcon = {
-                IconButton(onClick = {  }) {
+                androidx.compose.material3.IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de opciones"
+                        contentDescription = "Te enviara a la ventana principal",
+                        tint = Color.White
                     )
                 }
             },

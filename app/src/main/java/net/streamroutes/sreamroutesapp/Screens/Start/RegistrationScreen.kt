@@ -43,6 +43,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -63,12 +64,17 @@ fun Registration (navController: NavController) {
     ) {
         // topappbar
         TopAppBar(
-            title = { Text("Registrarme") },
+            title = {
+                Text(text = "Registrarme",
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Regresara al menu de ayuda"
+                        contentDescription = "Te enviara al login"
                     )
                 }
             }

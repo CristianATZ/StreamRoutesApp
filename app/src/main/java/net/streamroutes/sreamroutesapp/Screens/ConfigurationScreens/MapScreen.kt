@@ -38,6 +38,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -63,10 +64,10 @@ fun MapOptionsScreen(navController: NavController){
                 )
             },
             navigationIcon = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "configurar el tipo marcadores"
+                        contentDescription = "Te enviara al menu de configuraciones"
                     )
                 }
             },

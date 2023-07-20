@@ -154,10 +154,10 @@ fun NotificationsScreen(navController: NavController){
                 )
             },
             navigationIcon = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "configurar el tipo de notificaciones"
+                        contentDescription = "Te enviara al menu de configuraciones"
                     )
                 }
             },

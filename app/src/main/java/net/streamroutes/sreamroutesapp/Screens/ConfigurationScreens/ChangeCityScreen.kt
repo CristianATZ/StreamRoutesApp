@@ -13,10 +13,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.unit.dp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,54 +34,53 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
 fun ChangeCityScreen(navController: NavController){
-    CambiarCiudad(modifier = Modifier
-        .fillMaxSize()
-        .background(Color(android.graphics.Color.parseColor("#FFF7E7")))
-        .wrapContentSize(Alignment.Center))
+    CambiarCiudad(navController)
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CambiarCiudad(modifier: Modifier = Modifier) {
+fun CambiarCiudad(navController: NavController) {
     //Fondo
-    Column(modifier = modifier){
-        Row {
-            Box(
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth()
-                    .background(Color(android.graphics.Color.parseColor("#153040")))
-            ){
-                IconButton(
-                    onClick = {},
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color_fondo_claro)
+    ){
+        // top app bar
+        TopAppBar(
+            title = {
+                Text(text = "Cambiar Ciudad",
                     modifier = Modifier
-                        .fillMaxWidth(0.13f)
-                        .padding(start = 15.dp)
-                        .align(Alignment.CenterStart)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.back),
-                        contentDescription = stringResource(id = R.string.back),
-                        modifier = Modifier.fillMaxSize()
-                            .background(Color(android.graphics.Color.parseColor("#153040"))),
-                        contentScale = ContentScale.FillBounds
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
+            navigationIcon = {
+                IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
+                    Icon(
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Te enviara al menu de configuraciones"
                     )
                 }
-                Text(
-                    text = "Configuracion",
-                    fontSize = 30.sp,
-                    color = Color.White,
-                    modifier = Modifier.align(Alignment.Center)
-                        .padding(end = 65.dp)
+            },
+            colors = TopAppBarDefaults
+                .smallTopAppBarColors(
+                    containerColor = color_fondo_topappbar_alterno,
+                    titleContentColor = color_letra_topappbar
                 )
-            }
-        }
+        )
         Options()
         // Espacio para empujar el contenido hacia abajo
         Spacer(modifier = Modifier.weight(1f))

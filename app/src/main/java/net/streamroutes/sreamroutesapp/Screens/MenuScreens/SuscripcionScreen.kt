@@ -52,6 +52,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Preview (showBackground = true)
@@ -85,7 +86,7 @@ fun SuscripcionScreen(navController: NavController) {
                 )
             },
             navigationIcon = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { navController.navigate(AppScreens.MenuScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara al menu de opciones",

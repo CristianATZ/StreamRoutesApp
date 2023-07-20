@@ -82,10 +82,10 @@ fun Verification(navController: NavController) {
                 )
             },
             navigationIcon = {
-                IconButton(onClick = {  }) {
+                IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
-                        Icons.Filled.Menu,
-                        contentDescription = "Te enviara al menu de opciones"
+                        Icons.Filled.ArrowBack,
+                        contentDescription = "Te enviara al login"
                     )
                 }
             }

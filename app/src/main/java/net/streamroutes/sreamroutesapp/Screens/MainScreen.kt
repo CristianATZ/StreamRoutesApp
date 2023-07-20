@@ -34,6 +34,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +56,8 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -72,16 +75,19 @@ fun Main( navController: NavController ){
     ){
         TopAppBar(
             title = {
-                Text(text = "Ciudad",
-                    modifier = Modifier.fillMaxWidth(),
+                androidx.compose.material3.Text(
+                    text = "Ciudad",
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
             },
             navigationIcon = {
-                IconButton(onClick = {  navController.navigate(route = AppScreens.MenuScreen.route)}) {
-                    Icon(
+                IconButton(onClick = { navController.navigate(AppScreens.MenuScreen.route) }) {
+                    androidx.compose.material.Icon(
                         Icons.Filled.Menu,
-                        contentDescription = "Te enviara al menu de opciones"
+                        contentDescription = "Te enviara al menu de opciones",
+                        tint = Color.White
                     )
                 }
             },
@@ -92,7 +98,12 @@ fun Main( navController: NavController ){
                         contentDescription = "Te dira tus notificaciones del dia"
                     )
                 }
-            }
+            },
+            colors = TopAppBarDefaults
+                .smallTopAppBarColors(
+                    containerColor = color_fondo_topappbar_alterno,
+                    titleContentColor = color_letra_topappbar
+                )
         )
 
         val itsur = LatLng(20.139468718311957, -101.15069924573676)
