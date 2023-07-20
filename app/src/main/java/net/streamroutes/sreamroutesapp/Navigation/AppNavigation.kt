@@ -5,6 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
+import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.MapOptionsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpAboutAppScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
@@ -96,6 +98,16 @@ fun AppNavigation() {
         // MENU
         composable(AppScreens.MenuScreen.route){
             MenuScreen(NavController)
+        }
+
+        // CONFIGURACION SCREEN
+        composable(AppScreens.ConfigurationScreen.route){
+            ConfigurationScreen(NavController)
+        }
+
+        // MAPA OPCIONES
+        composable(AppScreens.MapOptionsScreen.route){
+            MapOptionsScreen(NavController)
         }
     }
 }

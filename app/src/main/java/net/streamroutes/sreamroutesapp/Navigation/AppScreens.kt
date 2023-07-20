@@ -20,5 +20,7 @@ sealed class AppScreens (val route: String) {
     object HelpAboutAppScreen: AppScreens("help_about_screen")
     object RoutesScreen: AppScreens("routes_screen")
     object MenuScreen: AppScreens("menu_screen")
+    object ConfigurationScreen: AppScreens("configuracion_screen")
+    object MapOptionsScreen: AppScreens("mapa_options_screen")
 }
 

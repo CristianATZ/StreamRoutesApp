@@ -49,6 +49,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_rows
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
@@ -236,7 +237,7 @@ fun Menu(navController: NavController){
             // configuracion
             Options(
                 text = "Configuracion",
-                onClick = { /*TODO*/ },
+                onClick = { navController.navigate(route = AppScreens.ConfigurationScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 0.dp, topStart = 0.dp, bottomEnd = 0.dp))
 
             // ayuda y soporte

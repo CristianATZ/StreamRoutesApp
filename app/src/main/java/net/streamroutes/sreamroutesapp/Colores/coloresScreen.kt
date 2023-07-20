@@ -23,3 +23,7 @@ val color_fondo_checkbox = color_letra_textfield
 
 val color_fondo_rows = color_fondo_textfield
 val color_fondo_rows_alterno = Color(0xfffffff)
+
+val color_bola_switch = color_letra_topappbar
+val color_fondo_switch_activo = color_letra_textfield
+val color_fondo_switch_inactivo = Color.Gray
