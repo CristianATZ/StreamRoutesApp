@@ -12,9 +12,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Checkbox
@@ -24,6 +29,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
@@ -43,6 +50,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -51,17 +63,30 @@ fun HelpCommentsScreen(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color_fondo_claro)
     ) {
+        // top app bar
         TopAppBar(
-            title = { Text(stringResource(id = R.string.tittle_comments_screen)) },
+            title = {
+                Text(text = "Comentarios",
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textAlign = TextAlign.Center
+                )
+            },
             navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Regresara al menu de ayuda"
+                        contentDescription = "Te enviara al menu de opciones"
                     )
                 }
-            }
+            },
+            colors = TopAppBarDefaults
+                .smallTopAppBarColors(
+                    containerColor = color_fondo_topappbar_alterno,
+                    titleContentColor = color_letra_topappbar
+                )
         )
 
         Column(
@@ -78,9 +103,16 @@ fun HelpCommentsScreen(navController: NavController){
                 modifier = Modifier
                     .height(150.dp)
                     .fillMaxWidth(1f)
-                    .padding(10.dp),
+                    .padding(4.dp),
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
+                ),
+                textStyle = LocalTextStyle.current.copy(
+                    fontSize = 18.sp,
+                    color = Color( 0xFFE8AA42),
+                    textAlign = TextAlign.Left,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
                 ),
                 decorationBox = { innerTextField ->
                     Row(
@@ -92,6 +124,7 @@ fun HelpCommentsScreen(navController: NavController){
                         if (comment.text.isEmpty()){
                             Text(
                                 text = "Cuentanos como podemos ayudarte",
+                                fontSize = 18.sp,
                                 color = Color(0xFFFFF7E7),
                                 letterSpacing = 3.sp
                             )
@@ -101,10 +134,13 @@ fun HelpCommentsScreen(navController: NavController){
                 }
             )
 
+            val checkedState = remember { mutableStateOf(true) }
             // SUGERENCIA Y CHECKBOX
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f),
+                    .fillMaxWidth(0.9f)
+                    .padding(4.dp)
+                    .clickable { checkedState.value = !checkedState.value },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ){
@@ -113,15 +149,19 @@ fun HelpCommentsScreen(navController: NavController){
                 ) {
                     Text(
                         text = stringResource(id = R.string.subcomment1_comments_screen),
+                        color = color_letra,
+                        fontFamily = FontFamily.SansSerif,
                     )
                     Text(
                         text = stringResource(id = R.string.subcomment2_comments_screen),
+                        color = color_letra,
+                        fontFamily = FontFamily.SansSerif,
                     )
                 }
-                val checkedState = remember { mutableStateOf(true) }
                 Checkbox(
                     checked = checkedState.value,
-                    modifier = Modifier.padding(16.dp),
+                    modifier = Modifier
+                        .padding(16.dp),
                     onCheckedChange = { checkedState.value = it },
                     colors = CheckboxDefaults.colors(
                         checkedColor = Color(0xFFE8AA42),
@@ -134,27 +174,22 @@ fun HelpCommentsScreen(navController: NavController){
             // boton y subtitulo
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.8f)
-                    .weight(0.9f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // button login
-                val gradientColors = listOf(Color(0xFF192833),Color(0xFF192833))
                 val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                Box(
-                    modifier = Modifier
-                        .background(
-                            brush = Brush.horizontalGradient(colors = gradientColors),
-                            shape = roundCornerShape
-                        )
-                        .clip(roundCornerShape)
-                        .padding(PaddingValues(horizontal = 30.dp, vertical = 8.dp))
-                        .clickable {
+                Button(
+                    onClick = {
 
-                        },
-                    contentAlignment = Alignment.Center
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+                        contentColor = Color.White
+                    ),
+                    shape = roundCornerShape,
+                    modifier = Modifier
+                        .wrapContentSize()
+                        .padding(16.dp)
                 ) {
                     Text(
                         text = "ENVIAR",
@@ -163,15 +198,19 @@ fun HelpCommentsScreen(navController: NavController){
                         fontWeight = FontWeight.Bold
                     )
                 }
-            }
 
-            Text(
-                text = stringResource(id = R.string.bottomComment_comments_screen),
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .weight(0.1f)
-            )
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalAlignment = Alignment.Bottom
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.bottomComment_comments_screen),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }
