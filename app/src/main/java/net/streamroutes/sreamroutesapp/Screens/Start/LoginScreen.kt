@@ -23,8 +23,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,7 +46,9 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -61,6 +66,11 @@ fun LoginScreen(navController: NavController){
 
 @Composable
 fun Login(navController: NavController  ){
+    var telefono by remember { mutableStateOf(TextFieldValue("")) }
+    var telefonoVisibility = remember { mutableStateOf(true) }
+    var password by remember { mutableStateOf(TextFieldValue("")) }
+    var passwordVisibility = remember { mutableStateOf(true) }
+
     Column (
         modifier = Modifier
             .fillMaxSize(),
@@ -75,181 +85,45 @@ fun Login(navController: NavController  ){
                 .size(200.dp)
         )
 
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .size(48.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            // forgot
-            Text(
-                text = stringResource(id = R.string.user_tittle_text),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentWidth(Alignment.Start),
-                color = Color.DarkGray,
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
-            )
-        }
-
-        var telefono by remember { mutableStateOf(TextFieldValue("")) }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .background(
-                    Color(0xFFFFE5B4),
-                    RoundedCornerShape(percent = 30)
-                )
-        ){
-            BasicTextField(
-                value = telefono,
-                onValueChange = {telefono = it},
-                singleLine = true,
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth(0.85f)
-                    .padding(4.dp),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
-                ),
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 18.sp,
-                    color = Color( 0xFFE8AA42),
-                    textAlign = TextAlign.Left,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (telefono.text.isEmpty()){
-                            Text(
-                                text = "Telefono",
-                                fontSize = 18.sp,
-                                color = Color(0xFFFFF7E7),
-                                letterSpacing = 3.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                                )
-                        }
-                        innerTextField()
-                    }
-                }
-            )
-        }
+        // telefono
+        PasswordTextfield(
+            tittle = "Telefono",
+            placeholder = "Telefono",
+            readOnly = false,
+            size = 70,
+            variable = telefono,
+            onVariableChange = {newValue -> telefono = newValue},
+            passwordVisibility = telefonoVisibility,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Next,
+                keyboardType = KeyboardType.Number
+            ),
+            icono = false
+        )
         
         Spacer(modifier = Modifier.height(20.dp))
 
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .size(48.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            // forgot
-            Text(
-                text = stringResource(id = R.string.password_tittle_text),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentWidth(Alignment.Start),
-                color = Color.DarkGray,
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+        PasswordTextfield(
+            tittle = "Contraseña",
+            placeholder = "Contraseña",
+            readOnly = false,
+            size = 70,
+            variable = password,
+            onVariableChange = {newValue -> password = newValue},
+            passwordVisibility = passwordVisibility,
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done
             )
-        }
+        )
 
-        var password by remember { mutableStateOf(TextFieldValue("")) }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(0.85f)
-                .background(
-                    Color(0xFFFFE5B4),
-                    RoundedCornerShape(percent = 30)
-                )
-        ){
-            BasicTextField(
-                value = password,
-                onValueChange = {password = it},
-                singleLine = true,
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth(0.85f)
-                    .padding(4.dp),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 18.sp,
-                    color = Color(0xFFE8AA42),
-                    textAlign = TextAlign.Left,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (password.text.isEmpty()){
-                            Text(
-                                text = "Contraseña",
-                                fontSize = 18.sp,
-                                color = Color(0xFFFFF7E7),
-                                letterSpacing = 3.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-
-                                )
-                        }
-                        innerTextField()
-                    }
-                }
-            )
-        }
-
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .size(48.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            // forgot
-            Text(
-                text = buildAnnotatedString{
-                    withStyle(style = SpanStyle(color = Color.DarkGray,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily.SansSerif)) {
-                        append(stringResource(id = R.string.forgot_text_part1))
-                    }
-                    append(" ")
-                    withStyle(style = SpanStyle(color = Color(0xFFE8AA42),
-                        textDecoration = TextDecoration.Underline,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp,
-                        fontFamily = FontFamily.SansSerif)) {
-                        append(stringResource(id = R.string.forgot_text_part2))
-                    }
-                },
-                style = TextStyle(textAlign = TextAlign.End),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentWidth(Alignment.End)
-                    .clickable {
-                        navController.navigate(route = AppScreens.VerificationScreen.route)
-                    }
-            )
-        }
+        CustomText(
+            firstString = "Olvide mi",
+            secondString = "contraseña",
+            horizontal = Arrangement.End,
+            onClick = {
+                navController.navigate(route = AppScreens.VerificationScreen.route)
+            }
+        )
 
         // button login
         val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
@@ -275,50 +149,162 @@ fun Login(navController: NavController  ){
         }
 
         // registration
-        Row (
+        CustomText(
+            firstString = "¿No tienes cuenta?",
+            secondString = "Registrate",
+            horizontal = Arrangement.Center,
+            onClick = {
+                navController.navigate(route = AppScreens.RegistrationScreen.route)
+            }
+        )
+    }
+}
+@Composable
+private fun PasswordTextfield(
+    tittle: String,
+    placeholder: String,
+    readOnly: Boolean,
+    singleLine: Boolean = true,
+    size: Int,
+    variable: TextFieldValue,
+    onVariableChange: (TextFieldValue) -> Unit,
+    passwordVisibility: MutableState<Boolean>,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    keyboardOptions: KeyboardOptions,
+    icono: Boolean = true
+) {
+    // nombre
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        // forgot
+        Text(
+            text = tittle,
             modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .size(48.dp),
-            verticalAlignment = Alignment.CenterVertically
-                ) {
-            Text(
-                text = buildAnnotatedString {
-                    pushStyle(
-                        style = SpanStyle(
-                            color = Color.DarkGray,
-                            textDecoration = TextDecoration.None,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.SansSerif // Utilizamos el tipo de letra sansSerif
-                        )
-                    )
-                    append("¿No tienes cuenta? ")
-                    pushStringAnnotation(
-                        tag = "REGISTRATE",
-                        annotation = "Registrate"
-                    )
-                    withStyle(
-                        style = SpanStyle(
-                            color = Color(0xFFE8AA42), // Color de texto para "Registrate"
-                            textDecoration = TextDecoration.Underline,
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            fontFamily = FontFamily.Default // Restablecemos el tipo de letra a su valor predeterminado
-                        )
-                    ) {
-                        append("Registrate")
-                    }
-                    pop()
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .wrapContentWidth(Alignment.CenterHorizontally)
-                    .clickable {
-                        navController.navigate(route = AppScreens.RegistrationScreen.route)
-                    },
-                color = Color(0xFF192833)
+                .fillMaxWidth(),
+            color = Color.DarkGray,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .background(
+                Color(0xFFFFE5B4),
+                roundedCornerShape
             )
+    ){
+        // caja de texto
+        BasicTextField(
+            value = variable,
+            onValueChange = onVariableChange,
+            singleLine = singleLine,
+            readOnly = readOnly,
+            modifier = Modifier
+                .height(size.dp)
+                .fillMaxWidth()
+                .padding(4.dp),
+            keyboardOptions = keyboardOptions,
+            textStyle = LocalTextStyle.current.copy(
+                fontSize = 18.sp,
+                color = Color(0xFFE8AA42),
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            ),
+            decorationBox = { innerTextField ->
+                Row(
+                    Modifier
+                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
+                        .padding(16.dp)
+                        .fillMaxWidth(0.8f)
+                ){
+                    if (variable.text.isEmpty()){
+                        Text(
+                            text = placeholder,
+                            fontSize = 18.sp,
+                            color = Color(0xFFFFF7E7),
+                            letterSpacing = 3.sp,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+
+                        )
+                    }
+                    innerTextField()
+                }
+            },
+            visualTransformation = if (passwordVisibility.value)
+                PasswordVisualTransformation() else VisualTransformation.None
+        )
+
+        if(icono){
+            // icono
+            Row(
+                modifier = Modifier
+                    .height(size.dp)
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    passwordVisibility.value = !passwordVisibility.value
+                }) {
+                    Icon(
+                        painter = if (passwordVisibility.value)
+                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                        contentDescription = "visibilidad contraseña",
+                        modifier = Modifier
+                            .size(32.dp)
+                    )
+                }
+            }
         }
+    }
+}
+
+@Composable
+private fun CustomText(
+    firstString: String,
+    secondString: String,
+    horizontal: Arrangement.Horizontal,
+    onClick: () -> Unit
+) {
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = horizontal
+    ){
+        // forgot
+        Text(
+            text = buildAnnotatedString{
+                withStyle(style = SpanStyle(color = Color.DarkGray,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.SansSerif)) {
+                    append(firstString)
+                }
+                append(" ")
+                withStyle(style = SpanStyle(color = Color(0xFFE8AA42),
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.SansSerif)) {
+                    append(secondString)
+                }
+            },
+            modifier = Modifier
+                .wrapContentWidth()
+                .clickable(onClick = onClick)
+        )
     }
 }
 
