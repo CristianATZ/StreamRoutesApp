@@ -1,5 +1,9 @@
 package net.streamroutes.sreamroutesapp.Screens.Start
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.telephony.SmsManager
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,6 +36,7 @@ import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -54,9 +60,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import java.util.Random
 
 @Composable
 fun VerificationScreen (navController: NavController) {
@@ -65,9 +77,24 @@ fun VerificationScreen (navController: NavController) {
 
 val color_fondo_ = Color(0xFFFFF7E7)
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Verification(navController: NavController) {
+    val context = LocalContext.current
+
+    val smsPermissionState = rememberPermissionState(
+        Manifest.permission.SEND_SMS
+    )
+
+    fun isPermissionsGranted() = ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.SEND_SMS
+    ) == PackageManager.PERMISSION_GRANTED
+
+    var telefono by remember { mutableStateOf(TextFieldValue()) }
+    var codigo by remember { mutableStateOf(TextFieldValue("")) }
+    var codigoGenerado by remember { mutableStateOf("") }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -94,7 +121,8 @@ fun Verification(navController: NavController) {
         // telefono
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
             Spacer(modifier = Modifier.size(30.dp))
@@ -116,236 +144,182 @@ fun Verification(navController: NavController) {
             Spacer(modifier = Modifier.size(15.dp))
 
             // telefono
-            Column() {
-                // header telefono
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(48.dp), // lo modifican dependiendo de su textfield
-                    verticalAlignment = Alignment.CenterVertically, // alineamiento
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    // telefono
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f),
-                        text = "Telefono",
-                        color = Color.DarkGray,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Left
-                    )
-                }
-                // textfield telefono
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    var variable by remember { mutableStateOf(TextFieldValue("")) }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .background(
-                                Color(0xFFFFE5B4),
-                                RoundedCornerShape(percent = 30)
-                            )
-                    ){
-                        BasicTextField(
-                            value = variable,
-                            onValueChange = {variable = it},
-                            singleLine = true,
-                            modifier = Modifier
-                                .height(70.dp)
-                                .fillMaxWidth(0.85f)
-                                .padding(4.dp),
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Next
-                                // aqui puede ser ImeAction.Next
-                            ),
-                            textStyle = LocalTextStyle.current.copy(
-                                fontSize = 18.sp,
-                                color = Color(0xFFE8AA42),
-                                textAlign = TextAlign.Left,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 2.sp
-                            ),
-                            decorationBox = { innerTextField ->
-                                Row(
-                                    Modifier
-                                        .background(
-                                            Color(0xFFFFE5B4),
-                                            RoundedCornerShape(percent = 30)
-                                        )
-                                        .padding(16.dp)
-                                        .fillMaxWidth(0.8f)
-                                ){
-                                    if (variable.text.isEmpty()){
-                                        Text(
-                                            text = "Telefono",
-                                            fontSize = 18.sp,
-                                            color = Color(0xFFFFF7E7),
-                                            letterSpacing = 3.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterVertically)
-
-                                        )
-                                    }
-                                    innerTextField()
-                                }
-                            }
-                        )
-                    }
-                }
-            }
+            PasswordTextfield(
+                tittle = "Telefono",
+                placeholder = "Telefono",
+                readOnly = false,
+                size = 70,
+                variable = telefono,
+                onVariableChange = {newValue -> telefono = newValue},
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                )
+            )
 
             Spacer(modifier = Modifier.size(5.dp))
 
             // boton enviar codigo de verificacion
-            Row(
+            val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
+            Button(
+                onClick = {
+                    if (!smsPermissionState.status.isGranted) {
+                        smsPermissionState.launchPermissionRequest()
+                    }
+
+                    if(!telefono.text.isEmpty()){
+                        codigoGenerado = generarCodigo()
+                        val smsManager: SmsManager = SmsManager.getDefault()
+                        smsManager.sendTextMessage(telefono.text, null, codigoGenerado, null, null)
+                        Toast.makeText(context, "Codigo enviado $codigoGenerado", Toast.LENGTH_SHORT).show()
+                    } else Toast.makeText(context, "Ingresa un telefono valido", Toast.LENGTH_SHORT).show()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+                    contentColor = Color.White
+                ),
+                shape = roundCornerShape,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                    .wrapContentSize()
+                    .padding(10.dp)
             ) {
-                val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                Button(
-                    onClick = {
-                        navController.navigate(route = AppScreens.VerificationScreen.route)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                        contentColor = Color.White
-                    ),
-                    shape = roundCornerShape,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(10.dp)
-                ) {
-                    Text(
-                        text = "ENVIAR",
-                        fontSize = 26.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = "ENVIAR",
+                    fontSize = 26.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
 
             // codigo de verificacion
-            Column() {
-                // header codigo
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(48.dp), // lo modifican dependiendo de su textfield
-                    verticalAlignment = Alignment.CenterVertically, // alineamiento
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    // codigo
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f),
-                        text = "Codigo de verificacion",
-                        color = Color.DarkGray,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Left
-                    )
-                }
-                // textfield codigo
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    var variable by remember { mutableStateOf(TextFieldValue("")) }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .background(
-                                Color(0xFFFFE5B4),
-                                RoundedCornerShape(percent = 30)
-                            )
-                    ){
-                        BasicTextField(
-                            value = variable,
-                            onValueChange = {variable = it},
-                            singleLine = true,
-                            modifier = Modifier
-                                .height(70.dp)
-                                .fillMaxWidth(0.85f)
-                                .padding(4.dp),
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Done
-                                // aqui puede ser ImeAction.Next
-                            ),
-                            textStyle = LocalTextStyle.current.copy(
-                                fontSize = 18.sp,
-                                color = Color(0xFFE8AA42),
-                                textAlign = TextAlign.Left,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 2.sp
-                            ),
-                            decorationBox = { innerTextField ->
-                                Row(
-                                    Modifier
-                                        .background(
-                                            Color(0xFFFFE5B4),
-                                            RoundedCornerShape(percent = 30)
-                                        )
-                                        .padding(16.dp)
-                                        .fillMaxWidth(0.8f)
-                                ){
-                                    if (variable.text.isEmpty()){
-                                        Text(
-                                            text = "Codigo",
-                                            fontSize = 18.sp,
-                                            color = Color(0xFFFFF7E7),
-                                            letterSpacing = 3.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterVertically)
-
-                                        )
-                                    }
-                                    innerTextField()
-                                }
-                            }
-                        )
-                    }
-                }
-            }
+            PasswordTextfield(
+                tittle = "Codgio de verificacion",
+                placeholder = "Codigo",
+                readOnly = false,
+                size = 70,
+                variable = codigo,
+                onVariableChange = {newValue -> codigo = newValue},
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Number
+                )
+            )
 
             Spacer(modifier = Modifier.size(5.dp))
 
             // boton para verificar el codigo
-            Row(
+            Button(
+                onClick = {
+                    if(codigoGenerado.equals(codigo.text)) navController.navigate(route = AppScreens.ChangeScreen.route)
+                    else Toast.makeText(context, "Codigo incorrecto", Toast.LENGTH_SHORT).show()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+                    contentColor = Color.White
+                ),
+                shape = roundCornerShape,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                    .wrapContentSize()
+                    .padding(10.dp)
             ) {
-                val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                Button(
-                    onClick = {
-                        navController.navigate(route = AppScreens.ChangeScreen.route)
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                        contentColor = Color.White
-                    ),
-                    shape = roundCornerShape,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(10.dp)
-                ) {
-                    Text(
-                        text = "VERIFICAR",
-                        fontSize = 26.sp,
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = "VERIFICAR",
+                    fontSize = 26.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
+                )
             }
         }
     }
+}
+
+@Composable
+private fun PasswordTextfield(
+    tittle: String,
+    placeholder: String,
+    readOnly: Boolean,
+    singleLine: Boolean = true,
+    size: Int,
+    variable: TextFieldValue,
+    onVariableChange: (TextFieldValue) -> Unit,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    keyboardOptions: KeyboardOptions
+) {
+    // nombre
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        // forgot
+        Text(
+            text = tittle,
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = Color.DarkGray,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .background(
+                Color(0xFFFFE5B4),
+                roundedCornerShape
+            )
+    ){
+        // caja de texto
+        BasicTextField(
+            value = variable,
+            onValueChange = onVariableChange,
+            singleLine = singleLine,
+            readOnly = readOnly,
+            modifier = Modifier
+                .height(size.dp)
+                .fillMaxWidth()
+                .padding(4.dp),
+            keyboardOptions = keyboardOptions,
+            textStyle = LocalTextStyle.current.copy(
+                fontSize = 18.sp,
+                color = Color(0xFFE8AA42),
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            ),
+            decorationBox = { innerTextField ->
+                Row(
+                    Modifier
+                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
+                        .padding(16.dp)
+                        .fillMaxWidth(0.8f)
+                ){
+                    if (variable.text.isEmpty()){
+                        Text(
+                            text = placeholder,
+                            fontSize = 18.sp,
+                            color = Color(0xFFFFF7E7),
+                            letterSpacing = 3.sp,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+
+                        )
+                    }
+                    innerTextField()
+                }
+            }
+        )
+    }
+}
+
+private fun generarCodigo(): String {
+    val random = Random(System.currentTimeMillis())
+    val codigo = StringBuilder()
+    repeat(6) {
+        codigo.append(random.nextInt(10)) // Genera un número aleatorio entre 0 y 9 (ambos inclusive)
+    }
+    return codigo.toString()
 }
