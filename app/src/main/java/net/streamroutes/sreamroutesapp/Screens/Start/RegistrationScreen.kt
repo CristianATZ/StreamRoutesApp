@@ -8,15 +8,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -24,7 +29,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -48,6 +55,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
@@ -58,172 +70,234 @@ fun RegistrationScreen (navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Registration (navController: NavController) {
+    var telefono by remember { mutableStateOf(TextFieldValue()) }
+    var telefonoVisibility = remember { mutableStateOf(false) }
+    var password by remember { mutableStateOf(TextFieldValue()) }
+    var passwordVisibility = remember { mutableStateOf(true) }
+    var confirm by remember { mutableStateOf(TextFieldValue()) }
+    var confirmVisibility = remember { mutableStateOf(true) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(color_fondo_claro)
     ) {
-        // topappbar
+        // top app bar
         TopAppBar(
             title = {
-                Text(text = "Registrarme",
-                    modifier = Modifier.fillMaxWidth(),
+                Text(text = "Registrate",
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
+                IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara al login"
                     )
                 }
-            }
+            },
+            colors = TopAppBarDefaults
+                .smallTopAppBarColors(
+                    containerColor = color_fondo_topappbar_alterno,
+                    titleContentColor = color_letra_topappbar
+                )
         )
 
-        // logo
-        Row( modifier = Modifier
-            .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo_no_image),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(200.dp)
-            )
-        }
-
-        // telefono
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            //.weight(0.2f)
-            .padding(10.dp),
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // telefono header
-            Row (
+            // logo
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .size(48.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                // forgot
-                Text(
-                    text = "Telefono",
+                    .fillMaxWidth()
+                    .padding(30.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Image(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.Start),
-                    color = Color(0xFF231955),
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
+                        .size(150.dp),
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = "null")
             }
 
-            //textfield telefono
-            var user by remember { mutableStateOf(TextFieldValue("")) }
-            BasicTextField(
-                value = user,
-                onValueChange = {user = it},
-                singleLine = true,
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth(0.85f),
+            // telefono
+            PasswordTextfield(
+                tittle = "Telefono",
+                placeholder = "Telefono",
+                readOnly = false,
+                singleLine = false,
+                size = 70,
+                variable = telefono,
+                onVariableChange = { newValue -> telefono = newValue },
+                passwordVisibility = telefonoVisibility,
+                roundedCornerShape = RoundedCornerShape(percent = 30),
                 keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                ),
+                icono = false
+            )
+
+            Spacer(modifier = Modifier.size(15.dp))
+
+            // contrasenia
+            PasswordTextfield(
+                tittle = "Contraseña",
+                placeholder = "Contraseña",
+                readOnly = false,
+                singleLine = false,
+                size = 70,
+                variable = password,
+                onVariableChange = { newValue -> password = newValue },
+                passwordVisibility = passwordVisibility,
+                roundedCornerShape = RoundedCornerShape(percent = 30),
+                keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (user.text.isEmpty()){
-                            Text(
-                                text = "Telefono",
-                                color = Color(0xFFFFF7E7),
-                                letterSpacing = 3.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                            )
-                        }
-                        innerTextField()
-                    }
-                }
+                )
             )
-        }
 
-        // password
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            //.weight(0.2f)
-            .padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // password header
-            Row (
+            Spacer(modifier = Modifier.size(40.dp))
+
+            // confirmar
+            PasswordTextfield(
+                tittle = "Contraseña",
+                placeholder = "Contraseña",
+                readOnly = false,
+                singleLine = false,
+                size = 70,
+                variable = confirm,
+                onVariableChange = { newValue -> confirm = newValue },
+                passwordVisibility = confirmVisibility,
+                roundedCornerShape = RoundedCornerShape(percent = 30),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                )
+            )
+
+            // button registrarse
+            val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
+            Button(
+                onClick = {
+
+                },
+                colors = ButtonDefaults.buttonColors(
+                    backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+                    contentColor = Color.White
+                ),
+                shape = roundCornerShape,
                 modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .size(48.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                // forgot
+                    .wrapContentSize()
+                    .padding(15.dp)
+            ) {
                 Text(
-                    text = "Contraseña",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.Start),
-                    color = Color(0xFF231955),
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
+                    text = "REGISTRARSE",
+                    fontSize = 26.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold
                 )
             }
+        }
+    }
+}
 
-            // textfield password
-            var password by rememberSaveable { mutableStateOf("") }
-            var passwordVisibility = remember { mutableStateOf(true) }
-            BasicTextField(
-                value = password,
-                onValueChange = {password = it},
-                singleLine = true,
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth(0.85f),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                    keyboardType = KeyboardType.Password
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (password.isEmpty()){
-                            Text(
-                                text = "Contraseña",
-                                color = Color(0xFFFFF7E7),
-                                letterSpacing = 3.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                            )
-                        }
-                        innerTextField()
-                    }
-                },
-                visualTransformation = if (passwordVisibility.value)
-                    PasswordVisualTransformation() else VisualTransformation.None
+@Composable
+private fun PasswordTextfield(
+    tittle: String,
+    placeholder: String,
+    readOnly: Boolean,
+    singleLine: Boolean = true,
+    size: Int,
+    variable: TextFieldValue,
+    onVariableChange: (TextFieldValue) -> Unit,
+    passwordVisibility: MutableState<Boolean>,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    keyboardOptions: KeyboardOptions,
+    icono: Boolean = true
+) {
+    // nombre
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        // forgot
+        Text(
+            text = tittle,
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = Color.DarkGray,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .background(
+                Color(0xFFFFE5B4),
+                roundedCornerShape
             )
+    ){
+        // caja de texto
+        BasicTextField(
+            value = variable,
+            onValueChange = onVariableChange,
+            singleLine = singleLine,
+            readOnly = readOnly,
+            modifier = Modifier
+                .height(size.dp)
+                .fillMaxWidth()
+                .padding(4.dp),
+            keyboardOptions = keyboardOptions,
+            textStyle = LocalTextStyle.current.copy(
+                fontSize = 18.sp,
+                color = Color(0xFFE8AA42),
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            ),
+            decorationBox = { innerTextField ->
+                Row(
+                    Modifier
+                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
+                        .padding(16.dp)
+                        .fillMaxWidth(0.8f)
+                ){
+                    if (variable.text.isEmpty()){
+                        Text(
+                            text = placeholder,
+                            fontSize = 18.sp,
+                            color = Color(0xFFFFF7E7),
+                            letterSpacing = 3.sp,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
 
-            // ver contraseña
-            Row(modifier = Modifier
-                .fillMaxWidth(0.85f),
-                horizontalArrangement = Arrangement.End
+                        )
+                    }
+                    innerTextField()
+                }
+            },
+            visualTransformation = if (passwordVisibility.value)
+                PasswordVisualTransformation() else VisualTransformation.None
+        )
+
+        if(icono){
+            // icono
+            Row(
+                modifier = Modifier
+                    .height(size.dp)
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 IconButton(onClick = {
                     passwordVisibility.value = !passwordVisibility.value
@@ -236,119 +310,6 @@ fun Registration (navController: NavController) {
                             .size(32.dp)
                     )
                 }
-            }
-        }
-
-        // confirmar password
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            //.weight(0.2f)
-            .padding(10.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            // password header
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth(0.8f)
-                    .size(48.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                // forgot
-                Text(
-                    text = "Confirmar contraseña",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .wrapContentWidth(Alignment.Start),
-                    color = Color(0xFF231955),
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                )
-            }
-
-            // textfield password confirmar
-            var passwordConfirm by rememberSaveable { mutableStateOf("") }
-            var passwordVisibilityConfirm = remember { mutableStateOf(true) }
-            BasicTextField(
-                value = passwordConfirm,
-                onValueChange = {passwordConfirm = it},
-                singleLine = true,
-                modifier = Modifier
-                    .height(70.dp)
-                    .fillMaxWidth(0.85f),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                    keyboardType = KeyboardType.Password
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (passwordConfirm.isEmpty()){
-                            Text(
-                                text = "Confirmar Contraseña",
-                                color = Color(0xFFFFF7E7),
-                                letterSpacing = 3.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-                            )
-                        }
-                        innerTextField()
-                    }
-                },
-                visualTransformation = if (passwordVisibilityConfirm.value)
-                    PasswordVisualTransformation() else VisualTransformation.None
-            )
-
-            // ver contraseña confirmada
-            Row(modifier = Modifier
-                .fillMaxWidth(0.85f),
-                horizontalArrangement = Arrangement.End
-            ) {
-                IconButton(onClick = {
-                    passwordVisibilityConfirm.value = !passwordVisibilityConfirm.value
-                }) {
-                    Icon(
-                        painter = if (passwordVisibilityConfirm.value)
-                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
-                        contentDescription = "visbilidad confirmar contraseña",
-                        modifier = Modifier
-                            .size(32.dp)
-                    )
-                }
-            }
-        }
-
-        // boton registrar
-        Column(modifier = Modifier
-            .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Top
-        ) {
-            val gradientColors = listOf(Color(0xFF192833),Color(0xFF192833))
-            val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-            Box(
-                modifier = Modifier
-                    .background(
-                        brush = Brush.horizontalGradient(colors = gradientColors),
-                        shape = roundCornerShape
-                    )
-                    .clip(roundCornerShape)
-                    .padding(PaddingValues(horizontal = 30.dp, vertical = 8.dp))
-                    .clickable {
-                        //navController.navigate(route = AppScreens.MainScreen.route)
-                    },
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = "REGISTRARME",
-                    fontSize = 26.sp,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold
-                )
             }
         }
     }
