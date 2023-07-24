@@ -98,7 +98,8 @@ fun Login(navController: NavController  ){
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Number
             ),
-            icono = false
+            icono = false,
+            visualTransformation = VisualTransformation.None
         )
         
         Spacer(modifier = Modifier.height(20.dp))
@@ -113,7 +114,9 @@ fun Login(navController: NavController  ){
             passwordVisibility = passwordVisibility,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
-            )
+            ),
+            visualTransformation = if (passwordVisibility.value)
+                PasswordVisualTransformation() else VisualTransformation.None
         )
 
         CustomText(
@@ -170,6 +173,7 @@ private fun PasswordTextfield(
     onVariableChange: (TextFieldValue) -> Unit,
     passwordVisibility: MutableState<Boolean>,
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    visualTransformation: VisualTransformation,
     keyboardOptions: KeyboardOptions,
     icono: Boolean = true
 ) {
@@ -239,8 +243,7 @@ private fun PasswordTextfield(
                     innerTextField()
                 }
             },
-            visualTransformation = if (passwordVisibility.value)
-                PasswordVisualTransformation() else VisualTransformation.None
+            visualTransformation = visualTransformation
         )
 
         if(icono){

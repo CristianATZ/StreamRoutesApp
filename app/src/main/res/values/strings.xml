@@ -124,4 +124,64 @@
     //////////////////////////////////////////////////////////
     <string name="staroff">.</string>
     <string name="staron">.</string>
+
+    //////////////////////////////////////////////////////////
+    MAPA
+    //////////////////////////////////////////////////////////
+    <string name="stylejson">
+    [
+        {
+            "featureType": "poi",
+            "elementType": "all",
+            "stylers": [
+                {
+                "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "poi.park",
+            "elementType": "all",
+            "stylers": [
+                { "visibility": "on" }
+            ]
+        },
+        {
+            "featureType": "landscape",
+            "elementType": "all",
+            "stylers": [
+                {
+                "visibility": "on"
+                }
+            ]
+        },
+        {
+            "featureType": "transit",
+            "elementType": "all",
+            "stylers": [
+                {
+                "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "labels.icon",
+            "stylers": [
+                {
+                "visibility": "off"
+                }
+            ]
+        },
+        {
+            "featureType": "road",
+            "elementType": "labels.text",
+            "stylers": [
+                {
+                "visibility": "on"
+                }
+            ]
+        }
+    ]
+    </string>
 </resources>
