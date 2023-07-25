@@ -133,7 +133,7 @@ fun AppNavigation() {
 
         // PLANIFICA TU VIAJE
         composable(AppScreens.TripScreen.route){
-            //TripScreen(NavController)
+            TripScreen(NavController)
         }
 
         // VERSION PREMIUM
