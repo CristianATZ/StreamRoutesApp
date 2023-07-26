@@ -108,12 +108,10 @@ fun Main( navController: NavController ){
             properties = MapProperties(
                 mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
                 mapType = MapType.NORMAL,
+                maxZoomPreference = 17f
             )
         ){
-            Marker(
-                state = itsurState,
-                title = "Nuetra Universidad"
-            )
+
         }
     }
 }

@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,12 +15,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
@@ -30,36 +27,27 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -76,7 +64,6 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
@@ -93,6 +80,14 @@ fun view() {
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun TripScreen(navController: NavController) {
+    var markers by remember { mutableStateOf(listOf<LatLng>()) }
+    var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
+
+    // funcion para remover
+    fun removeMarker(location: LatLng) {
+        markers = markers.filter { it != location }
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -109,7 +104,7 @@ fun TripScreen(navController: NavController) {
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { /*navController*/ }) {
+                IconButton(onClick = { navController.navigate(AppScreens.MenuScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara al menu de opciones",
@@ -132,7 +127,7 @@ fun TripScreen(navController: NavController) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.7f)
+                    .fillMaxHeight(0.6f)
             ){
                 // Mapa
                 val itsur = LatLng(20.139468718311957, -101.15069924573676)
@@ -157,15 +152,21 @@ fun TripScreen(navController: NavController) {
                         zoomControlsEnabled = false,
                         zoomGesturesEnabled = true
                     ),
+                    onMapClick = { latLng ->
+                        selectedLocation = latLng
+                    },
                     properties = MapProperties(
                         mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
                         mapType = MapType.NORMAL,
+                        maxZoomPreference = 17f
                     )
                 ){
-                    Marker(
-                        state = itsurState,
-                        title = "Nuetra Universidad"
-                    )
+                    selectedLocation?.let {
+                        Marker(
+                            state = MarkerState(position = it),
+                            title = "Ubicación seleccionada"
+                        )
+                    }
                 }
 
                 // barra de busqueda
@@ -194,7 +195,10 @@ fun TripScreen(navController: NavController) {
                 val roundCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 15.dp, topStart = 15.dp, bottomEnd = 15.dp)
                 Button(
                     onClick = {
-
+                        selectedLocation?.let {
+                            markers = markers + it
+                            selectedLocation = null
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xFF192833)
@@ -210,22 +214,46 @@ fun TripScreen(navController: NavController) {
             }
 
 
-            Column(
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxSize() // Aseguramos que el LazyColumn tenga un tamaño acotado
+                    .weight(1f), // Permitimos que el LazyColumn se expanda para ocupar el espacio restante
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                /*// lista de lugares
-                *//*LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                ){
+                // encabezado
+                item {
+                    Text(
+                        text = "Lugares seleccionados",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.Black,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(16.dp)
+                    )
+                }
 
-                }*//*
+                // Elementos principales (la lista de lugares)
+                items(markers.size) { index ->
+                    val location = markers[index]
+                    PlaceOption(
+                        nombreCalle = "Latitud: ${location.latitude}",
+                        colonia = "Longitud: ${location.longitude}",
+                        numero = index + 1,
+                        onRemove = {
+                            removeMarker(location)
+                        }
+                    )
+                }
+            }
 
-                // boton de aceptar
+
+            // Botón de aceptar
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
                 Button(
                     onClick = {
@@ -238,7 +266,7 @@ fun TripScreen(navController: NavController) {
                     shape = roundCornerShape,
                     modifier = Modifier
                         .wrapContentSize()
-                        .padding(16.dp)
+                        .padding(16.dp),
                 ) {
                     Text(
                         text = "PLANEAR",
@@ -246,65 +274,6 @@ fun TripScreen(navController: NavController) {
                         color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
-                }*/
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.85f)
-                        .height(70.dp)
-                        .background(
-                            Color(0xFF192833),
-                            RoundedCornerShape(
-                                topEnd = 10.dp,
-                                bottomStart = 10.dp,
-                                topStart = 10.dp,
-                                bottomEnd = 10.dp
-                            )
-                        ),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Icon(imageVector = Icons.Filled.List, contentDescription = null, tint = Color.White)
-                        Spacer(modifier = Modifier.size(10.dp))
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(0.70f)
-                        ){
-                            Text(
-                                text = "Nombre Calle",
-                                fontSize = 22.sp,
-                                color = color_letra_topappbar,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Colonia - CP",
-                                fontSize = 18.sp,
-                                color = color_letra_topappbar
-                            )
-                        }
-                        Spacer(modifier = Modifier.size(10.dp))
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize(0.85f)
-                                .background(
-                                    color_letra_textfield,
-                                    RoundedCornerShape(
-                                        topEnd = 10.dp,
-                                        bottomStart = 10.dp,
-                                        topStart = 10.dp,
-                                        bottomEnd = 10.dp
-                                    )
-                                )
-                                .clickable {  },
-                            contentAlignment = Alignment.Center
-                        ){
-                            Icon(imageVector = Icons.Filled.Close, contentDescription = null, tint = color_letra, modifier = Modifier.fillMaxSize(1f))
-                        }
-                    }
                 }
             }
         }
@@ -391,4 +360,79 @@ private fun SearchBar(
             )
         }
     }
+}
+
+@Composable
+private fun PlaceOption(
+    nombreCalle: String,
+    colonia: String,
+    numero: Int,
+    onRemove: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .height(70.dp)
+            .background(
+                Color(0xFF192833),
+                RoundedCornerShape(
+                    topEnd = 10.dp,
+                    bottomStart = 10.dp,
+                    topStart = 10.dp,
+                    bottomEnd = 10.dp
+                )
+            ),
+        contentAlignment = Alignment.Center
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Spacer(modifier = Modifier.size(10.dp))
+            Text(
+                text = numero.toString(),
+                fontSize = 16.sp,
+                color = color_letra_topappbar,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.70f)
+            ){
+                Text(
+                    text = nombreCalle,
+                    fontSize = 16.sp,
+                    color = color_letra_topappbar,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = colonia,
+                    fontSize = 12.sp,
+                    color = color_letra_topappbar
+                )
+            }
+            Spacer(modifier = Modifier.size(10.dp))
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(0.85f)
+                    .background(
+                        color_letra_textfield,
+                        RoundedCornerShape(
+                            topEnd = 10.dp,
+                            bottomStart = 10.dp,
+                            topStart = 10.dp,
+                            bottomEnd = 10.dp
+                        )
+                    )
+                    .clickable { onRemove() },
+                contentAlignment = Alignment.Center
+            ){
+                Icon(imageVector = Icons.Filled.Close, contentDescription = null, tint = color_letra, modifier = Modifier.fillMaxSize(1f))
+            }
+        }
+    }
+    Spacer(modifier = Modifier.size(15.dp))
 }
