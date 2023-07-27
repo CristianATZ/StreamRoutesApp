@@ -195,19 +195,30 @@ fun Menu(navController: NavController){
                             if (location != null) {
                                 val latitude = location.latitude
                                 val longitude = location.longitude
-                                val message =
-                                    "Ubicación actual: Latitud $latitude, Longitud $longitude"
 
+                                // Construir la URL con el marcador en tu ubicación actual
+                                val mapUrl = "https://www.google.com/maps?q=$latitude,$longitude" +
+                                        "&z=15" + // Nivel de zoom del mapa
+                                        "&t=k" + // Tipo de mapa (opcional, aquí se usa "k" para el mapa normal)
+                                        "&q=$latitude,$longitude" // Agregar el marcador en la ubicación actual
 
-                                val shareIntent =
-                                    Intent.createChooser(getShareUbi(context, message), null)
-                                context.startActivity(shareIntent)
+                                // Creamos el Intent para compartir la ubicación y abrir el mapa
+                                val shareIntent = Intent(Intent.ACTION_SEND)
+                                shareIntent.type = "text/plain"
+                                shareIntent.putExtra(Intent.EXTRA_TEXT, "Mi ubicación actual:\n\n$mapUrl")
+                                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Compartir mi ubicación")
+                                context.startActivity(
+                                    Intent.createChooser(
+                                        shareIntent,
+                                        "Compartir Ubicación usando:"
+                                    )
+                                )
 
                             } else {
                                 Toast
                                     .makeText(
                                         context,
-                                        "No se pudo obtener la ubicacion actual. Asegurate de tener la ubicacion encendida",
+                                        "No se pudo obtener la ubicación actual. Asegúrate de tener la ubicación encendida",
                                         Toast.LENGTH_LONG
                                     )
                                     .show()
@@ -217,7 +228,9 @@ fun Menu(navController: NavController){
                             // Error al obtener la ubicación actual
                         }
                 },
-                roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 15.dp, topStart = 0.dp, bottomEnd = 15.dp))
+                roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 15.dp, topStart = 0.dp, bottomEnd = 15.dp)
+            )
+
 
             Spacer(modifier = Modifier.size(30.dp))
 
@@ -250,6 +263,10 @@ fun Menu(navController: NavController){
         }
     }
 }
+
+
+
+
 
 // objetos composable
 @Composable

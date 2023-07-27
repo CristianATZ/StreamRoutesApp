@@ -132,7 +132,7 @@ fun Options(modifier: Modifier = Modifier) {
                     modifier = Modifier.align(Alignment.CenterStart)
                         .padding(start = 10.dp),
                     color = Color.White,
-                    fontSize = 21.sp,
+                    fontSize = 19.sp,
                     fontWeight = FontWeight.Bold
                 )
 
