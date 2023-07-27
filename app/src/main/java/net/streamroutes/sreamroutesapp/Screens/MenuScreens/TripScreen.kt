@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
+import android.content.Context
+import android.location.Geocoder
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,14 +37,18 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -63,6 +70,9 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
@@ -77,15 +87,47 @@ fun view() {
 
 }
 
+data class AddressInfo(
+    val cityName: String?, // ciudad
+    val streetName: String?, // calle
+    val neighborhood: String?, // colonia
+    val postalCode: String? // codigo
+)
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun TripScreen(navController: NavController) {
-    var markers by remember { mutableStateOf(listOf<LatLng>()) }
+    var markers by remember { mutableStateOf(listOf<AddressInfo>()) }
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
+    val context = LocalContext.current
 
     // funcion para remover
-    fun removeMarker(location: LatLng) {
-        markers = markers.filter { it != location }
+    fun removeMarker(index: Int) {
+        if (index in markers.indices) {
+            markers = markers.toMutableList().apply {
+                removeAt(index)
+            }
+        }
+    }
+
+    // remueve todos los elementos
+    fun removeAll(){
+        markers = emptyList()
+    }
+
+    fun getAddressInfoFromCoordinates(context: Context, latitude: Double, longitude: Double): AddressInfo? {
+        val geocoder = Geocoder(context)
+        val addressList = geocoder.getFromLocation(latitude, longitude, 1)
+        val address = addressList?.get(0)
+        if (address != null) {
+            return AddressInfo(
+                cityName = address.locality,
+                streetName = address.thoroughfare,
+                neighborhood = address.subLocality,
+                postalCode = address.postalCode
+            )
+        }
+        return null
     }
 
     Column(
@@ -196,7 +238,15 @@ fun TripScreen(navController: NavController) {
                 Button(
                     onClick = {
                         selectedLocation?.let {
-                            markers = markers + it
+                            val latitude = it.latitude
+                            val longitude = it.longitude
+
+                            val ubicacion = getAddressInfoFromCoordinates(context, latitude, longitude)
+
+                            if (ubicacion != null) {
+                                markers = markers + ubicacion
+                            }
+
                             selectedLocation = null
                         }
                     },
@@ -237,11 +287,11 @@ fun TripScreen(navController: NavController) {
                 items(markers.size) { index ->
                     val location = markers[index]
                     PlaceOption(
-                        nombreCalle = "Latitud: ${location.latitude}",
-                        colonia = "Longitud: ${location.longitude}",
+                        nombreCalle = "Calle: ${location.streetName}",
+                        colonia = "Colonia: ${location.neighborhood} - CP: ${location.postalCode}",
                         numero = index + 1,
                         onRemove = {
-                            removeMarker(location)
+                            removeMarker(index)
                         }
                     )
                 }
@@ -257,7 +307,8 @@ fun TripScreen(navController: NavController) {
                 val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
                 Button(
                     onClick = {
-
+                        Toast.makeText(context, "Plan guardado a ${markers.size} ubicaciones", Toast.LENGTH_LONG).show()
+                        removeAll()
                     },
                     colors = ButtonDefaults.buttonColors(
                         backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
