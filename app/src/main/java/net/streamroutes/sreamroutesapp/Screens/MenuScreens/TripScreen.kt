@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -27,6 +28,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
@@ -234,7 +236,7 @@ fun TripScreen(navController: NavController) {
                     }
                 }
 
-                val roundCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 15.dp, topStart = 15.dp, bottomEnd = 15.dp)
+                val roundCornerShape = CircleShape
                 Button(
                     onClick = {
                         selectedLocation?.let {
@@ -255,11 +257,10 @@ fun TripScreen(navController: NavController) {
                     ),
                     shape = roundCornerShape,
                     modifier = Modifier
-                        .wrapContentSize()
                         .padding(16.dp)
                         .align(Alignment.BottomEnd)
                 ) {
-                    Icon(imageVector = Icons.Filled.Done, contentDescription = "", tint = Color.White)
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "", tint = Color.White)
                 }
             }
 
@@ -287,7 +288,7 @@ fun TripScreen(navController: NavController) {
                 items(markers.size) { index ->
                     val location = markers[index]
                     PlaceOption(
-                        nombreCalle = "Calle: ${location.streetName}",
+                        nombreCalle = "${location.streetName}",
                         colonia = "Colonia: ${location.neighborhood} - CP: ${location.postalCode}",
                         numero = index + 1,
                         onRemove = {
