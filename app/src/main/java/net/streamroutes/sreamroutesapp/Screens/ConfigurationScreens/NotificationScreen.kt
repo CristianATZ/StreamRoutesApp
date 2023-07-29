@@ -48,6 +48,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Dialogs.NotificationPush
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 
@@ -89,54 +90,7 @@ fun NotificationsScreen(navController: NavController){
 
     // presentacion del dialog
     if (dialogo.value) {
-        Dialog(
-            onDismissRequest = {
-                dialogo.value = false
-            },
-            content = {
-                // plano
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(percent = 30),
-                    elevation = cardElevation(
-                        defaultElevation = 15.dp
-                    ),
-                    colors = cardColors(
-                        containerColor = color_fondo_oscuro
-                    )
-                ) {
-                    // cuerpo
-                    Column(
-                        modifier = Modifier
-                            .padding(10.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        // siempre
-                        DialogOptions(
-                            text = "Siempre",
-                            color_letra = color_letra_alterno,
-                            variable = siempre
-                        )
-
-                        // durante
-                        DialogOptions(
-                            text = "Durante",
-                            color_letra = color_letra_alterno,
-                            variable = durante
-                        )
-
-                        // nunca
-                        DialogOptions(
-                            text = "Nunca",
-                            color_letra = color_letra_alterno,
-                            variable = nunca
-                        )
-                    }
-                }
-            }
-        )
+        NotificationPush(dialogo = dialogo, siempre = siempre, durante = durante, nunca = nunca)
     }
 
     Column(
@@ -283,49 +237,5 @@ private fun OptionSwitch(
                 uncheckedBorderColor = color_fondo_switch_inactivo
             )
         )
-    }
-}
-
-@Composable
-fun DialogOptions(
-    text: String,
-    color_letra: Color,
-    variable: MutableState<Boolean>
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Spacer(modifier = Modifier.size(15.dp))
-        Text(
-            text = text, // texto
-            color = color_letra,
-            fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-            fontSize = 20.sp
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
-        ) {
-            // switch
-            Switch(
-                checked = variable.value,
-                onCheckedChange = { variable.value = it },
-                colors = SwitchDefaults.colors(
-                    // cuando esta activo
-                    checkedThumbColor = color_bola_switch,
-                    checkedTrackColor = color_fondo_switch_activo,
-                    checkedBorderColor = color_fondo_switch_activo,
-                    // cuando esta inactivo
-                    uncheckedThumbColor = color_bola_switch,
-                    uncheckedTrackColor = color_fondo_switch_inactivo,
-                    uncheckedBorderColor = color_fondo_switch_inactivo
-                )
-            )
-            Spacer(modifier = Modifier.size(15.dp))
-        }
     }
 }
