@@ -71,7 +71,9 @@ fun CambiarCiudad(navController: NavController) {
                 IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de configuraciones"
+                        contentDescription = "Te enviara al menu de configuraciones",
+                        tint = Color.White
+
                     )
                 }
             },
