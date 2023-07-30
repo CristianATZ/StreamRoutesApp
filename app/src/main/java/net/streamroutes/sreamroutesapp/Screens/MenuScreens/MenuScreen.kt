@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Context.BATTERY_SERVICE
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.os.BatteryManager
 import android.widget.Toast
@@ -75,6 +76,7 @@ fun generaTipo(Tipo: Int): String{
 
 // esto es para generar las coordenadas de todos los marcadores
 data class Coordenadas(val latitud: Double, val longitud: Double, val tipo: Int)
+
 val listaCoordenadas = mutableListOf<Coordenadas>()
 
 
@@ -94,6 +96,19 @@ fun Menu(navController: NavController){
         Manifest.permission.ACCESS_FINE_LOCATION
     ) == PackageManager.PERMISSION_GRANTED
 
+    fun getAddressInfoFromCoordinates(context: Context, latitude: Double, longitude: Double): String {
+        val geocoder = Geocoder(context)
+        val addressList = geocoder.getFromLocation(latitude, longitude, 1)
+        val address = addressList?.get(0)
+        if (address != null) {
+            val streetName = address.thoroughfare // Calle
+            val neighborhood = address.subLocality // Colonia
+
+            // Devolver solo la calle y la colonia en un objeto AddressInfo
+            return "$streetName, $neighborhood "
+        }
+        return ""
+    }
 
 
     Column(
@@ -197,28 +212,20 @@ fun Menu(navController: NavController){
                                 val longitude = location.longitude
 
                                 // Construir la URL con el marcador en tu ubicación actual
-                                val mapUrl = "https://www.google.com/maps?q=$latitude,$longitude" +
-                                        "&z=15" + // Nivel de zoom del mapa
-                                        "&t=k" + // Tipo de mapa (opcional, aquí se usa "k" para el mapa normal)
-                                        "&q=$latitude,$longitude" // Agregar el marcador en la ubicación actual
+                                val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
 
-                                // Creamos el Intent para compartir la ubicación y abrir el mapa
-                                val shareIntent = Intent(Intent.ACTION_SEND)
-                                shareIntent.type = "text/plain"
-                                shareIntent.putExtra(Intent.EXTRA_TEXT, "Mi ubicación actual:\n\n$mapUrl")
-                                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Compartir mi ubicación")
-                                context.startActivity(
-                                    Intent.createChooser(
-                                        shareIntent,
-                                        "Compartir Ubicación usando:"
-                                    )
-                                )
+                                val message =
+                                    "Ubi. act: ${getAddressInfoFromCoordinates(context,latitude,longitude)}"
+
+                                val shareIntent =
+                                    Intent.createChooser(getShareUbi(context, message+mapUrl), null)
+                                context.startActivity(shareIntent)
 
                             } else {
                                 Toast
                                     .makeText(
                                         context,
-                                        "No se pudo obtener la ubicación actual. Asegúrate de tener la ubicación encendida",
+                                        "No se pudo obtener la ubicacion actual. Asegurate de tener la ubicacion encendida",
                                         Toast.LENGTH_LONG
                                     )
                                     .show()
@@ -228,9 +235,7 @@ fun Menu(navController: NavController){
                             // Error al obtener la ubicación actual
                         }
                 },
-                roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 15.dp, topStart = 0.dp, bottomEnd = 15.dp)
-            )
-
+                roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 15.dp, topStart = 0.dp, bottomEnd = 15.dp))
 
             Spacer(modifier = Modifier.size(30.dp))
 
@@ -263,10 +268,6 @@ fun Menu(navController: NavController){
         }
     }
 }
-
-
-
-
 
 // objetos composable
 @Composable
@@ -352,10 +353,9 @@ fun getShareUbi(context: Context, message: String) : Intent{
     val shareUbi: Intent = Intent().apply {
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TITLE, "Comparte tu ubicacion en tiempo real")
-        type = "text/plain"
         val manager = context.getSystemService(BATTERY_SERVICE) as BatteryManager
         val level: Int = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-        putExtra(Intent.EXTRA_TEXT, "Bateria: $level%\n$message")
+        putExtra(Intent.EXTRA_TEXT, "Bat:$level% $message\n")
         type = "text/plain"
     }
     return shareUbi
