@@ -142,23 +142,9 @@ fun RoutesScreenView(navController: NavController){
         }
 
         //MAP
-        val mapView = rememberMapViewWithLifecycle()
+        map()
 
-        AndroidView(
-            factory = { mapView },
-            modifier = Modifier.fillMaxHeight(.85f).fillMaxWidth(1f)
-        ) { map ->
-            val context = mapView.context
-
-            // Lógica para cargar el mapa cuando esté listo
-            map.getMapAsync { googleMap ->
-                val latLng = LatLng(20.140522, -101.150511) // Latitud y longitud del lugar que deseas mostrar
-                val zoomLevel = 67f // Nivel de zoom del mapa
-
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel))
-            }
-        }
-
+        //Boton
         val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
         Button(
             onClick = {
@@ -171,7 +157,7 @@ fun RoutesScreenView(navController: NavController){
             shape = roundCornerShape,
             modifier = Modifier
                 .wrapContentSize()
-                .padding(16.dp)
+                .padding(7.dp)
                 .align(Alignment.CenterHorizontally)
         ) {
             Text(
@@ -182,6 +168,27 @@ fun RoutesScreenView(navController: NavController){
             )
         }
 
+    }
+}
+
+@Composable
+fun map(){
+
+    val mapView = rememberMapViewWithLifecycle()
+
+    AndroidView(
+        factory = { mapView },
+        modifier = Modifier.fillMaxHeight(.90f).fillMaxWidth(1f)
+    ) { map ->
+        val context = mapView.context
+
+        // Lógica para cargar el mapa cuando esté listo
+        map.getMapAsync { googleMap ->
+            val latLng = LatLng(20.140522, -101.150511) // Latitud y longitud del lugar que deseas mostrar
+            val zoomLevel = 67f // Nivel de zoom del mapa
+
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel))
+        }
     }
 }
 
