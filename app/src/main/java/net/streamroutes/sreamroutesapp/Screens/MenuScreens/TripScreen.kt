@@ -230,7 +230,7 @@ fun TripScreen(navController: NavController) {
                         }
                         SearchBar(
                             onSearch = onSearch,
-                            placeholder = "Localizacion",
+                            placeholder = "Ubicacion",
                             size = 70
                         )
                     }

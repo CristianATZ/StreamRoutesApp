@@ -45,6 +45,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -80,7 +81,7 @@ fun RoutesScreenView(navController: NavController){
                 .padding(top = 12.dp, end = 12.dp)){
 
                 Row{
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route)}) {
                         androidx.compose.material.Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = "Te enviara al menu de opciones",

@@ -96,6 +96,7 @@ fun Menu(navController: NavController){
         Manifest.permission.ACCESS_FINE_LOCATION
     ) == PackageManager.PERMISSION_GRANTED
 
+    // obtener los datos a partir de las coordenadas
     fun getAddressInfoFromCoordinates(context: Context, latitude: Double, longitude: Double): String {
         val geocoder = Geocoder(context)
         val addressList = geocoder.getFromLocation(latitude, longitude, 1)
