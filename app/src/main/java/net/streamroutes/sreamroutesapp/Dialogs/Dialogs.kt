@@ -552,14 +552,14 @@ fun AvisoDePrivacidad(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color_fondo_switch_activo),
+                            .background( if(acepto.value) color_fondo_switch_activo else Color.LightGray ),
                         enabled = acepto.value
                     ) {
 
                         Text(
                             text = "Habilitar",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = if(acepto.value) color_letra else Color.DarkGray,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
