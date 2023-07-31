@@ -173,6 +173,9 @@ fun PushOptions(
 
 
 // DIALOG PARA HABILITAR PERMISOS DE UBICACION
+// DIALOG PARA HABILITAR PERMISOS DE UBICACION
+// DIALOG PARA HABILITAR PERMISOS DE UBICACION
+
 @Composable
 fun HabilitarUbicacion(
     dialogo: MutableState<Boolean>,
@@ -298,6 +301,9 @@ fun HabilitarUbicacion(
 
 
 // DIALOG PARA HABILITAR PERMISOS DE CONTACTOS
+// DIALOG PARA HABILITAR PERMISOS DE CONTACTOS
+// DIALOG PARA HABILITAR PERMISOS DE CONTACTOS
+
 @Composable
 fun HabilitarContactos(
     dialogo: MutableState<Boolean>,
@@ -401,7 +407,8 @@ fun HabilitarContactos(
                     TextButton(
                         onClick = {
                             // cerrar la aplicacion
-                            Toast.makeText(context, "No se puede iniciar la aplicacion", Toast.LENGTH_LONG).show()
+                            dialogo.value = false
+                            Toast.makeText(context, "La aplicacion no tendra acceso a algunas funciones.", Toast.LENGTH_LONG).show()
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
@@ -419,3 +426,4 @@ fun HabilitarContactos(
         }
     }
 }
+
