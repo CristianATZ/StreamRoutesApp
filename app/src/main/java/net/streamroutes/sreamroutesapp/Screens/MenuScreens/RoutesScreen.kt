@@ -25,13 +25,16 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -42,10 +45,18 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapType
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
-import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -81,7 +92,7 @@ fun RoutesScreenView(navController: NavController){
                 .padding(top = 12.dp, end = 12.dp)){
 
                 Row{
-                    IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route)}) {
+                    IconButton(onClick = { }) {
                         androidx.compose.material.Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = "Te enviara al menu de opciones",
@@ -175,60 +186,39 @@ fun RoutesScreenView(navController: NavController){
 @Composable
 fun map(){
 
-    val mapView = rememberMapViewWithLifecycle()
+    var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
 
-    AndroidView(
-        factory = { mapView },
-        modifier = Modifier.fillMaxHeight(.90f).fillMaxWidth(1f)
-    ) { map ->
-        val context = mapView.context
-
-        // Lógica para cargar el mapa cuando esté listo
-        map.getMapAsync { googleMap ->
-            val latLng = LatLng(20.140522, -101.150511) // Latitud y longitud del lugar que deseas mostrar
-            val zoomLevel = 67f // Nivel de zoom del mapa
-
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel))
-        }
+    // Mapa
+    val itsur = LatLng(20.139468718311957, -101.15069924573676)
+    val itsurState = MarkerState(position = itsur)
+    val cameraPositionState = rememberCameraPositionState(){
+        position = CameraPosition.fromLatLngZoom(itsur,17f)
     }
+
+    GoogleMap(
+        modifier = Modifier
+            .fillMaxSize(),
+        cameraPositionState = cameraPositionState,
+        uiSettings = MapUiSettings(
+            compassEnabled = false,
+            indoorLevelPickerEnabled = false,
+            mapToolbarEnabled = false,
+            myLocationButtonEnabled = false,
+            rotationGesturesEnabled = true,
+            scrollGesturesEnabled = true,
+            scrollGesturesEnabledDuringRotateOrZoom = false,
+            tiltGesturesEnabled = false,
+            zoomControlsEnabled = false,
+            zoomGesturesEnabled = true
+        ),
+        onMapClick = { latLng ->
+            selectedLocation = latLng
+        },
+        properties = MapProperties(
+            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
+            mapType = MapType.NORMAL,
+            maxZoomPreference = 17f
+        )
+    )
 }
 
-
-@Composable
-fun rememberMapViewWithLifecycle(): MapView {
-    val context = LocalContext.current
-    val mapView = remember {
-        MapView(context).apply {
-            id = View.generateViewId()
-        }
-    }
-
-    val lifecycleOwner = LocalLifecycleOwner.current
-    DisposableEffect(lifecycleOwner) {
-        val lifecycleObserver = object : DefaultLifecycleObserver {
-            override fun onCreate(owner: LifecycleOwner) {
-                mapView.onCreate(Bundle())
-            }
-
-            override fun onResume(owner: LifecycleOwner) {
-                mapView.onResume()
-            }
-
-            override fun onPause(owner: LifecycleOwner) {
-                mapView.onPause()
-            }
-
-            override fun onDestroy(owner: LifecycleOwner) {
-                mapView.onDestroy()
-            }
-        }
-
-        lifecycleOwner.lifecycle.addObserver(lifecycleObserver)
-
-        onDispose {
-            lifecycleOwner.lifecycle.removeObserver(lifecycleObserver)
-        }
-    }
-
-    return mapView
-}
