@@ -37,6 +37,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Dialogs.AvisoDePrivacidad
 import net.streamroutes.sreamroutesapp.Dialogs.HabilitarContactos
 import net.streamroutes.sreamroutesapp.Dialogs.HabilitarUbicacion
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
@@ -55,6 +56,7 @@ fun Main( navController: NavController ){
     // DIALOGOS PARA LOS PERMISOS
     val ubicacion = remember { mutableStateOf(true) }
     val contactos = remember { mutableStateOf(true) }
+    val aviso = remember { mutableStateOf(true) }
 
     if( ubicacion.value ){
         HabilitarUbicacion(
@@ -67,6 +69,14 @@ fun Main( navController: NavController ){
     if( contactos.value ){
         HabilitarContactos(
             dialogo = contactos
+        ) {
+
+        }
+    }
+
+    if( aviso.value ){
+        AvisoDePrivacidad(
+            dialogo = aviso
         ) {
 
         }

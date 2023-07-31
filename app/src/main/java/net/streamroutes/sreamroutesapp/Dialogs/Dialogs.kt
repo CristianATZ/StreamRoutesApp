@@ -3,6 +3,7 @@ package net.streamroutes.sreamroutesapp.Dialogs
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,9 +16,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -26,6 +31,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -427,3 +433,139 @@ fun HabilitarContactos(
     }
 }
 
+
+// DIALOG PARA EL AVISO DE PRIVACIDAD
+// DIALOG PARA EL AVISO DE PRIVACIDAD
+// DIALOG PARA EL AVISO DE PRIVACIDAD
+
+@Composable
+fun AvisoDePrivacidad(
+    dialogo: MutableState<Boolean>,
+    onClick: () -> Unit
+) {
+    val context = LocalContext.current
+
+    Dialog(
+        onDismissRequest = {
+            // NO HAY ON DISMISS
+        }
+    ) {
+        Card(
+            //shape = MaterialTheme.shapes.medium,
+            shape = RoundedCornerShape(percent = 10),
+            // modifier = modifier.size(280.dp, 240.dp)
+            modifier = Modifier
+                .padding(10.dp, 5.dp, 10.dp, 10.dp)
+                .wrapContentHeight()
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(color_fondo_oscuro),
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                //.......................................................................
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null, // decorative
+                    contentScale = ContentScale.Fit,
+                    colorFilter  = ColorFilter.tint(
+                        color = Purple40
+                    ),
+                    modifier = Modifier
+                        .padding(top = 35.dp)
+                        .height(70.dp)
+                        .fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.size(10.dp))
+
+                Column(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .verticalScroll(rememberScrollState())
+                        .height(400.dp)
+                ) {
+                    Text(
+                        text = "Aviso de privacidad",
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier
+                            .padding(top = 5.dp)
+                            .fillMaxWidth(),
+                        style = MaterialTheme.typography.labelLarge,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 20.sp,
+                        color = color_letra_topappbar
+                    )
+                    Text(
+                        text = "Bienvenido(a) a nuestra aplicación de transporte público. En Stream Routes, nos preocupamos " +
+                                "por proteger tus datos personales y respetar tu privacidad. A continuación, te proporcionamos " +
+                                "información importante sobre cómo recopilamos, utilizamos y protegemos tus datos. Al utilizar " +
+                                "nuestra aplicación, aceptas los términos y condiciones de este aviso de privacidad.",
+                        modifier = Modifier
+                            .padding(top = 10.dp, start = 15.dp, end = 15.dp)
+                            .fillMaxWidth(),
+                        style = MaterialTheme.typography.bodyMedium,
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 15.sp,
+                        color = color_letra_topappbar
+                    )
+                }
+
+                var acepto = remember { mutableStateOf(false) }
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+                            acepto.value = !acepto.value
+                        },
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Checkbox(
+                        checked = acepto.value,
+                        onCheckedChange = null
+                    )
+                    Text(
+                        text = "Acepto los terminos y condiciones",
+                        style = MaterialTheme.typography.labelLarge,
+                        fontFamily = FontFamily.SansSerif,
+                        fontSize = 12.sp,
+                        color = color_letra_topappbar
+                    )
+                }
+                // botones
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // habilitar
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false;
+                            onClick
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color_fondo_switch_activo),
+                        enabled = acepto.value
+                    ) {
+
+                        Text(
+                            text = "Habilitar",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
