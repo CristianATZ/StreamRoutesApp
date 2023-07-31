@@ -1,15 +1,20 @@
 package net.streamroutes.sreamroutesapp.Dialogs
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -21,11 +26,13 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -35,6 +42,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.core.app.ActivityCompat.finishAffinity
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.Colores.color_bola_switch
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
@@ -44,6 +53,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.theme.Purple40
 import net.streamroutes.sreamroutesapp.ui.theme.Purple80
@@ -168,9 +178,12 @@ fun HabilitarUbicacion(
     dialogo: MutableState<Boolean>,
     onClick: () -> Unit
 ) {
+
+    val context = LocalContext.current
+
     Dialog(
         onDismissRequest = {
-            dialogo.value = false
+            // NO HAY ON DISMISS
         }
     ) {
         Card(
@@ -178,11 +191,13 @@ fun HabilitarUbicacion(
             shape = RoundedCornerShape(percent = 10),
             // modifier = modifier.size(280.dp, 240.dp)
             modifier = Modifier
-                .padding(10.dp,5.dp,10.dp,10.dp)
+                .padding(10.dp, 5.dp, 10.dp, 10.dp)
+                .wrapContentHeight()
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro)
+                    .background(color_fondo_oscuro),
+                verticalArrangement = Arrangement.Center
             ) {
 
                 //.......................................................................
@@ -196,9 +211,10 @@ fun HabilitarUbicacion(
                     modifier = Modifier
                         .padding(top = 35.dp)
                         .height(70.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                )
 
-                    )
+                Spacer(modifier = Modifier.size(50.dp))
 
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
@@ -226,16 +242,23 @@ fun HabilitarUbicacion(
                     )
                 }
 
+                Spacer(modifier = Modifier.size(50.dp))
+
                 // botones
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceAround) {
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
 
                     // habilitar
                     TextButton(
-                        onClick = onClick,
+                        onClick = {
+                            onClick
+                            dialogo.value = false
+                        },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .background(color_fondo_switch_activo)
@@ -253,7 +276,8 @@ fun HabilitarUbicacion(
                     // no habilitar
                     TextButton(
                         onClick = {
-                            dialogo.value = false
+                            // cerrar la aplicacion
+                            Toast.makeText(context, "No se puede iniciar la aplicacion", Toast.LENGTH_LONG).show()
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
@@ -273,15 +297,17 @@ fun HabilitarUbicacion(
 }
 
 
-// DIALOG PARA HABILITAR PERMISOS DE SMS
+// DIALOG PARA HABILITAR PERMISOS DE CONTACTOS
 @Composable
-fun HabilitarSMS(
+fun HabilitarContactos(
     dialogo: MutableState<Boolean>,
     onClick: () -> Unit
 ) {
+    val context = LocalContext.current
+
     Dialog(
         onDismissRequest = {
-            dialogo.value = false
+            // NO HAY ON DISMISS
         }
     ) {
         Card(
@@ -289,11 +315,13 @@ fun HabilitarSMS(
             shape = RoundedCornerShape(percent = 10),
             // modifier = modifier.size(280.dp, 240.dp)
             modifier = Modifier
-                .padding(10.dp,5.dp,10.dp,10.dp)
+                .padding(10.dp, 5.dp, 10.dp, 10.dp)
+                .wrapContentHeight()
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro)
+                    .background(color_fondo_oscuro),
+                verticalArrangement = Arrangement.Center
             ) {
 
                 //.......................................................................
@@ -307,13 +335,14 @@ fun HabilitarSMS(
                     modifier = Modifier
                         .padding(top = 35.dp)
                         .height(70.dp)
-                        .fillMaxWidth(),
+                        .fillMaxWidth()
+                )
 
-                    )
+                Spacer(modifier = Modifier.size(50.dp))
 
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Habilitar SMS",
+                        text = "Habilitar que la aplicacion acceda a tus contactos",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(top = 5.dp)
@@ -325,7 +354,7 @@ fun HabilitarSMS(
                         color = color_letra_topappbar
                     )
                     Text(
-                        text = "La aplicacion requiere que habilites los SMS.",
+                        text = "La aplicacion requiere que habilites el permiso.",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(top = 10.dp, start = 25.dp, end = 25.dp)
@@ -337,16 +366,23 @@ fun HabilitarSMS(
                     )
                 }
 
+                Spacer(modifier = Modifier.size(50.dp))
+
                 // botones
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .padding(top = 10.dp),
-                    horizontalArrangement = Arrangement.SpaceAround) {
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
 
                     // habilitar
                     TextButton(
-                        onClick = onClick,
+                        onClick = {
+                            onClick
+                            dialogo.value = false
+                        },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
                             .background(color_fondo_switch_activo)
@@ -364,7 +400,8 @@ fun HabilitarSMS(
                     // no habilitar
                     TextButton(
                         onClick = {
-                            dialogo.value = false
+                            // cerrar la aplicacion
+                            Toast.makeText(context, "No se puede iniciar la aplicacion", Toast.LENGTH_LONG).show()
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)

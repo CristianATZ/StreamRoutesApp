@@ -15,6 +15,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -35,6 +37,8 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Dialogs.HabilitarContactos
+import net.streamroutes.sreamroutesapp.Dialogs.HabilitarUbicacion
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -46,6 +50,30 @@ fun MainScreen(navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main( navController: NavController ){
+
+
+    // DIALOGOS PARA LOS PERMISOS
+    val ubicacion = remember { mutableStateOf(true) }
+    val contactos = remember { mutableStateOf(true) }
+
+    if( ubicacion.value ){
+        HabilitarUbicacion(
+            dialogo = ubicacion
+        ) {
+
+        }
+    }
+
+    if( contactos.value ){
+        HabilitarContactos(
+            dialogo = contactos
+        ) {
+
+        }
+    }
+
+
+    // CUERPO DE LA VENTANA
     Column (
         modifier = Modifier
             .fillMaxSize()
