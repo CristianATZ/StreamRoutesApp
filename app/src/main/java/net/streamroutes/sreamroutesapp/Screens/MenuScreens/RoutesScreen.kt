@@ -65,6 +65,9 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Dialogs.DialogAutobusCercano
+import net.streamroutes.sreamroutesapp.Dialogs.DialogDestino
+import net.streamroutes.sreamroutesapp.Dialogs.DialogParada
 import net.streamroutes.sreamroutesapp.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -79,6 +82,35 @@ fun RoutesScreen(navController: NavController){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RoutesScreenView(navController: NavController){
+
+    val autobus = remember { mutableStateOf(true) }
+    val paradas = remember { mutableStateOf(true) }
+    val destino = remember { mutableStateOf(true) }
+
+    if( autobus.value ){
+        DialogAutobusCercano(
+            dialogo = autobus
+        ) {
+
+        }
+    }
+
+    if( paradas.value ){
+        DialogParada(
+            dialogo = paradas
+        ) {
+
+        }
+    }
+
+    if( destino.value ){
+        DialogDestino(
+            dialogo = destino
+        ) {
+
+        }
+    }
+
     val currentTime = remember {
         Calendar.getInstance().time
     }

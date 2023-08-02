@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.Dialogs
 
-import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -9,22 +8,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -34,7 +35,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,16 +42,16 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import androidx.core.app.ActivityCompat.finishAffinity
-import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.Colores.color_bola_switch
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
@@ -61,11 +61,8 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
-import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.theme.Purple40
-import net.streamroutes.sreamroutesapp.ui.theme.Purple80
-import net.streamroutes.sreamroutesapp.ui.theme.PurpleGrey40
 
 @Preview (showBackground = true)
 @Composable
@@ -78,7 +75,7 @@ fun view() {
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
 
 @Composable
-fun NotificationPush(
+fun DialogNotificationPush(
     dialogo: MutableState<Boolean>,
     siempre: MutableState<Boolean>,
     durante: MutableState<Boolean>,
@@ -185,7 +182,7 @@ fun PushOptions(
 // DIALOG PARA HABILITAR PERMISOS DE UBICACION
 
 @Composable
-fun HabilitarUbicacion(
+fun DialogHabilitarUbicacion(
     dialogo: MutableState<Boolean>,
     onClick: () -> Unit
 ) {
@@ -315,7 +312,7 @@ fun HabilitarUbicacion(
 // DIALOG PARA HABILITAR PERMISOS DE CONTACTOS
 
 @Composable
-fun HabilitarContactos(
+fun DialogHabilitarContactos(
     dialogo: MutableState<Boolean>,
     onClick: () -> Unit
 ) {
@@ -445,7 +442,7 @@ fun HabilitarContactos(
 // DIALOG PARA EL AVISO DE PRIVACIDAD
 
 @Composable
-fun AvisoDePrivacidad(
+fun DialogAvisoDePrivacidad(
     dialogo: MutableState<Boolean>,
     onClick: () -> Unit
 ) {
@@ -573,6 +570,438 @@ fun AvisoDePrivacidad(
                             text = "Continuar",
                             fontWeight = FontWeight.ExtraBold,
                             color = if(acepto.value) color_letra else Color.DarkGray,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+// DIALOG PARA AVISO DE AUTOBUS CERCANO
+// DIALOG PARA AVISO DE AUTOBUS CERCANO
+// DIALOG PARA AVISO DE AUTOBUS CERCANO
+
+@Composable
+fun DialogAutobusCercano(
+    dialogo: MutableState<Boolean>,
+    onClick: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(color_fondo_oscuro)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // icono de informacion
+                Icon(
+                    imageVector = Icons.Filled.Info,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(vertical = 10.dp),
+                    tint = color_letra_textfield
+                )
+
+                // texto informativo
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("Tu ")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("autobús")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append(" está cerca. Mantente alerta para abordarlo.")
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(top = 15.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
+                    textAlign = TextAlign.Center
+                )
+
+                // boton
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // aceptar
+                    TextButton(
+                        onClick = {
+                            onClick
+                            dialogo.value = false
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Aceptar",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+// DIALOG DE AVISO DE PARADA
+// DIALOG DE AVISO DE PARADA
+// DIALOG DE AVISO DE PARADA
+
+@Composable
+fun DialogParada(
+    dialogo: MutableState<Boolean>,
+    onClick: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(color_fondo_oscuro)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // icono de informacion
+                Icon(
+                    imageVector = Icons.Filled.Place,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(vertical = 10.dp),
+                    tint = color_letra_textfield
+                )
+
+                // texto informativo
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("Hemos llegado a una ")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("parada")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append(", verifica si necesitas bajarte aqui.")
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(top = 15.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
+                    textAlign = TextAlign.Center
+                )
+
+                // boton
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // aceptar
+                    TextButton(
+                        onClick = {
+                            onClick
+                            dialogo.value = false
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Aceptar",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+// DIALOG DE AVISO DE TERMINACION DE RUTA
+// DIALOG DE AVISO DE TERMINACION DE RUTA
+// DIALOG DE AVISO DE TERMINACION DE RUTA
+
+@Composable
+fun DialogDestino(
+    dialogo: MutableState<Boolean>,
+    onClick: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(color_fondo_oscuro)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // icono de informacion
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(vertical = 10.dp),
+                    tint = color_letra_textfield
+                )
+
+                // texto informativo
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("Has llegado a tu ")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("destino")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append(", baja del autobus con cuidado. ¡Esperamos verte de nuevo!")
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(top = 15.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
+                    textAlign = TextAlign.Center
+                )
+
+                // boton
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // aceptar
+                    TextButton(
+                        onClick = {
+                            onClick
+                            dialogo.value = false
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Aceptar",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+// DIALOG PARA LA CONEXION A INTERNET
+// DIALOG PARA LA CONEXION A INTERNET
+// DIALOG PARA LA CONEXION A INTERNET
+
+@Composable
+fun DialogInternet(
+    dialogo: MutableState<Boolean>,
+    onClick: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(color_fondo_oscuro)
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // icono de informacion
+                Icon(
+                    imageVector = Icons.Filled.Warning,
+                    contentDescription = "",
+                    modifier = Modifier
+                        .size(100.dp)
+                        .padding(vertical = 10.dp),
+                    tint = color_letra_textfield
+                )
+
+                // texto informativo
+                Text(
+                    text = buildAnnotatedString {
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("Verifica tu ")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontWeight = FontWeight.ExtraBold,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append("conexion a internet")
+                        }
+                        withStyle(
+                            style =
+                            SpanStyle(
+                                color = color_letra_textfield,
+                                fontSize = 18.sp,
+                                fontFamily = FontFamily.SansSerif
+                            )
+                        ) {
+                            append(" y vuelve a intentarlo nuevamente.")
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(top = 15.dp, bottom = 20.dp, start = 20.dp, end = 20.dp),
+                    textAlign = TextAlign.Center
+                )
+
+                // boton
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // aceptar
+                    TextButton(
+                        onClick = {
+                            // cerrar app ahora si xd
+                            onClick
+                            dialogo.value = false
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Aceptar",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )

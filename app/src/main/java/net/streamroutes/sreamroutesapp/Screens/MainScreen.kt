@@ -2,6 +2,10 @@
 
 package net.streamroutes.sreamroutesapp.Screens
 
+import android.app.Activity
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,8 +27,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.navigation.NavController
-import com.google.android.gms.maps.GoogleMapOptions
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -37,9 +41,10 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
-import net.streamroutes.sreamroutesapp.Dialogs.AvisoDePrivacidad
-import net.streamroutes.sreamroutesapp.Dialogs.HabilitarContactos
-import net.streamroutes.sreamroutesapp.Dialogs.HabilitarUbicacion
+import net.streamroutes.sreamroutesapp.Dialogs.DialogAvisoDePrivacidad
+import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarContactos
+import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarUbicacion
+import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -52,14 +57,16 @@ fun MainScreen(navController: NavController) {
 @Composable
 fun Main( navController: NavController ){
 
+    val context = LocalContext.current
+
     // Descomentar los dialogos de permiso al finalizar el proyecto
     // DIALOGOS PARA LOS PERMISOS
-    /*val ubicacion = remember { mutableStateOf(true) }
+    val ubicacion = remember { mutableStateOf(true) }
     val contactos = remember { mutableStateOf(true) }
     val aviso = remember { mutableStateOf(true) }
 
-    if( ubicacion.value ){
-        HabilitarUbicacion(
+    /*if( ubicacion.value ){
+        DialogHabilitarUbicacion(
             dialogo = ubicacion
         ) {
 
@@ -67,7 +74,7 @@ fun Main( navController: NavController ){
     }
 
     if( contactos.value ){
-        HabilitarContactos(
+        DialogHabilitarContactos(
             dialogo = contactos
         ) {
 
@@ -75,13 +82,45 @@ fun Main( navController: NavController ){
     }
 
     if( aviso.value ){
-        AvisoDePrivacidad(
+        DialogAvisoDePrivacidad(
             dialogo = aviso
         ) {
 
         }
     }*/
 
+    // variable internet
+    val internet = remember { mutableStateOf(false) }
+
+    // funcion para saber si estas conectado a internet al iniciar la app
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+        connectivityManager?.let {
+            val networkCapabilities = it.activeNetwork ?: return false
+            val activeNetwork =
+                it.getNetworkCapabilities(networkCapabilities) ?: return false
+
+            return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+        }
+        return false
+    }
+
+    // valor del dialog en funcion de la conexion de internet
+    internet.value = !isInternetAvailable(context)
+
+    // dialogo para la conexion a internet
+    if(internet.value){
+        DialogInternet(
+            dialogo = internet
+        ) {
+            // con estas dos lineas puedes estar en la app
+            // aun sin internet pero no podras usarlo
+            // al momento de conectarte a internet se cambiara el estado y se cerrara el dialog
+            internet.value = false
+            internet.value = !isInternetAvailable(context)
+        }
+    }
 
     // CUERPO DE LA VENTANA
     Column (
@@ -126,7 +165,6 @@ fun Main( navController: NavController ){
         val cameraPositionState = rememberCameraPositionState(){
             position = CameraPosition.fromLatLngZoom(itsur,17f)
         }
-        val context = LocalContext.current
         GoogleMap(
             modifier = Modifier
                 .fillMaxSize(),

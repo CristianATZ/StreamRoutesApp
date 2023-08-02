@@ -9,15 +9,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults.cardColors
-import androidx.compose.material3.CardDefaults.cardElevation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -32,23 +27,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_bola_switch
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_activo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
-import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
-import net.streamroutes.sreamroutesapp.Dialogs.NotificationPush
+import net.streamroutes.sreamroutesapp.Dialogs.DialogNotificationPush
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 
@@ -90,7 +81,7 @@ fun NotificationsScreen(navController: NavController){
 
     // presentacion del dialog
     if (dialogo.value) {
-        NotificationPush(dialogo = dialogo, siempre = siempre, durante = durante, nunca = nunca)
+        DialogNotificationPush(dialogo = dialogo, siempre = siempre, durante = durante, nunca = nunca)
     }
 
     Column(
