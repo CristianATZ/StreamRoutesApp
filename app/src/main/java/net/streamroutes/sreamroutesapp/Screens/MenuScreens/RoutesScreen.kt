@@ -189,6 +189,7 @@ fun map() {
     // Variable para almacenar el tipo de mapa actual y su estado
     val defaultMapType = MapType.NORMAL
     var currentMapType by remember { mutableStateOf(defaultMapType) }
+    var changeMap by remember { mutableStateOf(1) }
 
     Box(
         modifier = Modifier
@@ -231,13 +232,16 @@ fun map() {
         ){
             Row(
                 modifier = Modifier
-                    .background(color_fondo_oscuro,RoundedCornerShape(percent = 10))
+                    .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
                     .clickable {
-                        currentMapType = if (currentMapType == MapType.NORMAL) {
-                            MapType.SATELLITE
-                        } else {
-                            MapType.NORMAL
+                        when (changeMap) {
+                            1 -> { currentMapType = MapType.NORMAL }
+                            2 -> { currentMapType = MapType.SATELLITE }
+                            3 -> { currentMapType = MapType.TERRAIN }
+                            4 -> { currentMapType = MapType.HYBRID }
                         }
+                        changeMap++
+                        if(changeMap==5) changeMap = 1
                     },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
@@ -280,7 +284,8 @@ fun Botones() {
         shape = roundCornerShape,
         modifier = Modifier
             .wrapContentSize()
-            .padding(7.dp).align(Alignment.Center)
+            .padding(7.dp)
+            .align(Alignment.Center)
     ) {
         Text(
             text = "Buscar",
