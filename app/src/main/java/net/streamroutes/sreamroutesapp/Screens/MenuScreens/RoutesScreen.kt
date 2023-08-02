@@ -63,6 +63,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.R
 import java.text.SimpleDateFormat
@@ -224,22 +225,30 @@ fun map() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(50.dp),
+                .height(75.dp)
+                .padding(10.dp),
             horizontalArrangement = Arrangement.End
         ){
-            Image(
-                painter = painterResource(id = R.drawable.typemap),
-                contentDescription = "Tipo de mapa",
+            Row(
                 modifier = Modifier
-                    .padding(end = 10.dp, top = 10. dp)
+                    .background(color_fondo_oscuro,RoundedCornerShape(percent = 10))
                     .clickable {
                         currentMapType = if (currentMapType == MapType.NORMAL) {
                             MapType.SATELLITE
                         } else {
                             MapType.NORMAL
                         }
-                    }
-            )
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.typemap),
+                    contentDescription = "Tipo de mapa",
+                    modifier = Modifier
+                        .padding(10.dp)
+                )
+            }
         }
     }
 }

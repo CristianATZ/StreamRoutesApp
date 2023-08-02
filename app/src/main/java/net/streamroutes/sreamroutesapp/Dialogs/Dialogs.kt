@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Dialogs
 
+import android.widget.Space
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -23,6 +24,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -227,7 +229,7 @@ fun HabilitarUbicacion(
 
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Habilitar Ubicacion",
+                        text = "Permitir acceso a tu ubicación",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(top = 5.dp)
@@ -239,10 +241,11 @@ fun HabilitarUbicacion(
                         color = color_letra_topappbar
                     )
                     Text(
-                        text = "La aplicacion requiere que habilites tu ubicacion.",
+                        text = "Stream Routes necesita acceder a tu ubicación para ofrecerte una experiencia más " +
+                                "personalizada y mostrarte rutas y lugares de interés cercanos.",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(top = 10.dp, start = 25.dp, end = 25.dp)
+                            .padding(top = 10.dp, start = 15.dp, end = 15.dp)
                             .fillMaxWidth(),
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.SansSerif,
@@ -262,6 +265,25 @@ fun HabilitarUbicacion(
                     verticalAlignment = Alignment.Bottom
                 ) {
 
+                    // no habilitar
+                    TextButton(
+                        onClick = {
+                            // cerrar la aplicacion
+                            Toast.makeText(context, "La aplicacion no tendra acceso a algunas funciones.", Toast.LENGTH_LONG).show()
+                            dialogo.value = false
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+                        Text(
+                            text ="No permitir",
+                            color = Color.DarkGray,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+
                     // habilitar
                     TextButton(
                         onClick = {
@@ -269,32 +291,14 @@ fun HabilitarUbicacion(
                             dialogo.value = false
                         },
                         modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
-                    ) {
-
-                        Text(
-                            text = "Habilitar",
-                            fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
-                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
-                            fontSize = 15.sp
-                        )
-                    }
-
-                    // no habilitar
-                    TextButton(
-                        onClick = {
-                            // cerrar la aplicacion
-                            Toast.makeText(context, "No se puede iniciar la aplicacion", Toast.LENGTH_LONG).show()
-                        },
-                        modifier = Modifier
                             .fillMaxWidth(1f)
                             .background(color_fondo_switch_activo)
                     ) {
+
                         Text(
-                            text ="No habilitar",
-                            color = Color.DarkGray,
+                            text = "Permitir",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -354,7 +358,7 @@ fun HabilitarContactos(
 
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Habilitar que la aplicacion acceda a tus contactos",
+                        text = "Permitir acceso a tus contactos",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
                             .padding(top = 5.dp)
@@ -366,10 +370,12 @@ fun HabilitarContactos(
                         color = color_letra_topappbar
                     )
                     Text(
-                        text = "La aplicacion requiere que habilites el permiso.",
+                        text = "Stream Routes necesita acceder a tus contactos para proporcionar una " +
+                                "experiencia personalizada y facilitar la conexión con tus amigos y " +
+                                "contactos.",
                         textAlign = TextAlign.Center,
                         modifier = Modifier
-                            .padding(top = 10.dp, start = 25.dp, end = 25.dp)
+                            .padding(top = 10.dp, start = 15.dp, end = 15.dp)
                             .fillMaxWidth(),
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.SansSerif,
@@ -389,26 +395,6 @@ fun HabilitarContactos(
                     verticalAlignment = Alignment.Bottom
                 ) {
 
-                    // habilitar
-                    TextButton(
-                        onClick = {
-                            onClick
-                            dialogo.value = false
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
-                    ) {
-
-                        Text(
-                            text = "Habilitar",
-                            fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
-                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
-                            fontSize = 15.sp
-                        )
-                    }
-
                     // no habilitar
                     TextButton(
                         onClick = {
@@ -417,12 +403,32 @@ fun HabilitarContactos(
                             Toast.makeText(context, "La aplicacion no tendra acceso a algunas funciones.", Toast.LENGTH_LONG).show()
                         },
                         modifier = Modifier
-                            .fillMaxWidth(1f)
+                            .fillMaxWidth(0.5f)
                             .background(color_fondo_switch_activo)
                     ) {
                         Text(
-                            text ="No habilitar",
+                            text ="No permitir",
                             color = Color.DarkGray,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+
+                    // habilitar
+                    TextButton(
+                        onClick = {
+                            onClick
+                            dialogo.value = false
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Permitir",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -517,6 +523,7 @@ fun AvisoDePrivacidad(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(bottom = 10.dp)
                         .clickable {
                             acepto.value = !acepto.value
                         },
@@ -525,8 +532,14 @@ fun AvisoDePrivacidad(
                 ) {
                     Checkbox(
                         checked = acepto.value,
-                        onCheckedChange = null
+                        onCheckedChange = null,
+                        colors = CheckboxDefaults.colors(
+                            checkedColor = color_letra_textfield,
+                            checkmarkColor = color_fondo_claro,
+                            uncheckedColor = Color.Gray
+                        )
                     )
+                    Spacer(modifier = Modifier.size(15.dp))
                     Text(
                         text = "Acepto los terminos y condiciones",
                         style = MaterialTheme.typography.labelLarge,
@@ -544,7 +557,7 @@ fun AvisoDePrivacidad(
                     verticalAlignment = Alignment.Bottom
                 ) {
 
-                    // habilitar
+                    // aceptar
                     TextButton(
                         onClick = {
                             dialogo.value = false;
@@ -552,12 +565,12 @@ fun AvisoDePrivacidad(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background( if(acepto.value) color_fondo_switch_activo else Color.LightGray ),
+                            .background(if (acepto.value) color_fondo_switch_activo else Color.LightGray),
                         enabled = acepto.value
                     ) {
 
                         Text(
-                            text = "Habilitar",
+                            text = "Continuar",
                             fontWeight = FontWeight.ExtraBold,
                             color = if(acepto.value) color_letra else Color.DarkGray,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),

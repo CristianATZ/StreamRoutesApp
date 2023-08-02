@@ -52,9 +52,9 @@ fun MainScreen(navController: NavController) {
 @Composable
 fun Main( navController: NavController ){
 
-    /*Descomentar los dialogos de permiso al finalizar el proyecto
+    // Descomentar los dialogos de permiso al finalizar el proyecto
     // DIALOGOS PARA LOS PERMISOS
-    val ubicacion = remember { mutableStateOf(true) }
+    /*val ubicacion = remember { mutableStateOf(true) }
     val contactos = remember { mutableStateOf(true) }
     val aviso = remember { mutableStateOf(true) }
 
