@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
 import android.os.Bundle
 import android.view.View
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
@@ -28,12 +30,15 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -87,7 +92,8 @@ fun RoutesScreenView(navController: NavController){
                 .fillMaxHeight(0.18f)
                 .background(color_fondo_topappbar_alterno) // Color de fondo del Box
         ) {
-            Column(modifier = Modifier.fillMaxSize(1f)
+            Column(modifier = Modifier
+                .fillMaxSize(1f)
                 .background(color_fondo_topappbar_alterno)
                 .padding(top = 12.dp, end = 12.dp)){
 
@@ -112,7 +118,9 @@ fun RoutesScreenView(navController: NavController){
                             BasicTextField(
                                 value = origen.value,
                                 onValueChange = {newText -> origen.value = newText },
-                                modifier = Modifier.fillMaxWidth(1f).fillMaxHeight(.3f)
+                                modifier = Modifier
+                                    .fillMaxWidth(1f)
+                                    .fillMaxHeight(.3f)
                                     .background(Color.White)
                                     .padding(start = 12.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically)
@@ -136,8 +144,10 @@ fun RoutesScreenView(navController: NavController){
                     BasicTextField(
                         value = dest.value,
                         onValueChange = {newText -> dest.value = newText },
-                        modifier = Modifier.fillMaxWidth().fillMaxHeight(.53f).
-                            background(Color.White)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(.53f)
+                            .background(Color.White)
                             .padding(start = 12.dp)
                             .wrapContentHeight(align = Alignment.CenterVertically)
                     )
@@ -156,69 +166,113 @@ fun RoutesScreenView(navController: NavController){
         //MAP
         map()
 
-        //Boton
-        val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-        Button(
-            onClick = {
-
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                contentColor = Color.White
-            ),
-            shape = roundCornerShape,
-            modifier = Modifier
-                .wrapContentSize()
-                .padding(7.dp)
-                .align(Alignment.CenterHorizontally)
-        ) {
-            Text(
-                text = "Buscar",
-                fontSize = 26.sp,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
-            )
-        }
+        Botones()
 
     }
 }
 
 @Composable
-fun map(){
-
-    var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
+fun map() {
 
     // Mapa
     val itsur = LatLng(20.139468718311957, -101.15069924573676)
     val itsurState = MarkerState(position = itsur)
-    val cameraPositionState = rememberCameraPositionState(){
-        position = CameraPosition.fromLatLngZoom(itsur,17f)
+    val cameraPositionState = rememberCameraPositionState() {
+        position = CameraPosition.fromLatLngZoom(itsur, 17f)
     }
 
-    GoogleMap(
+    // Variable para almacenar el tipo de mapa actual y su estado
+    val defaultMapType = MapType.NORMAL
+    var currentMapType by remember { mutableStateOf(defaultMapType) }
+
+    Box(
         modifier = Modifier
-            .fillMaxSize(),
-        cameraPositionState = cameraPositionState,
-        uiSettings = MapUiSettings(
-            compassEnabled = false,
-            indoorLevelPickerEnabled = false,
-            mapToolbarEnabled = false,
-            myLocationButtonEnabled = false,
-            rotationGesturesEnabled = true,
-            scrollGesturesEnabled = true,
-            scrollGesturesEnabledDuringRotateOrZoom = false,
-            tiltGesturesEnabled = false,
-            zoomControlsEnabled = false,
-            zoomGesturesEnabled = true
-        ),
-        onMapClick = { latLng ->
-            selectedLocation = latLng
-        },
-        properties = MapProperties(
-            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-            mapType = MapType.NORMAL,
-            maxZoomPreference = 17f
+            .fillMaxWidth()
+            .fillMaxHeight(.90f)
+    ) {
+        GoogleMap(
+            modifier = Modifier
+                .fillMaxSize(),
+            cameraPositionState = cameraPositionState,
+            uiSettings = MapUiSettings(
+                compassEnabled = false,
+                indoorLevelPickerEnabled = false,
+                mapToolbarEnabled = false,
+                myLocationButtonEnabled = false,
+                rotationGesturesEnabled = true,
+                scrollGesturesEnabled = true,
+                scrollGesturesEnabledDuringRotateOrZoom = false,
+                tiltGesturesEnabled = false,
+                zoomControlsEnabled = false,
+                zoomGesturesEnabled = true
+            ),
+            onMapClick = { latLng ->
+                // Aquí podrías realizar alguna acción si lo deseas
+            },
+            properties = MapProperties(
+                mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
+                mapType = currentMapType, // Usar el tipo de mapa actual
+                maxZoomPreference = 17f
+            )
         )
+
+        // Botón cambio tipo de mapa en la parte superior derecha
+        IconButton(
+            onClick = {
+                // Cambiar el tipo de mapa cuando el botón sea presionado
+                currentMapType = if (currentMapType == MapType.NORMAL) {
+                    MapType.SATELLITE
+                } else {
+                    MapType.NORMAL
+                }
+            }
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.typemap),
+                contentDescription = "Tipo de mapa",
+                modifier = Modifier.padding(1.dp).align(Alignment.TopEnd),
+                contentScale = ContentScale.FillBounds
+            )
+        }
+    }
+}
+
+
+
+@Composable
+fun Botones() {
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize())
+    {
+    //Boton parte inferior
+    val roundCornerShape = RoundedCornerShape(
+        topEnd = 30.dp,
+        bottomStart = 30.dp,
+        topStart = 10.dp,
+        bottomEnd = 10.dp
     )
+    Button(
+        onClick = {
+
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+            contentColor = Color.White
+        ),
+        shape = roundCornerShape,
+        modifier = Modifier
+            .wrapContentSize()
+            .padding(7.dp).align(Alignment.Center)
+    ) {
+        Text(
+            text = "Buscar",
+            fontSize = 26.sp,
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
+    }
+    }
 }
 
