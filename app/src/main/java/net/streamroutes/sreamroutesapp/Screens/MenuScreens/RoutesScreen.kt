@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -92,11 +95,12 @@ fun RoutesScreenView(navController: NavController){
                 .fillMaxHeight(0.18f)
                 .background(color_fondo_topappbar_alterno) // Color de fondo del Box
         ) {
-            Column(modifier = Modifier
-                .fillMaxSize(1f)
-                .background(color_fondo_topappbar_alterno)
-                .padding(top = 12.dp, end = 12.dp)){
-
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(1f)
+                    .background(color_fondo_topappbar_alterno)
+                    .padding(top = 12.dp, end = 12.dp)
+            ){
                 Row{
                     IconButton(onClick = { }) {
                         androidx.compose.material.Icon(
@@ -217,21 +221,24 @@ fun map() {
         )
 
         // Botón cambio tipo de mapa en la parte superior derecha
-        IconButton(
-            onClick = {
-                // Cambiar el tipo de mapa cuando el botón sea presionado
-                currentMapType = if (currentMapType == MapType.NORMAL) {
-                    MapType.SATELLITE
-                } else {
-                    MapType.NORMAL
-                }
-            }
-        ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp),
+            horizontalArrangement = Arrangement.End
+        ){
             Image(
                 painter = painterResource(id = R.drawable.typemap),
                 contentDescription = "Tipo de mapa",
-                modifier = Modifier.padding(1.dp).align(Alignment.TopEnd),
-                contentScale = ContentScale.FillBounds
+                modifier = Modifier
+                    .padding(end = 10.dp, top = 10. dp)
+                    .clickable {
+                        currentMapType = if (currentMapType == MapType.NORMAL) {
+                            MapType.SATELLITE
+                        } else {
+                            MapType.NORMAL
+                        }
+                    }
             )
         }
     }
