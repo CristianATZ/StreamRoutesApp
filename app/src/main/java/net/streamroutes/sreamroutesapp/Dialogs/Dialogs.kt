@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -63,12 +64,6 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.theme.Purple40
-
-@Preview (showBackground = true)
-@Composable
-fun view() {
-
-}
 
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
@@ -1000,6 +995,805 @@ fun DialogInternet(
 
                         Text(
                             text = "Aceptar",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+// DIALOG PARA LOS TUTORIALES
+// DIALOG PARA LOS TUTORIALES
+// DIALOG PARA LOS TUTORIALES
+// DIALOG PARA LOS TUTORIALES
+// DIALOG PARA LOS TUTORIALES
+
+
+// DIALOG PARA EL TUTORIAL DEL MAINSCREEN
+// DIALOG PARA EL TUTORIAL DEL MAINSCREEN
+// DIALOG PARA EL TUTORIAL DEL MAINSCREEN
+
+@Preview (showBackground = true)
+@Composable
+fun view() {
+
+}
+
+@Composable
+fun DialogTutorialMain1(
+    dialogo: MutableState<Boolean>,
+    sigDialogo: MutableState<Boolean>
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ){
+             Column(modifier = Modifier
+                 .background(color_fondo_oscuro),
+                 horizontalAlignment = Alignment.CenterHorizontally
+             ) {
+
+                 // caja para la simulacion del tutorial
+                 Row(
+                     modifier = Modifier
+                         .fillMaxWidth(0.8f)
+                         .padding(top = 20.dp, bottom = 10.dp),
+                     horizontalArrangement = Arrangement.Center,
+                 ) {
+                     // simular la cantidad de dialogs para el tutorial
+                     Box(
+                         modifier = Modifier
+                             .size(15.dp)
+                             .background(color_letra_textfield, RoundedCornerShape(percent = 100))
+                     )
+
+                     Spacer(modifier = Modifier.size(20.dp))
+
+                     Box(
+                         modifier = Modifier
+                             .size(15.dp)
+                             .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                     )
+
+                     Spacer(modifier = Modifier.size(20.dp))
+
+                     Box(
+                         modifier = Modifier
+                             .size(15.dp)
+                             .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                     )
+
+                     Spacer(modifier = Modifier.size(20.dp))
+
+                     Box(
+                         modifier = Modifier
+                             .size(15.dp)
+                             .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                     )
+
+                     Spacer(modifier = Modifier.size(20.dp))
+
+                     Box(
+                         modifier = Modifier
+                             .size(15.dp)
+                             .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                     )
+                 }
+
+                 // cuerpo del tutorial
+
+                 Text(
+                     text = "Menu de opciones",
+                     textAlign = TextAlign.Center,
+                     modifier = Modifier
+                         .padding(vertical = 10.dp, horizontal = 15.dp)
+                         .fillMaxWidth(),
+                     style = MaterialTheme.typography.labelLarge,
+                     fontWeight = FontWeight.Bold,
+                     fontFamily = FontFamily.SansSerif,
+                     fontSize = 20.sp,
+                     color = color_letra_topappbar
+                 )
+
+                 Image(
+                     painter = painterResource(id = R.drawable.ic_launcher_background),
+                     contentDescription = null, // decorative
+                     contentScale = ContentScale.Fit,
+                     colorFilter  = ColorFilter.tint(
+                         color = Purple40
+                     ),
+                     modifier = Modifier
+                         .padding(vertical = 10.dp)
+                         .size(100.dp)
+                 )
+
+                 Text(
+                     text = "El menu de opciones esta posicionado en la parte superior izquierda. ",
+                     textAlign = TextAlign.Center,
+                     modifier = Modifier
+                         .padding(vertical = 10.dp, horizontal = 15.dp)
+                         .fillMaxWidth(),
+                     style = MaterialTheme.typography.bodyMedium,
+                     fontFamily = FontFamily.SansSerif,
+                     fontSize = 15.sp,
+                     color = color_letra_topappbar
+                 )
+
+                 // botones
+                 Row(
+                     Modifier
+                         .fillMaxWidth()
+                         .padding(top = 10.dp),
+                     horizontalArrangement = Arrangement.SpaceAround,
+                     verticalAlignment = Alignment.Bottom
+                 ) {
+
+                     // regresar
+                     TextButton(
+                         onClick = {
+                             dialogo.value = false
+                         },
+                         modifier = Modifier
+                             .fillMaxWidth(0.5f)
+                             .background(color_fondo_switch_activo)
+                     ) {
+                         Text(
+                             text ="Omitir",
+                             color = Color.DarkGray,
+                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                             fontSize = 15.sp
+                         )
+                     }
+
+                     // siguiente
+                     TextButton(
+                         onClick = {
+                             dialogo.value = false
+                             sigDialogo.value = true
+                         },
+                         modifier = Modifier
+                             .fillMaxWidth(1f)
+                             .background(color_fondo_switch_activo)
+                     ) {
+
+                         Text(
+                             text = "Siguiente",
+                             fontWeight = FontWeight.ExtraBold,
+                             color = color_letra,
+                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                             fontSize = 15.sp
+                         )
+                     }
+                 }
+             }
+        }
+    }
+}
+
+@Composable
+fun DialogTutorialMain2(
+    dialogo: MutableState<Boolean>,
+    sigDialogo: MutableState<Boolean>,
+    antDialogo: MutableState<Boolean>
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ){
+            Column(modifier = Modifier
+                .background(color_fondo_oscuro),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // caja para la simulacion del tutorial
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .padding(top = 20.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    // simular la cantidad de dialogs para el tutorial
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(color_letra_textfield, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+                }
+
+                // cuerpo del tutorial
+
+                Text(
+                    text = "Idioma de la aplicacion",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 20.sp,
+                    color = color_letra_topappbar
+                )
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null, // decorative
+                    contentScale = ContentScale.Fit,
+                    colorFilter  = ColorFilter.tint(
+                        color = Purple40
+                    ),
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .size(100.dp)
+                )
+
+                Text(
+                    text = "Puedes cambiar el idioma de la aplicacion en el icono de la parte superior derecha, " +
+                            "de igual forma en configuracion.",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 15.sp,
+                    color = color_letra_topappbar
+                )
+
+                // botones
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // regresar
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            antDialogo.value = true
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+                        Text(
+                            text ="Regresar",
+                            color = Color.DarkGray,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+
+                    // siguiente
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            sigDialogo.value = true
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Siguiente",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DialogTutorialMain3(
+    dialogo: MutableState<Boolean>,
+    sigDialogo: MutableState<Boolean>,
+    antDialogo: MutableState<Boolean>
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ){
+            Column(modifier = Modifier
+                .background(color_fondo_oscuro),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // caja para la simulacion del tutorial
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .padding(top = 20.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    // simular la cantidad de dialogs para el tutorial
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(color_letra_textfield, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+                }
+
+                // cuerpo del tutorial
+
+                Text(
+                    text = "Tipo de mapa",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 20.sp,
+                    color = color_letra_topappbar
+                )
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null, // decorative
+                    contentScale = ContentScale.Fit,
+                    colorFilter  = ColorFilter.tint(
+                        color = Purple40
+                    ),
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .size(100.dp)
+                )
+
+                Text(
+                    text = "Puedes cambiar el tipo de mapa haciendo clic en el boton " +
+                            "que esta situado debajo del icono de idiomas.",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 15.sp,
+                    color = color_letra_topappbar
+                )
+
+                // botones
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // regresar
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            antDialogo.value = true
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+                        Text(
+                            text ="Regresar",
+                            color = Color.DarkGray,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+
+                    // habilitar
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            sigDialogo.value = true
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Siguiente",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DialogTutorialMain4(
+    dialogo: MutableState<Boolean>,
+    sigDialogo: MutableState<Boolean>,
+    antDialogo: MutableState<Boolean>
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ){
+            Column(modifier = Modifier
+                .background(color_fondo_oscuro),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // caja para la simulacion del tutorial
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .padding(top = 20.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    // simular la cantidad de dialogs para el tutorial
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(color_letra_textfield, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+                }
+
+                // cuerpo del tutorial
+
+                Text(
+                    text = "Mapa interactivo",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 20.sp,
+                    color = color_letra_topappbar
+                )
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null, // decorative
+                    contentScale = ContentScale.Fit,
+                    colorFilter  = ColorFilter.tint(
+                        color = Purple40
+                    ),
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .size(100.dp)
+                )
+
+                Text(
+                    text = "Puedes interactuar con el mapa haciendo zoom, " +
+                            "girando y desplazandote a lo largo de el.",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 15.sp,
+                    color = color_letra_topappbar
+                )
+
+                // botones
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // regresar
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            antDialogo.value = true
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+                        Text(
+                            text ="Regresar",
+                            color = Color.DarkGray,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+
+                    // sigueinte
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            sigDialogo.value = true
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Siguiente",
+                            fontWeight = FontWeight.ExtraBold,
+                            color = color_letra,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DialogTutorialMain5(
+    dialogo: MutableState<Boolean>,
+    antDialogo: MutableState<Boolean>
+) {
+    val context = LocalContext.current
+
+    Dialog(
+        onDismissRequest = { /*TODO*/ }
+    ) {
+        Card(
+            shape = RoundedCornerShape(percent = 10),
+        ){
+            Column(modifier = Modifier
+                .background(color_fondo_oscuro),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // caja para la simulacion del tutorial
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.8f)
+                        .padding(top = 20.dp, bottom = 10.dp),
+                    horizontalArrangement = Arrangement.Center,
+                ) {
+                    // simular la cantidad de dialogs para el tutorial
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(Color.LightGray, RoundedCornerShape(percent = 100))
+                    )
+
+                    Spacer(modifier = Modifier.size(20.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .size(15.dp)
+                            .background(color_letra_textfield, RoundedCornerShape(percent = 100))
+                    )
+                }
+
+                // cuerpo del tutorial
+
+                Text(
+                    text = "Marcadores",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.labelLarge,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 20.sp,
+                    color = color_letra_topappbar
+                )
+
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null, // decorative
+                    contentScale = ContentScale.Fit,
+                    colorFilter  = ColorFilter.tint(
+                        color = Purple40
+                    ),
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .size(100.dp)
+                )
+
+                Text(
+                    text = "Puedes hacer clic en los marcadores del mapa y " +
+                            "se mostrara la informacion acerca de ellos.",
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .padding(vertical = 10.dp, horizontal = 15.dp)
+                        .fillMaxWidth(),
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontFamily = FontFamily.SansSerif,
+                    fontSize = 15.sp,
+                    color = color_letra_topappbar
+                )
+
+                // botones
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp),
+                    horizontalArrangement = Arrangement.SpaceAround,
+                    verticalAlignment = Alignment.Bottom
+                ) {
+
+                    // regresar
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            antDialogo.value = false
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+                        Text(
+                            text ="Regresar",
+                            color = Color.DarkGray,
+                            modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
+                            fontSize = 15.sp
+                        )
+                    }
+
+                    // habilitar
+                    TextButton(
+                        onClick = {
+                            dialogo.value = false
+                            Toast.makeText(
+                                context,
+                                "Bienvenido a Stream Routes",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth(1f)
+                            .background(color_fondo_switch_activo)
+                    ) {
+
+                        Text(
+                            text = "Finalizar",
                             fontWeight = FontWeight.ExtraBold,
                             color = color_letra,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),

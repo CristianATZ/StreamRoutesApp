@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -45,6 +46,11 @@ import net.streamroutes.sreamroutesapp.Dialogs.DialogAvisoDePrivacidad
 import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarContactos
 import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarUbicacion
 import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain1
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain2
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain3
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain4
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain5
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -64,6 +70,45 @@ fun Main( navController: NavController ){
     val ubicacion = remember { mutableStateOf(true) }
     val contactos = remember { mutableStateOf(true) }
     val aviso = remember { mutableStateOf(true) }
+
+    val tutorial = remember { mutableStateOf(listOf(
+        mutableStateOf(true),
+        mutableStateOf(false),
+        mutableStateOf(false),
+        mutableStateOf(false),
+        mutableStateOf(false)
+    )) }
+
+    /*if( tutorial.value[0].value ){
+        DialogTutorialMain1(
+            dialogo = tutorial.value[0],
+            sigDialogo = tutorial.value[1]
+        )
+    } else if( tutorial.value[1].value ){
+        DialogTutorialMain2(
+            dialogo = tutorial.value[1],
+            sigDialogo = tutorial.value[2],
+            antDialogo = tutorial.value[0]
+        )
+    } else if( tutorial.value[2].value ){
+        DialogTutorialMain3(
+            dialogo = tutorial.value[2],
+            sigDialogo = tutorial.value[3],
+            antDialogo = tutorial.value[1]
+        )
+    } else if( tutorial.value[3].value ){
+        DialogTutorialMain4(
+            dialogo = tutorial.value[3],
+            sigDialogo = tutorial.value[4],
+            antDialogo = tutorial.value[2]
+        )
+    } else if( tutorial.value[4].value ){
+        DialogTutorialMain5(
+            dialogo = tutorial.value[4],
+            antDialogo = tutorial.value[3]
+        )
+    }*/
+
 
     /*if( ubicacion.value ){
         DialogHabilitarUbicacion(
@@ -148,8 +193,9 @@ fun Main( navController: NavController ){
             actions = {
                 IconButton(onClick = {  }) {
                     Icon(
-                        Icons.Filled.Notifications,
-                        contentDescription = "Te dira tus notificaciones del dia"
+                        Icons.Filled.Settings,
+                        contentDescription = "Te dira tus notificaciones del dia",
+                        tint = Color.White
                     )
                 }
             },
