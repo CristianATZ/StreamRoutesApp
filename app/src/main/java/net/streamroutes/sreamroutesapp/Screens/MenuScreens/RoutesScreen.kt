@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
 import android.content.ClipData.Item
+import android.graphics.drawable.shapes.Shape
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.Image
@@ -21,10 +22,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
+import androidx.compose.material.Shapes
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
@@ -44,6 +47,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -221,7 +225,7 @@ fun RoutesScreenView(navController: NavController){
         //MAP
         map()
 
-        Botones()
+
 
     }
 }
@@ -244,7 +248,7 @@ fun map() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .fillMaxHeight(.90f)
+            .fillMaxHeight()
     ) {
         GoogleMap(
             modifier = Modifier
@@ -315,6 +319,8 @@ fun map() {
                 )
             }
         }
+
+        Botones()
     }
 }
 
@@ -346,7 +352,7 @@ fun Botones() {
         modifier = Modifier
             .wrapContentSize()
             .padding(7.dp)
-            .align(Alignment.Center)
+            .align(Alignment.BottomCenter)
     ) {
         Text(
             text = "Buscar",
