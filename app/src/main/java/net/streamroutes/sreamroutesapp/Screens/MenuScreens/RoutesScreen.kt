@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
+import android.content.ClipData.Item
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.Image
@@ -19,13 +20,18 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetLayout
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -67,6 +73,7 @@ import kotlinx.coroutines.delay
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Dialogs.DialogAutobusCercano
 import net.streamroutes.sreamroutesapp.Dialogs.DialogDestino
 import net.streamroutes.sreamroutesapp.Dialogs.DialogParada
@@ -81,7 +88,7 @@ fun RoutesScreen(navController: NavController){
     RoutesScreenView(navController = navController)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun RoutesScreenView(navController: NavController){
 
@@ -119,7 +126,7 @@ fun RoutesScreenView(navController: NavController){
     // efecto continuo para cambiar el valor de la hora
     LaunchedEffect(Unit){
         while (true) {
-            delay(500) // Esperar 1 segundo
+            delay(500) // Esperar 0.5 segundo
             currentTime = Calendar.getInstance().time // Obtener la hora actual
         }
     }
