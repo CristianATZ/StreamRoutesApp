@@ -30,6 +30,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,6 +63,7 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.delay
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
@@ -87,7 +89,7 @@ fun RoutesScreenView(navController: NavController){
     val paradas = remember { mutableStateOf(true) }
     val destino = remember { mutableStateOf(true) }
 
-    if( autobus.value ){
+   /* if( autobus.value ){
         DialogAutobusCercano(
             dialogo = autobus
         ) {
@@ -109,11 +111,20 @@ fun RoutesScreenView(navController: NavController){
         ) {
 
         }
+    }*/
+
+    // variable de tiempo
+    var currentTime by remember { mutableStateOf(Calendar.getInstance().time) }
+
+    // efecto continuo para cambiar el valor de la hora
+    LaunchedEffect(Unit){
+        while (true) {
+            delay(500) // Esperar 1 segundo
+            currentTime = Calendar.getInstance().time // Obtener la hora actual
+        }
     }
 
-    val currentTime = remember {
-        Calendar.getInstance().time
-    }
+    // modificacion de la hora
     val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
     val formattedTime = sdf.format(currentTime)
 
@@ -267,13 +278,24 @@ fun map() {
                     .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
                     .clickable {
                         when (changeMap) {
-                            1 -> { currentMapType = MapType.NORMAL }
-                            2 -> { currentMapType = MapType.SATELLITE }
-                            3 -> { currentMapType = MapType.TERRAIN }
-                            4 -> { currentMapType = MapType.HYBRID }
+                            1 -> {
+                                currentMapType = MapType.NORMAL
+                            }
+
+                            2 -> {
+                                currentMapType = MapType.SATELLITE
+                            }
+
+                            3 -> {
+                                currentMapType = MapType.TERRAIN
+                            }
+
+                            4 -> {
+                                currentMapType = MapType.HYBRID
+                            }
                         }
                         changeMap++
-                        if(changeMap==5) changeMap = 1
+                        if (changeMap == 5) changeMap = 1
                     },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
