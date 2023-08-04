@@ -50,12 +50,13 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_rows
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun MenuScreen(navController: NavController){
-    Menu(navController)
+fun MenuScreen(myViewModel: MyViewModel, navController: NavController){
+    Menu(myViewModel,navController)
 }
 
 /*
@@ -82,7 +83,9 @@ val listaCoordenadas = mutableListOf<Coordenadas>()
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
-fun Menu(navController: NavController){
+fun Menu(myViewModel: MyViewModel, navController: NavController){
+    // variable con todos los valores
+
     val context = LocalContext.current
 
     // variable para recordar el permiso
@@ -120,7 +123,7 @@ fun Menu(navController: NavController){
         TopAppBar(
             title = {
                 androidx.compose.material3.Text(
-                    text = "Menu",
+                    text = myViewModel.languageType().get(1),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -161,14 +164,14 @@ fun Menu(navController: NavController){
                         .padding(15.dp)
                 ) {
                     TextUser(
-                        text = "Nombre Usuario",
+                        text = myViewModel.languageType().get(2),
                         fontSize = 25)
                     TextUser(
-                        text = "Tipo Membresia",
+                        text = myViewModel.languageType().get(3),
                         fontSize = 18,
                         fontWeight = FontWeight.Normal)
                     TextUser(
-                        text = "Ciudad",
+                        text = myViewModel.languageType().get(4),
                         fontSize = 18,
                         fontWeight = FontWeight.Normal)
                 }
@@ -178,7 +181,7 @@ fun Menu(navController: NavController){
 
             // version premium
             Options(
-                text = "Version Premium",
+                text = myViewModel.languageType().get(5),
                 onClick = { navController.navigate(route = AppScreens.SuscripcionScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 15.dp, topStart = 15.dp, bottomEnd = 15.dp))
 
@@ -186,19 +189,19 @@ fun Menu(navController: NavController){
 
             // rutas
             Options(
-                text = "Rutas",
+                text = myViewModel.languageType().get(6),
                 onClick = { navController.navigate(route = AppScreens.RoutesScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 0.dp, topStart = 15.dp, bottomEnd = 0.dp))
 
             // planifica tu viaje
             Options(
-                text = "Planifica tu viaje",
+                text = myViewModel.languageType().get(7),
                 onClick = { navController.navigate(route = AppScreens.TripScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 0.dp, topStart = 0.dp, bottomEnd = 0.dp))
 
             // compartir ubicacion
             Options(
-                text = "Compartir Ubicacion",
+                text = myViewModel.languageType().get(8),
                 onClick = {
                     if (!locationPermissionState.status.isGranted) {
                         locationPermissionState.launchPermissionRequest()
@@ -216,7 +219,7 @@ fun Menu(navController: NavController){
                                 val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
 
                                 val message =
-                                    "Ubi. act: ${getAddressInfoFromCoordinates(context,latitude,longitude)}"
+                                    myViewModel.languageType().get(9) + getAddressInfoFromCoordinates(context,latitude,longitude)
 
                                 val shareIntent =
                                     Intent.createChooser(getShareUbi(context, message+mapUrl), null)
@@ -226,7 +229,7 @@ fun Menu(navController: NavController){
                                 Toast
                                     .makeText(
                                         context,
-                                        "No se pudo obtener la ubicacion actual. Asegurate de tener la ubicacion encendida",
+                                        myViewModel.languageType().get(10),
                                         Toast.LENGTH_LONG
                                     )
                                     .show()
@@ -242,7 +245,7 @@ fun Menu(navController: NavController){
 
             // comparte
             Options(
-                text = "Comparte",
+                text = myViewModel.languageType().get(11),
                 onClick = {
                     val shareIntent = Intent.createChooser(getShareApp(), null)
                     context.startActivity(shareIntent)
@@ -251,19 +254,19 @@ fun Menu(navController: NavController){
 
             // valoranos
             Options(
-                text = "Valoranos",
+                text = myViewModel.languageType().get(12),
                 onClick = { navController.navigate(route = AppScreens.ValoranoScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 0.dp, topStart = 0.dp, bottomEnd = 0.dp))
 
             // configuracion
             Options(
-                text = "Configuracion",
+                text = myViewModel.languageType().get(13),
                 onClick = { navController.navigate(route = AppScreens.ConfigurationScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 0.dp, topStart = 0.dp, bottomEnd = 0.dp))
 
             // ayuda y soporte
             Options(
-                text = "Ayuda y soporte",
+                text = myViewModel.languageType().get(14),
                 onClick = { navController.navigate(route = AppScreens.HelpScreen.route) },
                 roundedCornerShape = RoundedCornerShape(topEnd = 0.dp, bottomStart = 15.dp, topStart = 0.dp, bottomEnd = 15.dp))
         }

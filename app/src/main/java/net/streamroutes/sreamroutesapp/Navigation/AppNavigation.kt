@@ -2,9 +2,11 @@ package net.streamroutes.sreamroutesapp.Navigation
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ChangeCityScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.MapOptionsScreen
@@ -37,6 +39,8 @@ import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 @Composable
 fun AppNavigation() {
     val NavController = rememberNavController()
+    val myViewModel = viewModel<MyViewModel>()
+
     NavHost(navController = NavController, startDestination = AppScreens.SplashScreen.route) {
         // splash screen
         composable(AppScreens.SplashScreen.route){
@@ -44,7 +48,7 @@ fun AppNavigation() {
         }
         // pantalla principal
         composable(AppScreens.MainScreen.route){
-            MainScreen(NavController)
+            MainScreen(myViewModel,NavController)
         }
         // registrar pantalla
         composable(AppScreens.RegistrationScreen.route){
@@ -103,7 +107,7 @@ fun AppNavigation() {
         }
         // MENU
         composable(AppScreens.MenuScreen.route){
-            MenuScreen(NavController)
+            MenuScreen(myViewModel, NavController)
         }
 
         // CONFIGURACION SCREEN

@@ -6,9 +6,20 @@ import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
@@ -20,15 +31,23 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat.finishAffinity
+import androidx.core.os.bundleOf
 import androidx.navigation.NavController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -40,6 +59,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Dialogs.DialogAvisoDePrivacidad
@@ -51,17 +71,23 @@ import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain2
 import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain3
 import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain4
 import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain5
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun MainScreen(navController: NavController) {
-    Main(navController)
+fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
+    Main(myViewModel,navController)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Main( navController: NavController ){
+fun Main( myViewModel: MyViewModel, navController: NavController ){
+
+    // Variable para almacenar el tipo de mapa actual y su estado
+    val defaultMapType = MapType.NORMAL
+    var currentMapType by remember { mutableStateOf(defaultMapType) }
+    var changeMap by remember { mutableStateOf(1) }
 
     val context = LocalContext.current
 
@@ -174,15 +200,17 @@ fun Main( navController: NavController ){
     ){
         TopAppBar(
             title = {
-                androidx.compose.material3.Text(
-                    text = "Ciudad",
+                Text(
+                    text = myViewModel.languageType().get(0),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.MenuScreen.route) }) {
+                IconButton(onClick = {
+                    navController.navigate(AppScreens.MenuScreen.route)
+                }) {
                     androidx.compose.material.Icon(
                         Icons.Filled.Menu,
                         contentDescription = "Te enviara al menu de opciones",
@@ -211,29 +239,102 @@ fun Main( navController: NavController ){
         val cameraPositionState = rememberCameraPositionState(){
             position = CameraPosition.fromLatLngZoom(itsur,17f)
         }
-        GoogleMap(
-            modifier = Modifier
-                .fillMaxSize(),
-            cameraPositionState = cameraPositionState,
-            uiSettings = MapUiSettings(
-                compassEnabled = false,
-                indoorLevelPickerEnabled = false,
-                mapToolbarEnabled = false,
-                myLocationButtonEnabled = false,
-                rotationGesturesEnabled = true,
-                scrollGesturesEnabled = true,
-                scrollGesturesEnabledDuringRotateOrZoom = false,
-                tiltGesturesEnabled = false,
-                zoomControlsEnabled = false,
-                zoomGesturesEnabled = true
-            ),
-            properties = MapProperties(
-                mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-                mapType = MapType.NORMAL,
-                maxZoomPreference = 17f
-            )
-        ){
+        Box(modifier = Modifier.fillMaxSize()){
+            GoogleMap(
+                modifier = Modifier
+                    .fillMaxSize(),
+                cameraPositionState = cameraPositionState,
+                uiSettings = MapUiSettings(
+                    compassEnabled = false,
+                    indoorLevelPickerEnabled = false,
+                    mapToolbarEnabled = false,
+                    myLocationButtonEnabled = false,
+                    rotationGesturesEnabled = true,
+                    scrollGesturesEnabled = true,
+                    scrollGesturesEnabledDuringRotateOrZoom = false,
+                    tiltGesturesEnabled = false,
+                    zoomControlsEnabled = false,
+                    zoomGesturesEnabled = true
+                ),
+                properties = MapProperties(
+                    mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
+                    mapType = currentMapType,
+                    maxZoomPreference = 17f
+                )
+            ){
 
+            }
+
+            // Botón cambio tipo de mapa en la parte superior derecha
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(75.dp)
+                    .padding(10.dp),
+                horizontalArrangement = Arrangement.End
+            ){
+                Row(
+                    modifier = Modifier
+                        .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
+                        .clickable {
+                                   myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.info),
+                        contentDescription = "Tipo de mapa",
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(34.dp),
+                        colorFilter = ColorFilter.tint(
+                            Color.White
+                        )
+                    )
+                }
+
+                Spacer(modifier = Modifier.size(10.dp))
+
+                Row(
+                    modifier = Modifier
+                        .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
+                        .clickable {
+                            when (changeMap) {
+                                1 -> {
+                                    currentMapType = MapType.NORMAL
+                                }
+
+                                2 -> {
+                                    currentMapType = MapType.SATELLITE
+                                }
+
+                                3 -> {
+                                    currentMapType = MapType.TERRAIN
+                                }
+
+                                4 -> {
+                                    currentMapType = MapType.HYBRID
+                                }
+                            }
+                            changeMap++
+                            if (changeMap == 5) changeMap = 1
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.typemap),
+                        contentDescription = "Tipo de mapa",
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(34.dp),
+                        colorFilter = ColorFilter.tint(
+                            Color.White
+                        )
+                    )
+                }
+            }
         }
     }
 }
@@ -247,49 +348,5 @@ fun MainView(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun preview(){
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-    ){
-        TopAppBar(
-            title = {
-                Text(text = "Ciudad",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = {  }) {
-                    Icon(
-                        Icons.Filled.Menu,
-                        contentDescription = "Te enviara al menu de opciones"
-                    )
-                }
-            },
-            actions = {
-                IconButton(onClick = {  }) {
-                    Icon(
-                        Icons.Filled.Notifications,
-                        contentDescription = "Te dira tus notificaciones del dia"
-                    )
-                }
-            }
-        )
 
-        val itsur = LatLng(20.139468718311957, -101.15069924573676)
-        val itsurState = MarkerState(position = itsur)
-        val cameraPositionState = rememberCameraPositionState(){
-            position = CameraPosition.fromLatLngZoom(itsur,17f)
-        }
-        GoogleMap(
-            modifier = Modifier
-                .fillMaxSize(),
-            cameraPositionState = cameraPositionState
-        ){
-            Marker(
-                state = itsurState,
-                title = "Nuetra Universidad"
-            )
-        }
-    }
 }
