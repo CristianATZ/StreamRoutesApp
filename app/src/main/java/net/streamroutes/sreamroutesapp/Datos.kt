@@ -89,8 +89,63 @@ class MyViewModel : ViewModel() {
         "Alertas",
         "Cambios de horarios, rutas, etc.",
         "Suscripcion",
-        "Expiracion de la suscripcion, etc."
-    )
+        "Expiracion de la suscripcion, etc.",
+
+        //MapScreen
+        "Mapa",
+        "Te enviara al menu de configuraciones",
+        "Marcadores de paradas",
+        "Indica donde son las paradas.",
+        "Marcadores de terminales",
+        "Indica estaciones de autobuses.",
+        "Marcadores de ubicacion act.",
+        "Mira tu ubicacion actual.",
+        "Lugares de comida",
+        "Marcadores de restaurantes, etc.",
+        "Salud",
+        "Marcadores de salud.",
+
+        //PrivacityScreeen
+        "Privacidad",
+        "Te enviara al menu de configuraciones",
+        "Localizacion",
+        "Podremos sugerirte mejores rutas en base a tu ubicacion. Permite este servicio incluso cuando la app no este en uso.",
+        "Anuncios personalizados",
+        "Podremos usar tus datos para mostrarte anuncios que podrian ser releantes para ti. Si esta opcion no esta marcada se mostraran anuncios genericos.",
+        "Rutas personalizadas",
+        "Usar tus rutas frecuentes para generarte un plan de viaje personalizado para ti. Si esta opcion no esta marcada no se mostratan estrategias de viajes personaliszadas.",
+        "Pago de suscripcion",
+        "Si esta opcion esta marcada se permitira el cobro automatico de la suscripcion cada mes.",
+
+        //HelpScreen
+        "Ayuda",
+        "Te enviara al menu de opciones",
+        "Comentarios",
+        "¿Sugerencias?",
+        "Contactanos",
+        "Cuentanos tu experiencia",
+        "Acerca de",
+        "Version de la aplicacion",
+
+        //HelpCommentScreen
+        "Comentarios",
+        "Te enviara al menu de opciones",
+        "Cuentanos como podemos ayudarte",
+        "ENVIAR",//Faltan algunos por traducir que estan en la clase string, preguntar por ellos
+
+        //HelpContactScreen
+        "Contactanos",
+        "Te enviara al menu de opciones",
+        "Nombre",
+        "Nombre",
+        "Nuestro correo",
+        "Mensaje",
+        "ENVIAR",
+
+        //HelpAboutScreen
+        "Regresara al menu de ayuda"
+
+        )
 
     // lista de idioma EN
     val en = listOf(
@@ -166,7 +221,61 @@ class MyViewModel : ViewModel() {
         "Alerts",
         "Changes of schedules, routes, etc.",
         "Subscription",
-        "Subscription expiration, etc."
+        "Subscription expiration, etc.",
+
+        //MapScreen
+        "Map",
+        "It will send you to the settings menu",
+        "Stop markers",
+        "Indicates where the stops are.",
+        "Terminal Markers",
+        "Indicates bus stations.",
+        "Location markers act.",
+        "View your current location.",
+        "Food Places",
+        "Restaurant markers etc.",
+        "Health",
+        "Health Markers.",
+
+        //PrivacyScreen
+        "Privacy",
+        "It will send you to the settings menu",
+        "Location",
+        "We may suggest better routes based on your location. Allow this service even when the app is not in use.",
+        "Personalized Ads",
+        "We may use your data to show you ads that may be relevant to you. If this option is not checked, generic ads will be shown.",
+        "Custom routes",
+        "Use your frequent routes to generate a personalized travel plan for you. If this option is not checked, personalized travel strategies are not shown.",
+        "subscription payment",
+        "If this option is checked, the automatic payment of the subscription will be allowed each month.",
+
+        //HelpScreen
+        "Aid",
+        "It will send you to the options menu",
+        "Comments",
+        "Suggestions?",
+        "Contact us",
+        "Tell us your experience",
+        "About",
+        "Application version",
+
+        //HelpCommentScreen
+        "Comments",
+        "It will send you to the options menu",
+        "Tell us how we can help you",
+        "SEND",
+
+        //HelpContactScreen
+        "Contact us",
+        "It will send you to the options menu",
+        "Name",
+        "Name",
+        "Our mail",
+        "Message",
+        "SEND",
+
+        //HelpAboutScreen
+        "You will return to the help menu"
     )
 
     fun languageType(): List<String> {
