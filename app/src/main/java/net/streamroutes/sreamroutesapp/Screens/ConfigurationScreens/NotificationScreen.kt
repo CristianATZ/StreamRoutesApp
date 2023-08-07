@@ -27,6 +27,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -139,13 +140,13 @@ fun NotificationsScreen(navController: NavController){
                     Text(
                         text = "Notificaciones push", // texto
                         color = color_letra,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
+                        fontFamily = FontFamily.SansSerif,
                         fontSize = 20.sp
                     )
                     Text(
                         text = "Tipo de notificacion", // texto
                         color = color_letra,
-                        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
+                        fontFamily = FontFamily.SansSerif,
                         fontSize = 12.sp
                     )
                 }

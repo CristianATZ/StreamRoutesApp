@@ -92,7 +92,7 @@ fun Registration (navController: NavController) {
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
+                IconButton(onClick = { navController.navigate(AppScreens.LoginScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara al login"

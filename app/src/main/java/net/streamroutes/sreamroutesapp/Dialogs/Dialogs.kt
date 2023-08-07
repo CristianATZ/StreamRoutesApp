@@ -74,7 +74,7 @@ fun DialogNotificationPush(
     dialogo: MutableState<Boolean>,
     siempre: MutableState<Boolean>,
     durante: MutableState<Boolean>,
-    nunca: MutableState<Boolean>
+    nunca: MutableState<Boolean>,
 ){
     Dialog(
         onDismissRequest = {

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
@@ -175,28 +176,13 @@ fun HelpContactScreen(navController: NavController){
                     verticalAlignment = Alignment.Bottom
                 ) {
                     // text ubicacion
-                    Text(
-                        text = buildAnnotatedString{
-                            withStyle(style = SpanStyle(color = Color.DarkGray,
-                                fontWeight = FontWeight.Bold,
-                                fontFamily = FontFamily.SansSerif)
-                            ) {
-                                append(stringResource(id = R.string.contact_bottom_text1))
-                            }
-                            append(" ")
-                            withStyle(style = SpanStyle(color = Color(0xFFE8AA42),
-                                textDecoration = TextDecoration.Underline,
-                                fontWeight = FontWeight.Bold,
-                                fontFamily = FontFamily.SansSerif)
-                            ) {
-                                append(stringResource(id = R.string.contact_bottom_text2))
-                            }
-                        },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { },
-                        textAlign = TextAlign.Center
-                    )
+                    CustomText(
+                        firstString = "ITSUR, Uriangato, Gto.",
+                        secondString = "¿Como llegar?",
+                        horizontal = Arrangement.Center
+                    ) {
+
+                    }
                 }
             }
         }
@@ -284,9 +270,42 @@ private fun TextWTittle(
         )
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun HelpContactView(){
 
+@Composable
+private fun CustomText(
+    firstString: String,
+    secondString: String,
+    horizontal: Arrangement.Horizontal,
+    onClick: () -> Unit
+) {
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = horizontal
+    ){
+        // forgot
+        Text(
+            text = buildAnnotatedString{
+                withStyle(style = SpanStyle(color = Color.DarkGray,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.SansSerif)) {
+                    append(firstString)
+                }
+                append(" ")
+                withStyle(style = SpanStyle(color = Color(0xFFE8AA42),
+                    textDecoration = TextDecoration.Underline,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily.SansSerif)) {
+                    append(secondString)
+                }
+            },
+            modifier = Modifier
+                .wrapContentWidth()
+                .clickable(onClick = onClick)
+        )
+    }
 }
