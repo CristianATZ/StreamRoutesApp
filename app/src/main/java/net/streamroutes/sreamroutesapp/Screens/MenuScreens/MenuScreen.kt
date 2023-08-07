@@ -154,7 +154,8 @@ fun Menu(myViewModel: MyViewModel, navController: NavController){
             // usuario
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .clickable { navController.navigate(AppScreens.ProfileScreen.route) },
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Icon(painter = painterResource(id = R.drawable.ic_launcher_background), contentDescription = "", tint = Color.Black)

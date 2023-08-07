@@ -380,9 +380,11 @@ class MyViewModel : ViewModel() {
         "CHANGE" // 134
     )
 
-
     fun languageType(): List<String> {
         if (idioma == 0) return es
         return en
     }
+
+
+
 }
