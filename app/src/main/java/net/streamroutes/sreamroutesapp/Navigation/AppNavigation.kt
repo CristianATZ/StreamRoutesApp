@@ -30,6 +30,7 @@ import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
+import net.streamroutes.sreamroutesapp.Screens.Start.LanguageScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
@@ -148,6 +149,11 @@ fun AppNavigation() {
         // VALORANOS SCREEN
         composable(AppScreens.ValoranoScreen.route){
             ValoranoScreen(NavController)
+        }
+
+        // LANGUAGE SCREEN
+        composable(AppScreens.LanguageScreen.route){
+            LanguageScreen(myViewModel, NavController)
         }
     }
 }

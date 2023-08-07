@@ -35,7 +35,7 @@ import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 fun SplashScreen(navController: NavHostController) {
     LaunchedEffect(key1 = true) {
         delay(3000)
-        navController.navigate(AppScreens.LoginScreen.route)
+        navController.navigate(AppScreens.LanguageScreen.route)
     }
     Splash()
 }
@@ -63,74 +63,6 @@ fun Splash() {
             fontFamily = FontFamily.SansSerif,
             letterSpacing = 3.sp,
             textAlign = TextAlign.Center
-        )
-
-        /*Column(
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.logo_image),
-                contentDescription = "Logo Stream Routes",
-                modifier = Modifier
-                    .size(300.dp)
-            )
-
-            CustomLinearProgressIndicator(
-                modifier = Modifier
-                    .fillMaxWidth(0.6f)
-            )
-            Text(text = "Cargando...",
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = Color(0xFF231955)
-            )
-        }
-
-        Spacer(modifier = Modifier.height(300.dp))
-
-        Text(text = "Version 2.0",
-            fontSize = 15.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center,
-            color = Color(0xFF231955)
-        )*/
-    }
-}
-
-// custom progress bar
-@Composable
-fun CustomLinearProgressIndicator(
-    modifier: Modifier = Modifier,
-    progressColor: Color = Color(0xFFFFFFFF),
-    backgroundColor: Color = Color(0xFF231955),
-    clipShape: Shape = RoundedCornerShape(16.dp)
-) {
-    var progress by remember { mutableStateOf(0.0f) }
-
-    LaunchedEffect(key1 = true){
-        for(i in 10..100 step 10){
-            delay(300)
-            progress = i/100f
-        }
-    }
-
-    Box(
-        modifier = modifier
-            .clip(clipShape)
-            .background(backgroundColor)
-            .height(8.dp)
-    ) {
-        Box(
-            modifier = Modifier
-                .background(progressColor)
-                .fillMaxHeight()
-                .fillMaxWidth(progress)
         )
     }
 }

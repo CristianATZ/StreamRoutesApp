@@ -28,5 +28,6 @@ sealed class AppScreens (val route: String) {
     object TripScreen: AppScreens("trip_screen")
     object SuscripcionScreen: AppScreens("premium_screen")
     object ValoranoScreen: AppScreens("valoranos_screen")
+    object LanguageScreen: AppScreens("language_screen")
 }
 
