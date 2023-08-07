@@ -39,11 +39,12 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrivacityScreen(navController: NavController){
+fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
 
     // variables globales
     var localizacion = remember { mutableStateOf(true) }
@@ -60,7 +61,7 @@ fun PrivacityScreen(navController: NavController){
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Privacidad",
+                Text(text = myViewModel.languageType().get(77),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -89,32 +90,32 @@ fun PrivacityScreen(navController: NavController){
 
             // localizacion
             Options(
-                text = "Localizacion",
-                sub_text = "Podremos sugerirte mejores rutas en base a tu ubicacion. Permite este servicio incluso cuando la app no este en uso.",
+                text = myViewModel.languageType().get(78),
+                sub_text = myViewModel.languageType().get(79),
                 color_letra = color_letra,
                 variable = localizacion
             )
 
             // anuncios
             Options(
-                text = "Anuncios personalizados", // texto
-                sub_text = "Podremos usar tus datos para mostrarte anuncios que podrian ser releantes para ti. Si esta opcion no esta marcada se mostraran anuncios genericos.",
+                text = myViewModel.languageType().get(80), // texto
+                sub_text = myViewModel.languageType().get(81),
                 color_letra = color_letra,
                 variable = anuncios
             )
 
             // rutas
             Options(
-                text = "Rutas personalizadas", // texto
-                sub_text = "Usar tus rutas frecuentes para generarte un plan de viaje personalizado para ti. Si esta opcion no esta marcada no se mostratan estrategias de viajes personaliszadas.",
+                text = myViewModel.languageType().get(82), // texto
+                sub_text = myViewModel.languageType().get(83),
                 color_letra = color_letra,
                 variable = rutas
             )
 
             // suscripcion
             Options(
-                text = "Pago de suscripcion", // texto
-                sub_text = "Si esta opcion esta marcada se permitira el cobro automatico de la suscripcion cada mes.",
+                text = myViewModel.languageType().get(84), // texto
+                sub_text = myViewModel.languageType().get(85),
                 color_letra = color_letra,
                 variable = suscripcion
             )

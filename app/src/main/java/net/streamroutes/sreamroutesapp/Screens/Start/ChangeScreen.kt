@@ -44,19 +44,20 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun ChangeScreen(navController: NavController){
-    Change(navController)
+fun ChangeScreen(myViewModel: MyViewModel,navController: NavController){
+    Change(myViewModel,navController)
 }
 
 val color_fond = Color(0xFFFFF7E7)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Change( navController: NavController ){
+fun Change( myViewModel: MyViewModel,navController: NavController ){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -65,7 +66,7 @@ fun Change( navController: NavController ){
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Cambiar Contraseña",
+                Text(text = myViewModel.languageType().get(130),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -117,7 +118,7 @@ fun Change( navController: NavController ){
                     Text(
                         modifier = Modifier
                             .fillMaxWidth(0.8f),
-                        text = "Contraseña",
+                        text = myViewModel.languageType().get(131),
                         color = Color.DarkGray,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.Bold,
@@ -171,7 +172,7 @@ fun Change( navController: NavController ){
                                 ){
                                     if (variable.text.isEmpty()){
                                         Text(
-                                            text = "Contraseña",
+                                            text = myViewModel.languageType().get(131),
                                             fontSize = 18.sp,
                                             color = Color(0xFFFFF7E7),
                                             letterSpacing = 3.sp,
@@ -204,7 +205,7 @@ fun Change( navController: NavController ){
                     Text(
                         modifier = Modifier
                             .fillMaxWidth(0.8f),
-                        text = "Confirmar contraseña",
+                        text = myViewModel.languageType().get(132),
                         color = Color.DarkGray,
                         fontFamily = FontFamily.SansSerif,
                         fontWeight = FontWeight.Bold,
@@ -258,7 +259,7 @@ fun Change( navController: NavController ){
                                 ){
                                     if (variable.text.isEmpty()){
                                         Text(
-                                            text = "Contraseña",
+                                            text = myViewModel.languageType().get(132),
                                             fontSize = 18.sp,
                                             color = Color(0xFFFFF7E7),
                                             letterSpacing = 3.sp,
@@ -296,7 +297,7 @@ fun Change( navController: NavController ){
                         .padding(15.dp)
                 ) {
                     Text(
-                        text = "CAMBIAR",
+                        text = myViewModel.languageType().get(134),
                         fontSize = 26.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold

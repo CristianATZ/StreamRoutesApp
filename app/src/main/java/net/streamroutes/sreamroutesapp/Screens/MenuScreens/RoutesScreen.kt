@@ -49,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
@@ -81,6 +82,8 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Dialogs.DialogAutobusCercano
 import net.streamroutes.sreamroutesapp.Dialogs.DialogDestino
 import net.streamroutes.sreamroutesapp.Dialogs.DialogParada
+import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -88,13 +91,13 @@ import java.util.Locale
 
 
 @Composable
-fun RoutesScreen(navController: NavController){
-    RoutesScreenView(navController = navController)
+fun RoutesScreen(myViewModel: MyViewModel, navController: NavController){
+    RoutesScreenView(myViewModel,navController)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun RoutesScreenView(navController: NavController){
+fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
 
     val autobus = remember { mutableStateOf(true) }
     val paradas = remember { mutableStateOf(true) }
@@ -157,7 +160,7 @@ fun RoutesScreenView(navController: NavController){
                     .padding(top = 12.dp, end = 12.dp)
             ){
                 Row{
-                    IconButton(onClick = { }) {
+                    IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                         androidx.compose.material.Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = "Te enviara al menu de opciones",
@@ -167,7 +170,7 @@ fun RoutesScreenView(navController: NavController){
                     Column {
                         Row {
                             Text(
-                                text = "Origen",
+                                text = myViewModel.languageType().get(29),
                                 color = Color.White,
                                 modifier = Modifier.padding(start = 2.dp)
                             )
@@ -191,7 +194,7 @@ fun RoutesScreenView(navController: NavController){
 
                 Row{
                     Text(
-                        text="Destino",
+                        text=myViewModel.languageType().get(30),
                         color = Color.White,
                         modifier = Modifier.padding(start = 50.dp)
                     )
@@ -214,7 +217,7 @@ fun RoutesScreenView(navController: NavController){
 
                 Row{
                     Text(
-                        text = "Hora: $formattedTime",
+                        text = myViewModel.languageType().get(31)+ ": $formattedTime",
                         color = Color.White,
                         modifier = Modifier.padding(start = 16.dp, top = 5.dp)
                     )
@@ -223,7 +226,7 @@ fun RoutesScreenView(navController: NavController){
         }
 
         //MAP
-        map()
+        map(myViewModel)
 
 
 
@@ -231,7 +234,7 @@ fun RoutesScreenView(navController: NavController){
 }
 
 @Composable
-fun map() {
+fun map(myViewModel: MyViewModel) {
 
     // Mapa
     val itsur = LatLng(20.139468718311957, -101.15069924573676)
@@ -316,18 +319,22 @@ fun map() {
                     contentDescription = "Tipo de mapa",
                     modifier = Modifier
                         .padding(10.dp)
+                        .size(34.dp),
+                    colorFilter = ColorFilter.tint(
+                        Color.White
+                    )
                 )
             }
         }
 
-        Botones()
+        Botones(myViewModel)
     }
 }
 
 
 
 @Composable
-fun Botones() {
+fun Botones(myViewModel: MyViewModel) {
 
     Box(
         modifier = Modifier
@@ -355,7 +362,7 @@ fun Botones() {
             .align(Alignment.BottomCenter)
     ) {
         Text(
-            text = "Buscar",
+            text = myViewModel.languageType().get(32),
             fontSize = 26.sp,
             color = Color.White,
             fontWeight = FontWeight.Bold

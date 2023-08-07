@@ -41,6 +41,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Dialogs.DialogNotificationPush
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 
@@ -52,7 +53,7 @@ fun notificaciones(){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationsScreen(navController: NavController){
+fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
 
     // variables para el funcionamiento del codigo
     var dialogo = remember { mutableStateOf(false) }
@@ -82,7 +83,7 @@ fun NotificationsScreen(navController: NavController){
 
     // presentacion del dialog
     if (dialogo.value) {
-        DialogNotificationPush(dialogo = dialogo, siempre = siempre, durante = durante, nunca = nunca)
+        DialogNotificationPush(dialogo = dialogo, siempre = siempre, durante = durante, nunca = nunca, myViewModel)
     }
 
     Column(
@@ -93,7 +94,7 @@ fun NotificationsScreen(navController: NavController){
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Notificaciones",
+                Text(text = myViewModel.languageType().get(54),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -138,13 +139,13 @@ fun NotificationsScreen(navController: NavController){
                         .fillMaxWidth(0.75f)
                 ) {
                     Text(
-                        text = "Notificaciones push", // texto
+                        text = myViewModel.languageType().get(55), // texto
                         color = color_letra,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 20.sp
                     )
                     Text(
-                        text = "Tipo de notificacion", // texto
+                        text = myViewModel.languageType().get(56), // texto
                         color = color_letra,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 12.sp
@@ -155,22 +156,22 @@ fun NotificationsScreen(navController: NavController){
             // noticias
             OptionSwitch(
                 variable = noticias,
-                text = "Noticias de la aplicacion",
-                sub_text = "Nuevas versiones, promociones, etc."
+                text = myViewModel.languageType().get(60),
+                sub_text = myViewModel.languageType().get(61)
             )
 
             // alertas
             OptionSwitch(
                 variable = alertas,
-                text = "Alertas",
-                sub_text = "Cambios de horarios, rutas, etc."
+                text = myViewModel.languageType().get(62),
+                sub_text = myViewModel.languageType().get(63)
             )
 
             // suscripcion
             OptionSwitch(
                 variable = suscripcion,
-                text = "Suscripcion",
-                sub_text = "Expiracion de la suscripcion, etc."
+                text = myViewModel.languageType().get(64),
+                sub_text = myViewModel.languageType().get(65)
             )
         }
     }

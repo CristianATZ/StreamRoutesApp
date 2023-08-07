@@ -62,6 +62,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.theme.Purple40
 
@@ -75,6 +76,7 @@ fun DialogNotificationPush(
     siempre: MutableState<Boolean>,
     durante: MutableState<Boolean>,
     nunca: MutableState<Boolean>,
+    myViewModel: MyViewModel
 ){
     Dialog(
         onDismissRequest = {
@@ -102,21 +104,21 @@ fun DialogNotificationPush(
                 ) {
                     // siempre
                     PushOptions(
-                        text = "Siempre",
+                        text = myViewModel.languageType().get(57),
                         color_letra = color_letra_alterno,
                         variable = siempre
                     )
 
                     // durante
                     PushOptions(
-                        text = "Durante",
+                        text = myViewModel.languageType().get(58),
                         color_letra = color_letra_alterno,
                         variable = durante
                     )
 
                     // nunca
                     PushOptions(
-                        text = "Nunca",
+                        text = myViewModel.languageType().get(59),
                         color_letra = color_letra_alterno,
                         variable = nunca
                     )

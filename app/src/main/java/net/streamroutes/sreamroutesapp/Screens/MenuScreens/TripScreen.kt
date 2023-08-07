@@ -81,6 +81,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -99,7 +100,7 @@ data class AddressInfo(
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun TripScreen(navController: NavController) {
+fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
     var markers by remember { mutableStateOf(listOf<AddressInfo>()) }
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
     val context = LocalContext.current
@@ -142,7 +143,7 @@ fun TripScreen(navController: NavController) {
         TopAppBar(
             title = {
                 Text(
-                    text = "Planifica tu viaje",
+                    text = myViewModel.languageType().get(35),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -209,7 +210,7 @@ fun TripScreen(navController: NavController) {
                     selectedLocation?.let {
                         Marker(
                             state = MarkerState(position = it),
-                            title = "Ubicación seleccionada"
+                            title = myViewModel.languageType().get(36)
                         )
                     }
                 }
@@ -231,7 +232,7 @@ fun TripScreen(navController: NavController) {
                         }
                         SearchBar(
                             onSearch = onSearch,
-                            placeholder = "Ubicacion",
+                            placeholder = myViewModel.languageType().get(37),
                             size = 70
                         )
                     }
@@ -275,7 +276,7 @@ fun TripScreen(navController: NavController) {
                 // encabezado
                 item {
                     Text(
-                        text = "Lugares seleccionados",
+                        text = myViewModel.languageType().get(38),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = color_letra_alterno,
@@ -290,7 +291,7 @@ fun TripScreen(navController: NavController) {
                     val location = markers[index]
                     PlaceOption(
                         nombreCalle = "${location.streetName}",
-                        colonia = "Colonia: ${location.neighborhood} - CP: ${location.postalCode}",
+                        colonia = myViewModel.languageType().get(39) + ": ${location.neighborhood} - " + myViewModel.languageType().get(40) + ": ${location.postalCode}",
                         numero = index + 1,
                         onRemove = {
                             removeMarker(index)
@@ -309,7 +310,7 @@ fun TripScreen(navController: NavController) {
                 val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
                 Button(
                     onClick = {
-                        Toast.makeText(context, "Plan guardado a ${markers.size} ubicaciones", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, myViewModel.languageType().get(41) + " ${markers.size} " + myViewModel.languageType().get(42), Toast.LENGTH_LONG).show()
                         removeAll()
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -322,7 +323,7 @@ fun TripScreen(navController: NavController) {
                         .padding(16.dp),
                 ) {
                     Text(
-                        text = "PLANEAR",
+                        text = myViewModel.languageType().get(43),
                         fontSize = 26.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold

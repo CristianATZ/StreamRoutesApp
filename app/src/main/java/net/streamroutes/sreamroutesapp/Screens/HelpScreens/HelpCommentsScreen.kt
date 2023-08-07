@@ -54,12 +54,13 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpCommentsScreen(navController: NavController){
+fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -68,7 +69,8 @@ fun HelpCommentsScreen(navController: NavController){
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Comentarios",
+                Text(
+                    text = myViewModel.languageType().get(93),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -123,7 +125,7 @@ fun HelpCommentsScreen(navController: NavController){
                     ){
                         if (comment.text.isEmpty()){
                             Text(
-                                text = "Cuentanos como podemos ayudarte",
+                                text = myViewModel.languageType().get(94),
                                 fontSize = 18.sp,
                                 color = Color(0xFFFFF7E7),
                                 letterSpacing = 3.sp
@@ -148,12 +150,12 @@ fun HelpCommentsScreen(navController: NavController){
 
                 ) {
                     Text(
-                        text = stringResource(id = R.string.subcomment1_comments_screen),
+                        text = myViewModel.languageType().get(95),
                         color = color_letra,
                         fontFamily = FontFamily.SansSerif,
                     )
                     Text(
-                        text = stringResource(id = R.string.subcomment2_comments_screen),
+                        text = myViewModel.languageType().get(96),
                         color = color_letra,
                         fontFamily = FontFamily.SansSerif,
                     )
@@ -192,7 +194,7 @@ fun HelpCommentsScreen(navController: NavController){
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "ENVIAR",
+                        text = myViewModel.languageType().get(97),
                         fontSize = 26.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
@@ -205,7 +207,7 @@ fun HelpCommentsScreen(navController: NavController){
                     verticalAlignment = Alignment.Bottom
                 ) {
                     Text(
-                        text = stringResource(id = R.string.bottomComment_comments_screen),
+                        text = myViewModel.languageType().get(98),
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )

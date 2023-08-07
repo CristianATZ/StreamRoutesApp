@@ -52,6 +52,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -63,7 +64,7 @@ fun suscripcionView() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuscripcionScreen(navController: NavController) {
+fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
     val context = LocalContext.current
 
     var mensual = remember { mutableStateOf(true) }
@@ -79,7 +80,7 @@ fun SuscripcionScreen(navController: NavController) {
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Suscripcion",
+                Text(text = myViewModel.languageType().get(15),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -114,8 +115,9 @@ fun SuscripcionScreen(navController: NavController) {
                     .verticalScroll(rememberScrollState())
             ) {
                 SuscripcionDatos(
-                    titulo = "Elimina anuncios",
-                    descripcion = "Disfruta de tu viaje sin los anuncios emergentes de la aplicacion.",
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(16),
+                    descripcion = myViewModel.languageType().get(17),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
@@ -123,24 +125,27 @@ fun SuscripcionScreen(navController: NavController) {
 
 
                 SuscripcionDatos(
-                    titulo = "Muevete seguro",
-                    descripcion = "Comparte tu ubicacion real en todo momento con tu gente de confianza.",
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(18),
+                    descripcion = myViewModel.languageType().get(19),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
                 )
 
                 SuscripcionDatos(
-                    titulo = "Prepara tu viaje",
-                    descripcion = "Programa una lista de ubicaciones las cuales quieras visitar sin perder tanto tiempo buscando una ruta.",
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(20),
+                    descripcion = myViewModel.languageType().get(21),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
                 )
 
                 SuscripcionDatos(
-                    titulo = "Ubicaciones en tiempo real",
-                    descripcion = "Ten presente la ubicacion de tu autobus en todo momento.",
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(22),
+                    descripcion = myViewModel.languageType().get(23),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
@@ -209,7 +214,7 @@ fun SuscripcionScreen(navController: NavController) {
                                 modifier = Modifier
                                     .fillMaxSize()
                             ) {
-                                TextUser(text = "Mensual", fontSize = 25, color = color_letra_topappbar, textAlign = TextAlign.Center)
+                                TextUser(text = myViewModel.languageType().get(24), fontSize = 25, color = color_letra_topappbar, textAlign = TextAlign.Center)
                                 Spacer(modifier = Modifier.size(10.dp))
                                 TextUser(text = "$ 15.00", fontSize = 30, color = color_letra_textfield, textAlign = TextAlign.Center)
                             }
@@ -256,10 +261,10 @@ fun SuscripcionScreen(navController: NavController) {
                                 modifier = Modifier
                                     .fillMaxSize()
                             ) {
-                                TextUser(text = "Anual", fontSize = 25, color = color_letra_topappbar, textAlign = TextAlign.Center)
+                                TextUser(text = myViewModel.languageType().get(25), fontSize = 25, color = color_letra_topappbar, textAlign = TextAlign.Center)
                                 Spacer(modifier = Modifier.size(10.dp))
                                 TextUser(text = "$ 120.00", fontSize = 30, color = color_letra_textfield, textAlign = TextAlign.Center)
-                                TextUser(text = "$ 10.00/Mes", fontSize = 15, color = color_letra_textfield, textAlign = TextAlign.Center)
+                                TextUser(text = "$ 10.00/" + myViewModel.languageType().get(26), fontSize = 15, color = color_letra_textfield, textAlign = TextAlign.Center)
                             }
                         }
                     }
@@ -291,7 +296,7 @@ fun SuscripcionScreen(navController: NavController) {
                             .wrapContentSize()
                     ) {
                         Text(
-                            text = "SUSCRIBIRSE",
+                            text = myViewModel.languageType().get(27),
                             fontSize = 26.sp,
                             color = color_fondo_topappbar_alterno,
                             fontWeight = FontWeight.Bold
@@ -325,6 +330,7 @@ private fun TextUser(
 
 @Composable
 private fun SuscripcionDatos(
+    myViewModel: MyViewModel,
     titulo: String,
     descripcion: String,
     roundedCornerShape: RoundedCornerShape,
@@ -362,7 +368,7 @@ private fun SuscripcionDatos(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold)
                     ) {
-                        append("Saber mas...")
+                        append(myViewModel.languageType().get(28))
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

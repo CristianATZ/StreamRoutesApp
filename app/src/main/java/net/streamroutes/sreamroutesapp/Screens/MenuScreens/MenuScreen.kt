@@ -122,7 +122,7 @@ fun Menu(myViewModel: MyViewModel, navController: NavController){
     ) {
         TopAppBar(
             title = {
-                androidx.compose.material3.Text(
+                Text(
                     text = myViewModel.languageType().get(1),
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -130,7 +130,7 @@ fun Menu(myViewModel: MyViewModel, navController: NavController){
                 )
             },
             navigationIcon = {
-                androidx.compose.material3.IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+                IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara a la ventana principal",
@@ -222,7 +222,7 @@ fun Menu(myViewModel: MyViewModel, navController: NavController){
                                     myViewModel.languageType().get(9) + getAddressInfoFromCoordinates(context,latitude,longitude)
 
                                 val shareIntent =
-                                    Intent.createChooser(getShareUbi(context, message+mapUrl), null)
+                                    Intent.createChooser(getShareUbi(context, message+mapUrl, myViewModel), null)
                                 context.startActivity(shareIntent)
 
                             } else {
@@ -247,7 +247,7 @@ fun Menu(myViewModel: MyViewModel, navController: NavController){
             Options(
                 text = myViewModel.languageType().get(11),
                 onClick = {
-                    val shareIntent = Intent.createChooser(getShareApp(), null)
+                    val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
                     context.startActivity(shareIntent)
                 },
                 roundedCornerShape = RoundedCornerShape(topEnd = 15.dp, bottomStart = 0.dp, topStart = 15.dp, bottomEnd = 0.dp))
@@ -341,22 +341,21 @@ fun checkPermissionFor(permission: String, context: Context): Boolean {
 ///////// SHARE SHEET ////////
 
 // hoja para compartir la aplicacion (pagina)
-fun getShareApp() : Intent{
+fun getShareApp(myViewModel: MyViewModel) : Intent{
     val shareApp: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TITLE, "Comparte la aplicacion con tus amigos")
+        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(34))
         type = "text/plain"
         putExtra(Intent.EXTRA_TEXT, "https://stream_routes_official.com.mx")
         type = "text/plain"
-
     }
     return shareApp
 }
 // hoja para compartir la ubicacion
-fun getShareUbi(context: Context, message: String) : Intent{
+fun getShareUbi(context: Context, message: String, myViewModel: MyViewModel) : Intent{
     val shareUbi: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TITLE, "Comparte tu ubicacion en tiempo real")
+        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(33))
         val manager = context.getSystemService(BATTERY_SERVICE) as BatteryManager
         val level: Int = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
         putExtra(Intent.EXTRA_TEXT, "Bat:$level% $message\n")

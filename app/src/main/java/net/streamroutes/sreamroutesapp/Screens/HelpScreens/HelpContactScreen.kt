@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -57,12 +58,13 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpContactScreen(navController: NavController){
+fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
     var nombre by remember { mutableStateOf(TextFieldValue()) }
     var mensaje by remember { mutableStateOf(TextFieldValue()) }
     var mail by remember { mutableStateOf(TextFieldValue("streamroutes2.0@gmail.com")) }
@@ -75,7 +77,7 @@ fun HelpContactScreen(navController: NavController){
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Contactanos",
+                Text(text = myViewModel.languageType().get(99),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -105,8 +107,8 @@ fun HelpContactScreen(navController: NavController){
 
             // nombre
             TextWTittle(
-                tittle = "Nombre",
-                placeholder = "Nombre",
+                tittle = myViewModel.languageType().get(100),
+                placeholder = myViewModel.languageType().get(100),
                 readOnly = false,
                 size = 70,
                 variable = nombre,
@@ -117,7 +119,7 @@ fun HelpContactScreen(navController: NavController){
 
             // destinatario
             TextWTittle(
-                tittle = "Nuestro correo",
+                tittle = myViewModel.languageType().get(101),
                 placeholder = "",
                 readOnly = true,
                 size = 70,
@@ -129,7 +131,7 @@ fun HelpContactScreen(navController: NavController){
 
             // mensaje
             TextWTittle(
-                tittle = "Mensaje",
+                tittle = myViewModel.languageType().get(102),
                 placeholder = "",
                 readOnly = false,
                 singleLine = false,
@@ -162,7 +164,7 @@ fun HelpContactScreen(navController: NavController){
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = "ENVIAR",
+                        text = myViewModel.languageType().get(103),
                         fontSize = 26.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold
@@ -173,12 +175,13 @@ fun HelpContactScreen(navController: NavController){
                 Row(modifier = Modifier
                     .fillMaxSize()
                     .padding(vertical = 15.dp),
-                    verticalAlignment = Alignment.Bottom
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     // text ubicacion
                     CustomText(
-                        firstString = "ITSUR, Uriangato, Gto.",
-                        secondString = "¿Como llegar?",
+                        firstString = myViewModel.languageType().get(104),
+                        secondString = myViewModel.languageType().get(105),
                         horizontal = Arrangement.Center
                     ) {
 
@@ -281,7 +284,7 @@ private fun CustomText(
     Row (
         modifier = Modifier
             .fillMaxWidth(0.8f)
-            .size(48.dp),
+            .heightIn(min = 48.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = horizontal
     ){
@@ -305,7 +308,8 @@ private fun CustomText(
             },
             modifier = Modifier
                 .wrapContentWidth()
-                .clickable(onClick = onClick)
+                .clickable(onClick = onClick),
+            textAlign = TextAlign.Center
         )
     }
 }

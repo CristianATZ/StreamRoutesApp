@@ -41,6 +41,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -53,7 +54,7 @@ fun HelpView(){
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpScreen(navController: NavController) {
+fun HelpScreen(myViewModel: MyViewModel,navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -62,7 +63,7 @@ fun HelpScreen(navController: NavController) {
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Ayuda",
+                Text(text = myViewModel.languageType().get(86),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -85,22 +86,22 @@ fun HelpScreen(navController: NavController) {
 
         // comentarios
         Options(
-            text = "Comentarios",
-            sub_text = "¿Sugerencias?",
+            text = myViewModel.languageType().get(87),
+            sub_text = myViewModel.languageType().get(88),
             onClick = { navController.navigate(AppScreens.HelpCommentsScreen.route) }
         )
 
         // contactanos
         Options(
-            text = "Contactanos",
-            sub_text = "Cuentanos tu experiencia",
+            text = myViewModel.languageType().get(89),
+            sub_text = myViewModel.languageType().get(90),
             onClick = { navController.navigate(AppScreens.HelpContactScreen.route) }
         )
 
         // acerca de
         Options(
-            text = "Acerca de",
-            sub_text = "Version de la aplicacion",
+            text = myViewModel.languageType().get(91),
+            sub_text = myViewModel.languageType().get(92),
             onClick = { navController.navigate(AppScreens.HelpAboutAppScreen.route) }
         )
     }

@@ -40,18 +40,19 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun ChangeCityScreen(navController: NavController){
-    CambiarCiudad(navController)
+fun ChangeCityScreen(myViewModel: MyViewModel,navController: NavController){
+    CambiarCiudad(myViewModel,navController)
 
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CambiarCiudad(navController: NavController) {
+fun CambiarCiudad(myViewModel: MyViewModel,navController: NavController) {
     //Fondo
     Column(
         modifier = Modifier
@@ -61,7 +62,7 @@ fun CambiarCiudad(navController: NavController) {
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Cambiar Ciudad",
+                Text(text = myViewModel.languageType().get(53),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center

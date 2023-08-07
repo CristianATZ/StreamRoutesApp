@@ -19,6 +19,7 @@ class MyViewModel : ViewModel() {
     val es = listOf(
         // main screen
         "Ciudad", // 0
+
         // menu screen
         "Menu", // 1
         "Nombre Usuario", // 2
@@ -55,7 +56,7 @@ class MyViewModel : ViewModel() {
         "Origen", // 29
         "Destino", // 30
         "Hora", // 31
-        "Buscar", // 32
+        "BUSCAR", // 32
 
         // Menu (compartir ubicacion)
         "Comparte tu ubicacion en tiempo real", // 33
@@ -116,8 +117,8 @@ class MyViewModel : ViewModel() {
         "Indica estaciones de autobuses.", // 70
         "Marcadores de ubicacion act.", // 71
         "Mira tu ubicacion actual.", // 72
-        "Restaurantes, puestos de comida, etc.", // 73
-        "Marcadores de restaurantes, etc.", // 74
+        "Comida", // 73
+        "Restaurantes, puestos de comida, etc.", // 74
         "Salud", // 75
         "Hospitales, farmacias, consultorios, etc.", // 76
 
@@ -178,7 +179,7 @@ class MyViewModel : ViewModel() {
         "Registrate", // 116
         "Telefono", // 117
         "Contraseña", // 118
-        "Contraseña", // 119
+        "Confirmar Contraseña", // 119
         "REGISTRARSE", // 120
 
         // verification screen
@@ -254,7 +255,7 @@ class MyViewModel : ViewModel() {
         "Location", // 37
         "Selected Places", // 38
         "Neighborhood", // 39
-        "Postal Code", // 40
+        "PC", // 40
         "Saved as Plan for", // 41
         "location(s)", // 42
         "PLAN", // 43
@@ -297,8 +298,8 @@ class MyViewModel : ViewModel() {
         "Indicate bus stations.", // 70
         "Current Location Markers", // 71
         "See your current location.", // 72
-        "Restaurants, Food Stalls, etc.", // 73
-        "Restaurant Markers, etc.", // 74
+        "Food", // 73
+        "Restaurants, Food Stalls, etc.", // 74
         "Healthcare", // 75
         "Hospitals, Pharmacies, Clinics, etc.", // 76
 

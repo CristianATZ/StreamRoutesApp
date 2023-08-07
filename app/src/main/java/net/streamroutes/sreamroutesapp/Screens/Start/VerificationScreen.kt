@@ -66,20 +66,21 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import java.util.Random
 
 @Composable
-fun VerificationScreen (navController: NavController) {
-    Verification(navController)
+fun VerificationScreen (myViewModel: MyViewModel,navController: NavController) {
+    Verification(myViewModel,navController)
 }
 
 val color_fondo_ = Color(0xFFFFF7E7)
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
-fun Verification(navController: NavController) {
+fun Verification(myViewModel: MyViewModel,navController: NavController) {
     val context = LocalContext.current
 
     val smsPermissionState = rememberPermissionState(
@@ -103,7 +104,7 @@ fun Verification(navController: NavController) {
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Olvide mi contraseña",
+                Text(text = myViewModel.languageType().get(121),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -145,8 +146,8 @@ fun Verification(navController: NavController) {
 
             // telefono
             PasswordTextfield(
-                tittle = "Telefono",
-                placeholder = "Telefono",
+                tittle = myViewModel.languageType().get(122),
+                placeholder = myViewModel.languageType().get(122),
                 readOnly = false,
                 size = 70,
                 variable = telefono,
@@ -171,8 +172,8 @@ fun Verification(navController: NavController) {
                         codigoGenerado = generarCodigo()
                         val smsManager: SmsManager = SmsManager.getDefault()
                         smsManager.sendTextMessage(telefono.text, null, codigoGenerado, null, null)
-                        Toast.makeText(context, "Codigo enviado $codigoGenerado", Toast.LENGTH_SHORT).show()
-                    } else Toast.makeText(context, "Ingresa un telefono valido", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, myViewModel.languageType().get(123) + " $codigoGenerado", Toast.LENGTH_SHORT).show()
+                    } else Toast.makeText(context, myViewModel.languageType().get(124), Toast.LENGTH_SHORT).show()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
@@ -184,7 +185,7 @@ fun Verification(navController: NavController) {
                     .padding(10.dp)
             ) {
                 Text(
-                    text = "ENVIAR",
+                    text = myViewModel.languageType().get(125),
                     fontSize = 26.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold
@@ -193,8 +194,8 @@ fun Verification(navController: NavController) {
 
             // codigo de verificacion
             PasswordTextfield(
-                tittle = "Codgio de verificacion",
-                placeholder = "Codigo",
+                tittle = myViewModel.languageType().get(126),
+                placeholder = myViewModel.languageType().get(127),
                 readOnly = false,
                 size = 70,
                 variable = codigo,
@@ -211,7 +212,7 @@ fun Verification(navController: NavController) {
             Button(
                 onClick = {
                     if(codigoGenerado.equals(codigo.text)) navController.navigate(route = AppScreens.ChangeScreen.route)
-                    else Toast.makeText(context, "Codigo incorrecto", Toast.LENGTH_SHORT).show()
+                    else Toast.makeText(context, myViewModel.languageType().get(128), Toast.LENGTH_SHORT).show()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
@@ -223,7 +224,7 @@ fun Verification(navController: NavController) {
                     .padding(10.dp)
             ) {
                 Text(
-                    text = "VERIFICAR",
+                    text = myViewModel.languageType().get(129),
                     fontSize = 26.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold

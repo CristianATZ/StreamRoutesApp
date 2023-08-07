@@ -48,17 +48,18 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun ValoranoScreen(navController: NavController){
-    TopBar(navController)
+fun ValoranoScreen(myViewModel: MyViewModel,navController: NavController){
+    TopBar(myViewModel,navController)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBar(navController: NavController) {
+fun TopBar(myViewModel: MyViewModel, navController: NavController) {
     //Fondo
     Column(
         modifier = Modifier
@@ -67,7 +68,7 @@ fun TopBar(navController: NavController) {
     ){
         TopAppBar(
             title = {
-                Text(text = "Valoranos",
+                Text(text = myViewModel.languageType().get(44),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -88,7 +89,7 @@ fun TopBar(navController: NavController) {
                     titleContentColor = color_letra_topappbar
                 )
         )
-        Down()
+        Down(myViewModel)
         // Espacio para empujar el contenido hacia abajo
         Spacer(modifier = Modifier.weight(1f))
     }
@@ -97,8 +98,8 @@ fun TopBar(navController: NavController) {
 
 //Parte envio de calificacion
 @Composable
-fun Down(modifier: Modifier = Modifier) {
-    Column(modifier = modifier){
+fun Down(myViewModel: MyViewModel) {
+    Column(){
         //Primer texto
         Row {
             Box(
@@ -108,7 +109,7 @@ fun Down(modifier: Modifier = Modifier) {
                     .background(Color(android.graphics.Color.parseColor("#FFF7E7")))
             ){
                 Text(
-                    text = "¡Calificanos!",
+                    text = myViewModel.languageType().get(45),
                     fontSize = 45.sp,
                     fontWeight = FontWeight.Bold,
                     color = Color(android.graphics.Color.parseColor("#153040")),
@@ -127,11 +128,7 @@ fun Down(modifier: Modifier = Modifier) {
                     .background(Color(android.graphics.Color.parseColor("#FFF7E7")))
             ){
                 Text(
-                    text = "Haznos saber tu conformidad con la aplicación, " +
-                            "tu opinión es muy importante para nosotros. " +
-                            "Saber tu conformidad en una escala nos ayuda " +
-                            "a mejorar la aplicación y lanzar una mejor " +
-                            "interfaz para el usuario.",
+                    text = myViewModel.languageType().get(46),
                     fontSize = 20.sp,
                     color = Color(android.graphics.Color.parseColor("#153040")),
                     modifier = Modifier.align(Alignment.Center)
@@ -164,7 +161,7 @@ fun Down(modifier: Modifier = Modifier) {
                         .align(Alignment.Center)
                 ) {
                     Text(
-                        text = "ENVIAR",
+                        text = myViewModel.languageType().get(47),
                         fontSize = 26.sp,
                         color = Color.White,
                         fontWeight = FontWeight.Bold

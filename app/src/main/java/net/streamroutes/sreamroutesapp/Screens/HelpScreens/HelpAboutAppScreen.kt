@@ -26,17 +26,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpAboutAppScreen(navController: NavController){
+fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         TopAppBar(
-            title = { Text(stringResource(id = R.string.tittle_aboutapp_screen)) },
+            title = {
+                Text(myViewModel.languageType().get(106)) },
             navigationIcon = {
                 IconButton(onClick = { navController.popBackStack() }) {
                     Icon(
@@ -64,7 +66,7 @@ fun HelpAboutAppScreen(navController: NavController){
                 )
 
                 Text(
-                    text = stringResource(id = R.string.aboutapp_version),
+                    text = myViewModel.languageType().get(107) + " 2.9",
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -80,7 +82,7 @@ fun HelpAboutAppScreen(navController: NavController){
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    text = stringResource(id = R.string.aboutapp_reserved),
+                    text = myViewModel.languageType().get(108),
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
                 )

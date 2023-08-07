@@ -56,16 +56,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun LoginScreen(navController: NavController){
-    Login(navController)
+fun LoginScreen(myViewModel: MyViewModel,navController: NavController){
+    Login(myViewModel,navController)
 }
 
 @Composable
-fun Login(navController: NavController  ){
+fun Login(myViewModel: MyViewModel,navController: NavController){
     var telefono by remember { mutableStateOf(TextFieldValue("")) }
     var telefonoVisibility = remember { mutableStateOf(true) }
     var password by remember { mutableStateOf(TextFieldValue("")) }
@@ -87,8 +88,8 @@ fun Login(navController: NavController  ){
 
         // telefono
         PasswordTextfield(
-            tittle = "Telefono",
-            placeholder = "Telefono",
+            tittle = myViewModel.languageType().get(109),
+            placeholder = myViewModel.languageType().get(109),
             readOnly = false,
             size = 70,
             variable = telefono,
@@ -105,8 +106,8 @@ fun Login(navController: NavController  ){
         Spacer(modifier = Modifier.height(20.dp))
 
         PasswordTextfield(
-            tittle = "Contraseña",
-            placeholder = "Contraseña",
+            tittle = myViewModel.languageType().get(110),
+            placeholder = myViewModel.languageType().get(110),
             readOnly = false,
             size = 70,
             variable = password,
@@ -120,8 +121,8 @@ fun Login(navController: NavController  ){
         )
 
         CustomText(
-            firstString = "Olvide mi",
-            secondString = "contraseña",
+            firstString = myViewModel.languageType().get(111),
+            secondString = myViewModel.languageType().get(112),
             horizontal = Arrangement.End,
             onClick = {
                 navController.navigate(route = AppScreens.VerificationScreen.route)
@@ -144,7 +145,7 @@ fun Login(navController: NavController  ){
                 .padding(16.dp)
         ) {
             Text(
-                text = "INGRESAR",
+                text = myViewModel.languageType().get(113),
                 fontSize = 26.sp,
                 color = Color.White,
                 fontWeight = FontWeight.Bold
@@ -153,8 +154,8 @@ fun Login(navController: NavController  ){
 
         // registration
         CustomText(
-            firstString = "¿No tienes cuenta?",
-            secondString = "Registrate",
+            firstString = myViewModel.languageType().get(114),
+            secondString = myViewModel.languageType().get(115),
             horizontal = Arrangement.Center,
             onClick = {
                 navController.navigate(route = AppScreens.RegistrationScreen.route)

@@ -53,19 +53,19 @@ fun AppNavigation() {
         }
         // registrar pantalla
         composable(AppScreens.RegistrationScreen.route){
-            RegistrationScreen(NavController)
+            RegistrationScreen(myViewModel,NavController)
         }
         // confirmar telefono pantalla
         composable(AppScreens.VerificationScreen.route){
-            VerificationScreen(NavController)
+            VerificationScreen(myViewModel,NavController)
         }
         // cambiar contraseña pantalla
         composable(AppScreens.ChangeScreen.route){
-            ChangeScreen(NavController)
+            ChangeScreen(myViewModel,NavController)
         }
         // inicio de sesion pantalla
         composable(AppScreens.LoginScreen.route){
-            LoginScreen(NavController)
+            LoginScreen(myViewModel,NavController)
         }
         // PROFILE
         composable(AppScreens.ProfileScreen.route){
@@ -91,20 +91,20 @@ fun AppNavigation() {
         }
         // HELP
         composable(AppScreens.HelpAboutAppScreen.route){
-            HelpAboutAppScreen(NavController)
+            HelpAboutAppScreen(myViewModel,NavController)
         }
         composable(AppScreens.HelpCommentsScreen.route){
-            HelpCommentsScreen(NavController)
+            HelpCommentsScreen(myViewModel,NavController)
         }
         composable(AppScreens.HelpContactScreen.route){
-            HelpContactScreen(NavController)
+            HelpContactScreen(myViewModel,NavController)
         }
         composable(AppScreens.HelpScreen.route){
-            HelpScreen(NavController)
+            HelpScreen(myViewModel,NavController)
         }
         // ROUTES
         composable(AppScreens.RoutesScreen.route){
-            RoutesScreen(NavController)
+            RoutesScreen(myViewModel,NavController)
         }
         // MENU
         composable(AppScreens.MenuScreen.route){
@@ -113,42 +113,42 @@ fun AppNavigation() {
 
         // CONFIGURACION SCREEN
         composable(AppScreens.ConfigurationScreen.route){
-            ConfigurationScreen(NavController)
+            ConfigurationScreen(myViewModel,NavController)
         }
 
         // MAPA OPCIONES
         composable(AppScreens.MapOptionsScreen.route){
-            MapOptionsScreen(NavController)
+            MapOptionsScreen(myViewModel,NavController)
         }
 
         // CAMBIAR CIUDAD
         composable(AppScreens.ChangeCityScreen.route){
-            ChangeCityScreen(NavController)
+            ChangeCityScreen(myViewModel,NavController)
         }
 
         // NOTIFICACIONES
         composable(AppScreens.NotificationsScreen.route){
-            NotificationsScreen(NavController)
+            NotificationsScreen(myViewModel,NavController)
         }
 
         // PRIVACIDAD
         composable(AppScreens.PrivacityScreen.route){
-            PrivacityScreen(NavController)
+            PrivacityScreen(myViewModel,NavController)
         }
 
         // PLANIFICA TU VIAJE
         composable(AppScreens.TripScreen.route){
-            TripScreen(NavController)
+            TripScreen(myViewModel,NavController)
         }
 
         // VERSION PREMIUM
         composable(AppScreens.SuscripcionScreen.route){
-            SuscripcionScreen(NavController)
+            SuscripcionScreen(myViewModel,NavController)
         }
 
         // VALORANOS SCREEN
         composable(AppScreens.ValoranoScreen.route){
-            ValoranoScreen(NavController)
+            ValoranoScreen(myViewModel,NavController)
         }
 
         // LANGUAGE SCREEN

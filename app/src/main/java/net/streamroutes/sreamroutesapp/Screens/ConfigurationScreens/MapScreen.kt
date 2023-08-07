@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
@@ -38,11 +39,12 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapOptionsScreen(navController: NavController){
+fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
     var paradas = remember { mutableStateOf(true) }
     var terminales = remember { mutableStateOf(true) }
     var ubicacion = remember { mutableStateOf(true) }
@@ -57,7 +59,7 @@ fun MapOptionsScreen(navController: NavController){
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Mapa",
+                Text(text = myViewModel.languageType().get(66),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -85,40 +87,40 @@ fun MapOptionsScreen(navController: NavController){
         ) {
             // paradas
             Options(
-                text = "Marcadores de paradas",
-                sub_text = "Indica donde son las paradas.",
+                text = myViewModel.languageType().get(67),
+                sub_text = myViewModel.languageType().get(68),
                 variable = paradas,
                 altura = 70
             )
 
             // terminales
             Options(
-                text = "Marcadores de terminales",
-                sub_text = "Indica estaciones de autobuses.",
+                text = myViewModel.languageType().get(69),
+                sub_text = myViewModel.languageType().get(70),
                 variable = terminales,
                 altura = 70
             )
 
             // ubicacion
             Options(
-                text = "Marcadores de ubicacion act.",
-                sub_text = "Mira tu ubicacion actual.",
+                text = myViewModel.languageType().get(71),
+                sub_text = myViewModel.languageType().get(72),
                 variable = ubicacion,
                 altura = 90
             )
 
             // comida
             Options(
-                text = "Lugares de comida",
-                sub_text = "Marcadores de restaurantes, etc.",
+                text = myViewModel.languageType().get(73),
+                sub_text = myViewModel.languageType().get(74),
                 variable = comida,
                 altura = 70
             )
 
             // salud
             Options(
-                text = "Salud",
-                sub_text = "Marcadores de salud.",
+                text = myViewModel.languageType().get(75),
+                sub_text = myViewModel.languageType().get(76),
                 variable = salud,
                 altura = 70
             )
@@ -136,7 +138,7 @@ private fun Options(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(altura.dp)
+            .heightIn(min = altura.dp)
             .toggleable(
                 value = variable.value,
                 onValueChange = { variable.value = it }

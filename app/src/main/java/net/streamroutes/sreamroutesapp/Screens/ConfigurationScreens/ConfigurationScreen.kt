@@ -34,11 +34,12 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfigurationScreen(navController: NavController){
+fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -48,7 +49,7 @@ fun ConfigurationScreen(navController: NavController){
         // top app bar configuracion
         TopAppBar(
             title = {
-                Text(text = "Configuracion",
+                Text(text = myViewModel.languageType().get(48),
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
                 )
@@ -75,7 +76,7 @@ fun ConfigurationScreen(navController: NavController){
         ) {
             // cambiar de ciudad
             Options(
-                text = "Cambiar de ciudad",
+                text = myViewModel.languageType().get(49),
                 text_des = "icono de cambiar ciudad",
                 imageVector = Icons.Filled.Add,
                 color_texto = color_letra,
@@ -87,7 +88,7 @@ fun ConfigurationScreen(navController: NavController){
 
             // notificaciones
             Options(
-                text = "Notificaciones",
+                text = myViewModel.languageType().get(50),
                 text_des = "icono de tipo de notificaciones",
                 imageVector = Icons.Filled.Add,
                 color_texto = color_letra,
@@ -99,7 +100,7 @@ fun ConfigurationScreen(navController: NavController){
 
             // mapa
             Options(
-                text = "Mapa",
+                text = myViewModel.languageType().get(51),
                 text_des = "icono de mapa",
                 imageVector = Icons.Filled.Add,
                 color_texto = color_letra,
@@ -111,7 +112,7 @@ fun ConfigurationScreen(navController: NavController){
 
             // Privacidad
             Options(
-                text = "Privacidad",
+                text = myViewModel.languageType().get(52),
                 text_des = "icono de configuracion de privacidad",
                 imageVector = Icons.Filled.Add,
                 color_texto = color_letra,

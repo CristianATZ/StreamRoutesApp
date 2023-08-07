@@ -59,17 +59,18 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun RegistrationScreen (navController: NavController) {
-    Registration(navController)
+fun RegistrationScreen (myViewModel: MyViewModel,navController: NavController) {
+    Registration(myViewModel,navController)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registration (navController: NavController) {
+fun Registration (myViewModel: MyViewModel,navController: NavController) {
     var telefono by remember { mutableStateOf(TextFieldValue()) }
     var telefonoVisibility = remember { mutableStateOf(false) }
     var password by remember { mutableStateOf(TextFieldValue()) }
@@ -85,7 +86,7 @@ fun Registration (navController: NavController) {
         // top app bar
         TopAppBar(
             title = {
-                Text(text = "Registrate",
+                Text(text = myViewModel.languageType().get(116),
                     modifier = Modifier
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center
@@ -127,8 +128,8 @@ fun Registration (navController: NavController) {
 
             // telefono
             PasswordTextfield(
-                tittle = "Telefono",
-                placeholder = "Telefono",
+                tittle = myViewModel.languageType().get(117),
+                placeholder = myViewModel.languageType().get(117),
                 readOnly = false,
                 singleLine = false,
                 size = 70,
@@ -147,8 +148,8 @@ fun Registration (navController: NavController) {
 
             // contrasenia
             PasswordTextfield(
-                tittle = "Contraseña",
-                placeholder = "Contraseña",
+                tittle = myViewModel.languageType().get(118),
+                placeholder = myViewModel.languageType().get(118),
                 readOnly = false,
                 singleLine = false,
                 size = 70,
@@ -165,8 +166,8 @@ fun Registration (navController: NavController) {
 
             // confirmar
             PasswordTextfield(
-                tittle = "Contraseña",
-                placeholder = "Contraseña",
+                tittle = myViewModel.languageType().get(119),
+                placeholder = myViewModel.languageType().get(119),
                 readOnly = false,
                 singleLine = false,
                 size = 70,
@@ -195,7 +196,7 @@ fun Registration (navController: NavController) {
                     .padding(15.dp)
             ) {
                 Text(
-                    text = "REGISTRARSE",
+                    text = myViewModel.languageType().get(120),
                     fontSize = 26.sp,
                     color = Color.White,
                     fontWeight = FontWeight.Bold
