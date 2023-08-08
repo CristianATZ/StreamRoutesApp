@@ -2,9 +2,20 @@
 
 package net.streamroutes.sreamroutesapp.Screens
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.drawable.Icon
+import android.location.Geocoder
+import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.BatteryManager
+import android.telephony.ims.ImsMmTelManager
+import android.widget.Space
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,14 +29,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.DrawerState
+import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.ThumbUp
+import androidx.compose.material.rememberDrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -33,52 +51,53 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat.finishAffinity
-import androidx.core.os.bundleOf
+import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
-import net.streamroutes.sreamroutesapp.Dialogs.DialogAvisoDePrivacidad
-import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarContactos
-import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarUbicacion
 import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain1
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain2
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain3
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain4
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain5
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -88,9 +107,44 @@ fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
     Main(myViewModel,navController)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
+/*
+variable para las coordenadas del mapa principal
+
+0. Paradas
+1. Terminales
+2. Hospitales
+3. Resturantes
+4. Entretenimiento
+*/
+
+// te retorna el tipo de marcador
+fun generaTipo(Tipo: Int): String{
+    val tipos = mutableListOf<String>("Paradas","Terminales","Hospitales","Resturantes","Entretenimiento")
+    return tipos[Tipo]
+}
+
+// esto es para generar las coordenadas de todos los marcadores
+data class Coordenadas(val latitud: Double, val longitud: Double, val tipo: Int)
+
+val listaCoordenadas = mutableListOf<Coordenadas>()
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Main( myViewModel: MyViewModel, navController: NavController ){
+    val context = LocalContext.current
+    // variable con todos los valores
+
+    // variable para recordar el permiso
+    val locationPermissionState = rememberPermissionState(
+        Manifest.permission.ACCESS_FINE_LOCATION
+    )
+
+    fun isPermissionsGranted() = ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.ACCESS_FINE_LOCATION
+    ) == PackageManager.PERMISSION_GRANTED
+
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
@@ -98,8 +152,6 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
     val defaultMapType = MapType.NORMAL
     var currentMapType by remember { mutableStateOf(defaultMapType) }
     var changeMap by remember { mutableStateOf(1) }
-
-    val context = LocalContext.current
 
     // Descomentar los dialogos de permiso al finalizar el proyecto
     // DIALOGOS PARA LOS PERMISOS
@@ -143,10 +195,10 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
             dialogo = tutorial.value[4],
             antDialogo = tutorial.value[3]
         )
-    }*/
+    }
 
 
-    /*if( ubicacion.value ){
+    if( ubicacion.value ){
         DialogHabilitarUbicacion(
             dialogo = ubicacion
         ) {
@@ -168,24 +220,13 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
         ) {
 
         }
-    }*/
-
+    }
+*/
     // variable internet
     val internet = remember { mutableStateOf(false) }
 
     // funcion para saber si estas conectado a internet al iniciar la app
-    fun isInternetAvailable(context: Context): Boolean {
-        val connectivityManager =
-            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-        connectivityManager?.let {
-            val networkCapabilities = it.activeNetwork ?: return false
-            val activeNetwork =
-                it.getNetworkCapabilities(networkCapabilities) ?: return false
 
-            return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-        }
-        return false
-    }
 
     // valor del dialog en funcion de la conexion de internet
     internet.value = !isInternetAvailable(context)
@@ -206,26 +247,117 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
     ModalDrawer(
         drawerState = drawerState,
         drawerContent = {
+            Column (
+                horizontalAlignment = Alignment.CenterHorizontally
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = "Menu de opciones",
+                    modifier = Modifier
+                        .height(160.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.FillWidth
+                )
 
-            // dentro del menu LOS ELEMENTOS
-            Column {
-                Text("Text in Drawer")
-                Button(onClick = {
-                    scope.launch {
-                        drawerState.close()
+                Spacer(modifier = Modifier.fillMaxWidth().height(15.dp))
+
+                DrawerItem(text = "Usuario", icon = Icons.Filled.Face) {
+                    navController.navigate(AppScreens.ProfileScreen.route)
+                }
+
+                DrawerItem(text = "Version Premium", icon = Icons.Filled.Face) {
+                    navController.navigate(AppScreens.SuscripcionScreen.route)
+                }
+
+                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+                Spacer(modifier = Modifier.height(1.dp).fillMaxWidth(0.9f).background(color_fondo_claro))
+                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+
+                DrawerItem(text = "Rutas", icon = Icons.Filled.Face) {
+                    navController.navigate(AppScreens.RoutesScreen.route)
+                }
+
+                DrawerItem(text = "Planifica tu viaje", icon = Icons.Filled.Face) {
+                    navController.navigate(AppScreens.TripScreen.route)
+                }
+
+                DrawerItem(text = "Compartir ubicacion", icon = Icons.Filled.Face) {
+                    if (!locationPermissionState.status.isGranted) {
+                        locationPermissionState.launchPermissionRequest()
                     }
-                }) {
-                    Text("Close Drawer")
+
+                    val fusedLocationClient =
+                        LocationServices.getFusedLocationProviderClient(context)
+                    fusedLocationClient.lastLocation
+                        .addOnSuccessListener { location: Location? ->
+                            if (location != null) {
+                                val latitude = location.latitude
+                                val longitude = location.longitude
+
+                                // Construir la URL con el marcador en tu ubicación actual
+                                val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
+
+                                val message =
+                                    myViewModel.languageType().get(9) + getAddressInfoFromCoordinates(context,latitude,longitude)
+
+                                val shareIntent =
+                                    Intent.createChooser(getShareUbi(context, message+mapUrl, myViewModel), null)
+                                context.startActivity(shareIntent)
+
+                            } else {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        myViewModel.languageType().get(10),
+                                        Toast.LENGTH_LONG
+                                    )
+                                    .show()
+                            }
+                        }
+                        .addOnFailureListener {
+                            // Error al obtener la ubicación actual
+                        }
+                }
+
+
+                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+                Spacer(modifier = Modifier.height(1.dp).fillMaxWidth(0.9f).background(color_fondo_claro))
+                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+
+                DrawerItem(text = "Comparte", icon = Icons.Filled.Face) {
+                    val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
+                    context.startActivity(shareIntent)
+                }
+
+                DrawerItem(text = "Valoranos", icon = Icons.Filled.Face) {
+                    navController.navigate(AppScreens.ValoranoScreen.route)
+                }
+
+                DrawerItem(text = "Configuracion", icon = Icons.Filled.Face) {
+                    navController.navigate(AppScreens.ConfigurationScreen.route)
+                }
+
+                DrawerItem(text = "Ayuda y soporte", icon = Icons.Filled.Face) {
+                    navController.navigate(AppScreens.HelpScreen.route)
+                }
+
+                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+                Spacer(modifier = Modifier.height(1.dp).fillMaxWidth(0.9f).background(color_fondo_claro))
+                Spacer(modifier = Modifier.fillMaxWidth().height(5.dp))
+
+                DrawerItem(text = "Cerrar sesion", icon = Icons.Filled.Face) {
+
                 }
             }
-        }
+        },
+        drawerBackgroundColor = color_fondo_oscuro
     ) {
         Scaffold(
             topBar = {
                 TopAppBar(
                     title = {
                         Text(
-                            text = myViewModel.languageType().get(0),
+                            text = myViewModel.languageType()[0],
                             modifier = Modifier
                                 .fillMaxWidth(),
                             textAlign = TextAlign.Center
@@ -260,35 +392,12 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                     .padding(paddingValues)
             ) {
                 val itsur = LatLng(20.139468718311957, -101.15069924573676)
-                val itsurState = MarkerState(position = itsur)
-                val cameraPositionState = rememberCameraPositionState(){
+                val cameraPositionState = rememberCameraPositionState{
                     position = CameraPosition.fromLatLngZoom(itsur,17f)
                 }
                 Box(modifier = Modifier.fillMaxSize()){
-                    GoogleMap(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        cameraPositionState = cameraPositionState,
-                        uiSettings = MapUiSettings(
-                            compassEnabled = false,
-                            indoorLevelPickerEnabled = false,
-                            mapToolbarEnabled = false,
-                            myLocationButtonEnabled = false,
-                            rotationGesturesEnabled = true,
-                            scrollGesturesEnabled = true,
-                            scrollGesturesEnabledDuringRotateOrZoom = false,
-                            tiltGesturesEnabled = false,
-                            zoomControlsEnabled = false,
-                            zoomGesturesEnabled = true
-                        ),
-                        properties = MapProperties(
-                            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-                            mapType = currentMapType,
-                            maxZoomPreference = 17f
-                        )
-                    ){
 
-                    }
+                    MapBody(cameraPositionState, currentMapType)
 
                     // Botón cambio tipo de mapa en la parte superior derecha
                     Row(
@@ -333,6 +442,37 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 }
 
 @Composable
+fun MapBody(
+    cameraPositionState: CameraPositionState,
+    currentMapType: MapType
+) {
+    GoogleMap(
+        modifier = Modifier
+            .fillMaxSize(),
+        cameraPositionState = cameraPositionState,
+        uiSettings = MapUiSettings(
+            compassEnabled = false,
+            indoorLevelPickerEnabled = false,
+            mapToolbarEnabled = false,
+            myLocationButtonEnabled = false,
+            rotationGesturesEnabled = true,
+            scrollGesturesEnabled = true,
+            scrollGesturesEnabledDuringRotateOrZoom = false,
+            tiltGesturesEnabled = false,
+            zoomControlsEnabled = false,
+            zoomGesturesEnabled = true
+        ),
+        properties = MapProperties(
+            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
+            mapType = currentMapType,
+            maxZoomPreference = 17f
+        )
+    ){
+
+    }
+}
+
+@Composable
 private fun BoxOption(
     img: Painter,
     desc: String? = null,
@@ -358,8 +498,112 @@ private fun BoxOption(
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun MainView(){
+private fun DrawerItem(
+    text: String,
+    icon: ImageVector,
+    onItemClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(60.dp)
+            .padding(start = 15.dp, top = 2.dp, end = 15.dp)
+            .clip(RoundedCornerShape(12))
+            .clickable(onClick = onItemClick),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
+    ){
+        Icon(imageVector = icon, contentDescription = text, tint = color_fondo_claro)
+        
+        Spacer(modifier = Modifier.width(12.dp))
 
+        TextOption(text = text)
+    }
+}
+
+@Composable
+fun TextOption(
+    text: String, color:
+    Color = color_fondo_claro
+) {
+    Text(
+        text = text,
+        color = color,
+        fontSize = 18.sp,
+        fontFamily = FontFamily.SansSerif
+    )
+}
+
+///////// SHARE SHEET ////////
+
+// hoja para compartir la aplicacion (pagina)
+fun getShareApp(
+    myViewModel: MyViewModel
+) : Intent{
+    val shareApp: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(34))
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TEXT, "https://stream_routes_official.com.mx")
+        type = "text/plain"
+    }
+    return shareApp
+}
+// hoja para compartir la ubicacion
+fun getShareUbi(
+    context: Context,
+    message: String,
+    myViewModel: MyViewModel
+) : Intent{
+    val shareUbi: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(33))
+        val manager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
+        val level: Int = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+        putExtra(Intent.EXTRA_TEXT, "Bat:$level% $message\n")
+        type = "text/plain"
+    }
+    return shareUbi
+}
+
+///////// FUNCIONES ////////
+
+// funcion para convertir las coordenadas en nombre de calle etc
+fun getAddressInfoFromCoordinates(
+    context: Context,
+    latitude: Double,
+    longitude: Double
+): String {
+    val geocoder = Geocoder(context)
+    val addressList = geocoder.getFromLocation(latitude, longitude, 1)
+    val address = addressList?.get(0)
+    if (address != null) {
+        val streetName = address.thoroughfare // Calle
+        val neighborhood = address.subLocality // Colonia
+
+        // Devolver solo la calle y la colonia en un objeto AddressInfo
+        return "$streetName, $neighborhood "
+    }
+    return ""
+}
+
+// funcion para saber si estas contetado a internet
+fun isInternetAvailable(
+    context: Context
+): Boolean {
+    val connectivityManager =
+        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
+    connectivityManager?.let {
+        val networkCapabilities = it.activeNetwork ?: return false
+        val activeNetwork =
+            it.getNetworkCapabilities(networkCapabilities) ?: return false
+
+        return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+    }
+    return false
+}
+
+fun checkPermissionFor(permission: String, context: Context): Boolean {
+    return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
 }
