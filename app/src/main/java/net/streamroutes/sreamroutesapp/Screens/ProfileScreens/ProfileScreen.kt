@@ -8,129 +8,133 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(navController: NavController){
+    val info = listOf(
+        "Cumpleaños" to "Mie, 27 Nov 2002",
+        "Teléfono" to "445 141 1834",
+        "País" to "México",
+        "Ciudad" to "Moroleon, Gto",
+        "Usuario" to "#12345678"
+    )
+
+    val memb = listOf(
+        "Tipo" to "chingon",
+        "Duracion" to "Mes/Anual",
+        "Corte" to "Mar, 29 Ago 2023",
+        "Prueba" to "Si/No"
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(color_fondo_claro),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(200.dp)
-                    .align(Alignment.TopCenter)
-                    .background(
-                        color_fondo_oscuro,
-                        //color_fondo_switch_activo.copy(0.5f),
-                        RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
-                    )
             ) {
-                Row(
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
                     modifier = Modifier
-                        .padding(top = 25.dp, start = 25.dp, end = 25.dp)
-                        .fillMaxWidth(1f),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    // regresar
-                    IconButton(
-                        onClick = {
-                            navController.navigate(AppScreens.MainScreen.route)
-                        }
-                    ) {
-                        Icon(
-                            Icons.Filled.ArrowBack,
-                            contentDescription = "Regresara a la ventana de perfil",
-                            tint = color_fondo_claro
-                        )
-                    }
+                        .fillMaxSize()
+                        .background(Color.Transparent)
+                        .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
+                )
 
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp), // Agrega el relleno que desees
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Bottom
+                ) {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 25.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        // image user
-                        Image(
-                            painter = painterResource(id = R.drawable.circulo_de_usuario),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(50.dp)
-                                .padding(end = 10.dp),
-                            colorFilter = ColorFilter.tint(color_fondo_claro)
-                        )
+                        // regresar
+                        IconButton(
+                            onClick = {
+                                navController.navigate(AppScreens.MainScreen.route)
+                            }
+                        ) {
+                            Icon(
+                                Icons.Filled.ArrowBack,
+                                contentDescription = "Regresara a la ventana de perfil",
+                                tint = color_fondo_claro,
+                                modifier = Modifier
+                                    .size(50.dp)
+                            )
+                        }
 
                         // user name
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth(0.7f)
+                                .fillMaxWidth(0.8f)
                         ) {
                             CustomText(
                                 firstString = "Bienvenido de vuelta",
                                 horizontal = Arrangement.Start,
                                 color = color_fondo_claro,
                                 fontWeight = FontWeight.Normal,
-                                size = 12,
+                                size = 14,
                                 modifier = Modifier.fillMaxWidth(0.95f)
                             )
 
@@ -138,7 +142,16 @@ fun ProfileScreen(navController: NavController){
                                 firstString = "Cristian Alexis Torres Zavavla",
                                 horizontal = Arrangement.Start,
                                 color = color_fondo_claro,
-                                size = 17,
+                                size = 20,
+                                modifier = Modifier.fillMaxWidth(0.95f)
+                            )
+
+                            CustomText(
+                                firstString = "s20120154@alumnos.itsur.edu.mx",
+                                horizontal = Arrangement.Start,
+                                color = color_fondo_claro,
+                                fontWeight = FontWeight.Normal,
+                                size = 15,
                                 modifier = Modifier.fillMaxWidth(0.95f)
                             )
                         }
@@ -146,137 +159,31 @@ fun ProfileScreen(navController: NavController){
                 }
             }
 
+
             Column(
                 modifier = Modifier
                     .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
+                verticalArrangement = Arrangement.SpaceEvenly,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.85f)
-                        .padding(top = 125.dp)
-                        .verticalScroll(rememberScrollState())
-                        .background(color_fondo_textfield, RoundedCornerShape(percent = 10)),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    InfoOptions(
-                        icon = Icons.Filled.Star,
-                        first = "Cump",
-                        info = "Mier, 27 Nov 2002",
-                        color = color_letra
-                    )
+                UserProfileInfoSection(
+                    infoItems = info,
+                    icon = Icons.Filled.Info,
+                    text = "Informacion",
+                    color = color_letra,
+                    onClick = {
 
-                    InfoOptions(
-                        icon = Icons.Filled.Star,
-                        first = "Telefono",
-                        info = "445 141 18 34",
-                        color = color_letra
-                    )
-
-                    InfoOptions(
-                        icon = Icons.Filled.Star,
-                        first = "Correo",
-                        info = "s20120154@alumnos.itsur.edu.mx",
-                        color = color_letra
-                    )
-
-                    InfoOptions(
-                        icon = Icons.Filled.Star,
-                        first = "Ciudad",
-                        info = "Moroleon, Gto",
-                        color = color_letra
-                    )
-
-                    // button login
-                    Button(
-                        onClick = {
-                            navController.navigate(route = AppScreens.ProfileDataInfoScreen.route)
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(15.dp),
-                        modifier = Modifier
-                            .width(300.dp)
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Cambiar",
-                            fontSize = 26.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
                     }
+                )
+                UserProfileInfoSection(
+                    infoItems = memb,
+                    icon = Icons.Filled.Star,
+                    text = "Membresia",
+                    color = color_letra,
+                    onClick = {
 
-                }
-
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.95f)
-                        .verticalScroll(rememberScrollState())
-                        .background(color_fondo_textfield, RoundedCornerShape(percent = 10)),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    Spacer(modifier = Modifier.size(15.dp))
-
-                    CustomText(
-                        firstString = "Membresia",
-                        horizontal = Arrangement.Center,
-                        color = color_letra,
-                        size = 20
-                    )
-
-                    Spacer(modifier = Modifier.size(15.dp))
-
-                    SuscripcionOptions(
-                        first = "Fecha de corte",
-                        second = "Mart, 29 Ago 2023"
-                    )
-
-                    SuscripcionOptions(
-                        first = "Tipo",
-                        second = "chingon"
-                    )
-
-                    SuscripcionOptions(
-                        first = "Duracion",
-                        second = "Mes/Anual"
-                    )
-
-                    SuscripcionOptions(
-                        first = "Periodo de prueba",
-                        second = "Si/No"
-                    )
-
-                    Button(
-                        onClick = {
-                            //navController.navigate(route = AppScreens.MainScreen.route)
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                            contentColor = Color.White
-                        ),
-                        shape = RoundedCornerShape(15.dp),
-                        modifier = Modifier
-                            .width(300.dp)
-                            .padding(16.dp)
-                    ) {
-                        Text(
-                            text = "Gestionar",
-                            fontSize = 26.sp,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold
-                        )
                     }
-
-                }
-
-                Spacer(modifier = Modifier.size(10.dp))
+                )
             }
         }
     }
@@ -314,61 +221,41 @@ private fun CustomText(
                 }
             },
             modifier = Modifier
-                .wrapContentWidth(),
-            textAlign = TextAlign.Center
+                .wrapContentWidth()
         )
     }
 }
 
-
 @Composable
-private fun InfoOptions(
+private fun HeaderText(
     icon: ImageVector,
-    first: String,
-    info: String,
+    text: String,
     color: Color
 ) {
     Row(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 25.dp, start = 25.dp, end = 25.dp, bottom = 25.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+            .padding(start = 25.dp, top = 10.dp)
+            .fillMaxWidth(0.8f),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row() {
-            Icon(
-                imageVector = icon,
-                contentDescription = "",
-                modifier = Modifier
-                    .size(25.dp),
-                tint = color
-            )
-            CustomText(
-                firstString = first,
-                horizontal = Arrangement.Start,
-                color = color,
-                size = 17,
-                modifier = Modifier.padding(start = 10.dp, end = 40.dp)
-            )
-        }
-
-        Box(
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = color,
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(end = 10.dp),
-            contentAlignment = Alignment.CenterEnd
-        ) {
-            CustomText(
-                firstString = info,
-                horizontal = Arrangement.Start,
-                color = color,
-                size = 17,
-                fontWeight = FontWeight.Normal
-            )
-        }
+                .size(30.dp),
+        )
+
+        Spacer(modifier = Modifier.width(50.dp))
+
+        CustomText(
+            firstString = text,
+            horizontal = Arrangement.Start,
+            color = color,
+            size = 20
+        )
     }
 }
-
 
 @Composable
 private fun SuscripcionOptions(
@@ -395,5 +282,62 @@ private fun SuscripcionOptions(
             size = 17,
             fontWeight = FontWeight.Normal
         )
+    }
+}
+
+@Composable
+fun UserProfileInfoSection(
+    infoItems: List<Pair<String, String>>,
+    icon: ImageVector,
+    text: String,
+    color: Color,
+    onClick: () -> Unit
+) {
+    Column(
+        modifier = Modifier
+            .padding(top = 25.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Box(modifier = Modifier
+            .height(1.dp)
+            .fillMaxWidth(0.9f)
+            .background(color_letra))
+
+        HeaderText(
+            icon = icon,
+            text = text,
+            color = color
+        )
+
+        Spacer(modifier = Modifier.height(5.dp))
+
+        LazyColumn {
+            items(infoItems.size) { index ->
+                val info = infoItems[index]
+                Spacer(modifier = Modifier.height(5.dp))
+                SuscripcionOptions(
+                    first = info.first,
+                    second = info.second
+                )
+            }
+        }
+        
+        Box(
+            modifier = Modifier
+                .size(40.dp)
+                .background(color_fondo_textfield, RoundedCornerShape(100))
+                .clickable( onClick = onClick ),
+            contentAlignment = Alignment.Center
+        ){
+            IconButton( onClick = { }) {
+                Icon(
+                    imageVector = Icons.Filled.Edit,
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp),
+                    tint = color
+                )
+            }
+        }
     }
 }
