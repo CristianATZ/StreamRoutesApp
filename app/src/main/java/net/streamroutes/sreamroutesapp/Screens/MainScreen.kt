@@ -2,7 +2,6 @@
 
 package net.streamroutes.sreamroutesapp.Screens
 
-import android.app.Activity
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -20,26 +19,34 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ModalDrawer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -59,6 +66,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
@@ -83,6 +91,8 @@ fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Main( myViewModel: MyViewModel, navController: NavController ){
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scope = rememberCoroutineScope()
 
     // Variable para almacenar el tipo de mapa actual y su estado
     val defaultMapType = MapType.NORMAL
@@ -193,113 +203,108 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
         }
     }
 
-    // CUERPO DE LA VENTANA
-    Column (
-        modifier = Modifier
-            .fillMaxSize()
-    ){
-        TopAppBar(
-            title = {
-                Text(
-                    text = myViewModel.languageType().get(0),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = {
-                    navController.navigate(AppScreens.MenuScreen.route)
+    ModalDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+
+            // dentro del menu LOS ELEMENTOS
+            Column {
+                Text("Text in Drawer")
+                Button(onClick = {
+                    scope.launch {
+                        drawerState.close()
+                    }
                 }) {
-                    androidx.compose.material.Icon(
-                        Icons.Filled.Menu,
-                        contentDescription = "Te enviara al menu de opciones",
-                        tint = Color.White
-                    )
+                    Text("Close Drawer")
                 }
-            },
-            actions = {
-                IconButton(onClick = {  }) {
-                    Icon(
-                        Icons.Filled.Settings,
-                        contentDescription = "Te dira tus notificaciones del dia",
-                        tint = Color.White
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
-
-        val itsur = LatLng(20.139468718311957, -101.15069924573676)
-        val itsurState = MarkerState(position = itsur)
-        val cameraPositionState = rememberCameraPositionState(){
-            position = CameraPosition.fromLatLngZoom(itsur,17f)
-        }
-        Box(modifier = Modifier.fillMaxSize()){
-            GoogleMap(
-                modifier = Modifier
-                    .fillMaxSize(),
-                cameraPositionState = cameraPositionState,
-                uiSettings = MapUiSettings(
-                    compassEnabled = false,
-                    indoorLevelPickerEnabled = false,
-                    mapToolbarEnabled = false,
-                    myLocationButtonEnabled = false,
-                    rotationGesturesEnabled = true,
-                    scrollGesturesEnabled = true,
-                    scrollGesturesEnabledDuringRotateOrZoom = false,
-                    tiltGesturesEnabled = false,
-                    zoomControlsEnabled = false,
-                    zoomGesturesEnabled = true
-                ),
-                properties = MapProperties(
-                    mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-                    mapType = currentMapType,
-                    maxZoomPreference = 17f
-                )
-            ){
-
             }
-
-            // Botón cambio tipo de mapa en la parte superior derecha
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(75.dp)
-                    .padding(10.dp),
-                horizontalArrangement = Arrangement.End
-            ){
-                Row(
-                    modifier = Modifier
-                        .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
-                        .clickable {
-                                   myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    Image(
-                        painter = painterResource(id = R.drawable.info),
-                        contentDescription = "Tipo de mapa",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(34.dp),
-                        colorFilter = ColorFilter.tint(
-                            Color.White
+        }
+    ) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = myViewModel.languageType().get(0),
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center
                         )
-                    )
+                    },
+                    navigationIcon = {
+                        IconButton(
+                            onClick = {
+                                scope.launch {
+                                    drawerState.open()
+                                }
+                            }
+                        ) {
+                            Icon(
+                                Icons.Filled.Menu,
+                                contentDescription = "Te mostrara el menu",
+                                tint = Color.White
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults
+                        .smallTopAppBarColors(
+                            containerColor = color_fondo_topappbar_alterno,
+                            titleContentColor = color_letra_topappbar
+                        )
+                )
+            },
+        ) { paddingValues ->
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+            ) {
+                val itsur = LatLng(20.139468718311957, -101.15069924573676)
+                val itsurState = MarkerState(position = itsur)
+                val cameraPositionState = rememberCameraPositionState(){
+                    position = CameraPosition.fromLatLngZoom(itsur,17f)
                 }
+                Box(modifier = Modifier.fillMaxSize()){
+                    GoogleMap(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        cameraPositionState = cameraPositionState,
+                        uiSettings = MapUiSettings(
+                            compassEnabled = false,
+                            indoorLevelPickerEnabled = false,
+                            mapToolbarEnabled = false,
+                            myLocationButtonEnabled = false,
+                            rotationGesturesEnabled = true,
+                            scrollGesturesEnabled = true,
+                            scrollGesturesEnabledDuringRotateOrZoom = false,
+                            tiltGesturesEnabled = false,
+                            zoomControlsEnabled = false,
+                            zoomGesturesEnabled = true
+                        ),
+                        properties = MapProperties(
+                            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
+                            mapType = currentMapType,
+                            maxZoomPreference = 17f
+                        )
+                    ){
 
-                Spacer(modifier = Modifier.size(10.dp))
+                    }
 
-                Row(
-                    modifier = Modifier
-                        .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
-                        .clickable {
+                    // Botón cambio tipo de mapa en la parte superior derecha
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(75.dp)
+                            .padding(10.dp),
+                        horizontalArrangement = Arrangement.End
+                    ){
+                        BoxOption(img = painterResource(id = R.drawable.info)) {
+                            myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
+                        }
+
+                        Spacer(modifier = Modifier.size(10.dp))
+
+                        BoxOption(img = painterResource(id = R.drawable.typemap)) {
                             when (changeMap) {
                                 1 -> {
                                     currentMapType = MapType.NORMAL
@@ -319,34 +324,42 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                             }
                             changeMap++
                             if (changeMap == 5) changeMap = 1
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    Image(
-                        painter = painterResource(id = R.drawable.typemap),
-                        contentDescription = "Tipo de mapa",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(34.dp),
-                        colorFilter = ColorFilter.tint(
-                            Color.White
-                        )
-                    )
+                        }
+                    }
                 }
             }
         }
     }
 }
 
+@Composable
+private fun BoxOption(
+    img: Painter,
+    desc: String? = null,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
+            .clickable(onClick = onClick),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ){
+        Image(
+            painter = img,
+            contentDescription = desc,
+            modifier = Modifier
+                .padding(10.dp)
+                .size(34.dp),
+            colorFilter = ColorFilter.tint(
+                Color.White
+            )
+        )
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun MainView(){
-    preview()
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun preview(){
 
 }

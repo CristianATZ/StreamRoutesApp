@@ -172,7 +172,7 @@ fun ProfileScreen(navController: NavController){
                     text = "Informacion",
                     color = color_letra,
                     onClick = {
-
+                        navController.navigate(AppScreens.ProfileConfigureScreen.route)
                     }
                 )
                 UserProfileInfoSection(
@@ -330,7 +330,7 @@ fun UserProfileInfoSection(
                 .clickable( onClick = onClick ),
             contentAlignment = Alignment.Center
         ){
-            IconButton( onClick = { }) {
+            IconButton( onClick = onClick ) {
                 Icon(
                     imageVector = Icons.Filled.Edit,
                     contentDescription = null,

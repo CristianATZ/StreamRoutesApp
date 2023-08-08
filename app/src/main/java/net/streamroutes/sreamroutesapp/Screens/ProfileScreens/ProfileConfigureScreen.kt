@@ -1,5 +1,9 @@
 package net.streamroutes.sreamroutesapp.Screens.ProfileScreens
 
+import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -8,162 +12,142 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.material.ModalDrawer
+import androidx.compose.material.DrawerValue
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.rememberDrawerState
+import androidx.compose.material3.Button
+import androidx.compose.material3.SmallTopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
-import net.streamroutes.sreamroutesapp.R
-import kotlin.random.Random
+import net.streamroutes.sreamroutesapp.Screens.Start.color_fondo_
 
+@SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileConfigureScreen(navController: NavController){
-    TopAppBar(
-        title = { Text(stringResource(id = R.string.title_profile_configure_screen)) },
-        navigationIcon = {
-            IconButton(onClick = { navController.popBackStack()  }) {
-                Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = "Regresara a la ventana de perfil"
-                )
-            }
-        })
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 70.dp, start = 30.dp)
-    )
-    {
-        // DATOS PERSONALES
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .wrapContentHeight()
-        )
-        {
-            Icon(
-                painter = painterResource(id = R.drawable.editar_usuario),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .size(60.dp)
-            )
-            Spacer(modifier = Modifier.width(20.dp))
-            Column() {
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = stringResource(id = R.string.personal_info),
-                    color = Color(0xFF231955),
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "Sexo, Fecha Nac, etc.",
-                    color = Color(0xFF231955),
-                    fontSize = 16.sp,
-                    fontFamily = FontFamily.SansSerif
-                )
-            }
-            Spacer(modifier = Modifier.width(5.dp))
-            Button(
-                onClick = {
-                    navController.navigate(route = AppScreens.ProfileDataInfoScreen.route)
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Configuracion de perfil",
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
                 },
-                modifier = Modifier.padding(top = 15.dp, start = 15.dp)
+                navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navController.navigate(AppScreens.MainScreen.route)
+                        }
+                    ) {
+                        Icon(
+                            Icons.Filled.ArrowBack,
+                            contentDescription = "Te enviara a la ventana principal",
+                            tint = Color.White
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults
+                    .smallTopAppBarColors(
+                        containerColor = color_fondo_topappbar_alterno,
+                        titleContentColor = color_letra_topappbar
+                    )
             )
-            {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            }
-        }
+        },
+        containerColor = color_fondo_claro
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            Options(
+                text = "Datos personales",
+                sub_text = "Sexo, ocupacion, etc.",
+                onClick = {
+                    navController.navigate(AppScreens.ProfileDataInfoScreen.route)
+                }
+            )
 
-        // CONTRASEÑA
-        Row (
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(100.dp)
-                .wrapContentHeight()
-        )
-        {
-            Icon(
-                painter = painterResource(id = R.drawable.candado),
-                contentDescription = null,
-                modifier = Modifier
-                    .padding(top = 8.dp)
-                    .size(60.dp)
-            )
-            Spacer(modifier = Modifier.width(20.dp))
-            Column() {
-                Text(
-                    modifier = Modifier.padding(top = 8.dp),
-                    text = stringResource(id = R.string.password_profile),
-                    color = Color(0xFF231955),
-                    fontSize =20.sp,
-                    fontFamily = FontFamily.SansSerif,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = "Seguridad",
-                    color = Color(0xFF231955),
-                    fontSize =16.sp,
-                    fontFamily = FontFamily.SansSerif
-                )
-            }
-            Button(
+            Options(
+                text = "Contraseña",
+                sub_text = "Seguridad",
                 onClick = {
-                    navController.navigate(route = AppScreens.ChangeScreen.route)
-                },
-                modifier = Modifier.padding(top = 15.dp, start = 75.dp)
+                    navController.navigate(AppScreens.VerificationScreen.route)
+                }
             )
-            {
-                Icon(
-                    imageVector = Icons.Default.KeyboardArrowRight,
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(ButtonDefaults.IconSize)
-                )
-                Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-            }
         }
     }
 }
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun ProfileConfigureView(){
 
+}
+
+
+@Composable
+private fun Options(
+    text: String,
+    sub_text: String,
+    onClick: () -> Unit,
+    text_color: Color = color_letra
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp)
+            .clickable(onClick = onClick),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.size(25.dp))
+        // textos
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.75f)
+        ) {
+            Text(
+                text = text, // texto
+                color = text_color,
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 20.sp
+            )
+            Text(
+                text = sub_text, // texto
+                color = text_color,
+                fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
+                fontSize = 12.sp
+            )
+        }
+    }
 }
