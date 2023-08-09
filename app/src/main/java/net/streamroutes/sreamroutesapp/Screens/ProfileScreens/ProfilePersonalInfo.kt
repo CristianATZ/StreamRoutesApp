@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Screens.ProfileScreens
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -29,6 +30,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,18 +51,39 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Dialogs.DialogOcuInt
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Locale
 
+@SuppressLint("UnrememberedMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileDataInfoScreen(navController: NavController){
-    val ocupaciones = listOf("Estudiante","Ama de Casa","Profesión","Obrero","Jubilado","Otro")
-    val intereses = listOf("Entretenimiento","Comida","Ropa","Víveres","Salud")
+    var ocupaciones = remember { mutableStateOf(false) }
+    var intereses = remember { mutableStateOf(false) }
+
+    val listaOcupaciones = listOf(
+        remember { mutableStateOf(false) } to "Estudiante",
+        remember { mutableStateOf(false) } to "Ama de Casa",
+        remember { mutableStateOf(false) } to "Profesión",
+        remember { mutableStateOf(false) } to "Obrero",
+        remember { mutableStateOf(false) } to "Jubilado",
+        remember { mutableStateOf(false) } to "Otro"
+    )
+
+    val listaIntereses = listOf(
+        remember { mutableStateOf(false) } to "Entretenimiento",
+        remember { mutableStateOf(false) } to "Comida",
+        remember { mutableStateOf(false) } to "Ropa",
+        remember { mutableStateOf(false) } to "Víveres",
+        remember { mutableStateOf(false) } to "Salud"
+    )
+
+
 
     var fecha by rememberSaveable {
         mutableStateOf("Mie, 27 Nov 2002")
@@ -83,6 +106,14 @@ fun ProfileDataInfoScreen(navController: NavController){
         month,
         day
     )
+
+    if( ocupaciones.value ){
+        DialogOcuInt(dialogo = ocupaciones, lista = listaOcupaciones, myViewModel = null)
+    }
+
+    if( intereses.value ){
+        DialogOcuInt(dialogo = intereses, lista = listaIntereses, myViewModel = null)
+    }
 
     Scaffold(
         topBar = {
@@ -155,7 +186,7 @@ fun ProfileDataInfoScreen(navController: NavController){
                         text = "Ocupacion",
                         sub_text = "Estudiante",
                         onClick = {
-
+                            ocupaciones.value = true
                         }
                     )
                 }
@@ -164,7 +195,9 @@ fun ProfileDataInfoScreen(navController: NavController){
                     GeneralOptions(
                         text = "Intereses",
                         sub_text = "Lista de intereses",
-                        onClick = { /*TODO*/ }
+                        onClick = {
+                            intereses.value = true
+                        }
                     )
                 }
             }

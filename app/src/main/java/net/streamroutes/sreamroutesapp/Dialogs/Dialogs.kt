@@ -1807,3 +1807,48 @@ fun DialogTutorialMain5(
         }
     }
 }
+
+
+@Composable
+fun DialogOcuInt(
+    dialogo: MutableState<Boolean>,
+    lista: List<Pair<MutableState<Boolean>,String>>,
+    myViewModel: MyViewModel?
+){
+
+    Dialog(
+        onDismissRequest = {
+            dialogo.value = false
+        },
+        content = {
+            // plano
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(percent = 15),
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 15.dp
+                ),
+                colors = CardDefaults.cardColors(
+                    containerColor = color_fondo_oscuro
+                )
+            ) {
+                // cuerpo
+                Column(
+                    modifier = Modifier
+                        .padding(10.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    lista.forEach(){ opcion ->
+                        PushOptions(
+                            text = opcion.second,
+                            color_letra = color_letra_alterno,
+                            variable = opcion.first
+                        )
+                    }
+                }
+            }
+        }
+    )
+}
