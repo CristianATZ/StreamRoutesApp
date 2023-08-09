@@ -7,6 +7,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.gesture.Gesture
 import android.graphics.drawable.Icon
 import android.location.Geocoder
 import android.location.Location
@@ -30,11 +31,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.LocationOn
@@ -52,6 +55,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,10 +72,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
@@ -250,107 +257,186 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
             Column (
                 horizontalAlignment = Alignment.CenterHorizontally
             ){
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "Menu de opciones",
+                Box(
                     modifier = Modifier
                         .height(160.dp)
-                        .fillMaxWidth(),
-                    contentScale = ContentScale.FillWidth
-                )
+                        .fillMaxWidth()
+                        .clickable {
+                            navController.navigate(AppScreens.ProfileScreen.route)
+                        }
+                ){
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_launcher_background),
+                        contentDescription = "Menu de opciones",
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        contentScale = ContentScale.FillWidth
+                    )
 
-                Spacer(modifier = Modifier.fillMaxWidth().height(15.dp))
+                    // opciones del menu
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(25.dp),
+                        verticalArrangement = Arrangement.Bottom,
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        CustomText(
+                            firstString = "Cristian Alexis Torres Zavala",
+                            horizontal = Arrangement.Start,
+                            color = color_fondo_claro,
+                            size = 20,
+                            modifier = Modifier.fillMaxWidth(0.95f)
+                        )
 
-                DrawerItem(text = "Usuario", icon = Icons.Filled.Face) {
-                    navController.navigate(AppScreens.ProfileScreen.route)
-                }
-
-                DrawerItem(text = "Version Premium", icon = Icons.Filled.Face) {
-                    navController.navigate(AppScreens.SuscripcionScreen.route)
-                }
-
-                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
-                Spacer(modifier = Modifier.height(1.dp).fillMaxWidth(0.9f).background(color_fondo_claro))
-                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
-
-                DrawerItem(text = "Rutas", icon = Icons.Filled.Face) {
-                    navController.navigate(AppScreens.RoutesScreen.route)
-                }
-
-                DrawerItem(text = "Planifica tu viaje", icon = Icons.Filled.Face) {
-                    navController.navigate(AppScreens.TripScreen.route)
-                }
-
-                DrawerItem(text = "Compartir ubicacion", icon = Icons.Filled.Face) {
-                    if (!locationPermissionState.status.isGranted) {
-                        locationPermissionState.launchPermissionRequest()
+                        CustomText(
+                            firstString = "s20120154@alumnos.itsur.edu.mx",
+                            horizontal = Arrangement.Start,
+                            color = color_fondo_claro,
+                            fontWeight = FontWeight.Normal,
+                            size = 15,
+                            modifier = Modifier.fillMaxWidth(0.95f)
+                        )
                     }
 
-                    val fusedLocationClient =
-                        LocationServices.getFusedLocationProviderClient(context)
-                    fusedLocationClient.lastLocation
-                        .addOnSuccessListener { location: Location? ->
-                            if (location != null) {
-                                val latitude = location.latitude
-                                val longitude = location.longitude
-
-                                // Construir la URL con el marcador en tu ubicación actual
-                                val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
-
-                                val message =
-                                    myViewModel.languageType().get(9) + getAddressInfoFromCoordinates(context,latitude,longitude)
-
-                                val shareIntent =
-                                    Intent.createChooser(getShareUbi(context, message+mapUrl, myViewModel), null)
-                                context.startActivity(shareIntent)
-
-                            } else {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        myViewModel.languageType().get(10),
-                                        Toast.LENGTH_LONG
-                                    )
-                                    .show()
+                    // boton de cerrar menu
+                    Row(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(15.dp),
+                        verticalAlignment = Alignment.Top,
+                        horizontalArrangement = Arrangement.End
+                    ) {
+                        BoxOption(img = Icons.Filled.ArrowBack) {
+                            scope.launch {
+                                drawerState.close()
                             }
                         }
-                        .addOnFailureListener {
-                            // Error al obtener la ubicación actual
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    DrawerItem(text = "Version Premium", icon = Icons.Filled.Face) {
+                        navController.navigate(AppScreens.SuscripcionScreen.route)
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .height(1.dp)
+                            .background(
+                                color_fondo_claro
+                            )
+                            .align(Alignment.CenterHorizontally)
+                    )
+
+                    Column(
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        DrawerItem(text = "Rutas", icon = Icons.Filled.Face) {
+                            navController.navigate(AppScreens.RoutesScreen.route)
                         }
-                }
 
+                        DrawerItem(text = "Planifica tu viaje", icon = Icons.Filled.Face) {
+                            navController.navigate(AppScreens.TripScreen.route)
+                        }
 
-                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
-                Spacer(modifier = Modifier.height(1.dp).fillMaxWidth(0.9f).background(color_fondo_claro))
-                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+                        DrawerItem(text = "Compartir ubicacion", icon = Icons.Filled.Face) {
+                            if (!locationPermissionState.status.isGranted) {
+                                locationPermissionState.launchPermissionRequest()
+                            }
 
-                DrawerItem(text = "Comparte", icon = Icons.Filled.Face) {
-                    val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
-                    context.startActivity(shareIntent)
-                }
+                            val fusedLocationClient =
+                                LocationServices.getFusedLocationProviderClient(context)
+                            fusedLocationClient.lastLocation
+                                .addOnSuccessListener { location: Location? ->
+                                    if (location != null) {
+                                        val latitude = location.latitude
+                                        val longitude = location.longitude
 
-                DrawerItem(text = "Valoranos", icon = Icons.Filled.Face) {
-                    navController.navigate(AppScreens.ValoranoScreen.route)
-                }
+                                        // Construir la URL con el marcador en tu ubicación actual
+                                        val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
 
-                DrawerItem(text = "Configuracion", icon = Icons.Filled.Face) {
-                    navController.navigate(AppScreens.ConfigurationScreen.route)
-                }
+                                        val message =
+                                            myViewModel.languageType().get(9) + getAddressInfoFromCoordinates(context,latitude,longitude)
 
-                DrawerItem(text = "Ayuda y soporte", icon = Icons.Filled.Face) {
-                    navController.navigate(AppScreens.HelpScreen.route)
-                }
+                                        val shareIntent =
+                                            Intent.createChooser(getShareUbi(context, message+mapUrl, myViewModel), null)
+                                        context.startActivity(shareIntent)
 
-                Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
-                Spacer(modifier = Modifier.height(1.dp).fillMaxWidth(0.9f).background(color_fondo_claro))
-                Spacer(modifier = Modifier.fillMaxWidth().height(5.dp))
+                                    } else {
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                myViewModel.languageType().get(10),
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                                .addOnFailureListener {
+                                    // Error al obtener la ubicación actual
+                                }
+                        }
 
-                DrawerItem(text = "Cerrar sesion", icon = Icons.Filled.Face) {
+                        DrawerItem(text = "Descargar rutas", icon = Icons.Filled.Face) {
+                            // nothing here
+                        }
+                    }
 
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .height(1.dp)
+                            .background(
+                                color_fondo_claro
+                            )
+                            .align(Alignment.CenterHorizontally)
+                    )
+
+                    Column(
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ) {
+                        DrawerItem(text = "Comparte", icon = Icons.Filled.Face) {
+                            val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
+                            context.startActivity(shareIntent)
+                        }
+
+                        DrawerItem(text = "Valoranos", icon = Icons.Filled.Face) {
+                            navController.navigate(AppScreens.ValoranoScreen.route)
+                        }
+
+                        DrawerItem(text = "Configuracion", icon = Icons.Filled.Face) {
+                            navController.navigate(AppScreens.ConfigurationScreen.route)
+                        }
+
+                        DrawerItem(text = "Ayuda y soporte", icon = Icons.Filled.Face) {
+                            navController.navigate(AppScreens.HelpScreen.route)
+                        }
+                    }
+
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth(0.5f)
+                            .height(1.dp)
+                            .background(
+                                color_fondo_claro
+                            )
+                            .align(Alignment.CenterHorizontally)
+                    )
+
+                    DrawerItem(text = "Cerrar sesion", icon = Icons.Filled.Face) {
+
+                    }
                 }
             }
         },
-        drawerBackgroundColor = color_fondo_oscuro
+        drawerBackgroundColor = color_fondo_oscuro,
+        gesturesEnabled = false
     ) {
         Scaffold(
             topBar = {
@@ -474,7 +560,7 @@ fun MapBody(
 
 @Composable
 private fun BoxOption(
-    img: Painter,
+    img: Any,
     desc: String? = null,
     onClick: () -> Unit
 ) {
@@ -485,16 +571,30 @@ private fun BoxOption(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ){
-        Image(
-            painter = img,
-            contentDescription = desc,
-            modifier = Modifier
-                .padding(10.dp)
-                .size(34.dp),
-            colorFilter = ColorFilter.tint(
-                Color.White
-            )
-        )
+        when (img) {
+            is Painter -> {
+                Image(
+                    painter = img,
+                    contentDescription = desc,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(34.dp),
+                    colorFilter = ColorFilter.tint(
+                        Color.White
+                    )
+                )
+            }
+            is ImageVector -> {
+                Icon(
+                    imageVector = img,
+                    contentDescription = desc,
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(34.dp),
+                    tint = Color.White
+                )
+            }
+        }
     }
 }
 
@@ -509,11 +609,13 @@ private fun DrawerItem(
             .fillMaxWidth()
             .height(60.dp)
             .padding(start = 15.dp, top = 2.dp, end = 15.dp)
-            .clip(RoundedCornerShape(12))
+            .clip(RoundedCornerShape(50))
             .clickable(onClick = onItemClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ){
+        Spacer(modifier = Modifier.width(15.dp))
+
         Icon(imageVector = icon, contentDescription = text, tint = color_fondo_claro)
         
         Spacer(modifier = Modifier.width(12.dp))
@@ -533,6 +635,37 @@ fun TextOption(
         fontSize = 18.sp,
         fontFamily = FontFamily.SansSerif
     )
+}
+
+@Composable
+private fun CustomText(
+    firstString: String,
+    horizontal: Arrangement.Horizontal,
+    color: Color,
+    fontWeight: FontWeight = FontWeight.Bold,
+    size: Int,
+    modifier: Modifier = Modifier
+) {
+    Row (
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = horizontal
+    ){
+        // forgot
+        Text(
+            text = buildAnnotatedString{
+                withStyle(style = SpanStyle(color = color,
+                    fontWeight = fontWeight,
+                    fontSize = size.sp,
+                    fontFamily = FontFamily.SansSerif)
+                ) {
+                    append(firstString)
+                }
+            },
+            modifier = Modifier
+                .wrapContentWidth()
+        )
+    }
 }
 
 ///////// SHARE SHEET ////////
