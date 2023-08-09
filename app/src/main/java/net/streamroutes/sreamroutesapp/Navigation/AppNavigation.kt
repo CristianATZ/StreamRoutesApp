@@ -1,5 +1,7 @@
 package net.streamroutes.sreamroutesapp.Navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -20,10 +22,8 @@ import net.streamroutes.sreamroutesapp.Screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigureScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileContactInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileDataInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileVariedInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
@@ -35,6 +35,7 @@ import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppNavigation() {
@@ -79,14 +80,8 @@ fun AppNavigation() {
         composable(AppScreens.ProfileConfigureScreen.route){
             ProfileConfigureScreen(NavController)
         }
-        composable(AppScreens.ProfileContactInfoScreen.route){
-            ProfileContactInfoScreen(NavController)
-        }
         composable(AppScreens.ProfileDataInfoScreen.route){
             ProfileDataInfoScreen(NavController)
-        }
-        composable(AppScreens.ProfileVariedInfoScreen.route){
-            ProfileVariedInfoScreen(NavController)
         }
         // HELP
         composable(AppScreens.HelpAboutAppScreen.route){

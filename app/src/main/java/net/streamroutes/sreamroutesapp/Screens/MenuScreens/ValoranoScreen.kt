@@ -75,7 +75,7 @@ fun TopBar(myViewModel: MyViewModel, navController: NavController) {
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.MenuScreen.route) }) {
+                IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara al menu de opciones",

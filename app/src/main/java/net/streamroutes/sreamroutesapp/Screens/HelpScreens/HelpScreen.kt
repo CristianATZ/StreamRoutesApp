@@ -70,7 +70,7 @@ fun HelpScreen(myViewModel: MyViewModel,navController: NavController) {
                 )
             },
             navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
+                IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara al menu de opciones"
