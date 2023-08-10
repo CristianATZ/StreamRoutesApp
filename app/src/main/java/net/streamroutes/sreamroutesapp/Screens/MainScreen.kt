@@ -37,6 +37,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.Call
+import androidx.compose.material.icons.outlined.Face
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
+import androidx.compose.material.icons.outlined.List
+import androidx.compose.material.icons.outlined.LocationOn
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -468,7 +478,7 @@ fun DrawerBody(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            DrawerItem(text = "Version Premium", icon = Icons.Filled.Face) {
+            DrawerItem(text = "Version Premium", icon = Icons.Outlined.Call) {
                 navController.navigate(AppScreens.SuscripcionScreen.route)
             }
 
@@ -485,15 +495,15 @@ fun DrawerBody(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                DrawerItem(text = "Rutas", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Rutas", icon = Icons.Outlined.KeyboardArrowRight) {
                     navController.navigate(AppScreens.RoutesScreen.route)
                 }
 
-                DrawerItem(text = "Planifica tu viaje", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Planifica tu viaje", icon = Icons.Outlined.List) {
                     navController.navigate(AppScreens.TripScreen.route)
                 }
 
-                DrawerItem(text = "Compartir ubicacion", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Compartir ubicacion", icon = Icons.Outlined.LocationOn) {
                     if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
                         locationPermissionState.launchPermissionRequest()
                         backgroundLocationPermissionState.launchPermissionRequest()
@@ -534,7 +544,7 @@ fun DrawerBody(
                     }
                 }
 
-                DrawerItem(text = "Descargar rutas", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Descargar rutas", icon = Icons.Outlined.Search) {
                     // nothing here
                 }
             }
@@ -552,20 +562,20 @@ fun DrawerBody(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                DrawerItem(text = "Comparte", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Comparte", icon = Icons.Outlined.Share) {
                     val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
                     context.startActivity(shareIntent)
                 }
 
-                DrawerItem(text = "Valoranos", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Valoranos", icon = Icons.Outlined.Star) {
                     navController.navigate(AppScreens.ValoranoScreen.route)
                 }
 
-                DrawerItem(text = "Configuracion", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Configuracion", icon = Icons.Outlined.Settings) {
                     navController.navigate(AppScreens.ConfigurationScreen.route)
                 }
 
-                DrawerItem(text = "Ayuda y soporte", icon = Icons.Filled.Face) {
+                DrawerItem(text = "Ayuda y soporte", icon = Icons.Outlined.Person) {
                     navController.navigate(AppScreens.HelpScreen.route)
                 }
             }
