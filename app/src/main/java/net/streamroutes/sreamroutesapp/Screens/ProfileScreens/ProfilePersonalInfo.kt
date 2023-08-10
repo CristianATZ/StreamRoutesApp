@@ -4,9 +4,19 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.LinearOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +41,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -85,8 +96,23 @@ fun ProfileDataInfoScreen(navController: NavController){
 
 
 
+    // variables mutables
     var fecha by rememberSaveable {
-        mutableStateOf("Mie, 27 Nov 2002")
+        mutableStateOf("")
+    }
+    val ocupacion by remember {
+        derivedStateOf {
+            listaOcupaciones
+                .filter { it.first.value }
+                .joinToString(", ") { it.second }
+        }
+    }
+    val interes by remember {
+        derivedStateOf {
+            listaIntereses
+                .filter { it.first.value }
+                .joinToString(", ") { it.second }
+        }
     }
 
     val nCalendar = Calendar.getInstance()
@@ -132,7 +158,7 @@ fun ProfileDataInfoScreen(navController: NavController){
                             navController.navigate(AppScreens.ProfileConfigureScreen.route)
                         }
                     ) {
-                        androidx.compose.material.Icon(
+                        Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = "Te enviara a la ventana principal",
                             tint = Color.White
@@ -184,7 +210,7 @@ fun ProfileDataInfoScreen(navController: NavController){
                     Spacer(modifier = Modifier.size(20.dp))
                     GeneralOptions(
                         text = "Ocupacion",
-                        sub_text = "Estudiante",
+                        sub_text = ocupacion,
                         onClick = {
                             ocupaciones.value = true
                         }
@@ -194,7 +220,7 @@ fun ProfileDataInfoScreen(navController: NavController){
                     Spacer(modifier = Modifier.size(20.dp))
                     GeneralOptions(
                         text = "Intereses",
-                        sub_text = "Lista de intereses",
+                        sub_text = interes,
                         onClick = {
                             intereses.value = true
                         }
@@ -294,8 +320,17 @@ private fun OptionsWithSubOptions(
             subOptionsVisibleState = !subOptionsVisibleState
         }
 
-        if (subOptionsVisibleState) {
-            subOptionsComposable()
+        AnimatedVisibility(
+            visible = subOptionsVisibleState,
+            enter = fadeIn() + expandVertically(expandFrom = Alignment.Top),
+            exit = fadeOut() + shrinkVertically(shrinkTowards = Alignment.Top)
+        ) {
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp)
+            ) {
+                subOptionsComposable()
+            }
         }
     }
 }

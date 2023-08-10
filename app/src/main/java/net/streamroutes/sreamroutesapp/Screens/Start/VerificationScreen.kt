@@ -1,7 +1,9 @@
 package net.streamroutes.sreamroutesapp.Screens.Start
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
+import android.os.Build
 import android.telephony.SmsManager
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -33,6 +35,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -66,6 +69,7 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -87,42 +91,36 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
         Manifest.permission.SEND_SMS
     )
 
-    fun isPermissionsGranted() = ContextCompat.checkSelfPermission(
-        context,
-        Manifest.permission.SEND_SMS
-    ) == PackageManager.PERMISSION_GRANTED
+    fun isPermissionsGranted(context: Context): Boolean {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            ContextCompat.checkSelfPermission(
+                context,
+                Manifest.permission.SEND_SMS
+            ) == PackageManager.PERMISSION_GRANTED
+        } else {
+            // No es necesario verificar permisos en versiones anteriores a Marshmallow
+            true
+        }
+    }
 
     var telefono by remember { mutableStateOf(TextFieldValue()) }
     var codigo by remember { mutableStateOf(TextFieldValue("")) }
     var codigoGenerado by remember { mutableStateOf("") }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_)
-    ) {
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(121),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al login"
-                    )
-                }
-            }
-        )
 
-        // telefono
+    Scaffold(
+        topBar = {
+            TopBarBody(
+                navController = navController,
+                myViewModel = myViewModel
+            )
+        },
+        containerColor = color_fondo_claro
+    ) { paddingvalues ->
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(paddingvalues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -168,12 +166,18 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                         smsPermissionState.launchPermissionRequest()
                     }
 
-                    if(!telefono.text.isEmpty()){
-                        codigoGenerado = generarCodigo()
-                        val smsManager: SmsManager = SmsManager.getDefault()
-                        smsManager.sendTextMessage(telefono.text, null, codigoGenerado, null, null)
-                        Toast.makeText(context, myViewModel.languageType().get(123) + " $codigoGenerado", Toast.LENGTH_SHORT).show()
-                    } else Toast.makeText(context, myViewModel.languageType().get(124), Toast.LENGTH_SHORT).show()
+                    if(isPermissionsGranted(context)){
+                        if(!telefono.text.isEmpty()){
+                            codigoGenerado = generarCodigo()
+                            val smsManager: SmsManager = SmsManager.getDefault()
+                            smsManager.sendTextMessage(telefono.text, null, codigoGenerado, null, null)
+                            Toast.makeText(context, myViewModel.languageType().get(123) + " $codigoGenerado", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, myViewModel.languageType().get(124), Toast.LENGTH_SHORT).show()
+                        }
+                    } else {
+                        Toast.makeText(context, "Por favor ve a la configuracion de la aplicacion y habilita los permisos de mensajeria.", Toast.LENGTH_LONG).show()
+                    }
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
@@ -232,6 +236,31 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
             }
         }
     }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarBody(
+    navController: NavController,
+    myViewModel: MyViewModel
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(121),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al login"
+                )
+            }
+        }
+    )
 }
 
 @Composable
