@@ -2,6 +2,8 @@ package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
 import android.content.ClipData.Item
 import android.graphics.drawable.shapes.Shape
+import android.location.Address
+import android.location.Geocoder
 import android.os.Bundle
 import android.view.View
 import androidx.compose.foundation.Image
@@ -72,6 +74,7 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
@@ -85,6 +88,7 @@ import net.streamroutes.sreamroutesapp.Dialogs.DialogParada
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -178,8 +182,10 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                         Row {
                             val origen = remember { mutableStateOf("") }
                             BasicTextField(
-                                value = origen.value,
-                                onValueChange = {newText -> origen.value = newText },
+                                value = SharedState.MarcadorOrigen,//origen.value,
+                                onValueChange = {newValue ->
+                                    SharedState.MarcadorOrigen = newValue
+                                                },
                                 modifier = Modifier
                                     .fillMaxWidth(1f)
                                     .fillMaxHeight(.3f)
@@ -233,12 +239,21 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
     }
 }
 
+object SharedState {
+    var MarcadorOrigen by mutableStateOf("")
+}
+
 @Composable
 fun map(myViewModel: MyViewModel) {
 
+    //acceder al contexto actual del componente @Composable.
+    val context = LocalContext.current
+
+    //Variable de seleccion de ubicacion
+    var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
+    
     // Mapa
     val itsur = LatLng(20.139468718311957, -101.15069924573676)
-    val itsurState = MarkerState(position = itsur)
     val cameraPositionState = rememberCameraPositionState() {
         position = CameraPosition.fromLatLngZoom(itsur, 17f)
     }
@@ -270,14 +285,53 @@ fun map(myViewModel: MyViewModel) {
                 zoomGesturesEnabled = true
             ),
             onMapClick = { latLng ->
-                // Aquí podrías realizar alguna acción si lo deseas
+                selectedLocation = latLng
+
+                // Crear un objeto Geocoder para realizar geocodificación inversa (latitud y longitud a dirección)
+                val geocoder = Geocoder(context, Locale.getDefault())
+
+                try {
+                    // Obtener la lista de direcciones correspondientes a la latitud y longitud
+                    val addresses: List<Address> = geocoder.getFromLocation(
+                        latLng.latitude, latLng.longitude, 1
+                    ) as List<Address>
+
+                    if (addresses.isNotEmpty()) {
+                        // Si se encontró al menos una dirección, tomar la primera
+                        val address: Address = addresses[0]
+
+                        // Construir la dirección completa a partir de las partes disponibles
+                        val fullAddress = buildString {
+                            address.getAddressLine(0)?.let { append(it) } // Calle y número
+                            address.locality?.let { append(", $it") } // Ciudad
+                            address.adminArea?.let { append(", $it") } // Área administrativa (estado, provincia, etc.)
+                            address.countryName?.let { append(", $it") } // Nombre del país
+                        }
+
+                        // Actualizar el estado compartido con la dirección completa
+                        SharedState.MarcadorOrigen = fullAddress
+                    } else {
+                        // Si no se encontraron direcciones, mostrar las coordenadas
+                        SharedState.MarcadorOrigen = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
+                    }
+                } catch (e: IOException) {
+                    // Manejar errores de geocodificación
+                    SharedState.MarcadorOrigen = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
+                }
             },
             properties = MapProperties(
                 mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
                 mapType = currentMapType, // Usar el tipo de mapa actual
                 maxZoomPreference = 17f
             )
-        )
+        ){
+            selectedLocation?.let {
+                Marker(
+                    state = MarkerState(position = it),
+                    title = myViewModel.languageType().get(36)
+                )
+            }
+        }
 
         // Botón cambio tipo de mapa en la parte superior derecha
         Row(
