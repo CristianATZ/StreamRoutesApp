@@ -15,7 +15,7 @@ val color_letra = color_fondo_oscuro
 val color_letra_alterno = color_letra_textfield
 
 val color_fondo_topappbar = color_fondo_oscuro
-val color_fondo_topappbar_alterno = Color.Black
+val color_fondo_topappbar_alterno = color_fondo_oscuro
 val color_letra_topappbar = color_letra_botones
 
 val color_fondo_radiobuttons = color_letra_textfield
