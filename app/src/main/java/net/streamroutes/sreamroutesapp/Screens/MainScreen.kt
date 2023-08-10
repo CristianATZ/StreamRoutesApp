@@ -54,6 +54,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
@@ -393,7 +394,15 @@ fun DrawerBody(
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
 
+    val color2 = Color(0xFF12417D)
+    // 0xFF195093
+
     Column (
+        modifier = Modifier
+            .background(
+                Brush.verticalGradient(
+                colors = listOf(color_fondo_oscuro, color2)
+            )),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Box(
