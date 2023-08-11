@@ -66,6 +66,7 @@ import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.navigation.NavController
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap.OnMapClickListener
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -210,8 +211,9 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
 
                     val dest = remember { mutableStateOf("") }
                     BasicTextField(
-                        value = dest.value,
-                        onValueChange = {newText -> dest.value = newText },
+                        value = SharedState.MarcadorDestino,//dest.value,
+                        onValueChange = {newValue ->
+                            SharedState.MarcadorDestino = newValue},
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(.53f)
@@ -241,16 +243,28 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
 
 object SharedState {
     var MarcadorOrigen by mutableStateOf("")
+    var MarcadorDestino by mutableStateOf("")
 }
 
 @Composable
 fun map(myViewModel: MyViewModel) {
 
+    /*
+    *VARIABLES PARA EL MARCADOR DE ORIGEN
+    */
     //acceder al contexto actual del componente @Composable.
     val context = LocalContext.current
-
     //Variable de seleccion de ubicacion
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
+
+    /*
+    *VARIABLES PARA EL MARCADOR DE DESTINO
+    */
+    //acceder al contexto actual del componente @Composable.
+    val contextD = LocalContext.current
+    //Variable de seleccion de ubicacion
+    var selectedLocationD by remember { mutableStateOf<LatLng?>(null) }
+
     
     // Mapa
     val itsur = LatLng(20.139468718311957, -101.15069924573676)
@@ -285,40 +299,77 @@ fun map(myViewModel: MyViewModel) {
                 zoomGesturesEnabled = true
             ),
             onMapClick = { latLng ->
-                selectedLocation = latLng
+                if (selectedLocation == null) {
+                    // Agregar el primer marcador
+                    selectedLocation = latLng
 
-                // Crear un objeto Geocoder para realizar geocodificación inversa (latitud y longitud a dirección)
-                val geocoder = Geocoder(context, Locale.getDefault())
+                    // Crear un objeto Geocoder para realizar geocodificación inversa (latitud y longitud a dirección)
+                    val geocoder = Geocoder(context, Locale.getDefault())
 
-                try {
-                    // Obtener la lista de direcciones correspondientes a la latitud y longitud
-                    val addresses: List<Address> = geocoder.getFromLocation(
-                        latLng.latitude, latLng.longitude, 1
-                    ) as List<Address>
+                    try {
+                        // Obtener la lista de direcciones correspondientes a la latitud y longitud
+                        val addresses: List<Address> = geocoder.getFromLocation(
+                            latLng.latitude, latLng.longitude, 1
+                        ) as List<Address>
 
-                    if (addresses.isNotEmpty()) {
-                        // Si se encontró al menos una dirección, tomar la primera
-                        val address: Address = addresses[0]
+                        if (addresses.isNotEmpty()) {
+                            // Si se encontró al menos una dirección, tomar la primera
+                            val address: Address = addresses[0]
 
-                        // Construir la dirección completa a partir de las partes disponibles
-                        val fullAddress = buildString {
-                            address.getAddressLine(0)?.let { append(it) } // Calle y número
-                            address.locality?.let { append(", $it") } // Ciudad
-                            address.adminArea?.let { append(", $it") } // Área administrativa (estado, provincia, etc.)
-                            address.countryName?.let { append(", $it") } // Nombre del país
+                            // Construir la dirección completa a partir de las partes disponibles
+                            val fullAddress = buildString {
+                                address.getAddressLine(0)?.let { append(it) } // Direccion
+                            }
+
+                            // Actualizar el estado compartido con la dirección completa
+                            SharedState.MarcadorOrigen = fullAddress
+                        } else {
+                            // Si no se encontraron direcciones, mostrar las coordenadas
+                            SharedState.MarcadorOrigen = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
                         }
-
-                        // Actualizar el estado compartido con la dirección completa
-                        SharedState.MarcadorOrigen = fullAddress
-                    } else {
-                        // Si no se encontraron direcciones, mostrar las coordenadas
+                    } catch (e: IOException) {
+                        // Manejar errores de geocodificación
                         SharedState.MarcadorOrigen = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
                     }
-                } catch (e: IOException) {
-                    // Manejar errores de geocodificación
-                    SharedState.MarcadorOrigen = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
                 }
+                //Destino MARCADOR
+                else if (selectedLocationD == null) {
+                    // Agregar el segundo marcador
+                    selectedLocationD = latLng
+
+                    // Crear un objeto Geocoder para realizar geocodificación inversa (latitud y longitud a dirección)
+                    val geocoder = Geocoder(contextD, Locale.getDefault())
+
+                    try {
+                        // Obtener la lista de direcciones correspondientes a la latitud y longitud
+                        val addresses: List<Address> = geocoder.getFromLocation(
+                            latLng.latitude, latLng.longitude, 1
+                        ) as List<Address>
+
+                        if (addresses.isNotEmpty()) {
+                            // Si se encontró al menos una dirección, tomar la primera
+                            val address: Address = addresses[0]
+
+                            // Construir la dirección completa a partir de las partes disponibles
+                            val fullAddress = buildString {
+                                address.getAddressLine(0)?.let { append(it) } // Direccion
+                            }
+
+                            // Actualizar el estado compartido con la dirección completa
+                            SharedState.MarcadorDestino = fullAddress
+                        } else {
+                            // Si no se encontraron direcciones, mostrar las coordenadas
+                            SharedState.MarcadorDestino = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
+                        }
+                    } catch (e: IOException) {
+                        // Manejar errores de geocodificación
+                        SharedState.MarcadorDestino = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
+                    }
+                }
+
+
             },
+
             properties = MapProperties(
                 mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
                 mapType = currentMapType, // Usar el tipo de mapa actual
@@ -326,9 +377,17 @@ fun map(myViewModel: MyViewModel) {
             )
         ){
             selectedLocation?.let {
-                Marker(
+                val originMarker = Marker(
                     state = MarkerState(position = it),
                     title = myViewModel.languageType().get(36)
+                )
+            }
+
+            selectedLocationD?.let {
+                val destinyMarker = Marker(
+                    state = MarkerState(position = it),
+                    title = "Marcador Destino"
+
                 )
             }
         }

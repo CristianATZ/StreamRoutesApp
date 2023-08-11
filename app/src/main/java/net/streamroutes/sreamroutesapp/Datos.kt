@@ -66,7 +66,7 @@ class MyViewModel : ViewModel() {
 
         // TripScreen
         "Planifica tu viaje", // 35
-        "Ubicacion seleccionada", // 36
+        "Marcador Origen", // 36
         "Ubicacion", // 37
         "Lugares seleccionados", // 38
         "Colonia", // 39
@@ -251,7 +251,7 @@ class MyViewModel : ViewModel() {
 
         // Trip Screen
         "Plan Your Trip", // 35
-        "Selected Location", // 36
+        "Origin Marker", // 36
         "Location", // 37
         "Selected Places", // 38
         "Neighborhood", // 39
