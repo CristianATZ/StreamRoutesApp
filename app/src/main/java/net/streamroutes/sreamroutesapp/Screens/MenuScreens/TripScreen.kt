@@ -75,6 +75,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.AddressInfo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra
@@ -84,19 +85,13 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
 
 @Preview ( showBackground = true )
 @Composable
 fun view() {
 
 }
-
-data class AddressInfo(
-    val cityName: String?, // ciudad
-    val streetName: String?, // calle
-    val neighborhood: String?, // colonia
-    val postalCode: String? // codigo
-)
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -117,21 +112,6 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
     // remueve todos los elementos
     fun removeAll(){
         markers = emptyList()
-    }
-
-    fun getAddressInfoFromCoordinates(context: Context, latitude: Double, longitude: Double): AddressInfo? {
-        val geocoder = Geocoder(context)
-        val addressList = geocoder.getFromLocation(latitude, longitude, 1)
-        val address = addressList?.get(0)
-        if (address != null) {
-            return AddressInfo(
-                cityName = address.locality,
-                streetName = address.thoroughfare,
-                neighborhood = address.subLocality,
-                postalCode = address.postalCode
-            )
-        }
-        return null
     }
 
     Column(
@@ -242,10 +222,8 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                 Button(
                     onClick = {
                         selectedLocation?.let {
-                            val latitude = it.latitude
-                            val longitude = it.longitude
 
-                            val ubicacion = getAddressInfoFromCoordinates(context, latitude, longitude)
+                            val ubicacion = getAddressInfoFromCoordinates(context, it.latitude, it.longitude)
 
                             if (ubicacion != null) {
                                 markers = markers + ubicacion
