@@ -3,6 +3,7 @@
 package net.streamroutes.sreamroutesapp.Screens
 
 import android.Manifest
+import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -11,8 +12,10 @@ import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
+import android.os.Environment
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,6 +41,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.outlined.Call
+import androidx.compose.material.icons.outlined.ExitToApp
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.List
@@ -107,6 +111,7 @@ import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
 
 @Composable
 fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
@@ -545,7 +550,7 @@ fun DrawerBody(
                 }
 
                 DrawerItem(text = "Descargar rutas", icon = Icons.Outlined.Search) {
-                    // nothing here
+                    startDownload(context = context)
                 }
             }
 
@@ -590,7 +595,7 @@ fun DrawerBody(
                     .align(Alignment.CenterHorizontally)
             )
 
-            DrawerItem(text = "Cerrar sesion", icon = Icons.Filled.Face) {
+            DrawerItem(text = "Cerrar sesion", icon = Icons.Outlined.ExitToApp) {
 
             }
         }
@@ -772,25 +777,6 @@ fun getShareUbi(
 
 ///////// FUNCIONES ////////
 
-// funcion para convertir las coordenadas en nombre de calle etc
-fun getAddressInfoFromCoordinates(
-    context: Context,
-    latitude: Double,
-    longitude: Double
-): String {
-    val geocoder = Geocoder(context)
-    val addressList = geocoder.getFromLocation(latitude, longitude, 1)
-    val address = addressList?.get(0)
-    if (address != null) {
-        val streetName = address.thoroughfare // Calle
-        val neighborhood = address.subLocality // Colonia
-
-        // Devolver solo la calle y la colonia en un objeto AddressInfo
-        return "$streetName, $neighborhood "
-    }
-    return ""
-}
-
 // funcion para saber si estas contetado a internet
 fun isInternetAvailable(
     context: Context
@@ -807,6 +793,17 @@ fun isInternetAvailable(
     return false
 }
 
-fun checkPermissionFor(permission: String, context: Context): Boolean {
-    return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+private fun startDownload(context: Context, pdfUrl: String = "https://drive.google.com/uc?export=download&id=10O0RgVqlyorbydLp4T0QY12mAxUsMn-W") {
+    val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+
+    val request = DownloadManager.Request(Uri.parse(pdfUrl))
+        .setTitle("Descargando rutas")
+        .setDescription("Descargando ruta (nombre)")
+        .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        .setDestinationInExternalPublicDir(
+            Environment.DIRECTORY_DOWNLOADS,
+            "prueba.pdf"
+        )
+
+    downloadManager.enqueue(request)
 }
