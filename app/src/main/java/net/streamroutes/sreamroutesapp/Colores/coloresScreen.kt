@@ -2,7 +2,30 @@ package net.streamroutes.sreamroutesapp.Colores
 
 import androidx.compose.ui.graphics.Color
 
-val color_fondo_claro = Color(0xFFFFF7E7)
+val colorOscuro1 = Color(0xFF26292B)
+val colorOscuro2 = Color(0xFF2E3229)
+val colorOscuro3 = Color(0xFF5F7ADB)
+val colorOscuro4 = Color(0xFFA2B2EE)
+
+val colorClaro1 = Color(0xFFFFF7E7)
+val colorClaro2 = Color(0xFFE8AA42)
+val colorClaro3 = Color(0xFF153040)
+val colorClaro4 = Color(0xFFFFE5B4)
+
+val uno = Color(0xFFF4EAD3)
+val dos = Color(0xFFFFD700)
+val tres = Color(0xFF001F3F)
+val cuatro = Color(0xFFFFE5B4)
+
+
+
+/* color_fondo, color_fondo_botones, color_letraBotones, color_fondo_textfield, color_fondo_letraTextfield,
+color_checkBox_Selected, color_checkBoxUnselected, color_radioButton_Selected, color_radioButton_Unselected
+color_fondo_RowColumnBox, color_switch_selected, color_switch_unselected, color_iconos */
+
+val color_fondo_claro = colorClaro1
+val color_fondo = colorClaro1
+
 val color_fondo_oscuro = Color(0xFF153040)
 
 val color_fondo_botones = color_fondo_oscuro
