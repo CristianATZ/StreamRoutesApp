@@ -105,8 +105,12 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
@@ -348,14 +352,14 @@ fun TopBarBody(
                 Icon(
                     Icons.Filled.Menu,
                     contentDescription = "Te mostrara el menu",
-                    tint = Color.White
+                    tint = color_letra_topbar
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topappbar_alterno,
-                titleContentColor = color_letra_topappbar
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
             )
     )
 }

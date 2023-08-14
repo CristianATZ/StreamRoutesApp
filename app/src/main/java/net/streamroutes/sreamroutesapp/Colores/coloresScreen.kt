@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 val colorOscuro1 = Color(0xFF26292B)
 val colorOscuro2 = Color(0xFF2E3229)
-val colorOscuro3 = Color(0xFF5F7ADB)
+val colorOscuro3 = Color(0xFFE8AA42)
 val colorOscuro4 = Color(0xFFA2B2EE)
 
 val colorClaro1 = Color(0xFFFFF7E7)
@@ -22,17 +22,24 @@ val cuatro = Color(0xFFFFE5B4)
 /* color_fondo, color_fondo_botones, color_letraBotones, color_fondo_textfield, color_fondo_letraTextfield,
 color_checkBox_Selected, color_checkBoxUnselected, color_radioButton_Selected, color_radioButton_Unselected
 color_fondo_RowColumnBox, color_switch_selected, color_switch_unselected, color_iconos */
+val color_fondo = colorClaro1
+val color_fondo_textfield = uno
+val color_letra_textfield = colorClaro2
+val color_letraout = Color.Black
+val color_letrain = colorClaro2
+val color_botones = colorClaro2
+val color_fondo_topbar = colorClaro3
+val color_letra_topbar = Color.White
 
 val color_fondo_claro = colorClaro1
-val color_fondo = colorClaro1
 
 val color_fondo_oscuro = Color(0xFF153040)
 
 val color_fondo_botones = color_fondo_oscuro
 val color_letra_botones = Color(0xFFFFFFFF)
 
-val color_fondo_textfield = Color(0xFFFFE5B4)
-val color_letra_textfield = Color(0xFFE8AA42)
+//val color_fondo_textfield = Color(0xFFFFE5B4)
+//val color_letra_textfield = Color(0xFFE8AA42)
 
 val color_letra = color_fondo_oscuro
 val color_letra_alterno = color_letra_textfield

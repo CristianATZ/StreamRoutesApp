@@ -56,6 +56,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -74,7 +79,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
 
     Column (
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color_fondo),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
@@ -136,7 +142,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
                 navController.navigate(route = AppScreens.MainScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
+                backgroundColor = color_botones, // Cambiamos el color de fondo del botón aquí
                 contentColor = Color.White
             ),
             shape = roundCornerShape,
@@ -185,12 +191,12 @@ private fun PasswordTextfield(
             .size(48.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
-        // forgot
+        // header
         Text(
             text = tittle,
             modifier = Modifier
                 .fillMaxWidth(),
-            color = Color.DarkGray,
+            color = color_letraout,
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
@@ -201,7 +207,7 @@ private fun PasswordTextfield(
         modifier = Modifier
             .fillMaxWidth(0.85f)
             .background(
-                Color(0xFFFFE5B4),
+                color_fondo_textfield,
                 roundedCornerShape
             )
     ){
@@ -218,7 +224,7 @@ private fun PasswordTextfield(
             keyboardOptions = keyboardOptions,
             textStyle = LocalTextStyle.current.copy(
                 fontSize = 18.sp,
-                color = Color(0xFFE8AA42),
+                color = color_letrain,
                 textAlign = TextAlign.Left,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
@@ -226,7 +232,7 @@ private fun PasswordTextfield(
             decorationBox = { innerTextField ->
                 Row(
                     Modifier
-                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
+                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
                         .padding(16.dp)
                         .fillMaxWidth(0.8f)
                 ){
@@ -234,7 +240,7 @@ private fun PasswordTextfield(
                         Text(
                             text = placeholder,
                             fontSize = 18.sp,
-                            color = Color(0xFFFFF7E7),
+                            color = color_letraout.copy(0.5f),
                             letterSpacing = 3.sp,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
@@ -265,7 +271,8 @@ private fun PasswordTextfield(
                             painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(32.dp),
+                        tint = color_letraout
                     )
                 }
             }
@@ -290,14 +297,14 @@ private fun CustomText(
         // forgot
         Text(
             text = buildAnnotatedString{
-                withStyle(style = SpanStyle(color = Color.DarkGray,
+                withStyle(style = SpanStyle(color = color_letraout,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     fontFamily = FontFamily.SansSerif)) {
                     append(firstString)
                 }
                 append(" ")
-                withStyle(style = SpanStyle(color = Color(0xFFE8AA42),
+                withStyle(style = SpanStyle(color = color_letrain,
                     textDecoration = TextDecoration.Underline,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
