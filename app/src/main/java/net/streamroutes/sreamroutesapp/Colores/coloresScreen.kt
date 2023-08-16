@@ -28,6 +28,7 @@ val color_letra_textfield = colorClaro2
 val color_letraout = Color.Black
 val color_letrain = colorClaro2
 val color_botones = colorClaro2
+val color_letra_botones = Color.White
 val color_fondo_topbar = colorClaro3
 val color_letra_topbar = Color.White
 
@@ -36,7 +37,6 @@ val color_fondo_claro = colorClaro1
 val color_fondo_oscuro = Color(0xFF153040)
 
 val color_fondo_botones = color_fondo_oscuro
-val color_letra_botones = Color(0xFFFFFFFF)
 
 //val color_fondo_textfield = Color(0xFFFFE5B4)
 //val color_letra_textfield = Color(0xFFE8AA42)

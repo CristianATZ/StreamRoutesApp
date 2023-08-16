@@ -27,8 +27,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,10 +44,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
+import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -58,33 +73,21 @@ val color_fond = Color(0xFFFFF7E7)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Change( myViewModel: MyViewModel,navController: NavController ){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fond)
-    ){
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(130),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.LoginScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "te regresara al login"
-                    )
-                }
-            }
-        )
+    var password by remember { mutableStateOf(TextFieldValue("")) }
+    var passwordVisibility = remember { mutableStateOf(true) }
+    var confirmPass by remember { mutableStateOf(TextFieldValue("")) }
+    var confirmPassVisibility = remember { mutableStateOf(true) }
 
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo_claro
+    ) { paddingValues ->
         // todo
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.size(30.dp))
 
@@ -105,176 +108,38 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
             Spacer(modifier = Modifier.size(15.dp))
 
             // contrasenia
-            Column() {
-                // header contrasenia
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(48.dp), // lo modifican dependiendo de su textfield
-                    verticalAlignment = Alignment.CenterVertically, // alineamiento
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    // telefono
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f),
-                        text = myViewModel.languageType().get(131),
-                        color = Color.DarkGray,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Left
-                    )
-                }
-                // textfield telefono
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    var variable by remember { mutableStateOf(TextFieldValue("")) }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .background(
-                                Color(0xFFFFE5B4),
-                                RoundedCornerShape(percent = 30)
-                            )
-                    ){
-                        BasicTextField(
-                            value = variable,
-                            onValueChange = {variable = it},
-                            singleLine = true,
-                            modifier = Modifier
-                                .height(70.dp)
-                                .fillMaxWidth(0.85f)
-                                .padding(4.dp),
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Next
-                                // aqui puede ser ImeAction.Next
-                            ),
-                            textStyle = LocalTextStyle.current.copy(
-                                fontSize = 18.sp,
-                                color = Color(0xFFE8AA42),
-                                textAlign = TextAlign.Left,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 2.sp
-                            ),
-                            decorationBox = { innerTextField ->
-                                Row(
-                                    Modifier
-                                        .background(
-                                            Color(0xFFFFE5B4),
-                                            RoundedCornerShape(percent = 30)
-                                        )
-                                        .padding(16.dp)
-                                        .fillMaxWidth(0.8f)
-                                ){
-                                    if (variable.text.isEmpty()){
-                                        Text(
-                                            text = myViewModel.languageType().get(131),
-                                            fontSize = 18.sp,
-                                            color = Color(0xFFFFF7E7),
-                                            letterSpacing = 3.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterVertically)
-
-                                        )
-                                    }
-                                    innerTextField()
-                                }
-                            }
-                        )
-                    }
-                }
-            }
+            PasswordTextfield(
+                tittle = myViewModel.languageType().get(131),
+                placeholder = myViewModel.languageType().get(131),
+                readOnly = false,
+                size = 70,
+                variable = password,
+                onVariableChange = {newValue -> password = newValue},
+                passwordVisibility = passwordVisibility,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                visualTransformation = if (passwordVisibility.value)
+                    PasswordVisualTransformation() else VisualTransformation.None
+            )
 
             Spacer(modifier = Modifier.size(15.dp))
 
             // confirmar contrasenia
-            Column() {
-                // header confirmar contrasenia
-                Row (
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .size(48.dp), // lo modifican dependiendo de su textfield
-                    verticalAlignment = Alignment.CenterVertically, // alineamiento
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    // telefono
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth(0.8f),
-                        text = myViewModel.languageType().get(132),
-                        color = Color.DarkGray,
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 20.sp,
-                        textAlign = TextAlign.Left
-                    )
-                }
-                // textfield telefono
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    var variable by remember { mutableStateOf(TextFieldValue("")) }
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.85f)
-                            .background(
-                                Color(0xFFFFE5B4),
-                                RoundedCornerShape(percent = 30)
-                            )
-                    ){
-                        BasicTextField(
-                            value = variable,
-                            onValueChange = {variable = it},
-                            singleLine = true,
-                            modifier = Modifier
-                                .height(70.dp)
-                                .fillMaxWidth(0.85f)
-                                .padding(4.dp),
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Done
-                                // aqui puede ser ImeAction.Next
-                            ),
-                            textStyle = LocalTextStyle.current.copy(
-                                fontSize = 18.sp,
-                                color = Color(0xFFE8AA42),
-                                textAlign = TextAlign.Left,
-                                fontWeight = FontWeight.Bold,
-                                letterSpacing = 2.sp
-                            ),
-                            decorationBox = { innerTextField ->
-                                Row(
-                                    Modifier
-                                        .background(
-                                            Color(0xFFFFE5B4),
-                                            RoundedCornerShape(percent = 30)
-                                        )
-                                        .padding(16.dp)
-                                        .fillMaxWidth(0.8f)
-                                ){
-                                    if (variable.text.isEmpty()){
-                                        Text(
-                                            text = myViewModel.languageType().get(132),
-                                            fontSize = 18.sp,
-                                            color = Color(0xFFFFF7E7),
-                                            letterSpacing = 3.sp,
-                                            modifier = Modifier
-                                                .align(Alignment.CenterVertically)
-
-                                        )
-                                    }
-                                    innerTextField()
-                                }
-                            }
-                        )
-                    }
-                }
-            }
+            PasswordTextfield(
+                tittle = myViewModel.languageType().get(132),
+                placeholder = myViewModel.languageType().get(132),
+                readOnly = false,
+                size = 70,
+                variable = confirmPass,
+                onVariableChange = {newValue -> confirmPass = newValue},
+                passwordVisibility = confirmPassVisibility,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                visualTransformation = if (passwordVisibility.value)
+                    PasswordVisualTransformation() else VisualTransformation.None
+            )
 
             // boton cambiar contrasenia
             Row(
@@ -288,8 +153,8 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
 
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                        contentColor = Color.White
+                        containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
+                        contentColor = color_letra_botones
                     ),
                     shape = roundCornerShape,
                     modifier = Modifier
@@ -299,8 +164,146 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
                     Text(
                         text = myViewModel.languageType().get(134),
                         fontSize = 26.sp,
-                        color = Color.White,
                         fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(myViewModel: MyViewModel, navController: NavController) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(130),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.LoginScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "te regresara al login"
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
+}
+
+
+@Composable
+private fun PasswordTextfield(
+    tittle: String,
+    placeholder: String,
+    readOnly: Boolean,
+    singleLine: Boolean = true,
+    size: Int,
+    variable: TextFieldValue,
+    onVariableChange: (TextFieldValue) -> Unit,
+    passwordVisibility: MutableState<Boolean>,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    visualTransformation: VisualTransformation,
+    keyboardOptions: KeyboardOptions,
+    icono: Boolean = true
+) {
+    // nombre
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        // header
+        Text(
+            text = tittle,
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = color_letraout,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .background(
+                color_fondo_textfield,
+                roundedCornerShape
+            )
+    ){
+        // caja de texto
+        BasicTextField(
+            value = variable,
+            onValueChange = onVariableChange,
+            singleLine = singleLine,
+            readOnly = readOnly,
+            modifier = Modifier
+                .height(size.dp)
+                .fillMaxWidth()
+                .padding(4.dp),
+            keyboardOptions = keyboardOptions,
+            textStyle = androidx.compose.material.LocalTextStyle.current.copy(
+                fontSize = 18.sp,
+                color = color_letrain,
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            ),
+            decorationBox = { innerTextField ->
+                Row(
+                    Modifier
+                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
+                        .padding(16.dp)
+                        .fillMaxWidth(0.8f)
+                ){
+                    if (variable.text.isEmpty()){
+                        Text(
+                            text = placeholder,
+                            fontSize = 18.sp,
+                            color = color_letraout.copy(0.5f),
+                            letterSpacing = 3.sp,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+
+                        )
+                    }
+                    innerTextField()
+                }
+            },
+            visualTransformation = visualTransformation
+        )
+
+        if(icono){
+            // icono
+            Row(
+                modifier = Modifier
+                    .height(size.dp)
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    passwordVisibility.value = !passwordVisibility.value
+                }) {
+                    Icon(
+                        painter = if (passwordVisibility.value)
+                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                        contentDescription = "visibilidad contraseña",
+                        modifier = Modifier
+                            .size(32.dp),
+                        tint = color_letraout
                     )
                 }
             }

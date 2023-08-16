@@ -17,6 +17,7 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -117,6 +118,7 @@ import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
     Main(myViewModel,navController)
@@ -144,6 +146,7 @@ data class Coordenadas(val latitud: Double, val longitud: Double, val tipo: Int)
 
 val listaCoordenadas = mutableListOf<Coordenadas>()
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Main( myViewModel: MyViewModel, navController: NavController ){
@@ -237,7 +240,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
     internet.value = !isInternetAvailable(context)
 
     // dialogo para la conexion a internet
-    if(internet.value){
+    /*if(internet.value){
         DialogInternet(
             dialogo = internet
         ) {
@@ -247,7 +250,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
             internet.value = false
             internet.value = !isInternetAvailable(context)
         }
-    }
+    }*/
 
     ModalDrawer(
         drawerState = drawerState,
@@ -326,6 +329,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopBarBody(
     myViewModel: MyViewModel,
@@ -364,6 +368,7 @@ fun TopBarBody(
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DrawerBody(
