@@ -104,11 +104,15 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.Colores.colorOscuro1
+import net.streamroutes.sreamroutesapp.Colores.colorOscuro2
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letraout
@@ -331,7 +335,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarBody(
+private fun TopBarBody(
     myViewModel: MyViewModel,
     scope: CoroutineScope,
     drawerState: DrawerState
@@ -425,7 +429,7 @@ fun DrawerBody(
         modifier = Modifier
             .background(
                 Brush.verticalGradient(
-                colors = listOf(color_fondo_oscuro, color2)
+                colors = listOf(color_fondo_topbar, colorOscuro2)
             )),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -456,7 +460,6 @@ fun DrawerBody(
                 CustomText(
                     firstString = "Cristian Alexis Torres Zavala",
                     horizontal = Arrangement.Start,
-                    color = color_fondo_claro,
                     size = 20,
                     modifier = Modifier.fillMaxWidth(0.95f)
                 )
@@ -464,7 +467,6 @@ fun DrawerBody(
                 CustomText(
                     firstString = "s20120154@alumnos.itsur.edu.mx",
                     horizontal = Arrangement.Start,
-                    color = color_fondo_claro,
                     fontWeight = FontWeight.Normal,
                     size = 15,
                     modifier = Modifier.fillMaxWidth(0.95f)
@@ -650,7 +652,7 @@ private fun BoxOption(
 ) {
     Row(
         modifier = Modifier
-            .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
+            .background(color_fondo_topbar, RoundedCornerShape(percent = 10))
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
@@ -664,7 +666,7 @@ private fun BoxOption(
                         .padding(10.dp)
                         .size(34.dp),
                     colorFilter = ColorFilter.tint(
-                        Color.White
+                        color_icon
                     )
                 )
             }
@@ -675,7 +677,7 @@ private fun BoxOption(
                     modifier = Modifier
                         .padding(10.dp)
                         .size(34.dp),
-                    tint = Color.White
+                    tint = color_icon
                 )
             }
         }
@@ -700,7 +702,7 @@ private fun DrawerItem(
     ){
         Spacer(modifier = Modifier.width(15.dp))
 
-        Icon(imageVector = icon, contentDescription = text, tint = color_fondo_claro)
+        Icon(imageVector = icon, contentDescription = text, tint = color_letra_botones)
         
         Spacer(modifier = Modifier.width(12.dp))
 
@@ -710,8 +712,8 @@ private fun DrawerItem(
 
 @Composable
 fun TextOption(
-    text: String, color:
-    Color = color_fondo_claro
+    text: String,
+    color: Color = color_letra_botones
 ) {
     Text(
         text = text,
@@ -725,7 +727,7 @@ fun TextOption(
 private fun CustomText(
     firstString: String,
     horizontal: Arrangement.Horizontal,
-    color: Color,
+    color: Color = color_letra_botones,
     fontWeight: FontWeight = FontWeight.Bold,
     size: Int,
     modifier: Modifier = Modifier
@@ -767,6 +769,7 @@ fun getShareApp(
     }
     return shareApp
 }
+
 // hoja para compartir la ubicacion
 fun getShareUbi(
     context: Context,

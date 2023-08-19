@@ -3,6 +3,7 @@ package net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -37,9 +39,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -53,47 +61,25 @@ fun ChangeCityScreen(myViewModel: MyViewModel,navController: NavController){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CambiarCiudad(myViewModel: MyViewModel,navController: NavController) {
-    //Fondo
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ){
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(53),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de configuraciones",
-                        tint = Color.White
 
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
-        Options()
-        // Espacio para empujar el contenido hacia abajo
-        Spacer(modifier = Modifier.weight(1f))
+    Scaffold(
+        topBar = { TopBarBody(myViewModel = myViewModel, navController = navController)},
+        containerColor = color_fondo
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            Options()
+        }
     }
 }
 
 
 //Opciones
 @Composable
-fun Options(modifier: Modifier = Modifier) {
+private fun Options(modifier: Modifier = Modifier) {
     val options = listOf(
         "LEÓN",
         "IRAPUATO",
@@ -120,7 +106,11 @@ fun Options(modifier: Modifier = Modifier) {
 
     options.forEach { option ->
         val topPadding = if (option == "LEÓN") 30.dp else 2.dp
-        Row(modifier = Modifier.padding(top = topPadding)) {
+        Row(
+            modifier = Modifier
+                .padding(top = topPadding)
+                .clickable{ onOptionSelected(option) }
+        ) {
             // Espacio entre los componentes
             Spacer(modifier = Modifier.width(13.dp))
 
@@ -128,11 +118,12 @@ fun Options(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .height(45.dp)
                     .fillMaxWidth(0.95f)
-                    .background(Color(android.graphics.Color.parseColor("#153040")))
+                    .background(color_botones)
             ) {
                 Text(
                     text = option,
-                    modifier = Modifier.align(Alignment.CenterStart)
+                    modifier = Modifier
+                        .align(Alignment.CenterStart)
                         .padding(start = 10.dp),
                     color = Color.White,
                     fontSize = 19.sp,
@@ -143,13 +134,50 @@ fun Options(modifier: Modifier = Modifier) {
                     selected = isOptionSelected(option),
                     onClick = { onOptionSelected(option) },
                     colors = RadioButtonDefaults.colors(
-                        selectedColor = Color(android.graphics.Color.parseColor("#E8AA42")),
-                        unselectedColor = Color.DarkGray,
-                        disabledSelectedColor = Color.LightGray
+                        selectedColor = color_letrain,
+                        unselectedColor = Color.White,
+                        disabledSelectedColor = Color.White
                     ),
-                    modifier = Modifier.padding(16.dp).align(Alignment.CenterEnd)
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.CenterEnd)
                 )
             }
         }
     }
+}
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    // top app bar
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(53),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de configuraciones",
+                    tint = color_icon
+
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
 }

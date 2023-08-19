@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -25,6 +26,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -47,11 +49,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
+import net.streamroutes.sreamroutesapp.Colores.cuatro
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -72,46 +83,19 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 
     mensual.value = !anual.value
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ) {
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(15),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de opciones",
-                        tint = Color.White
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
 
-        // cuerpo para las opciones inmovibles
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-        ){
+    Scaffold(
+        topBar = {
+            TopBarBody(myViewModel,navController)
+        },
+        containerColor = color_fondo
+    ) { paddingValues ->
             // cuerpo de las ventajas de la suscripcion
+            // cambiar a uso de lazyColumn
             Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.70f)
+                    .fillMaxSize()
+                    .padding(paddingValues)
                     .verticalScroll(rememberScrollState())
             ) {
                 SuscripcionDatos(
@@ -122,7 +106,6 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
                 )
-
 
                 SuscripcionDatos(
                     myViewModel,
@@ -150,29 +133,12 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
                 )
-            }
 
-            // cuerpo para el tipo de suscripcion
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color_fondo_oscuro,
-                        RoundedCornerShape(
-                            topEnd = 15.dp,
-                            bottomStart = 0.dp,
-                            topStart = 15.dp,
-                            bottomEnd = 0.dp
-                        )
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
                 // cuerpo para las opciones de suscripcion
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(10.dp),
+                        .padding(top = 10.dp, bottom = 20.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ){
@@ -180,9 +146,10 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(0.45f)
-                            .fillMaxHeight(0.6f)
+                            .height(125.dp)
+                            .padding(3.dp)
                             .background(
-                                color_letra_textfield,
+                                color_botones,
                                 RoundedCornerShape(
                                     topEnd = 10.dp,
                                     bottomStart = 10.dp,
@@ -194,30 +161,15 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                                 value = mensual.value,
                                 onValueChange = { mensual.value = it },
                                 role = Role.RadioButton
-                            ),
+                            )
                     ){
-                        Box(
+                        Column(
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(3.dp)
-                                .background(
-                                    color_fondo_oscuro,
-                                    RoundedCornerShape(
-                                        topEnd = 10.dp,
-                                        bottomStart = 10.dp,
-                                        topStart = 10.dp,
-                                        bottomEnd = 10.dp
-                                    )
-                                )
-                        ){
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                            ) {
-                                TextUser(text = myViewModel.languageType().get(24), fontSize = 25, color = color_letra_topappbar, textAlign = TextAlign.Center)
-                                Spacer(modifier = Modifier.size(10.dp))
-                                TextUser(text = "$ 15.00", fontSize = 30, color = color_letra_textfield, textAlign = TextAlign.Center)
-                            }
+                        ) {
+                            TextUser(text = myViewModel.languageType().get(24), fontSize = 25, color = color_letra_botones , textAlign = TextAlign.Center)
+                            Spacer(modifier = Modifier.size(5.dp))
+                            TextUser(text = "$ 15.00", fontSize = 30, color = color_letra_botones, textAlign = TextAlign.Center)
                         }
                     }
 
@@ -226,10 +178,11 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     // caja para la suscripcion anual
                     Box(
                         modifier = Modifier
-                            .fillMaxWidth(0.90f)
-                            .fillMaxHeight(0.6f)
+                            .fillMaxWidth(0.9f)
+                            .height(125.dp)
+                            .padding(3.dp)
                             .background(
-                                color_letra_textfield,
+                                color_botones,
                                 RoundedCornerShape(
                                     topEnd = 10.dp,
                                     bottomStart = 10.dp,
@@ -241,71 +194,73 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                                 value = anual.value,
                                 onValueChange = { anual.value = it },
                                 role = Role.RadioButton,
-                            ),
+                            )
                     ){
-                        Box(
+                        Column(
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(3.dp)
-                                .background(
-                                    color_fondo_oscuro,
-                                    RoundedCornerShape(
-                                        topEnd = 10.dp,
-                                        bottomStart = 10.dp,
-                                        topStart = 10.dp,
-                                        bottomEnd = 10.dp
-                                    )
-                                )
-                        ){
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                            ) {
-                                TextUser(text = myViewModel.languageType().get(25), fontSize = 25, color = color_letra_topappbar, textAlign = TextAlign.Center)
-                                Spacer(modifier = Modifier.size(10.dp))
-                                TextUser(text = "$ 120.00", fontSize = 30, color = color_letra_textfield, textAlign = TextAlign.Center)
-                                TextUser(text = "$ 10.00/" + myViewModel.languageType().get(26), fontSize = 15, color = color_letra_textfield, textAlign = TextAlign.Center)
-                            }
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            TextUser(text = myViewModel.languageType().get(25), fontSize = 25, color = color_letra_botones, textAlign = TextAlign.Center)
+                            Spacer(modifier = Modifier.size(5.dp))
+                            TextUser(text = "$ 120.00", fontSize = 30, color = color_letra_botones, textAlign = TextAlign.Center)
+                            TextUser(text = "$ 10.00/" + myViewModel.languageType().get(26), fontSize = 15, color = color_letra_botones, textAlign = TextAlign.Center)
                         }
                     }
                 }
-
-                // cuerpo para el boton de suscripcion
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                    Button(
-                        onClick = {
-
-                            Toast.makeText(
-                                context,
-                                "Seleccionaste ${mensual.value} y ${anual.value}",
-                                Toast.LENGTH_LONG
-                            ).show()
-
-                        },
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = color_letra_topappbar, // Cambiamos el color de fondo del botón aquí
-                        ),
-                        shape = roundCornerShape,
-                        modifier = Modifier
-                            .wrapContentSize()
-                    ) {
-                        Text(
-                            text = myViewModel.languageType().get(27),
-                            fontSize = 26.sp,
-                            color = color_fondo_topappbar_alterno,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                }
             }
+
+            // cuerpo para el tipo de suscripcion
+            /*Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        cuatro,
+                        RoundedCornerShape(
+                            topEnd = 15.dp,
+                            bottomStart = 0.dp,
+                            topStart = 15.dp,
+                            bottomEnd = 0.dp
+                        )
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
+            }*/
         }
     }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(15),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de opciones",
+                    tint = color_letra_botones
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
 }
 
 @Composable
@@ -342,7 +297,7 @@ private fun SuscripcionDatos(
             .fillMaxWidth()
             .padding(15.dp)
             .background(
-                color_fondo_oscuro,
+                color_fondo_textfield,
                 roundedCornerShape
             ),
         verticalAlignment = Alignment.CenterVertically,
@@ -358,8 +313,8 @@ private fun SuscripcionDatos(
                 .fillMaxWidth()
                 .padding(15.dp)
         ){
-            TextUser(text = titulo, fontSize = 25, color = color_letra_topappbar)
-            TextUser(text = descripcion, fontSize = 15, color = color_letra_topappbar, fontWeight = FontWeight.Normal)
+            TextUser(text = titulo, fontSize = 25, color = color_letraout)
+            TextUser(text = descripcion, fontSize = 15, color = color_letraout, fontWeight = FontWeight.Normal)
             Spacer(modifier = Modifier.size(30.dp))
             ClickableText(
                 text = buildAnnotatedString {

@@ -14,9 +14,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -30,56 +35,36 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ) {
-
-        // top app bar configuracion
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(48),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de opciones"
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
-
-        // cambiar de ciudad
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
             // cambiar de ciudad
             Options(
                 text = myViewModel.languageType().get(49),
                 text_des = "icono de cambiar ciudad",
-                imageVector = Icons.Filled.Add,
-                color_texto = color_letra,
+                imageVector = Icons.Filled.Search,
+                color_texto = color_letraout,
                 color_icon = Color.Black,
                 onClick = {
                     navController.navigate(route = AppScreens.ChangeCityScreen.route)
@@ -90,8 +75,8 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             Options(
                 text = myViewModel.languageType().get(50),
                 text_des = "icono de tipo de notificaciones",
-                imageVector = Icons.Filled.Add,
-                color_texto = color_letra,
+                imageVector = Icons.Filled.Notifications,
+                color_texto = color_letraout,
                 color_icon = Color.Black,
                 onClick = {
                     navController.navigate(route = AppScreens.NotificationsScreen.route)
@@ -102,8 +87,8 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             Options(
                 text = myViewModel.languageType().get(51),
                 text_des = "icono de mapa",
-                imageVector = Icons.Filled.Add,
-                color_texto = color_letra,
+                imageVector = Icons.Filled.ThumbUp,
+                color_texto = color_letraout,
                 color_icon = Color.Black,
                 onClick = {
                     navController.navigate(route = AppScreens.MapOptionsScreen.route)
@@ -114,8 +99,8 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             Options(
                 text = myViewModel.languageType().get(52),
                 text_des = "icono de configuracion de privacidad",
-                imageVector = Icons.Filled.Add,
-                color_texto = color_letra,
+                imageVector = Icons.Filled.ShoppingCart,
+                color_texto = color_letraout,
                 color_icon = Color.Black,
                 onClick = {
                     navController.navigate(route = AppScreens.PrivacityScreen.route)
@@ -123,6 +108,36 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             )
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(48),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de opciones",
+                    tint = color_icon
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
 }
 
 @Composable
@@ -147,7 +162,7 @@ private fun Options(
             modifier = Modifier
                 .align(Alignment.CenterVertically)
                 .padding(horizontal = 5.dp)
-                .size(45.dp),
+                .size(30.dp),
             tint = color_icon
         )
         Spacer(modifier = Modifier.size(width = 20.dp, height = 0.dp))
@@ -157,7 +172,7 @@ private fun Options(
                 .align(Alignment.CenterVertically),
             color = color_texto,
             fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-            fontSize = 20.sp
+            fontSize = 18.sp
         )
     }
 }

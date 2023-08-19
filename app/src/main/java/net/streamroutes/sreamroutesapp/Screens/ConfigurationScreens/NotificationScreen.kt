@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -27,6 +29,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,12 +37,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_bola_switch
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_activo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Dialogs.DialogNotificationPush
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
@@ -86,39 +96,15 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
         DialogNotificationPush(dialogo = dialogo, siempre = siempre, durante = durante, nunca = nunca, myViewModel)
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ) {
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(54),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de configuraciones"
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
-
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
         // cuerpo
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
 
             // notificaciones push
@@ -140,13 +126,13 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
                 ) {
                     Text(
                         text = myViewModel.languageType().get(55), // texto
-                        color = color_letra,
+                        color = color_letraout,
                         fontFamily = FontFamily.SansSerif,
-                        fontSize = 20.sp
+                        fontSize = 18.sp
                     )
                     Text(
                         text = myViewModel.languageType().get(56), // texto
-                        color = color_letra,
+                        color = color_letraout,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 12.sp
                     )
@@ -177,6 +163,38 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    // top app bar
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(54),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de configuraciones",
+                    tint = color_icon
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
+}
+
 @Composable
 private fun OptionSwitch(
     variable: MutableState<Boolean>,
@@ -203,14 +221,14 @@ private fun OptionSwitch(
         ) {
             Text(
                 text = text, // texto
-                color = color_letra,
-                fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-                fontSize = 20.sp
+                color = color_letraout,
+                fontFamily = FontFamily.SansSerif,
+                fontSize = 18.sp
             )
             Text(
                 text = sub_text, // texto
-                color = color_letra,
-                fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
+                color = color_letraout,
+                fontFamily = FontFamily.SansSerif,
                 fontSize = 12.sp
             )
         }
@@ -221,13 +239,13 @@ private fun OptionSwitch(
             onCheckedChange = null,
             colors = SwitchDefaults.colors(
                 // cuando esta activo
-                checkedThumbColor = color_bola_switch,
-                checkedTrackColor = color_fondo_switch_activo,
-                checkedBorderColor = color_fondo_switch_activo,
+                checkedThumbColor = Color.White,
+                checkedTrackColor = color_letrain,
+                checkedBorderColor = color_letrain,
                 // cuando esta inactivo
-                uncheckedThumbColor = color_bola_switch,
-                uncheckedTrackColor = color_fondo_switch_inactivo,
-                uncheckedBorderColor = color_fondo_switch_inactivo
+                uncheckedThumbColor = Color.White,
+                uncheckedTrackColor = color_botones,
+                uncheckedBorderColor = color_botones
             )
         )
     }

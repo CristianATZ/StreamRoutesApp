@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
@@ -14,6 +15,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -33,12 +35,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_bola_switch
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_activo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
@@ -52,47 +61,22 @@ fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
     var rutas = remember { mutableStateOf(true) }
     var suscripcion = remember { mutableStateOf(true) }
 
-    // ventana
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ) {
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(77),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de configuraciones"
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
 
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
-            Spacer(modifier = Modifier.size(15.dp))
 
             // localizacion
             Options(
                 text = myViewModel.languageType().get(78),
                 sub_text = myViewModel.languageType().get(79),
-                color_letra = color_letra,
+                color_letra = color_letraout,
                 variable = localizacion
             )
 
@@ -100,7 +84,7 @@ fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
             Options(
                 text = myViewModel.languageType().get(80), // texto
                 sub_text = myViewModel.languageType().get(81),
-                color_letra = color_letra,
+                color_letra = color_letraout,
                 variable = anuncios
             )
 
@@ -108,7 +92,7 @@ fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
             Options(
                 text = myViewModel.languageType().get(82), // texto
                 sub_text = myViewModel.languageType().get(83),
-                color_letra = color_letra,
+                color_letra = color_letraout,
                 variable = rutas
             )
 
@@ -116,13 +100,42 @@ fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
             Options(
                 text = myViewModel.languageType().get(84), // texto
                 sub_text = myViewModel.languageType().get(85),
-                color_letra = color_letra,
+                color_letra = color_letraout,
                 variable = suscripcion
             )
         }
     }
+}
 
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(77),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de configuraciones",
+                    tint = color_icon
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
 }
 
 @Composable
@@ -148,12 +161,13 @@ private fun Options(
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.75f)
+                .padding(vertical = 10.dp)
         ) {
             Text(
                 text = text, // texto
                 color = color_letra,
                 fontFamily = FontFamily.SansSerif,
-                fontSize = 20.sp
+                fontSize = 18.sp
             )
             Text(
                 text = sub_text, // texto
@@ -163,19 +177,20 @@ private fun Options(
             )
         }
 
+        Spacer(modifier = Modifier.size(5.dp))
         // switch
         Switch(
             checked = variable.value,
             onCheckedChange = null,
             colors = SwitchDefaults.colors(
                 // cuando esta activo
-                checkedThumbColor = color_bola_switch,
-                checkedTrackColor = color_fondo_switch_activo,
-                checkedBorderColor = color_fondo_switch_activo,
+                checkedThumbColor = Color.White,
+                checkedTrackColor = color_letrain,
+                checkedBorderColor = color_letrain,
                 // cuando esta inactivo
-                uncheckedThumbColor = color_bola_switch,
-                uncheckedTrackColor = color_fondo_switch_inactivo,
-                uncheckedBorderColor = color_fondo_switch_inactivo
+                uncheckedThumbColor = Color.White,
+                uncheckedTrackColor = color_botones,
+                uncheckedBorderColor = color_botones
             )
         )
     }

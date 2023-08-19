@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -61,9 +62,10 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -128,33 +130,31 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color_fondo_claro)
     ){
         Box(
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .fillMaxHeight(0.18f)
-                .background(color_fondo_topappbar_alterno) // Color de fondo del Box
+                .background(color_fondo_topbar) // Color de fondo del Box
         ) {
             Column(
                 modifier = Modifier
-                    .fillMaxSize(1f)
-                    .background(color_fondo_topappbar_alterno)
+                    .fillMaxSize()
                     .padding(top = 12.dp, end = 12.dp)
             ){
                 Row{
                     IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                        androidx.compose.material.Icon(
+                        Icon(
                             Icons.Filled.ArrowBack,
                             contentDescription = "Te enviara al menu de opciones",
-                            tint = Color.White
+                            tint = color_icon
                         )
                     }
                     Column {
                         Row {
                             Text(
                                 text = myViewModel.languageType().get(29),
-                                color = Color.White,
+                                color = color_letra_botones,
                                 modifier = Modifier.padding(start = 2.dp)
                             )
                         }
@@ -180,7 +180,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                 Row{
                     Text(
                         text=myViewModel.languageType().get(30),
-                        color = Color.White,
+                        color = color_letra_botones,
                         modifier = Modifier.padding(start = 50.dp)
                     )
                 }
@@ -204,7 +204,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                 Row{
                     Text(
                         text = myViewModel.languageType().get(31)+ ": $formattedTime",
-                        color = Color.White,
+                        color = color_letra_botones,
                         modifier = Modifier.padding(start = 16.dp, top = 5.dp)
                     )
                 }
@@ -390,7 +390,7 @@ fun map(myViewModel: MyViewModel) {
         ){
             Row(
                 modifier = Modifier
-                    .background(color_fondo_oscuro, RoundedCornerShape(percent = 10))
+                    .background(color_fondo_topbar, RoundedCornerShape(percent = 10))
                     .clickable {
                         when (changeMap) {
                             1 -> {
@@ -422,7 +422,7 @@ fun map(myViewModel: MyViewModel) {
                         .padding(10.dp)
                         .size(34.dp),
                     colorFilter = ColorFilter.tint(
-                        Color.White
+                        color_icon
                     )
                 )
             }
@@ -433,9 +433,8 @@ fun map(myViewModel: MyViewModel) {
 
 @Composable
 fun Botones(
-    myViewModel: MyViewModel) {
-
-
+    myViewModel: MyViewModel
+) {
     Box(
         modifier = Modifier
             .fillMaxSize())
@@ -451,22 +450,20 @@ fun Botones(
         onClick = {
         },
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-            contentColor = Color.White
+            containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
+            contentColor = color_letra_botones
         ),
         shape = roundCornerShape,
         modifier = Modifier
             .wrapContentSize()
             .padding(7.dp)
             .align(Alignment.BottomCenter)
-    ) {
+        ) {
         Text(
-            text = myViewModel.languageType().get(32),
-            fontSize = 26.sp,
-            color = Color.White,
-            fontWeight = FontWeight.Bold
-        )
+        text = myViewModel.languageType().get(32),
+        fontSize = 26.sp,
+        fontWeight = FontWeight.Bold
+    )
     }
     }
 }
-

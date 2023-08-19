@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -23,8 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
@@ -33,8 +33,10 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -76,12 +78,21 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.AddressInfo
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_botones_alt
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -114,41 +125,16 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
         markers = emptyList()
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ) {
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(
-                    text = myViewModel.languageType().get(35),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de opciones",
-                        tint = Color.White
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
 
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
         // cuerpo
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .padding(paddingValues)
         ) {
             Box(
                 modifier = Modifier
@@ -196,8 +182,10 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                 }
 
                 // barra de busqueda
-                Column() {
-                    Spacer(modifier = Modifier.size(5.dp))
+                Column(
+                    modifier = Modifier
+                        .padding(5.dp)
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
@@ -233,14 +221,14 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFF192833)
+                        containerColor = color_fondo_topbar
                     ),
                     shape = roundCornerShape,
                     modifier = Modifier
                         .padding(16.dp)
                         .align(Alignment.BottomEnd)
                 ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "", tint = Color.White)
+                    Icon(imageVector = Icons.Filled.Add, contentDescription = "", tint = color_icon)
                 }
             }
 
@@ -257,7 +245,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         text = myViewModel.languageType().get(38),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = color_letra_alterno,
+                        color = color_letraout,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -292,8 +280,8 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         removeAll()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                        contentColor = Color.White
+                        containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
+                        contentColor = color_letra_botones
                     ),
                     shape = roundCornerShape,
                     modifier = Modifier
@@ -303,7 +291,6 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                     Text(
                         text = myViewModel.languageType().get(43),
                         fontSize = 26.sp,
-                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -329,7 +316,7 @@ private fun SearchBar(
     Box(
         modifier = Modifier
             .fillMaxWidth(0.85f)
-            .background(backgroundColor, roundedCornerShape)
+            .background(color_fondo_topbar, roundedCornerShape)
     ) {
         Row(
             modifier = Modifier
@@ -340,7 +327,12 @@ private fun SearchBar(
         ) {
             Spacer(modifier = Modifier.size(10.dp))
             // icono
-            Icon(imageVector = Icons.Filled.Search, contentDescription = "", modifier = Modifier.size(35.dp), tint = Color.White)
+            Icon(
+                imageVector = Icons.Filled.Search,
+                contentDescription = "",
+                modifier = Modifier.size(35.dp),
+                tint = color_icon
+            )
 
             // caja de texto
             BasicTextField(
@@ -354,7 +346,7 @@ private fun SearchBar(
                     .padding(4.dp),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = 18.sp,
-                    color = color_letra_topappbar,
+                    color = color_letra_topbar,
                     textAlign = TextAlign.Left,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 2.sp
@@ -371,7 +363,7 @@ private fun SearchBar(
                 decorationBox = { innerTextField ->
                     Row(
                         Modifier
-                            .background(backgroundColor, roundedCornerShape)
+                            .background(color_fondo_topbar, roundedCornerShape)
                             .padding(16.dp)
                             .fillMaxWidth()
                     ) {
@@ -379,7 +371,7 @@ private fun SearchBar(
                             Text(
                                 text = placeholder,
                                 fontSize = 18.sp,
-                                color = color_letra_topappbar,
+                                color = color_letra_topbar,
                                 letterSpacing = 3.sp,
                                 modifier = Modifier
                                     .align(Alignment.CenterVertically)
@@ -404,32 +396,34 @@ private fun PlaceOption(
     Box(
         modifier = Modifier
             .fillMaxWidth(0.85f)
-            .height(70.dp)
+            .heightIn(70.dp)
             .background(
-                Color(0xFF192833),
+                color_fondo_topbar,
                 RoundedCornerShape(
                     topEnd = 10.dp,
                     bottomStart = 10.dp,
                     topStart = 10.dp,
                     bottomEnd = 10.dp
                 )
-            ),
+            )
+            .padding(vertical = 5.dp),
         contentAlignment = Alignment.Center
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Spacer(modifier = Modifier.size(10.dp))
+
             Text(
                 text = numero.toString(),
-                fontSize = 16.sp,
-                color = color_letra_topappbar,
+                fontSize = 20.sp,
+                color = color_letra_topbar,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(modifier = Modifier.size(10.dp))
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth(0.70f)
@@ -437,34 +431,65 @@ private fun PlaceOption(
                 Text(
                     text = nombreCalle,
                     fontSize = 16.sp,
-                    color = color_letra_topappbar,
+                    color = color_letra_topbar,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = colonia,
                     fontSize = 12.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
             }
-            Spacer(modifier = Modifier.size(10.dp))
-            Box(
+
+            IconButton(
+                onClick = { onRemove() },
                 modifier = Modifier
-                    .fillMaxSize(0.85f)
-                    .background(
-                        color_letra_textfield,
-                        RoundedCornerShape(
-                            topEnd = 10.dp,
-                            bottomStart = 10.dp,
-                            topStart = 10.dp,
-                            bottomEnd = 10.dp
-                        )
-                    )
-                    .clickable { onRemove() },
-                contentAlignment = Alignment.Center
-            ){
-                Icon(imageVector = Icons.Filled.Close, contentDescription = null, tint = color_letra, modifier = Modifier.fillMaxSize(1f))
+                    .size(50.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Close,
+                    contentDescription = null,
+                    tint = color_letrain,
+                    modifier = Modifier
+                        .fillMaxSize()
+                )
             }
+
+            Spacer(modifier = Modifier.size(10.dp))
         }
     }
     Spacer(modifier = Modifier.size(15.dp))
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = myViewModel.languageType().get(35),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de opciones",
+                    tint = color_icon
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
 }
