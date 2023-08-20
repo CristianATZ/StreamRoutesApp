@@ -428,9 +428,8 @@ fun DrawerBody(
     Column (
         modifier = Modifier
             .background(
-                Brush.verticalGradient(
-                colors = listOf(color_fondo_topbar, colorOscuro2)
-            )),
+                color_fondo_topbar //Brush.verticalGradient(colors = listOf(color_fondo_topbar, colorOscuro2))
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         Box(

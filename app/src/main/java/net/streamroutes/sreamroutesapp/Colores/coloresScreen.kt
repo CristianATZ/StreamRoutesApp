@@ -2,8 +2,10 @@ package net.streamroutes.sreamroutesapp.Colores
 
 import androidx.compose.ui.graphics.Color
 
-val colorOscuro1 = Color(0xFF26292B)
-val colorOscuro2 = Color(0xFF2E3229)
+// 1D2B43 161D2B
+// 303040 404050
+val colorOscuro1 = Color(0xFF161D2B)
+val colorOscuro2 = Color(0xFF1D2B43)
 val colorOscuro4 = Color(0xFFFFE5B4)
 
 val colorClaro1 = Color(0xFFFFF7E7)

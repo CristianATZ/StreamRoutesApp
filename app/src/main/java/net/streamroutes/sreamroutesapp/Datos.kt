@@ -146,11 +146,10 @@ class MyViewModel : ViewModel() {
         "Comentarios", // 93
         "Cuentanos como podemos ayudarte", // 94
         "¿Deseas incluir información de la cuenta? (Opcional)", // 95
-        "Si incluyes detalles de la cuenta en tu comentario,\n" +
-                "        como correo, etc. Sera mas facil para nosotros responderte", // 96
+        "Si incluyes detalles de la cuenta en tu comentario," +
+                "como correo, etc. Sera mas facil para nosotros responderte", // 96
         "ENVIAR", // 97
-        "Se tomara en cuenta tus sugerencias para futuras versiones\n" +
-                "    de la aplicación", // 98
+        "Se tomara en cuenta tus sugerencias para futuras versiones de la aplicación", // 98
 
         // HelpContactScreen
         "Contactanos", // 99

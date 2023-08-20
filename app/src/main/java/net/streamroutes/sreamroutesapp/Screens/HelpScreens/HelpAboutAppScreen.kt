@@ -13,11 +13,14 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,30 +29,27 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        TopAppBar(
-            title = {
-                Text(myViewModel.languageType().get(106)) },
-            navigationIcon = {
-                IconButton(onClick = { navController.popBackStack() }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Regresara al menu de ayuda"
-                    )
-                }
-            }
-        )
-
-        Column( modifier = Modifier.fillMaxSize() ) {
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -63,10 +63,12 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
                     contentDescription = "Logo Stream Routes",
                     modifier = Modifier
                         .size(200.dp),
+                    colorFilter = ColorFilter.tint(color_letraout)
                 )
 
                 Text(
-                    text = myViewModel.languageType().get(107) + " 2.9",
+                    text = myViewModel.languageType().get(107) + " 3.0",
+                    color = color_letraout,
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -76,19 +78,51 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
             }
             Row(
                 modifier = Modifier
-                    .weight(0.3f)
-                    .padding(20.dp),
+                    .padding(20.dp)
+                    .weight(0.3f),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
                     text = myViewModel.languageType().get(108),
+                    color = color_letraout,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
                 )
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(106),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de opciones",
+                    tint = color_icon
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
 }
 
 

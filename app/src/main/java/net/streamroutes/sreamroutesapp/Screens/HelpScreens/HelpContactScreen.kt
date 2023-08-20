@@ -19,14 +19,15 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -55,9 +56,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -69,38 +79,14 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
     var mensaje by remember { mutableStateOf(TextFieldValue()) }
     var mail by remember { mutableStateOf(TextFieldValue("streamroutes2.0@gmail.com")) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ) {
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(99),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de opciones"
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
-
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.size(30.dp))
@@ -155,8 +141,8 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
 
                     },
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFF192833), // Cambiamos el color de fondo del botón aquí
-                        contentColor = Color.White
+                        containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
+                        contentColor = color_letra_botones
                     ),
                     shape = roundCornerShape,
                     modifier = Modifier
@@ -166,7 +152,6 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                     Text(
                         text = myViewModel.languageType().get(103),
                         fontSize = 26.sp,
-                        color = Color.White,
                         fontWeight = FontWeight.Bold
                     )
                 }
@@ -192,6 +177,37 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(99),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de opciones",
+                    tint = color_icon
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
+}
+
 @Composable
 private fun TextWTittle(
     tittle: String,
@@ -215,7 +231,7 @@ private fun TextWTittle(
             text = tittle,
             modifier = Modifier
                 .fillMaxWidth(),
-            color = Color.DarkGray,
+            color = color_letraout,
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
@@ -226,7 +242,7 @@ private fun TextWTittle(
         modifier = Modifier
             .fillMaxWidth(0.85f)
             .background(
-                Color(0xFFFFE5B4),
+                color_fondo_textfield,
                 roundedCornerShape
             )
     ){
@@ -244,7 +260,7 @@ private fun TextWTittle(
             ),
             textStyle = LocalTextStyle.current.copy(
                 fontSize = 18.sp,
-                color = Color(0xFFE8AA42),
+                color = color_letrain,
                 textAlign = TextAlign.Left,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
@@ -252,7 +268,7 @@ private fun TextWTittle(
             decorationBox = { innerTextField ->
                 Row(
                     Modifier
-                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
+                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
                         .padding(16.dp)
                         .fillMaxWidth(0.8f)
                 ){
@@ -260,7 +276,7 @@ private fun TextWTittle(
                         Text(
                             text = placeholder,
                             fontSize = 18.sp,
-                            color = Color(0xFFFFF7E7),
+                            color = color_letraout.copy(0.5f),
                             letterSpacing = 3.sp,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
@@ -291,14 +307,14 @@ private fun CustomText(
         // forgot
         Text(
             text = buildAnnotatedString{
-                withStyle(style = SpanStyle(color = Color.DarkGray,
+                withStyle(style = SpanStyle(color = color_letraout,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     fontFamily = FontFamily.SansSerif)) {
                     append(firstString)
                 }
                 append(" ")
-                withStyle(style = SpanStyle(color = Color(0xFFE8AA42),
+                withStyle(style = SpanStyle(color = color_letrain,
                     textDecoration = TextDecoration.Underline,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,

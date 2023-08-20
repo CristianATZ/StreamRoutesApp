@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -36,11 +38,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -55,56 +61,67 @@ fun HelpView(){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpScreen(myViewModel: MyViewModel,navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo_claro)
-    ) {
-        // top app bar
-        TopAppBar(
-            title = {
-                Text(text = myViewModel.languageType().get(86),
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
-            },
-            navigationIcon = {
-                IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                    Icon(
-                        Icons.Filled.ArrowBack,
-                        contentDescription = "Te enviara al menu de opciones"
-                    )
-                }
-            },
-            colors = TopAppBarDefaults
-                .smallTopAppBarColors(
-                    containerColor = color_fondo_topappbar_alterno,
-                    titleContentColor = color_letra_topappbar
-                )
-        )
+    Scaffold(
+        topBar = { TopBarBody(myViewModel,navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+        ) {
+            // comentarios
+            Options(
+                text = myViewModel.languageType().get(87),
+                sub_text = myViewModel.languageType().get(88),
+                onClick = { navController.navigate(AppScreens.HelpCommentsScreen.route) }
+            )
 
-        // comentarios
-        Options(
-            text = myViewModel.languageType().get(87),
-            sub_text = myViewModel.languageType().get(88),
-            onClick = { navController.navigate(AppScreens.HelpCommentsScreen.route) }
-        )
+            // contactanos
+            Options(
+                text = myViewModel.languageType().get(89),
+                sub_text = myViewModel.languageType().get(90),
+                onClick = { navController.navigate(AppScreens.HelpContactScreen.route) }
+            )
 
-        // contactanos
-        Options(
-            text = myViewModel.languageType().get(89),
-            sub_text = myViewModel.languageType().get(90),
-            onClick = { navController.navigate(AppScreens.HelpContactScreen.route) }
-        )
-
-        // acerca de
-        Options(
-            text = myViewModel.languageType().get(91),
-            sub_text = myViewModel.languageType().get(92),
-            onClick = { navController.navigate(AppScreens.HelpAboutAppScreen.route) }
-        )
+            // acerca de
+            Options(
+                text = myViewModel.languageType().get(91),
+                sub_text = myViewModel.languageType().get(92),
+                onClick = { navController.navigate(AppScreens.HelpAboutAppScreen.route) }
+            )
+        }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(86),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara al menu de opciones"
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
 }
 
 @Composable
@@ -112,12 +129,12 @@ private fun Options(
     text: String,
     sub_text: String,
     onClick: () -> Unit,
-    text_color: Color = color_letra
+    text_color: Color = color_letraout
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .height(70.dp)
+            .heightIn(70.dp)
             .clickable(onClick = onClick),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
