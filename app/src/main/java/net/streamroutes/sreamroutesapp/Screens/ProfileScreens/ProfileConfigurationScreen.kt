@@ -30,10 +30,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @SuppressLint("CoroutineCreationDuringComposition")
@@ -41,37 +46,8 @@ import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 @Composable
 fun ProfileConfigureScreen(navController: NavController){
     Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = "Configuracion de perfil",
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        textAlign = TextAlign.Center
-                    )
-                },
-                navigationIcon = {
-                    IconButton(
-                        onClick = {
-                            navController.navigate(AppScreens.MainScreen.route)
-                        }
-                    ) {
-                        Icon(
-                            Icons.Filled.ArrowBack,
-                            contentDescription = "Te enviara a la ventana principal",
-                            tint = Color.White
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults
-                    .smallTopAppBarColors(
-                        containerColor = color_fondo_topappbar_alterno,
-                        titleContentColor = color_letra_topappbar
-                    )
-            )
-        },
-        containerColor = color_fondo_claro
+        topBar = { TopBarBody(navController) },
+        containerColor = color_fondo
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -97,6 +73,41 @@ fun ProfileConfigureScreen(navController: NavController){
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Configuracion de perfil",
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    navController.navigate(AppScreens.MainScreen.route)
+                }
+            ) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te enviara a la ventana principal",
+                    tint = color_letra_botones
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
+}
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
@@ -110,7 +121,7 @@ private fun Options(
     text: String,
     sub_text: String,
     onClick: () -> Unit,
-    text_color: Color = color_letra
+    text_color: Color = color_letraout
 ) {
     Row(
         modifier = Modifier

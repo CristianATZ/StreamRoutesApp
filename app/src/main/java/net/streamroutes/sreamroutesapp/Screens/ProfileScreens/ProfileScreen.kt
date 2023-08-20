@@ -32,6 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -44,10 +45,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -72,7 +77,7 @@ fun ProfileScreen(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color_fondo_claro),
+            .background(color_fondo),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
@@ -92,7 +97,8 @@ fun ProfileScreen(navController: NavController){
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Transparent)
-                        .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp))
+                        .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)),
+                    colorFilter = ColorFilter.tint(color_fondo_topbar)
                 )
 
                 Column(
@@ -118,7 +124,7 @@ fun ProfileScreen(navController: NavController){
                             Icon(
                                 Icons.Filled.ArrowBack,
                                 contentDescription = "Regresara a la ventana de perfil",
-                                tint = color_fondo_claro,
+                                tint = color_letra_topbar,
                                 modifier = Modifier
                                     .size(50.dp)
                             )
@@ -127,12 +133,12 @@ fun ProfileScreen(navController: NavController){
                         // user name
                         Column(
                             modifier = Modifier
-                                .fillMaxWidth(0.8f)
+                                .fillMaxWidth(0.9f)
                         ) {
                             CustomText(
                                 firstString = "Bienvenido de vuelta",
                                 horizontal = Arrangement.Start,
-                                color = color_fondo_claro,
+                                color = color_letra_topbar,
                                 fontWeight = FontWeight.Normal,
                                 size = 14,
                                 modifier = Modifier.fillMaxWidth(0.95f)
@@ -141,7 +147,7 @@ fun ProfileScreen(navController: NavController){
                             CustomText(
                                 firstString = "Cristian Alexis Torres Zavavla",
                                 horizontal = Arrangement.Start,
-                                color = color_fondo_claro,
+                                color = color_letra_topbar,
                                 size = 20,
                                 modifier = Modifier.fillMaxWidth(0.95f)
                             )
@@ -149,7 +155,7 @@ fun ProfileScreen(navController: NavController){
                             CustomText(
                                 firstString = "s20120154@alumnos.itsur.edu.mx",
                                 horizontal = Arrangement.Start,
-                                color = color_fondo_claro,
+                                color = color_letra_topbar,
                                 fontWeight = FontWeight.Normal,
                                 size = 15,
                                 modifier = Modifier.fillMaxWidth(0.95f)
@@ -170,7 +176,7 @@ fun ProfileScreen(navController: NavController){
                     infoItems = info,
                     icon = Icons.Filled.Info,
                     text = "Informacion",
-                    color = color_letra,
+                    color = color_letraout,
                     onClick = {
                         navController.navigate(AppScreens.ProfileConfigureScreen.route)
                     }
@@ -179,7 +185,7 @@ fun ProfileScreen(navController: NavController){
                     infoItems = memb,
                     icon = Icons.Filled.Star,
                     text = "Membresia",
-                    color = color_letra,
+                    color = color_letraout,
                     onClick = {
 
                     }
@@ -271,14 +277,14 @@ private fun SuscripcionOptions(
         CustomText(
             firstString = first,
             horizontal = Arrangement.Start,
-            color = color_letra,
+            color = color_letraout,
             size = 17
         )
 
         CustomText(
             firstString = second,
             horizontal = Arrangement.Start,
-            color = color_letra,
+            color = color_letraout,
             size = 17,
             fontWeight = FontWeight.Normal
         )
@@ -307,7 +313,7 @@ fun UserProfileInfoSection(
         HeaderText(
             icon = icon,
             text = text,
-            color = color
+            color = color.copy(0.5f)
         )
 
         Spacer(modifier = Modifier.height(5.dp))
@@ -323,21 +329,21 @@ fun UserProfileInfoSection(
             }
         }
         
+        Spacer(modifier = Modifier.size(10.dp))
         Box(
             modifier = Modifier
-                .size(40.dp)
+                .height(40.dp)
+                .fillMaxWidth(0.5f)
                 .background(color_fondo_textfield, RoundedCornerShape(100))
-                .clickable( onClick = onClick ),
+                .clickable(onClick = onClick),
             contentAlignment = Alignment.Center
         ){
-            IconButton( onClick = onClick ) {
-                Icon(
-                    imageVector = Icons.Filled.Edit,
-                    contentDescription = null,
-                    modifier = Modifier.size(25.dp),
-                    tint = color
-                )
-            }
+            Icon(
+                imageVector = Icons.Filled.Edit,
+                contentDescription = null,
+                modifier = Modifier.size(25.dp),
+                tint = color
+            )
         }
     }
 }
