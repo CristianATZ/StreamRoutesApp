@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
@@ -37,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_icon
@@ -57,7 +59,8 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // cambiar de ciudad
             Options(
@@ -104,6 +107,30 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
                 color_icon = Color.Black,
                 onClick = {
                     navController.navigate(route = AppScreens.PrivacityScreen.route)
+                }
+            )
+            Spacer(modifier = Modifier.fillMaxWidth(0.95f).background(color_fondo_topbar.copy(0.25f)).height(1.dp))
+            // Idioma
+            Options(
+                text = "Idioma de la aplicacion",
+                text_des = "icono de configuracion de privacidad",
+                imageVector = Icons.Filled.Email,
+                color_texto = color_letraout,
+                color_icon = Color.Black,
+                onClick = {
+                    
+                }
+            )
+            
+            // tema
+            Options(
+                text = "Modo oscuro",
+                text_des = "icono de configuracion de privacidad",
+                imageVector = Icons.Filled.ShoppingCart,
+                color_texto = color_letraout,
+                color_icon = Color.Black,
+                onClick = {
+                    
                 }
             )
         }

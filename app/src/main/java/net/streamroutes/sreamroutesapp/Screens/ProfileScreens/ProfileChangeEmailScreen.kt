@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.Screens.ProfileScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,20 +15,26 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,164 +51,254 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileChangeEmailScren(navController: NavController){
-    val gradientColors = listOf(Color(0xFF192833), Color(0xFF192833))
-    val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
+    var correo by remember { mutableStateOf(TextFieldValue("")) }
+    var codigo by remember { mutableStateOf(TextFieldValue("")) }
 
-    TopAppBar(
-        title = { Text(stringResource(id = R.string.title_profile_change_email_screen)) },
-        navigationIcon = {
-            IconButton(onClick = { navController.popBackStack()  }) {
-                Icon(
-                    Icons.Filled.ArrowBack,
-                    contentDescription = "Regresara a la ventana de información de contacto"
-                )
-            }
-        })
-    Column(
-        modifier = Modifier.padding(top = 80.dp, start = 30.dp, end = 30.dp)
-    ) {
-        // CORREO NUEVO
-        Text(
-            modifier = Modifier,
-            text = stringResource(id = R.string.new_email),
-            color = Color(0xFF231955),
-            fontSize = 20.sp,
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold
-        )
-        var email by remember { mutableStateOf(TextFieldValue("")) }
-        BasicTextField(
-            value = email,
-            onValueChange = {email = it},
-            singleLine = true,
+    Scaffold(
+        topBar = { TopBarBody(navController) },
+        containerColor = color_fondo
+    ) { paddingValues ->
+        Column(
             modifier = Modifier
-                .height(60.dp)
-                .fillMaxWidth(0.85f),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    Modifier
-                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                        .padding(20.dp)
-                        .fillMaxWidth(0.8f)
-                ){
-                    if (email.text.isEmpty()){
-                        Text(
-                            text = "user@gmail.com",
-                            color = Color(0xFFFFF7E7),
-                            letterSpacing = 2.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                        )
-                    }
-                    innerTextField()
-                }
-            }
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
-                    shape = roundCornerShape
-                )
-                .clip(roundCornerShape)
-                .padding(PaddingValues(horizontal = 30.dp, vertical = 8.dp))
-                .clickable {
-                    //navController.navigate(route = )
-                },
-            contentAlignment = Alignment.Center
+                .fillMaxSize()
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(
-                text = "ENVIAR CÓDIGO",
-                fontSize = 18.sp,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
+            Spacer(modifier = Modifier.size(15.dp))
+            PasswordTextfield(
+                tittle = "Correo nuevo",
+                placeholder = "example@gmail.com",
+                readOnly = false,
+                size = 70,
+                variable = correo,
+                onVariableChange = {newValue -> correo = newValue},
+                passwordVisibility = remember {mutableStateOf(false)},
+                visualTransformation = VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                icono = false
             )
-        }
-        Spacer(modifier = Modifier.height(40.dp))
 
+            val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
+            Button(
+                onClick = {
 
-        // CODIGO SEGURIDAD
-        Text(
-            modifier = Modifier,
-            text = stringResource(id = R.string.security_code),
-            color = Color(0xFF231955),
-            fontSize = 20.sp,
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold
-        )
-        var code by remember { mutableStateOf(TextFieldValue("")) }
-        BasicTextField(
-            value = code,
-            onValueChange = {code = it},
-            singleLine = true,
-            modifier = Modifier
-                .height(60.dp)
-                .fillMaxWidth(0.85f),
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Next
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    Modifier
-                        .background(Color(0xFFFFE5B4), RoundedCornerShape(percent = 30))
-                        .padding(20.dp)
-                        .fillMaxWidth(0.8f)
-                ){
-                    if (code.text.isEmpty()){
-                        Text(
-                            text = "XXX-XXX",
-                            color = Color(0xFFFFF7E7),
-                            letterSpacing = 2.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-                        )
-                    }
-                    innerTextField()
-                }
-            }
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        Box(
-            modifier = Modifier
-                .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
-                    shape = roundCornerShape
-                )
-                .clip(roundCornerShape)
-                .padding(PaddingValues(horizontal = 30.dp, vertical = 8.dp))
-                .clickable {
-                    //navController.navigate(route = )
                 },
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = "VERIFICAR",
-                fontSize = 18.sp,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
+                    contentColor = color_letra_topbar
+                ),
+                shape = roundCornerShape,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "ENVIAR CODIGO",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            PasswordTextfield(
+                tittle = "Codigo",
+                placeholder = "Codigo",
+                readOnly = false,
+                size = 70,
+                variable = codigo,
+                onVariableChange = {newValue -> codigo = newValue},
+                passwordVisibility = remember {mutableStateOf(false)},
+                visualTransformation = VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                icono = false
             )
+
+            Button(
+                onClick = {
+
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
+                    contentColor = color_letra_topbar
+                ),
+                shape = roundCornerShape,
+                modifier = Modifier
+                    .wrapContentSize()
+                    .padding(16.dp)
+            ) {
+                Text(
+                    text = "CAMBIAR",
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            }
         }
     }
 }
 
-@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileChangeEmailView(){
+private fun TopBarBody(
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Cambiar Correo",
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = { navController.navigate(AppScreens.ProfileDataInfoScreen.route) }
+            ) {
+                Icon(
+                    Icons.Filled.ArrowBack,
+                    contentDescription = "Te mostrara el menu",
+                    tint = color_letra_topbar
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = color_fondo_topbar,
+                titleContentColor = color_letra_topbar
+            )
+    )
+}
 
+@Composable
+private fun PasswordTextfield(
+    tittle: String,
+    placeholder: String,
+    readOnly: Boolean,
+    singleLine: Boolean = true,
+    size: Int,
+    variable: TextFieldValue,
+    onVariableChange: (TextFieldValue) -> Unit,
+    passwordVisibility: MutableState<Boolean>,
+    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    visualTransformation: VisualTransformation,
+    keyboardOptions: KeyboardOptions,
+    icono: Boolean = true
+) {
+    // nombre
+    Row (
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .size(48.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        // header
+        Text(
+            text = tittle,
+            modifier = Modifier
+                .fillMaxWidth(),
+            color = color_letraout,
+            fontFamily = FontFamily.SansSerif,
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .background(
+                color_fondo_textfield,
+                roundedCornerShape
+            )
+    ){
+        // caja de texto
+        BasicTextField(
+            value = variable,
+            onValueChange = onVariableChange,
+            singleLine = singleLine,
+            readOnly = readOnly,
+            modifier = Modifier
+                .height(size.dp)
+                .fillMaxWidth()
+                .padding(4.dp),
+            keyboardOptions = keyboardOptions,
+            textStyle = LocalTextStyle.current.copy(
+                fontSize = 18.sp,
+                color = color_letrain,
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            ),
+            decorationBox = { innerTextField ->
+                Row(
+                    Modifier
+                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
+                        .padding(16.dp)
+                        .fillMaxWidth(0.8f)
+                ){
+                    if (variable.text.isEmpty()){
+                        Text(
+                            text = placeholder,
+                            fontSize = 18.sp,
+                            color = color_letraout.copy(0.5f),
+                            letterSpacing = 3.sp,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
+
+                        )
+                    }
+                    innerTextField()
+                }
+            },
+            visualTransformation = visualTransformation
+        )
+
+        if(icono){
+            // icono
+            Row(
+                modifier = Modifier
+                    .height(size.dp)
+                    .fillMaxWidth()
+                    .padding(4.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                IconButton(onClick = {
+                    passwordVisibility.value = !passwordVisibility.value
+                }) {
+                    Icon(
+                        painter = if (passwordVisibility.value)
+                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                        contentDescription = "visibilidad contraseña",
+                        modifier = Modifier
+                            .size(32.dp),
+                        tint = color_letraout
+                    )
+                }
+            }
+        }
+    }
 }

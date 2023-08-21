@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.Screens.Start
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,14 +40,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_activo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -63,7 +68,7 @@ fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color_fondo_claro),
+            .background(color_fondo),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Box(
@@ -77,8 +82,7 @@ fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
                     .height(175.dp)
                     .align(Alignment.TopCenter)
                     .background(
-                        color_fondo_oscuro,
-                        //color_fondo_switch_activo.copy(0.5f),
+                        color_fondo_topbar,
                         RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
                     ),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -88,13 +92,13 @@ fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
                 CustomText(
                     firstString = "Selecciona el idioma de tu preferencia.",
                     horizontal = Arrangement.Center,
-                    color = color_fondo_claro
+                    color = color_letra_topbar
                 )
 
                 CustomText(
                     firstString = "Select your preferred language.",
                     horizontal = Arrangement.Center,
-                    color = color_fondo_claro
+                    color = color_letra_topbar
                 )
                 Spacer(modifier = Modifier.size(15.dp))
             }
@@ -103,7 +107,8 @@ fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
                     .padding(top = 100.dp)
-                    .background(color_fondo_textfield, RoundedCornerShape(percent = 15)),
+                    .background(color_fondo_textfield, RoundedCornerShape(percent = 16)),
+                    //.border(1.dp, color_fondo_topbar, RoundedCornerShape(percent = 15)),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Top
             ) {
@@ -179,8 +184,8 @@ fun OptionLanguage(
 ) {
     Column(
         modifier = Modifier
-            .background(color_letra_textfield.copy(0.6f), RoundedCornerShape(15.dp))
-            .width(110.dp)
+            .background(color_fondo_topbar, RoundedCornerShape(15.dp))
+            .width(150.dp)
             .clickable (onClick = onClick),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -189,7 +194,7 @@ fun OptionLanguage(
         CustomText(
             firstString = first,
             horizontal = Arrangement.Center,
-            color = color_letra
+            color = color_letra_topbar
         )
         Spacer(modifier = Modifier.size(5.dp))
         Image(
@@ -202,7 +207,7 @@ fun OptionLanguage(
         CustomText(
             firstString = second,
             horizontal = Arrangement.Center,
-            color = color_letra
+            color = color_letra_topbar
         )
         Spacer(modifier = Modifier.size(5.dp))
     }

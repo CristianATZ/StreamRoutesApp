@@ -68,8 +68,22 @@ fun HelpScreen(myViewModel: MyViewModel,navController: NavController) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            // reseñas
+            Options(
+                text = "Reseñas",
+                sub_text = "Revisa y opina.",
+                onClick = { /*TODO*/ }
+            )
+
+            Spacer(modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .background(color_fondo_topbar.copy(0.25f))
+                .height(1.dp))
+
             // comentarios
             Options(
                 text = myViewModel.languageType().get(87),
