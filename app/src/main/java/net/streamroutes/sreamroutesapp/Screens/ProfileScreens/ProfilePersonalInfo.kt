@@ -74,7 +74,7 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileDataInfoScreen(navController: NavController){
+fun ProfilePersonalInfoScreen(navController: NavController){
     var ocupaciones = remember { mutableStateOf(false) }
     var intereses = remember { mutableStateOf(false) }
 
@@ -152,53 +152,38 @@ fun ProfileDataInfoScreen(navController: NavController){
                 .padding(paddingValues)
         ) {
             OptionsWithSubOptions(text = "Informacion de contacto") {
-                Row() {
-                    Spacer(modifier = Modifier.size(20.dp))
-                    GeneralOptions(
-                        text = "Cambiar telefono",
-                        sub_text = "445 141 1834",
-                        onClick = { navController.navigate(AppScreens.ProfileChangePhoneScreen.route) }
-                    )
-                }
-                Row() {
-                    Spacer(modifier = Modifier.size(20.dp))
-                    GeneralOptions(
-                        text = "Cambiar correo",
-                        sub_text = "s20120154@alumnos.itsur.edu.mx",
-                        onClick = { navController.navigate(AppScreens.ProfileChangeEmailScreen.route) }
-                    )
-                }
+                GeneralOptions(
+                    text = "Cambiar telefono",
+                    sub_text = "445 141 1834",
+                    onClick = { navController.navigate(AppScreens.ProfileChangePhoneScreen.route) }
+                )
+                GeneralOptions(
+                    text = "Cambiar correo",
+                    sub_text = "s20120154@alumnos.itsur.edu.mx",
+                    onClick = { navController.navigate(AppScreens.ProfileChangeEmailScreen.route) }
+                )
             }
 
             OptionsWithSubOptions(text = "Informacion personal") {
-                Row() {
-                    Spacer(modifier = Modifier.size(20.dp))
-                    GeneralOptions(
-                        text = "Fecha nacimiento",
-                        sub_text = fecha,
-                        onClick = { nDatePickerDialog.show() }
-                    )
-                }
-                Row() {
-                    Spacer(modifier = Modifier.size(20.dp))
-                    GeneralOptions(
-                        text = "Ocupacion",
-                        sub_text = ocupacion,
-                        onClick = {
-                            ocupaciones.value = true
-                        }
-                    )
-                }
-                Row() {
-                    Spacer(modifier = Modifier.size(20.dp))
-                    GeneralOptions(
-                        text = "Intereses",
-                        sub_text = interes,
-                        onClick = {
-                            intereses.value = true
-                        }
-                    )
-                }
+                GeneralOptions(
+                    text = "Fecha nacimiento",
+                    sub_text = fecha,
+                    onClick = { nDatePickerDialog.show() }
+                )
+                GeneralOptions(
+                    text = "Ocupacion",
+                    sub_text = ocupacion,
+                    onClick = {
+                        ocupaciones.value = true
+                    }
+                )
+                GeneralOptions(
+                    text = "Intereses",
+                    sub_text = interes,
+                    onClick = {
+                        intereses.value = true
+                    }
+                )
             }
         }
     }
@@ -348,7 +333,7 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.navigate(AppScreens.ProfileConfigureScreen.route)
+                    navController.navigate(AppScreens.ProfileConfigurationScreen.route)
                 }
             ) {
                 Icon(

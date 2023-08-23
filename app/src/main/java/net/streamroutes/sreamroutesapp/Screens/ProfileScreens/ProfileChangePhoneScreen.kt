@@ -170,7 +170,7 @@ private fun TopBarBody(
         },
         navigationIcon = {
             IconButton(
-                onClick = { navController.navigate(AppScreens.ProfileDataInfoScreen.route) }
+                onClick = { navController.navigate(AppScreens.ProfilePersonalInfoScreen.route) }
             ) {
                 Icon(
                     Icons.Filled.ArrowBack,

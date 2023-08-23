@@ -175,7 +175,7 @@ fun ProfileScreen(navController: NavController){
                     text = "Informacion",
                     color = color_letraout,
                     onClick = {
-                        navController.navigate(AppScreens.ProfileConfigureScreen.route)
+                        navController.navigate(AppScreens.ProfileConfigurationScreen.route)
                     }
                 )
                 UserProfileInfoSection(

@@ -21,13 +21,13 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigureScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileDataInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
+import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigurationScreen
+import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfilePersonalInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LanguageScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
@@ -77,11 +77,11 @@ fun AppNavigation() {
         composable(AppScreens.ProfileChangeEmailScreen.route){
             ProfileChangeEmailScren(NavController)
         }
-        composable(AppScreens.ProfileConfigureScreen.route){
-            ProfileConfigureScreen(NavController)
+        composable(AppScreens.ProfileConfigurationScreen.route){
+            ProfileConfigurationScreen(NavController)
         }
-        composable(AppScreens.ProfileDataInfoScreen.route){
-            ProfileDataInfoScreen(NavController)
+        composable(AppScreens.ProfilePersonalInfoScreen.route){
+            ProfilePersonalInfoScreen(NavController)
         }
         // HELP
         composable(AppScreens.HelpAboutAppScreen.route){

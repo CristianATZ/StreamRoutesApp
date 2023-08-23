@@ -40,7 +40,7 @@ import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 @SuppressLint("CoroutineCreationDuringComposition")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProfileConfigureScreen(navController: NavController){
+fun ProfileConfigurationScreen(navController: NavController){
     Scaffold(
         topBar = { TopBarBody(navController) },
         containerColor = color_fondo
@@ -54,7 +54,7 @@ fun ProfileConfigureScreen(navController: NavController){
                 text = "Datos personales",
                 sub_text = "Sexo, ocupacion, etc.",
                 onClick = {
-                    navController.navigate(AppScreens.ProfileDataInfoScreen.route)
+                    navController.navigate(AppScreens.ProfilePersonalInfoScreen.route)
                 }
             )
 
