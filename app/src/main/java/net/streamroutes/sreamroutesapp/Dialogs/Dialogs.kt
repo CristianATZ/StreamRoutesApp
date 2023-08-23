@@ -53,15 +53,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import net.streamroutes.sreamroutesapp.Colores.color_bola_switch
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_activo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
-import net.streamroutes.sreamroutesapp.Colores.color_letra
-import net.streamroutes.sreamroutesapp.Colores.color_letra_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_icon
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.theme.Purple40
@@ -92,7 +89,7 @@ fun DialogNotificationPush(
                     defaultElevation = 15.dp
                 ),
                 colors = CardDefaults.cardColors(
-                    containerColor = color_fondo_oscuro
+                    containerColor = color_fondo_topbar
                 )
             ) {
                 // cuerpo
@@ -105,21 +102,21 @@ fun DialogNotificationPush(
                     // siempre
                     PushOptions(
                         text = myViewModel.languageType().get(57),
-                        color_letra = color_letra_alterno,
+                        color_letra = color_letra_topbar,
                         variable = siempre
                     )
 
                     // durante
                     PushOptions(
                         text = myViewModel.languageType().get(58),
-                        color_letra = color_letra_alterno,
+                        color_letra = color_letra_topbar,
                         variable = durante
                     )
 
                     // nunca
                     PushOptions(
                         text = myViewModel.languageType().get(59),
-                        color_letra = color_letra_alterno,
+                        color_letra = color_letra_topbar,
                         variable = nunca
                     )
                 }
@@ -158,13 +155,13 @@ fun PushOptions(
                 onCheckedChange = { variable.value = it },
                 colors = SwitchDefaults.colors(
                     // cuando esta activo
-                    checkedThumbColor = color_bola_switch,
-                    checkedTrackColor = color_fondo_switch_activo,
-                    checkedBorderColor = color_fondo_switch_activo,
+                    checkedThumbColor = Color.White,
+                    checkedTrackColor = color_letrain,
+                    checkedBorderColor = color_letrain,
                     // cuando esta inactivo
-                    uncheckedThumbColor = color_bola_switch,
-                    uncheckedTrackColor = color_fondo_switch_inactivo,
-                    uncheckedBorderColor = color_fondo_switch_inactivo
+                    uncheckedThumbColor = Color.White,
+                    uncheckedTrackColor = Color.DarkGray,
+                    uncheckedBorderColor = Color.DarkGray
                 )
             )
             Spacer(modifier = Modifier.size(15.dp))
@@ -201,7 +198,7 @@ fun DialogHabilitarUbicacion(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro),
+                    .background(color_fondo_topbar),
                 verticalArrangement = Arrangement.Center
             ) {
 
@@ -211,7 +208,7 @@ fun DialogHabilitarUbicacion(
                     contentDescription = null, // decorative
                     contentScale = ContentScale.Fit,
                     colorFilter  = ColorFilter.tint(
-                        color = Purple40
+                        color = color_icon
                     ),
                     modifier = Modifier
                         .padding(top = 35.dp)
@@ -232,7 +229,7 @@ fun DialogHabilitarUbicacion(
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 20.sp,
-                        color = color_letra_topappbar
+                        color = color_letra_topbar
                     )
                     Text(
                         text = "Stream Routes necesita acceder a tu ubicación para ofrecerte una experiencia más " +
@@ -244,7 +241,7 @@ fun DialogHabilitarUbicacion(
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 15.sp,
-                        color = color_letra_topappbar
+                        color = color_letra_topbar
                     )
                 }
 
@@ -268,7 +265,7 @@ fun DialogHabilitarUbicacion(
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
                         Text(
                             text ="No permitir",
@@ -286,13 +283,13 @@ fun DialogHabilitarUbicacion(
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Permitir",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -330,7 +327,7 @@ fun DialogHabilitarContactos(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro),
+                    .background(color_fondo_topbar),
                 verticalArrangement = Arrangement.Center
             ) {
 
@@ -340,7 +337,7 @@ fun DialogHabilitarContactos(
                     contentDescription = null, // decorative
                     contentScale = ContentScale.Fit,
                     colorFilter  = ColorFilter.tint(
-                        color = Purple40
+                        color = color_icon
                     ),
                     modifier = Modifier
                         .padding(top = 35.dp)
@@ -361,7 +358,7 @@ fun DialogHabilitarContactos(
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 20.sp,
-                        color = color_letra_topappbar
+                        color = color_letra_topbar
                     )
                     Text(
                         text = "Stream Routes necesita acceder a tus contactos para proporcionar una " +
@@ -374,7 +371,7 @@ fun DialogHabilitarContactos(
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 15.sp,
-                        color = color_letra_topappbar
+                        color = color_letra_topbar
                     )
                 }
 
@@ -398,7 +395,7 @@ fun DialogHabilitarContactos(
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
                         Text(
                             text ="No permitir",
@@ -416,13 +413,13 @@ fun DialogHabilitarContactos(
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Permitir",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -460,7 +457,7 @@ fun DialogAvisoDePrivacidad(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro),
+                    .background(color_fondo_topbar),
                 verticalArrangement = Arrangement.Center
             ) {
 
@@ -470,7 +467,7 @@ fun DialogAvisoDePrivacidad(
                     contentDescription = null, // decorative
                     contentScale = ContentScale.Fit,
                     colorFilter  = ColorFilter.tint(
-                        color = Purple40
+                        color = color_icon
                     ),
                     modifier = Modifier
                         .padding(top = 35.dp)
@@ -496,7 +493,7 @@ fun DialogAvisoDePrivacidad(
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 20.sp,
-                        color = color_letra_topappbar
+                        color = color_letra_topbar
                     )
                     Text(
                         text = "Bienvenido(a) a nuestra aplicación de transporte público. En Stream Routes, nos preocupamos " +
@@ -509,7 +506,7 @@ fun DialogAvisoDePrivacidad(
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 15.sp,
-                        color = color_letra_topappbar
+                        color = color_letra_topbar
                     )
                 }
 
@@ -528,8 +525,8 @@ fun DialogAvisoDePrivacidad(
                         checked = acepto.value,
                         onCheckedChange = null,
                         colors = CheckboxDefaults.colors(
-                            checkedColor = color_letra_textfield,
-                            checkmarkColor = color_fondo_claro,
+                            checkedColor = color_letrain,
+                            checkmarkColor = color_icon,
                             uncheckedColor = Color.Gray
                         )
                     )
@@ -539,7 +536,7 @@ fun DialogAvisoDePrivacidad(
                         style = MaterialTheme.typography.labelLarge,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 12.sp,
-                        color = color_letra_topappbar
+                        color = color_letra_topbar
                     )
                 }
                 // botones
@@ -559,14 +556,14 @@ fun DialogAvisoDePrivacidad(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(if (acepto.value) color_fondo_switch_activo else Color.LightGray),
+                            .background(if (acepto.value) color_letrain else Color.LightGray),
                         enabled = acepto.value
                     ) {
 
                         Text(
                             text = "Continuar",
                             fontWeight = FontWeight.ExtraBold,
-                            color = if(acepto.value) color_letra else Color.DarkGray,
+                            color = if(acepto.value) color_letra_topbar else Color.DarkGray,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -596,7 +593,7 @@ fun DialogAutobusCercano(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro)
+                    .background(color_fondo_topbar)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -669,13 +666,13 @@ fun DialogAutobusCercano(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Aceptar",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -704,7 +701,7 @@ fun DialogParada(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro)
+                    .background(color_fondo_topbar)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -777,13 +774,13 @@ fun DialogParada(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Aceptar",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -811,7 +808,7 @@ fun DialogDestino(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro)
+                    .background(color_fondo_topbar)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -884,13 +881,13 @@ fun DialogDestino(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Aceptar",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -918,7 +915,7 @@ fun DialogInternet(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_oscuro)
+                    .background(color_fondo_topbar)
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -992,13 +989,13 @@ fun DialogInternet(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Aceptar",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -1038,7 +1035,7 @@ fun DialogTutorialMain1(
             shape = RoundedCornerShape(percent = 10),
         ){
              Column(modifier = Modifier
-                 .background(color_fondo_oscuro),
+                 .background(color_fondo_topbar),
                  horizontalAlignment = Alignment.CenterHorizontally
              ) {
 
@@ -1101,7 +1098,7 @@ fun DialogTutorialMain1(
                      fontWeight = FontWeight.Bold,
                      fontFamily = FontFamily.SansSerif,
                      fontSize = 20.sp,
-                     color = color_letra_topappbar
+                     color = color_letra_topbar
                  )
 
                  Image(
@@ -1125,7 +1122,7 @@ fun DialogTutorialMain1(
                      style = MaterialTheme.typography.bodyMedium,
                      fontFamily = FontFamily.SansSerif,
                      fontSize = 15.sp,
-                     color = color_letra_topappbar
+                     color = color_letra_topbar
                  )
 
                  // botones
@@ -1144,7 +1141,7 @@ fun DialogTutorialMain1(
                          },
                          modifier = Modifier
                              .fillMaxWidth(0.5f)
-                             .background(color_fondo_switch_activo)
+                             .background(color_letrain)
                      ) {
                          Text(
                              text ="Omitir",
@@ -1162,13 +1159,13 @@ fun DialogTutorialMain1(
                          },
                          modifier = Modifier
                              .fillMaxWidth(1f)
-                             .background(color_fondo_switch_activo)
+                             .background(color_letrain)
                      ) {
 
                          Text(
                              text = "Siguiente",
                              fontWeight = FontWeight.ExtraBold,
-                             color = color_letra,
+                             color = color_letra_topbar,
                              modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                              fontSize = 15.sp
                          )
@@ -1192,7 +1189,7 @@ fun DialogTutorialMain2(
             shape = RoundedCornerShape(percent = 10),
         ){
             Column(modifier = Modifier
-                .background(color_fondo_oscuro),
+                .background(color_fondo_topbar),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -1255,7 +1252,7 @@ fun DialogTutorialMain2(
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 20.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 Image(
@@ -1280,7 +1277,7 @@ fun DialogTutorialMain2(
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 15.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 // botones
@@ -1300,7 +1297,7 @@ fun DialogTutorialMain2(
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
                         Text(
                             text ="Regresar",
@@ -1318,13 +1315,13 @@ fun DialogTutorialMain2(
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Siguiente",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -1348,7 +1345,7 @@ fun DialogTutorialMain3(
             shape = RoundedCornerShape(percent = 10),
         ){
             Column(modifier = Modifier
-                .background(color_fondo_oscuro),
+                .background(color_fondo_topbar),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -1411,7 +1408,7 @@ fun DialogTutorialMain3(
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 20.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 Image(
@@ -1436,7 +1433,7 @@ fun DialogTutorialMain3(
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 15.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 // botones
@@ -1456,7 +1453,7 @@ fun DialogTutorialMain3(
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
                         Text(
                             text ="Regresar",
@@ -1474,13 +1471,13 @@ fun DialogTutorialMain3(
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Siguiente",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -1504,7 +1501,7 @@ fun DialogTutorialMain4(
             shape = RoundedCornerShape(percent = 10),
         ){
             Column(modifier = Modifier
-                .background(color_fondo_oscuro),
+                .background(color_fondo_topbar),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -1567,7 +1564,7 @@ fun DialogTutorialMain4(
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 20.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 Image(
@@ -1592,7 +1589,7 @@ fun DialogTutorialMain4(
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 15.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 // botones
@@ -1612,7 +1609,7 @@ fun DialogTutorialMain4(
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
                         Text(
                             text ="Regresar",
@@ -1630,13 +1627,13 @@ fun DialogTutorialMain4(
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Siguiente",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -1661,7 +1658,7 @@ fun DialogTutorialMain5(
             shape = RoundedCornerShape(percent = 10),
         ){
             Column(modifier = Modifier
-                .background(color_fondo_oscuro),
+                .background(color_fondo_topbar),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -1724,7 +1721,7 @@ fun DialogTutorialMain5(
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 20.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 Image(
@@ -1749,7 +1746,7 @@ fun DialogTutorialMain5(
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 15.sp,
-                    color = color_letra_topappbar
+                    color = color_letra_topbar
                 )
 
                 // botones
@@ -1769,7 +1766,7 @@ fun DialogTutorialMain5(
                         },
                         modifier = Modifier
                             .fillMaxWidth(0.5f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
                         Text(
                             text ="Regresar",
@@ -1791,13 +1788,13 @@ fun DialogTutorialMain5(
                         },
                         modifier = Modifier
                             .fillMaxWidth(1f)
-                            .background(color_fondo_switch_activo)
+                            .background(color_letrain)
                     ) {
 
                         Text(
                             text = "Finalizar",
                             fontWeight = FontWeight.ExtraBold,
-                            color = color_letra,
+                            color = color_letra_topbar,
                             modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                             fontSize = 15.sp
                         )
@@ -1830,7 +1827,7 @@ fun DialogOcuInt(
                     defaultElevation = 15.dp
                 ),
                 colors = CardDefaults.cardColors(
-                    containerColor = color_fondo_oscuro
+                    containerColor = color_fondo_topbar
                 )
             ) {
                 // cuerpo
@@ -1843,7 +1840,7 @@ fun DialogOcuInt(
                     lista.forEach(){ opcion ->
                         PushOptions(
                             text = opcion.second,
-                            color_letra = color_letra_alterno,
+                            color_letra = color_letra_topbar,
                             variable = opcion.first
                         )
                     }

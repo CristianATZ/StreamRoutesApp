@@ -71,8 +71,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
@@ -123,7 +122,7 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                 myViewModel = myViewModel
             )
         },
-        containerColor = color_fondo_claro
+        containerColor = color_fondo
     ) { paddingvalues ->
         Column(
             modifier = Modifier

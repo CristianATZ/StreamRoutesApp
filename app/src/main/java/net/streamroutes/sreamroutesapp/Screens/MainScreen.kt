@@ -61,6 +61,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -103,20 +104,26 @@ import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.Colores.colorOscuro1
 import net.streamroutes.sreamroutesapp.Colores.colorOscuro2
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letraout
+import net.streamroutes.sreamroutesapp.Dialogs.DialogAvisoDePrivacidad
+import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarContactos
+import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarUbicacion
 import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain1
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain2
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain3
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain4
+import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain5
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -233,7 +240,6 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 
         }
     }
-*/
     // variable internet
     val internet = remember { mutableStateOf(false) }
 
@@ -241,10 +247,15 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 
 
     // valor del dialog en funcion de la conexion de internet
-    internet.value = !isInternetAvailable(context)
+    LaunchedEffect(Unit){
+        while(true){
+            internet.value = !isInternetAvailable(context)
+            delay(1000)
+        }
+    }
 
     // dialogo para la conexion a internet
-    /*if(internet.value){
+    if(internet.value){
         DialogInternet(
             dialogo = internet
         ) {
@@ -266,7 +277,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                 drawerState = drawerState
             )
         },
-        drawerBackgroundColor = color_fondo_oscuro,
+        drawerBackgroundColor = color_fondo,
         gesturesEnabled = false
     ) {
         Scaffold(
@@ -502,7 +513,7 @@ fun DrawerBody(
                     .fillMaxWidth(0.5f)
                     .height(1.dp)
                     .background(
-                        color_fondo_claro
+                        color_fondo_textfield
                     )
                     .align(Alignment.CenterHorizontally)
             )
@@ -569,7 +580,7 @@ fun DrawerBody(
                     .fillMaxWidth(0.5f)
                     .height(1.dp)
                     .background(
-                        color_fondo_claro
+                        color_fondo_textfield
                     )
                     .align(Alignment.CenterHorizontally)
             )
@@ -600,7 +611,7 @@ fun DrawerBody(
                     .fillMaxWidth(0.5f)
                     .height(1.dp)
                     .background(
-                        color_fondo_claro
+                        color_fondo_textfield
                     )
                     .align(Alignment.CenterHorizontally)
             )

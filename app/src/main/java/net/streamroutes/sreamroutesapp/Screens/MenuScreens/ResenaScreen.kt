@@ -46,11 +46,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_icon
-import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -133,7 +132,7 @@ fun DesingAddPost() {
             .fillMaxWidth()
             .fillMaxHeight(0.44f)
             .border(1.dp, Color.Black, shape = RoundedCornerShape(15.dp))
-            .background(color_fondo_claro)
+            .background(color_fondo)
     ) {
         Column(
             modifier = Modifier
@@ -144,7 +143,7 @@ fun DesingAddPost() {
         ) {
             Text(
                 text = "Comparte tu opinión",
-                color = color_letra,
+                color = color_letraout,
                 fontSize = 19.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -181,7 +180,7 @@ fun DesingAddPost() {
 
             Text(
                 text = "Comenta tu viaje",
-                color = color_letra,
+                color = color_letraout,
                 fontSize = 19.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

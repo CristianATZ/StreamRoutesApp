@@ -31,12 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens

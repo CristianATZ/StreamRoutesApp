@@ -51,7 +51,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
@@ -80,7 +80,7 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
 
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = color_fondo_claro
+        containerColor = color_fondo
     ) { paddingValues ->
         // todo
         Column(

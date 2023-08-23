@@ -40,17 +40,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.Colores.color_botones
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_activo
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
@@ -65,22 +58,16 @@ fun view() {
 
 @Composable
 fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.TopCenter
+                .fillMaxSize()
+                .background(color_fondo),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ){
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(175.dp)
-                    .align(Alignment.TopCenter)
                     .background(
                         color_fondo_topbar,
                         RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
@@ -100,45 +87,33 @@ fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
                     horizontal = Arrangement.Center,
                     color = color_letra_topbar
                 )
-                Spacer(modifier = Modifier.size(15.dp))
+                Spacer(modifier = Modifier.size(25.dp))
             }
 
-            Column(
+            Row(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .padding(top = 100.dp)
-                    .background(color_fondo_textfield, RoundedCornerShape(percent = 16)),
-                    //.border(1.dp, color_fondo_topbar, RoundedCornerShape(percent = 15)),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
+                    .fillMaxWidth()
+                    .padding(top = 25.dp, start = 25.dp, end = 25.dp, bottom = 25.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 25.dp, start = 25.dp, end = 25.dp, bottom = 25.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                OptionLanguage(
+                    img = painterResource(id = R.drawable.mexico),
+                    first = "Español",
+                    second = "Spanish"
                 ) {
-                    OptionLanguage(
-                        img = painterResource(id = R.drawable.mexico),
-                        first = "Español",
-                        second = "Spanish"
-                    ) {
-                        sendToSignIn(0, navController, myViewModel)
-                    }
+                    sendToSignIn(0, navController, myViewModel)
+                }
 
-                    OptionLanguage(
-                        img = painterResource(id = R.drawable.estados),
-                        first = "Inglés",
-                        second = "English"
-                    ) {
-                        sendToSignIn(1, navController, myViewModel)
-                    }
+                OptionLanguage(
+                    img = painterResource(id = R.drawable.estados),
+                    first = "Inglés",
+                    second = "English"
+                ) {
+                    sendToSignIn(1, navController, myViewModel)
                 }
             }
         }
-
-    }
 }
 
 fun sendToSignIn(idioma: Int, navController: NavController, myViewModel: MyViewModel){

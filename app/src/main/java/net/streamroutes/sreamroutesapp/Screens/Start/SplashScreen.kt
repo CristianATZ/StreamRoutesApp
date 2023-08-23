@@ -29,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @Composable
@@ -44,7 +46,8 @@ fun SplashScreen(navController: NavHostController) {
 fun Splash() {
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color_fondo),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -54,7 +57,8 @@ fun Splash() {
             fontWeight = FontWeight.ExtraBold,
             fontFamily = FontFamily.SansSerif,
             letterSpacing = 5.sp,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = color_letraout
         )
         Text(
             text = "ROUTES",
@@ -62,7 +66,8 @@ fun Splash() {
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif,
             letterSpacing = 3.sp,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            color = color_letraout
         )
     }
 }

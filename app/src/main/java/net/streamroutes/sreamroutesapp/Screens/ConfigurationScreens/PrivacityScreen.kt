@@ -34,17 +34,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.Colores.color_bola_switch
 import net.streamroutes.sreamroutesapp.Colores.color_botones
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_activo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_switch_inactivo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topappbar_alterno
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_icon
-import net.streamroutes.sreamroutesapp.Colores.color_letra
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topappbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letrain
 import net.streamroutes.sreamroutesapp.Colores.color_letraout

@@ -46,11 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_claro
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_oscuro
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letra
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
@@ -308,7 +305,7 @@ fun UserProfileInfoSection(
         Box(modifier = Modifier
             .height(1.dp)
             .fillMaxWidth(0.9f)
-            .background(color_letra))
+            .background(color_fondo_textfield))
 
         HeaderText(
             icon = icon,
