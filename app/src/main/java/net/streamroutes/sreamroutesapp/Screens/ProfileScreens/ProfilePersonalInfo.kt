@@ -5,10 +5,6 @@ import android.app.DatePickerDialog
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.LinearEasing
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,7 +12,6 @@ import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,14 +20,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.AlertDialog
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
 import androidx.compose.material.Icon
-import androidx.compose.material.OutlinedButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
@@ -40,7 +32,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.smallTopAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,7 +54,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
 import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letraout
-import net.streamroutes.sreamroutesapp.Dialogs.DialogOcuInt
+import net.streamroutes.sreamroutesapp.Dialogs.DialogOcupacionInteres
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -135,11 +126,11 @@ fun ProfilePersonalInfoScreen(navController: NavController){
     )
 
     if( ocupaciones.value ){
-        DialogOcuInt(dialogo = ocupaciones, lista = listaOcupaciones, myViewModel = null)
+        DialogOcupacionInteres(dialogo = ocupaciones, lista = listaOcupaciones, myViewModel = null)
     }
 
     if( intereses.value ){
-        DialogOcuInt(dialogo = intereses, lista = listaIntereses, myViewModel = null)
+        DialogOcupacionInteres(dialogo = intereses, lista = listaIntereses, myViewModel = null)
     }
 
     Scaffold(

@@ -14,6 +14,7 @@ class MyViewModel : ViewModel() {
     // variables importantes
     // 0 = ES 1 = EN
     var idioma by mutableStateOf(0)
+    var tema by mutableStateOf(false)
 
     // lista de idioma ES
     val es = listOf(

@@ -19,6 +19,7 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
+import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
@@ -28,6 +29,7 @@ import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfilePersonalInfoScreen
+import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.SuscriptionConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LanguageScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
@@ -144,6 +146,16 @@ fun AppNavigation() {
         // LANGUAGE SCREEN
         composable(AppScreens.LanguageScreen.route){
             LanguageScreen(myViewModel, NavController)
+        }
+
+        // RESENA
+        composable(AppScreens.ResenaScreen.route){
+            ResenaScreen()
+        }
+
+        // SUSCRIPTION CONFIGURATION
+        composable(AppScreens.SuscriptionConfigurationScreen.route){
+            SuscriptionConfigurationScreen()
         }
     }
 }

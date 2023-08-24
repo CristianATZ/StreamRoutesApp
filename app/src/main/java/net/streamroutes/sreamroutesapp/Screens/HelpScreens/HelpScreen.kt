@@ -71,7 +71,7 @@ fun HelpScreen(myViewModel: MyViewModel,navController: NavController) {
             Options(
                 text = "Reseñas",
                 sub_text = "Revisa y opina.",
-                onClick = { /*TODO*/ }
+                onClick = { navController.navigate(AppScreens.ResenaScreen.route) }
             )
 
             Spacer(modifier = Modifier

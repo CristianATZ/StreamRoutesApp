@@ -63,7 +63,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
                 text_des = "icono de cambiar ciudad",
                 imageVector = Icons.Filled.Search,
                 color_texto = color_letraout,
-                color_icon = Color.Black,
+                color_icon = color_icon,
                 onClick = {
                     navController.navigate(route = AppScreens.ChangeCityScreen.route)
                 }
@@ -75,7 +75,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
                 text_des = "icono de tipo de notificaciones",
                 imageVector = Icons.Filled.Notifications,
                 color_texto = color_letraout,
-                color_icon = Color.Black,
+                color_icon = color_icon,
                 onClick = {
                     navController.navigate(route = AppScreens.NotificationsScreen.route)
                 }
@@ -87,7 +87,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
                 text_des = "icono de mapa",
                 imageVector = Icons.Filled.ThumbUp,
                 color_texto = color_letraout,
-                color_icon = Color.Black,
+                color_icon = color_icon,
                 onClick = {
                     navController.navigate(route = AppScreens.MapOptionsScreen.route)
                 }
@@ -99,7 +99,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
                 text_des = "icono de configuracion de privacidad",
                 imageVector = Icons.Filled.ShoppingCart,
                 color_texto = color_letraout,
-                color_icon = Color.Black,
+                color_icon = color_icon,
                 onClick = {
                     navController.navigate(route = AppScreens.PrivacityScreen.route)
                 }
@@ -111,9 +111,9 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
                 text_des = "icono de configuracion de privacidad",
                 imageVector = Icons.Filled.Email,
                 color_texto = color_letraout,
-                color_icon = Color.Black,
+                color_icon = color_icon,
                 onClick = {
-                    
+                    myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
                 }
             )
             
@@ -123,9 +123,9 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
                 text_des = "icono de configuracion de privacidad",
                 imageVector = Icons.Filled.ShoppingCart,
                 color_texto = color_letraout,
-                color_icon = Color.Black,
+                color_icon = color_icon,
                 onClick = {
-                    
+                    myViewModel.tema = !myViewModel.tema
                 }
             )
         }
