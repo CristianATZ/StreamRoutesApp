@@ -108,7 +108,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.Colores.colorOscuro1
 import net.streamroutes.sreamroutesapp.Colores.colorOscuro2
+import net.streamroutes.sreamroutesapp.Colores.color_botones
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_perfil
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_icon
@@ -445,25 +447,23 @@ fun DrawerBody(
     ){
         Box(
             modifier = Modifier
-                .height(160.dp)
+                .height(180.dp)
                 .fillMaxWidth()
+                // crear la variable para el tema claro
+                // y el tema oscuro por el color a continuaacion
+                .background(
+                    color_fondo_perfil,
+                    RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
+                )
                 .clickable {
                     navController.navigate(AppScreens.ProfileScreen.route)
                 }
         ){
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
-                contentDescription = "Menu de opciones",
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentScale = ContentScale.FillWidth
-            )
-
-            // opciones del menu
+            // nombre, correo y boton para cerrar el menu
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(25.dp),
+                    .padding(start = 15.dp, bottom = 25.dp),
                 verticalArrangement = Arrangement.Bottom,
                 horizontalAlignment = Alignment.Start
             ) {
@@ -495,6 +495,27 @@ fun DrawerBody(
                     scope.launch {
                         drawerState.close()
                     }
+                }
+            }
+
+            // cuadro de informacion de suscripcion
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(15.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.75f)
+                        .height(55.dp)
+                        .background(color_fondo_topbar, RoundedCornerShape(percent = 15)),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    CustomText(
+                        firstString = "P R E M I U M",
+                        horizontal = Arrangement.Center,
+                        size = 20)
                 }
             }
         }
@@ -674,7 +695,7 @@ private fun BoxOption(
                     contentDescription = desc,
                     modifier = Modifier
                         .padding(10.dp)
-                        .size(34.dp),
+                        .size(35.dp),
                     colorFilter = ColorFilter.tint(
                         color_icon
                     )
@@ -686,7 +707,7 @@ private fun BoxOption(
                     contentDescription = desc,
                     modifier = Modifier
                         .padding(10.dp)
-                        .size(34.dp),
+                        .size(35.dp),
                     tint = color_icon
                 )
             }

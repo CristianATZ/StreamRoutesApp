@@ -20,7 +20,7 @@ val cuatro = Color(0xFFFFE5B4)
 
 /////// TEMA CLARO
 
-/*val color_fondo = colorClaro1
+val color_fondo = colorClaro1
 val color_fondo_textfield = uno
 val color_letra_textfield = colorClaro2
 val color_letraout = Color.Black
@@ -32,11 +32,13 @@ val color_fondo_topbar = colorOscuro1
 val color_letra_topbar = Color.White
 val color_icon = Color.White
 val color_dialog = colorOscuro2
-val color_letra_dialog = Color.White*/
+val color_letra_dialog = Color.White
+val color_fondo_perfil = colorOscuro2
 
 
 /////// TEMA OSCURO
 
+/*
 val color_fondo = colorOscuro1
 val color_fondo_textfield = colorOscuro2
 val color_letra_textfield = colorClaro2
@@ -49,3 +51,4 @@ val color_letra_topbar = Color.White
 val color_icon = Color.White
 val color_dialog = colorOscuro2
 val color_letra_dialog = Color.White
+val color_fondo_perfil = colorOscuro1*/
