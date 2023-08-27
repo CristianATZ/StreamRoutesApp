@@ -40,6 +40,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -66,6 +67,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_botones
 import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
+import net.streamroutes.sreamroutesapp.Dialogs.DialogAutobusCercano
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -145,7 +147,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                 Row{
                     IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                         Icon(
-                            Icons.Filled.ArrowBack,
+                            painterResource(id = R.drawable.back),
                             contentDescription = "Te enviara al menu de opciones",
                             tint = color_icon
                         )
@@ -213,9 +215,6 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
 
         //MAP
         map(myViewModel)
-
-
-
     }
 }
 
@@ -416,7 +415,7 @@ fun map(myViewModel: MyViewModel) {
                 horizontalArrangement = Arrangement.Center
             ){
                 Image(
-                    painter = painterResource(id = R.drawable.typemap),
+                    painter = painterResource(id = R.drawable.change),
                     contentDescription = "Tipo de mapa",
                     modifier = Modifier
                         .padding(10.dp)

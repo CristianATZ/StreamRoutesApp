@@ -312,13 +312,13 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                             .padding(10.dp),
                         horizontalArrangement = Arrangement.End
                     ){
-                        BoxOption(img = painterResource(id = R.drawable.info)) {
+                        BoxOption(img = painterResource(id = R.drawable.translate)) {
                             myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
                         }
 
                         Spacer(modifier = Modifier.size(10.dp))
 
-                        BoxOption(img = painterResource(id = R.drawable.typemap)) {
+                        BoxOption(img = painterResource(id = R.drawable.change)) {
                             when (changeMap) {
                                 1 -> {
                                     currentMapType = MapType.NORMAL
@@ -371,7 +371,7 @@ private fun TopBarBody(
                 }
             ) {
                 Icon(
-                    Icons.Filled.Menu,
+                    painter = painterResource(id = R.drawable.menu),
                     contentDescription = "Te mostrara el menu",
                     tint = color_letra_topbar
                 )
@@ -434,8 +434,6 @@ fun DrawerBody(
         val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
     }
-
-    val color2 = Color(0xFF12417D)
     // 0xFF195093
 
     Column (
@@ -491,7 +489,7 @@ fun DrawerBody(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.End
             ) {
-                BoxOption(img = Icons.Filled.ArrowBack) {
+                BoxOption(img = painterResource(id = R.drawable.back)) {
                     scope.launch {
                         drawerState.close()
                     }
@@ -525,7 +523,7 @@ fun DrawerBody(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            DrawerItem(text = "Version Premium", icon = Icons.Outlined.Call) {
+            DrawerItem(text = "Version Premium", icon = painterResource(id = R.drawable.premium)) {
                 navController.navigate(AppScreens.SuscripcionScreen.route)
             }
 
@@ -542,15 +540,15 @@ fun DrawerBody(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                DrawerItem(text = "Rutas", icon = Icons.Outlined.KeyboardArrowRight) {
+                DrawerItem(text = "Rutas", icon = painterResource(id = R.drawable.routes)) {
                     navController.navigate(AppScreens.RoutesScreen.route)
                 }
 
-                DrawerItem(text = "Planifica tu viaje", icon = Icons.Outlined.List) {
+                DrawerItem(text = "Planifica tu viaje", icon = painterResource(id = R.drawable.add_location)) {
                     navController.navigate(AppScreens.TripScreen.route)
                 }
 
-                DrawerItem(text = "Compartir ubicacion", icon = Icons.Outlined.LocationOn) {
+                DrawerItem(text = "Compartir ubicacion", icon = painterResource(id = R.drawable.share_location)) {
                     if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
                         locationPermissionState.launchPermissionRequest()
                         backgroundLocationPermissionState.launchPermissionRequest()
@@ -571,8 +569,9 @@ fun DrawerBody(
 
                                         // Construir la URL con el marcador en tu ubicación actual
                                         val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
-
-                                        val message = myViewModel.languageType().get(9) + getAddressInfoFromCoordinates(context,latitude,longitude)
+                                        val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
+                                        val message = myViewModel.languageType().get(9) + addressInfo?.cityName + " " +
+                                                addressInfo?.streetName +  " " + addressInfo?.postalCode + "\n"
 
                                         val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
                                         context.startActivity(shareIntent)
@@ -591,7 +590,7 @@ fun DrawerBody(
                     }
                 }
 
-                DrawerItem(text = "Descargar rutas", icon = Icons.Outlined.Search) {
+                DrawerItem(text = "Descargar rutas", icon = painterResource(id = R.drawable.download)) {
                     startDownload(context = context)
                 }
             }
@@ -609,20 +608,20 @@ fun DrawerBody(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                DrawerItem(text = "Comparte", icon = Icons.Outlined.Share) {
+                DrawerItem(text = "Comparte", icon = painterResource(id = R.drawable.share)) {
                     val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
                     context.startActivity(shareIntent)
                 }
 
-                DrawerItem(text = "Valoranos", icon = Icons.Outlined.Star) {
+                DrawerItem(text = "Valoranos", icon = painterResource(id = R.drawable.star)) {
                     navController.navigate(AppScreens.ValoranoScreen.route)
                 }
 
-                DrawerItem(text = "Configuracion", icon = Icons.Outlined.Settings) {
+                DrawerItem(text = "Configuracion", icon = painterResource(id = R.drawable.settings)) {
                     navController.navigate(AppScreens.ConfigurationScreen.route)
                 }
 
-                DrawerItem(text = "Ayuda y soporte", icon = Icons.Outlined.Person) {
+                DrawerItem(text = "Ayuda y soporte", icon = painterResource(id = R.drawable.help)) {
                     navController.navigate(AppScreens.HelpScreen.route)
                 }
             }
@@ -637,7 +636,7 @@ fun DrawerBody(
                     .align(Alignment.CenterHorizontally)
             )
 
-            DrawerItem(text = "Cerrar sesion", icon = Icons.Outlined.ExitToApp) {
+            DrawerItem(text = "Cerrar sesion", icon = painterResource(id = R.drawable.logout)) {
 
             }
         }
@@ -718,7 +717,7 @@ private fun BoxOption(
 @Composable
 private fun DrawerItem(
     text: String,
-    icon: ImageVector,
+    icon: Painter,
     onItemClick: () -> Unit
 ) {
     Row(
@@ -733,7 +732,7 @@ private fun DrawerItem(
     ){
         Spacer(modifier = Modifier.width(15.dp))
 
-        Icon(imageVector = icon, contentDescription = text, tint = color_letra_botones)
+        Icon(painter = icon, contentDescription = text, tint = color_letra_botones)
         
         Spacer(modifier = Modifier.width(12.dp))
 

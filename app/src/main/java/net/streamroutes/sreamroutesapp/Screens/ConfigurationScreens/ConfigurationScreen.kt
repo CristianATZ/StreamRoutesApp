@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,6 +44,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -148,7 +150,7 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
                     tint = color_icon
                 )
@@ -177,17 +179,7 @@ private fun Options(
             .height(60.dp)
             .clickable(onClick = onClick)
     ) {
-        Spacer(modifier = Modifier.size(10.dp))
-        Icon(
-            imageVector = imageVector,
-            contentDescription = text_des,
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .padding(horizontal = 5.dp)
-                .size(30.dp),
-            tint = color_icon
-        )
-        Spacer(modifier = Modifier.size(width = 20.dp, height = 0.dp))
+        Spacer(modifier = Modifier.size(25.dp))
         Text(
             text = text, // texto
             modifier = Modifier

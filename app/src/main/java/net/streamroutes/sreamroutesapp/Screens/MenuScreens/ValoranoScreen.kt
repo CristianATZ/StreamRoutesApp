@@ -99,7 +99,7 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
                     tint = color_icon
                 )

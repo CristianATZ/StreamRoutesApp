@@ -30,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,6 +47,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Dialogs.DialogNotificationPush
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.R
 
 
 @Preview (showBackground = true)
@@ -174,7 +176,7 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de configuraciones",
                     tint = color_icon
                 )

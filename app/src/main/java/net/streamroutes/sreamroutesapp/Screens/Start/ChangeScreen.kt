@@ -186,7 +186,7 @@ private fun TopBarBody(myViewModel: MyViewModel, navController: NavController) {
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.LoginScreen.route) }) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    painterResource(id = R.drawable.back),
                     contentDescription = "te regresara al login"
                 )
             }
@@ -299,7 +299,7 @@ private fun PasswordTextfield(
                 }) {
                     Icon(
                         painter = if (passwordVisibility.value)
-                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
                             .size(32.dp),

@@ -59,7 +59,7 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.logo_image),
+                    painter = painterResource(id = R.drawable.close),
                     contentDescription = "Logo Stream Routes",
                     modifier = Modifier
                         .size(200.dp),
@@ -111,7 +111,7 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
                     tint = color_icon
                 )

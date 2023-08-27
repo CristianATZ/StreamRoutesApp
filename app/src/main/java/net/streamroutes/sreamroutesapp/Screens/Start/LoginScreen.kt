@@ -86,7 +86,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
     ){
 
         Image(
-            painter = painterResource(id = R.drawable.logo_no_image),
+            painter = painterResource(id = R.drawable.ic_launcher_background),
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp)
@@ -268,7 +268,7 @@ private fun PasswordTextfield(
                 }) {
                     Icon(
                         painter = if (passwordVisibility.value)
-                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
                             .size(32.dp),

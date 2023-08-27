@@ -106,7 +106,7 @@ private fun Options(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .padding(top = topPadding)
-                .clickable{ onOptionSelected(option) }
+                .clickable { onOptionSelected(option) }
         ) {
             // Espacio entre los componentes
             Spacer(modifier = Modifier.width(13.dp))
@@ -164,7 +164,7 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de configuraciones",
                     tint = color_icon
 

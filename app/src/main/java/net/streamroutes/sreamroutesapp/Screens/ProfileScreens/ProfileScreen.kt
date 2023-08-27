@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -119,7 +120,7 @@ fun ProfileScreen(navController: NavController){
                             }
                         ) {
                             Icon(
-                                Icons.Filled.ArrowBack,
+                                painterResource(id = R.drawable.back),
                                 contentDescription = "Regresara a la ventana de perfil",
                                 tint = color_letra_topbar,
                                 modifier = Modifier
@@ -169,18 +170,21 @@ fun ProfileScreen(navController: NavController){
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // informacion
                 UserProfileInfoSection(
                     infoItems = info,
-                    icon = Icons.Filled.Info,
+                    icon = painterResource(id = R.drawable.info),
                     text = "Informacion",
                     color = color_letraout,
                     onClick = {
                         navController.navigate(AppScreens.ProfileConfigurationScreen.route)
                     }
                 )
+
+                // membresia (no hace nada aun)
                 UserProfileInfoSection(
                     infoItems = memb,
-                    icon = Icons.Filled.Star,
+                    icon = painterResource(id = R.drawable.premium),
                     text = "Membresia",
                     color = color_letraout,
                     onClick = {
@@ -231,7 +235,7 @@ private fun CustomText(
 
 @Composable
 private fun HeaderText(
-    icon: ImageVector,
+    icon: Painter,
     text: String,
     color: Color
 ) {
@@ -242,7 +246,7 @@ private fun HeaderText(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = icon,
+            painter = icon,
             contentDescription = null,
             tint = color,
             modifier = Modifier
@@ -291,7 +295,7 @@ private fun SuscripcionOptions(
 @Composable
 fun UserProfileInfoSection(
     infoItems: List<Pair<String, String>>,
-    icon: ImageVector,
+    icon: Painter,
     text: String,
     color: Color,
     onClick: () -> Unit
@@ -327,6 +331,7 @@ fun UserProfileInfoSection(
         }
         
         Spacer(modifier = Modifier.size(10.dp))
+
         Box(
             modifier = Modifier
                 .height(40.dp)
@@ -336,7 +341,7 @@ fun UserProfileInfoSection(
             contentAlignment = Alignment.Center
         ){
             Icon(
-                imageVector = Icons.Filled.Edit,
+                painter = painterResource(id = R.drawable.edit),
                 contentDescription = null,
                 modifier = Modifier.size(25.dp),
                 tint = color

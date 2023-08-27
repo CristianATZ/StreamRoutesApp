@@ -178,7 +178,7 @@ private fun TopBarBody(
                 onClick = { navController.navigate(AppScreens.ProfilePersonalInfoScreen.route) }
             ) {
                 Icon(
-                    Icons.Filled.ArrowBack,
+                    painterResource(id = R.drawable.back),
                     contentDescription = "Te mostrara el menu",
                     tint = color_letra_topbar
                 )
@@ -291,7 +291,7 @@ private fun PasswordTextfield(
                 }) {
                     Icon(
                         painter = if (passwordVisibility.value)
-                            painterResource(id = R.drawable.visibility_off) else painterResource(id = R.drawable.visibility_on),
+                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
                             .size(32.dp),
