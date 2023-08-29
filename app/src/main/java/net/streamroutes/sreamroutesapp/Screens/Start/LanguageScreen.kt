@@ -19,9 +19,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -58,45 +61,61 @@ fun view() {
 
 @Composable
 fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background),
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        LanguageTittle()
+        LanguageOptions(myViewModel = myViewModel, navController = navController)
+    }
+}
+
+@Composable
+fun LanguageTittle(){
+    Column(
+        modifier = Modifier
+            .background(
+                MaterialTheme.colorScheme.surfaceVariant,
+                RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
+            )
+            .fillMaxWidth()
+            .height(150.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+
+    ) {
+
+        CustomText(
+            firstString = "Selecciona el idioma de tu preferencia.",
+            horizontal = Arrangement.Center,
+            colorText = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        CustomText(
+            firstString = "Select your preferred language.",
+            horizontal = Arrangement.Center,
+            colorText = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+fun LanguageOptions(
+    myViewModel: MyViewModel,
+    navController: NavController
+){
+    Card ( 
+        modifier = Modifier
+            .padding(15.dp)
+    ){
+        LazyRow (
             modifier = Modifier
-                .fillMaxSize()
-                .background(color_fondo),
-            verticalArrangement = Arrangement.Top,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .background(MaterialTheme.colorScheme.surfaceVariant)
         ){
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color_fondo_topbar,
-                        RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Top
-            ) {
-                Spacer(modifier = Modifier.size(25.dp))
-                CustomText(
-                    firstString = "Selecciona el idioma de tu preferencia.",
-                    horizontal = Arrangement.Center,
-                    color = color_letra_topbar
-                )
-
-                CustomText(
-                    firstString = "Select your preferred language.",
-                    horizontal = Arrangement.Center,
-                    color = color_letra_topbar
-                )
-                Spacer(modifier = Modifier.size(25.dp))
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 25.dp, start = 25.dp, end = 25.dp, bottom = 25.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            item {
                 OptionLanguage(
                     img = painterResource(id = R.drawable.mexico),
                     first = "Español",
@@ -104,7 +123,9 @@ fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
                 ) {
                     sendToSignIn(0, navController, myViewModel)
                 }
+            }
 
+            item {
                 OptionLanguage(
                     img = painterResource(id = R.drawable.estados),
                     first = "Inglés",
@@ -114,9 +135,14 @@ fun LanguageScreen(myViewModel: MyViewModel, navController: NavController) {
                 }
             }
         }
+    }
 }
 
-fun sendToSignIn(idioma: Int, navController: NavController, myViewModel: MyViewModel){
+fun sendToSignIn(
+    idioma: Int,
+    navController: NavController,
+    myViewModel: MyViewModel
+){
     myViewModel.idioma = idioma
     navController.navigate(route = AppScreens.LoginScreen.route)
 }
@@ -125,7 +151,7 @@ fun sendToSignIn(idioma: Int, navController: NavController, myViewModel: MyViewM
 private fun CustomText(
     firstString: String,
     horizontal: Arrangement.Horizontal,
-    color: Color
+    colorText: Color
 ) {
     Row (
         modifier = Modifier
@@ -136,7 +162,7 @@ private fun CustomText(
         // forgot
         Text(
             text = buildAnnotatedString{
-                withStyle(style = SpanStyle(color = color,
+                withStyle(style = SpanStyle(color = colorText,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     fontFamily = FontFamily.SansSerif)
@@ -159,9 +185,8 @@ fun OptionLanguage(
 ) {
     Column(
         modifier = Modifier
-            .background(color_fondo_topbar, RoundedCornerShape(15.dp))
             .width(150.dp)
-            .clickable (onClick = onClick),
+            .clickable(onClick = onClick),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -169,7 +194,7 @@ fun OptionLanguage(
         CustomText(
             firstString = first,
             horizontal = Arrangement.Center,
-            color = color_letra_topbar
+            colorText = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.size(5.dp))
         Image(
@@ -182,7 +207,7 @@ fun OptionLanguage(
         CustomText(
             firstString = second,
             horizontal = Arrangement.Center,
-            color = color_letra_topbar
+            colorText = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Spacer(modifier = Modifier.size(5.dp))
     }

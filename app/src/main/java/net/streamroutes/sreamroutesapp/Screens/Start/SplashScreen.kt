@@ -32,6 +32,7 @@ import kotlinx.coroutines.delay
 import net.streamroutes.sreamroutesapp.Colores.color_fondo
 import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.ui.theme.StreamRoutesAppTheme
 
 @Composable
 fun SplashScreen(navController: NavHostController) {
@@ -46,8 +47,7 @@ fun SplashScreen(navController: NavHostController) {
 fun Splash() {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .background(color_fondo),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -57,8 +57,7 @@ fun Splash() {
             fontWeight = FontWeight.ExtraBold,
             fontFamily = FontFamily.SansSerif,
             letterSpacing = 5.sp,
-            textAlign = TextAlign.Center,
-            color = color_letraout
+            textAlign = TextAlign.Center
         )
         Text(
             text = "ROUTES",
@@ -66,8 +65,7 @@ fun Splash() {
             fontWeight = FontWeight.Bold,
             fontFamily = FontFamily.SansSerif,
             letterSpacing = 3.sp,
-            textAlign = TextAlign.Center,
-            color = color_letraout
+            textAlign = TextAlign.Center
         )
     }
 }
@@ -75,6 +73,16 @@ fun Splash() {
 
 @Preview(showBackground = true)
 @Composable
-fun SplashScreenView() {
-    Splash()
+fun SplashScreenDark() {
+    StreamRoutesAppTheme(true) {
+        Splash()
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun SplashScreenLight() {
+    StreamRoutesAppTheme(false) {
+        Splash()
+    }
 }

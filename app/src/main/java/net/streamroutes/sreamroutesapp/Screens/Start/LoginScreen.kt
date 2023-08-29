@@ -25,6 +25,7 @@ import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -80,7 +81,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
     Column (
         modifier = Modifier
             .fillMaxSize()
-            .background(color_fondo),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ){
