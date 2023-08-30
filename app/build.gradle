@@ -66,6 +66,13 @@ dependencies {
     implementation 'com.google.maps:google-maps-services:0.18.0'
     implementation 'com.google.ar.sceneform:filament-android:1.17.1'
 
+    // origin version of osm android. You may be able to customize the version.
+    implementation 'org.osmdroid:osmdroid-android:6.1.16'
+    implementation "tech.utsmankece:osm-android-compose:$latest_version_osmcompose"
+
+    // This library dependencies
+
+
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -73,21 +80,6 @@ dependencies {
     androidTestImplementation 'androidx.compose.ui:ui-test-junit4'
     debugImplementation 'androidx.compose.ui:ui-tooling'
     debugImplementation 'androidx.compose.ui:ui-test-manifest'
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }
