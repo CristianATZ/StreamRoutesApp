@@ -28,6 +28,7 @@ import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -74,7 +75,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
 
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -98,7 +99,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                 ),
                 textStyle = LocalTextStyle.current.copy(
                     fontSize = 18.sp,
-                    color = color_letrain,
+                    color = MaterialTheme.colorScheme.primaryContainer,
                     textAlign = TextAlign.Left,
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 2.sp
@@ -106,7 +107,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                 decorationBox = { innerTextField ->
                     Row(
                         Modifier
-                            .background(color_fondo_textfield, RoundedCornerShape(percent = 5))
+                            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 5))
                             .padding(16.dp)
                             .fillMaxWidth(0.8f)
                     ){
@@ -114,7 +115,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                             Text(
                                 text = myViewModel.languageType().get(94),
                                 fontSize = 18.sp,
-                                color = color_letraout.copy(0.5f),
+                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
                                 letterSpacing = 3.sp
                             )
                         }
@@ -139,12 +140,12 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                 ) {
                     Text(
                         text = myViewModel.languageType().get(95),
-                        color = color_letraout,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                     )
                     Text(
                         text = myViewModel.languageType().get(96),
-                        color = color_letraout,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                     )
                 }
@@ -152,9 +153,9 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                     checked = checkedState.value,
                     onCheckedChange = { checkedState.value = it },
                     colors = CheckboxDefaults.colors(
-                        checkedColor = color_letrain,
-                        checkmarkColor = color_letra_topbar,
-                        uncheckedColor = color_botones
+                        checkedColor = MaterialTheme.colorScheme.primary,
+                        checkmarkColor = MaterialTheme.colorScheme.background,
+                        uncheckedColor = MaterialTheme.colorScheme.primary
                     )
                 )
             }
@@ -171,8 +172,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
 
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                        contentColor = color_letra_botones
+                        containerColor = MaterialTheme.colorScheme.tertiary
                     ),
                     shape = roundCornerShape,
                     modifier = Modifier
@@ -182,7 +182,8 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                     Text(
                         text = myViewModel.languageType().get(97),
                         fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
 
@@ -194,7 +195,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                 ) {
                     Text(
                         text = myViewModel.languageType().get(98),
-                        color = color_letraout,
+                        color = MaterialTheme.colorScheme.onBackground,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold
                     )
@@ -216,21 +217,22 @@ private fun TopBarBody(
                 text = myViewModel.languageType().get(93),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                 Icon(
                     painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones"
+                    contentDescription = "Te enviara al menu de opciones",
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }

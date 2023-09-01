@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -93,7 +94,7 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
 
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         // cuerpo
         Column(
@@ -121,13 +122,13 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
                 ) {
                     Text(
                         text = myViewModel.languageType().get(55), // texto
-                        color = color_letraout,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 18.sp
                     )
                     Text(
                         text = myViewModel.languageType().get(56), // texto
-                        color = color_letraout,
+                        color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 12.sp
                     )
@@ -170,7 +171,8 @@ private fun TopBarBody(
             Text(text = myViewModel.languageType().get(54),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -178,14 +180,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de configuraciones",
-                    tint = color_icon
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }
@@ -216,13 +217,13 @@ private fun OptionSwitch(
         ) {
             Text(
                 text = text, // texto
-                color = color_letraout,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 18.sp
             )
             Text(
                 text = sub_text, // texto
-                color = color_letraout,
+                color = MaterialTheme.colorScheme.onBackground,
                 fontFamily = FontFamily.SansSerif,
                 fontSize = 12.sp
             )
@@ -234,13 +235,13 @@ private fun OptionSwitch(
             onCheckedChange = null,
             colors = SwitchDefaults.colors(
                 // cuando esta activo
-                checkedThumbColor = Color.White,
-                checkedTrackColor = color_letrain,
-                checkedBorderColor = color_letrain,
+                checkedThumbColor = MaterialTheme.colorScheme.background,
+                checkedTrackColor = MaterialTheme.colorScheme.primary,
+                checkedBorderColor = MaterialTheme.colorScheme.primary,
                 // cuando esta inactivo
-                uncheckedThumbColor = Color.White,
-                uncheckedTrackColor = color_botones,
-                uncheckedBorderColor = color_botones
+                uncheckedThumbColor = MaterialTheme.colorScheme.background,
+                uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                uncheckedBorderColor = MaterialTheme.colorScheme.primaryContainer
             )
         )
     }

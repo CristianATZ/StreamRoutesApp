@@ -29,6 +29,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,6 +45,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -137,7 +139,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
             modifier = Modifier
                 .fillMaxWidth(1f)
                 .fillMaxHeight(0.18f)
-                .background(color_fondo_topbar) // Color de fondo del Box
+                .background(MaterialTheme.colorScheme.primary) // Color de fondo del Box
         ) {
             Column(
                 modifier = Modifier
@@ -149,14 +151,14 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                         Icon(
                             painterResource(id = R.drawable.back),
                             contentDescription = "Te enviara al menu de opciones",
-                            tint = color_icon
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                     Column {
                         Row {
                             Text(
                                 text = myViewModel.languageType().get(29),
-                                color = color_letra_botones,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier.padding(start = 2.dp)
                             )
                         }
@@ -170,9 +172,12 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                                 modifier = Modifier
                                     .fillMaxWidth(1f)
                                     .fillMaxHeight(.3f)
-                                    .background(Color.White)
+                                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
                                     .padding(start = 12.dp)
-                                    .wrapContentHeight(align = Alignment.CenterVertically)
+                                    .wrapContentHeight(align = Alignment.CenterVertically),
+                                textStyle = TextStyle(
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
                             )
                         }
                     }
@@ -182,7 +187,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                 Row{
                     Text(
                         text=myViewModel.languageType().get(30),
-                        color = color_letra_botones,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(start = 50.dp)
                     )
                 }
@@ -197,16 +202,19 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(.53f)
-                            .background(Color.White)
+                            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
                             .padding(start = 12.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically)
+                            .wrapContentHeight(align = Alignment.CenterVertically),
+                        textStyle = TextStyle(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
                     )
                 }
 
                 Row{
                     Text(
                         text = myViewModel.languageType().get(31)+ ": $formattedTime",
-                        color = color_letra_botones,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(start = 16.dp, top = 5.dp)
                     )
                 }
@@ -389,7 +397,7 @@ fun map(myViewModel: MyViewModel) {
         ){
             Row(
                 modifier = Modifier
-                    .background(color_fondo_topbar, RoundedCornerShape(percent = 10))
+                    .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 10))
                     .clickable {
                         when (changeMap) {
                             1 -> {
@@ -421,7 +429,7 @@ fun map(myViewModel: MyViewModel) {
                         .padding(10.dp)
                         .size(34.dp),
                     colorFilter = ColorFilter.tint(
-                        color_icon
+                        MaterialTheme.colorScheme.onPrimary
                     )
                 )
             }
@@ -438,31 +446,31 @@ fun Botones(
         modifier = Modifier
             .fillMaxSize())
     {
-    //Boton parte inferior
-    val roundCornerShape = RoundedCornerShape(
-        topEnd = 30.dp,
-        bottomStart = 30.dp,
-        topStart = 10.dp,
-        bottomEnd = 10.dp
-    )
-    Button(
-        onClick = {
-        },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-            contentColor = color_letra_botones
-        ),
-        shape = roundCornerShape,
-        modifier = Modifier
-            .wrapContentSize()
-            .padding(7.dp)
-            .align(Alignment.BottomCenter)
-        ) {
-        Text(
-        text = myViewModel.languageType().get(32),
-        fontSize = 26.sp,
-        fontWeight = FontWeight.Bold
-    )
-    }
+        //Boton parte inferior
+        val roundCornerShape = RoundedCornerShape(
+            topEnd = 30.dp,
+            bottomStart = 30.dp,
+            topStart = 10.dp,
+            bottomEnd = 10.dp
+        )
+        Button(
+            onClick = {
+            },
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.tertiary
+            ),
+            shape = roundCornerShape,
+            modifier = Modifier
+                .wrapContentSize()
+                .padding(7.dp)
+                .align(Alignment.BottomCenter)
+            ) {
+                Text(
+                    text = myViewModel.languageType().get(32),
+                    fontSize = 26.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onTertiary
+                )
+            }
     }
 }

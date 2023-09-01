@@ -35,6 +35,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -87,8 +88,6 @@ fun VerificationScreen (myViewModel: MyViewModel,navController: NavController) {
     Verification(myViewModel,navController)
 }
 
-val color_fondo_ = Color(0xFFFFF7E7)
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Verification(myViewModel: MyViewModel,navController: NavController) {
@@ -122,7 +121,7 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                 myViewModel = myViewModel
             )
         },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingvalues ->
         Column(
             modifier = Modifier
@@ -144,7 +143,8 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                     modifier = Modifier
                         .size(150.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "null")
+                    contentDescription = "null"
+                )
             }
 
             Spacer(modifier = Modifier.size(15.dp))
@@ -187,8 +187,7 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                    contentColor = color_letra_botones
+                    containerColor = MaterialTheme.colorScheme.tertiary, // Cambiamos el color de fondo del botón aquí
                 ),
                 shape = roundCornerShape,
                 modifier = Modifier
@@ -198,7 +197,8 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                 Text(
                     text = myViewModel.languageType().get(125),
                     fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
 
@@ -221,12 +221,12 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
             // boton para verificar el codigo
             Button(
                 onClick = {
+                    navController.navigate(route = AppScreens.ChangeScreen.route)
                     if(codigoGenerado.equals(codigo.text)) navController.navigate(route = AppScreens.ChangeScreen.route)
                     else Toast.makeText(context, myViewModel.languageType().get(128), Toast.LENGTH_SHORT).show()
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                    contentColor = color_letra_botones
+                    containerColor = MaterialTheme.colorScheme.tertiary, // Cambiamos el color de fondo del botón aquí
                 ),
                 shape = roundCornerShape,
                 modifier = Modifier
@@ -236,7 +236,8 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                 Text(
                     text = myViewModel.languageType().get(129),
                     fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
         }
@@ -261,14 +262,15 @@ private fun TopBarBody(
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(
                     painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al login"
+                    contentDescription = "Te enviara al login",
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary
             )
     )
 }
@@ -297,7 +299,7 @@ private fun PasswordTextfield(
             text = tittle,
             modifier = Modifier
                 .fillMaxWidth(),
-            color = color_letraout,
+            color = MaterialTheme.colorScheme.onBackground,
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
@@ -308,7 +310,7 @@ private fun PasswordTextfield(
         modifier = Modifier
             .fillMaxWidth(0.85f)
             .background(
-                color_fondo_textfield,
+                MaterialTheme.colorScheme.primaryContainer,
                 roundedCornerShape
             )
     ){
@@ -325,7 +327,7 @@ private fun PasswordTextfield(
             keyboardOptions = keyboardOptions,
             textStyle = LocalTextStyle.current.copy(
                 fontSize = 18.sp,
-                color = Color(0xFFE8AA42),
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 textAlign = TextAlign.Left,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
@@ -333,7 +335,7 @@ private fun PasswordTextfield(
             decorationBox = { innerTextField ->
                 Row(
                     Modifier
-                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
+                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
                         .padding(16.dp)
                         .fillMaxWidth(0.8f)
                 ){
@@ -341,7 +343,7 @@ private fun PasswordTextfield(
                         Text(
                             text = placeholder,
                             fontSize = 18.sp,
-                            color = color_letraout.copy(0.5f),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
                             letterSpacing = 3.sp,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)

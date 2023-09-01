@@ -143,8 +143,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
                 navController.navigate(route = AppScreens.MainScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
-                backgroundColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                contentColor = Color.White
+                backgroundColor = MaterialTheme.colorScheme.tertiary // Cambiamos el color de fondo del botón aquí
             ),
             shape = roundCornerShape,
             modifier = Modifier
@@ -154,8 +153,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
             Text(
                 text = myViewModel.languageType().get(113),
                 fontSize = 26.sp,
-                color = Color.White,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onTertiary
             )
         }
 
@@ -197,10 +196,11 @@ private fun PasswordTextfield(
             text = tittle,
             modifier = Modifier
                 .fillMaxWidth(),
-            color = color_letraout,
+            color = MaterialTheme.colorScheme.onBackground,
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+
         )
     }
 
@@ -208,7 +208,7 @@ private fun PasswordTextfield(
         modifier = Modifier
             .fillMaxWidth(0.85f)
             .background(
-                color_fondo_textfield,
+                MaterialTheme.colorScheme.primaryContainer,
                 roundedCornerShape
             )
     ){
@@ -225,7 +225,7 @@ private fun PasswordTextfield(
             keyboardOptions = keyboardOptions,
             textStyle = LocalTextStyle.current.copy(
                 fontSize = 18.sp,
-                color = color_letrain,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 textAlign = TextAlign.Left,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
@@ -233,7 +233,7 @@ private fun PasswordTextfield(
             decorationBox = { innerTextField ->
                 Row(
                     Modifier
-                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
+                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
                         .padding(16.dp)
                         .fillMaxWidth(0.8f)
                 ){
@@ -241,7 +241,7 @@ private fun PasswordTextfield(
                         Text(
                             text = placeholder,
                             fontSize = 18.sp,
-                            color = color_letraout.copy(0.5f),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
                             letterSpacing = 3.sp,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
@@ -273,7 +273,7 @@ private fun PasswordTextfield(
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
                             .size(32.dp),
-                        tint = color_letraout
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
@@ -298,14 +298,14 @@ private fun CustomText(
         // forgot
         Text(
             text = buildAnnotatedString{
-                withStyle(style = SpanStyle(color = color_letraout,
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     fontFamily = FontFamily.SansSerif)) {
                     append(firstString)
                 }
                 append(" ")
-                withStyle(style = SpanStyle(color = color_letrain,
+                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.tertiary,
                     textDecoration = TextDecoration.Underline,
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,

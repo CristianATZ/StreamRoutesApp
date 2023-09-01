@@ -26,6 +26,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -84,7 +85,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
         topBar = {
             TopBarBody(myViewModel,navController)
         },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
             // cuerpo de las ventajas de la suscripcion
             // cambiar a uso de lazyColumn
@@ -145,7 +146,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                             .height(125.dp)
                             .padding(3.dp)
                             .background(
-                                color_botones,
+                                MaterialTheme.colorScheme.tertiary,
                                 RoundedCornerShape(
                                     topEnd = 10.dp,
                                     bottomStart = 10.dp,
@@ -163,9 +164,18 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                             modifier = Modifier
                                 .fillMaxSize()
                         ) {
-                            TextUser(text = myViewModel.languageType().get(24), fontSize = 25, color = color_letra_botones , textAlign = TextAlign.Center)
+                            TextUser(
+                                text = myViewModel.languageType().get(24),
+                                fontSize = 25,
+                                color = MaterialTheme.colorScheme.onTertiary ,
+                                textAlign = TextAlign.Center
+                            )
                             Spacer(modifier = Modifier.size(5.dp))
-                            TextUser(text = "$ 15.00", fontSize = 30, color = color_letra_botones, textAlign = TextAlign.Center)
+                            TextUser(
+                                text = "$ 15.00",
+                                fontSize = 30,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center)
                         }
                     }
 
@@ -178,7 +188,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                             .height(125.dp)
                             .padding(3.dp)
                             .background(
-                                color_botones,
+                                MaterialTheme.colorScheme.tertiary,
                                 RoundedCornerShape(
                                     topEnd = 10.dp,
                                     bottomStart = 10.dp,
@@ -197,10 +207,25 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                                 .fillMaxSize(),
                             verticalArrangement = Arrangement.Center
                         ) {
-                            TextUser(text = myViewModel.languageType().get(25), fontSize = 25, color = color_letra_botones, textAlign = TextAlign.Center)
+                            TextUser(
+                                text = myViewModel.languageType().get(25),
+                                fontSize = 25,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center
+                            )
                             Spacer(modifier = Modifier.size(5.dp))
-                            TextUser(text = "$ 120.00", fontSize = 30, color = color_letra_botones, textAlign = TextAlign.Center)
-                            TextUser(text = "$ 10.00/" + myViewModel.languageType().get(26), fontSize = 15, color = color_letra_botones, textAlign = TextAlign.Center)
+                            TextUser(
+                                text = "$ 120.00",
+                                fontSize = 30,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center
+                            )
+                            TextUser(
+                                text = "$ 10.00/" + myViewModel.languageType().get(26),
+                                fontSize = 15,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center)
+
                         }
                     }
                 }
@@ -239,7 +264,8 @@ private fun TopBarBody(
             Text(text = myViewModel.languageType().get(15),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -247,14 +273,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
-                    tint = color_letra_botones
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }
@@ -293,7 +318,7 @@ private fun SuscripcionDatos(
             .fillMaxWidth()
             .padding(15.dp)
             .background(
-                color_fondo_textfield,
+                MaterialTheme.colorScheme.primaryContainer,
                 roundedCornerShape
             ),
         verticalAlignment = Alignment.CenterVertically,
@@ -309,13 +334,13 @@ private fun SuscripcionDatos(
                 .fillMaxWidth()
                 .padding(15.dp)
         ){
-            TextUser(text = titulo, fontSize = 25, color = color_letraout)
-            TextUser(text = descripcion, fontSize = 15, color = color_letraout, fontWeight = FontWeight.Normal)
+            TextUser(text = titulo, fontSize = 25, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            TextUser(text = descripcion, fontSize = 15, color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Normal)
             Spacer(modifier = Modifier.size(30.dp))
             ClickableText(
                 text = buildAnnotatedString {
                     withStyle(style = SpanStyle(
-                        color = color_letra_textfield,
+                        color = MaterialTheme.colorScheme.tertiary,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold)
                     ) {

@@ -27,6 +27,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -137,7 +138,7 @@ fun ProfilePersonalInfoScreen(navController: NavController){
 
     Scaffold(
         topBar = { TopBarBody(navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -194,7 +195,7 @@ private fun GeneralOptions(
     text: String,
     sub_text: String,
     onClick: () -> Unit,
-    text_color: Color = color_letraout
+    text_color: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Row(
         modifier = Modifier
@@ -219,7 +220,7 @@ private fun GeneralOptions(
             Text(
                 text = sub_text, // texto
                 color = text_color,
-                fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
+                fontFamily = FontFamily.SansSerif,
                 fontSize = 12.sp
             )
         }
@@ -238,7 +239,7 @@ private fun Options(
             .heightIn(70.dp)
             .clickable(onClick = onClick)
             .background(
-                if (isSelected) color_fondo_textfield else Color.Transparent
+                if (isSelected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.background
             ),
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
@@ -248,7 +249,7 @@ private fun Options(
             text = text, // texto
             modifier = Modifier
                 .align(Alignment.CenterVertically),
-            color = color_letraout,
+            color = if(isSelected) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onBackground,
             fontFamily = FontFamily.SansSerif,
             fontSize = 20.sp
         )
@@ -320,7 +321,8 @@ private fun TopBarBody(
                 text = "Datos personales",
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -332,13 +334,12 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara a la ventana principal",
-                    tint = color_letra_botones
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = smallTopAppBarColors(
-            containerColor = color_fondo_topbar,
-            titleContentColor = color_letra_topbar
+            containerColor = MaterialTheme.colorScheme.primary
         )
     )
 }

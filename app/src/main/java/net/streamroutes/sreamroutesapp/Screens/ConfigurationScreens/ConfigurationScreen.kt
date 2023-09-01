@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -51,7 +52,7 @@ import net.streamroutes.sreamroutesapp.R
 fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -62,10 +63,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             // cambiar de ciudad
             Options(
                 text = myViewModel.languageType().get(49),
-                text_des = "icono de cambiar ciudad",
-                imageVector = Icons.Filled.Search,
-                color_texto = color_letraout,
-                color_icon = color_icon,
+                color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.ChangeCityScreen.route)
                 }
@@ -74,10 +72,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             // notificaciones
             Options(
                 text = myViewModel.languageType().get(50),
-                text_des = "icono de tipo de notificaciones",
-                imageVector = Icons.Filled.Notifications,
-                color_texto = color_letraout,
-                color_icon = color_icon,
+                color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.NotificationsScreen.route)
                 }
@@ -86,10 +81,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             // mapa
             Options(
                 text = myViewModel.languageType().get(51),
-                text_des = "icono de mapa",
-                imageVector = Icons.Filled.ThumbUp,
-                color_texto = color_letraout,
-                color_icon = color_icon,
+                color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.MapOptionsScreen.route)
                 }
@@ -98,22 +90,16 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             // Privacidad
             Options(
                 text = myViewModel.languageType().get(52),
-                text_des = "icono de configuracion de privacidad",
-                imageVector = Icons.Filled.ShoppingCart,
-                color_texto = color_letraout,
-                color_icon = color_icon,
+                color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.PrivacityScreen.route)
                 }
             )
-            Spacer(modifier = Modifier.fillMaxWidth(0.95f).background(color_fondo_topbar.copy(0.25f)).height(1.dp))
+            Spacer(modifier = Modifier.fillMaxWidth(0.95f).background(MaterialTheme.colorScheme.primary.copy(0.25f)).height(1.dp))
             // Idioma
             Options(
                 text = "Idioma de la aplicacion",
-                text_des = "icono de configuracion de privacidad",
-                imageVector = Icons.Filled.Email,
-                color_texto = color_letraout,
-                color_icon = color_icon,
+                color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
                 }
@@ -121,11 +107,8 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             
             // tema
             Options(
-                text = "Modo oscuro",
-                text_des = "icono de configuracion de privacidad",
-                imageVector = Icons.Filled.ShoppingCart,
-                color_texto = color_letraout,
-                color_icon = color_icon,
+                text = if(!myViewModel.tema) "Modo oscuro" else "Modo claro",
+                color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     myViewModel.tema = !myViewModel.tema
                 }
@@ -144,7 +127,8 @@ private fun TopBarBody(
         title = {
             Text(text = myViewModel.languageType().get(48),
                 modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -152,14 +136,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
-                    tint = color_icon
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }
@@ -167,10 +150,7 @@ private fun TopBarBody(
 @Composable
 private fun Options(
     text: String,
-    text_des: String,
-    imageVector: ImageVector,
     color_texto: Color,
-    color_icon: Color,
     onClick: () -> Unit
 ) {
     Row(

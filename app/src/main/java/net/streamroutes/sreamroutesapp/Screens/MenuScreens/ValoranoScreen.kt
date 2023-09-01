@@ -26,6 +26,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -71,7 +72,7 @@ fun Valoranos(myViewModel: MyViewModel, navController: NavController) {
 
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -93,7 +94,8 @@ private fun TopBarBody(
             Text(text = myViewModel.languageType().get(44),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -101,14 +103,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
-                    tint = color_icon
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }
@@ -133,7 +134,7 @@ fun Down(myViewModel: MyViewModel) {
                     text = myViewModel.languageType().get(45),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
-                    color = color_letraout,
+                    color = MaterialTheme.colorScheme.onBackground,
                     modifier = Modifier.align(Alignment.Center)
                 )
             }
@@ -149,7 +150,7 @@ fun Down(myViewModel: MyViewModel) {
             Text(
                 text = myViewModel.languageType().get(46),
                 fontSize = 16.sp,
-                color = color_letraout,
+                color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .padding(25.dp)
             )
@@ -168,8 +169,7 @@ fun Down(myViewModel: MyViewModel) {
 
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                    contentColor = color_letra_botones
+                    containerColor = MaterialTheme.colorScheme.tertiary
                 ),
                 shape = roundCornerShape,
                 modifier = Modifier
@@ -179,7 +179,8 @@ fun Down(myViewModel: MyViewModel) {
                 Text(
                     text = myViewModel.languageType().get(47),
                     fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
         }
@@ -226,12 +227,13 @@ fun Calification(modifier: Modifier = Modifier) {
                     modifier = Modifier
                         .fillMaxSize()
                         .background(Color.Transparent),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.FillBounds,
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
                 )
             }
 
             if (index < stars.size - 1) {
-                Spacer(modifier = Modifier.width(11.dp))
+                Spacer(modifier = Modifier.width(10.dp))
             }
         }
     }

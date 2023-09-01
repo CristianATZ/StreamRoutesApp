@@ -28,6 +28,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -86,7 +87,7 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
 
     Scaffold(
         topBar = { TopBarBody(myViewModel, navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ){ paddingValues ->
         Column(
             modifier = Modifier
@@ -169,8 +170,7 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
 
                 },
                 colors = ButtonDefaults.buttonColors(
-                    backgroundColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                    contentColor = color_letra_botones
+                    backgroundColor = MaterialTheme.colorScheme.tertiary, // Cambiamos el color de fondo del botón aquí
                 ),
                 shape = roundCornerShape,
                 modifier = Modifier
@@ -180,7 +180,7 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
                 Text(
                     text = myViewModel.languageType().get(120),
                     fontSize = 26.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onTertiary,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -206,14 +206,15 @@ private fun TopBarBody(
             IconButton(onClick = { navController.navigate(AppScreens.LoginScreen.route) }) {
                 Icon(
                     painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al login"
+                    contentDescription = "Te enviara al login",
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary,
+                titleContentColor = MaterialTheme.colorScheme.onPrimary
             )
     )
 }
@@ -244,7 +245,7 @@ private fun PasswordTextfield(
             text = tittle,
             modifier = Modifier
                 .fillMaxWidth(),
-            color = color_letraout,
+            color = MaterialTheme.colorScheme.onBackground,
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
@@ -255,7 +256,7 @@ private fun PasswordTextfield(
         modifier = Modifier
             .fillMaxWidth(0.85f)
             .background(
-                color_fondo_textfield,
+                MaterialTheme.colorScheme.primaryContainer,
                 roundedCornerShape
             )
     ){
@@ -272,7 +273,7 @@ private fun PasswordTextfield(
             keyboardOptions = keyboardOptions,
             textStyle = LocalTextStyle.current.copy(
                 fontSize = 18.sp,
-                color = color_letrain,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 textAlign = TextAlign.Left,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
@@ -280,7 +281,7 @@ private fun PasswordTextfield(
             decorationBox = { innerTextField ->
                 Row(
                     Modifier
-                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
+                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
                         .padding(16.dp)
                         .fillMaxWidth(0.8f)
                 ){
@@ -288,7 +289,7 @@ private fun PasswordTextfield(
                         Text(
                             text = placeholder,
                             fontSize = 18.sp,
-                            color = color_letraout.copy(0.5f),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
                             letterSpacing = 3.sp,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)
@@ -321,7 +322,7 @@ private fun PasswordTextfield(
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
                             .size(32.dp),
-                        tint = color_letraout
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }

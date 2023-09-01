@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -123,7 +124,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
 
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         // cuerpo
         Column(
@@ -201,7 +202,6 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                     }
                 }
 
-                val roundCornerShape = CircleShape
                 Button(
                     onClick = {
                         selectedLocation?.let {
@@ -216,14 +216,18 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         }
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = color_fondo_topbar
+                        containerColor = MaterialTheme.colorScheme.tertiary
                     ),
-                    shape = roundCornerShape,
+                    shape = CircleShape,
                     modifier = Modifier
                         .padding(16.dp)
                         .align(Alignment.BottomEnd)
                 ) {
-                    Icon(imageVector = Icons.Filled.Add, contentDescription = "", tint = color_icon)
+                    Icon(
+                        imageVector = Icons.Filled.Add,
+                        contentDescription = "",
+                        tint = MaterialTheme.colorScheme.onTertiary
+                    )
                 }
             }
 
@@ -240,7 +244,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         text = myViewModel.languageType().get(38),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
-                        color = color_letraout,
+                        color = MaterialTheme.colorScheme.onBackground,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)
@@ -275,8 +279,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         removeAll()
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                        contentColor = color_letra_botones
+                        containerColor = MaterialTheme.colorScheme.tertiary
                     ),
                     shape = roundCornerShape,
                     modifier = Modifier
@@ -286,7 +289,8 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                     Text(
                         text = myViewModel.languageType().get(43),
                         fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
             }
@@ -301,84 +305,78 @@ private fun SearchBar(
     placeholder: String,
     singleLine: Boolean = true,
     size: Int,
-    backgroundColor: Color = Color(0xFF192833),
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 10)
 ) {
     var text by remember { mutableStateOf(TextFieldValue()) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-
-    Box(
+    Row(
         modifier = Modifier
+            .height(size.dp)
             .fillMaxWidth(0.85f)
-            .background(color_fondo_topbar, roundedCornerShape)
+            .background(MaterialTheme.colorScheme.tertiary, roundedCornerShape),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
+        Spacer(modifier = Modifier.size(10.dp))
+        // icono
+        Icon(
+            imageVector = Icons.Filled.Search,
+            contentDescription = "",
+            modifier = Modifier.size(35.dp),
+            tint = MaterialTheme.colorScheme.onTertiary
+        )
+
+        // caja de texto
+        BasicTextField(
+            value = text,
+            onValueChange = {
+                text = it
+            },
+            singleLine = singleLine,
             modifier = Modifier
                 .height(size.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Spacer(modifier = Modifier.size(10.dp))
-            // icono
-            Icon(
-                imageVector = Icons.Filled.Search,
-                contentDescription = "",
-                modifier = Modifier.size(35.dp),
-                tint = color_icon
-            )
+                .padding(4.dp),
+            textStyle = LocalTextStyle.current.copy(
+                fontSize = 18.sp,
+                color = MaterialTheme.colorScheme.onTertiary,
+                textAlign = TextAlign.Left,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 2.sp
+            ),
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = {
+                onSearch(text.text)
+                // Hide the keyboard after submitting the search
+                keyboardController?.hide()
+                // or hide keyboard
+                focusManager.clearFocus()
 
-            // caja de texto
-            BasicTextField(
-                value = text,
-                onValueChange = {
-                    text = it
-                },
-                singleLine = singleLine,
-                modifier = Modifier
-                    .height(size.dp)
-                    .padding(4.dp),
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 18.sp,
-                    color = color_letra_topbar,
-                    textAlign = TextAlign.Left,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
-                ),
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-                keyboardActions = KeyboardActions(onSearch = {
-                    onSearch(text.text)
-                    // Hide the keyboard after submitting the search
-                    keyboardController?.hide()
-                    // or hide keyboard
-                    focusManager.clearFocus()
+            }),
+            decorationBox = { innerTextField ->
+                Row(
+                    Modifier
+                        .background(MaterialTheme.colorScheme.tertiary, roundedCornerShape)
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                ) {
+                    if (text.text.isEmpty()) {
+                        Text(
+                            text = placeholder,
+                            fontSize = 18.sp,
+                            color = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
+                            letterSpacing = 3.sp,
+                            modifier = Modifier
+                                .align(Alignment.CenterVertically)
 
-                }),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(color_fondo_topbar, roundedCornerShape)
-                            .padding(16.dp)
-                            .fillMaxWidth()
-                    ) {
-                        if (text.text.isEmpty()) {
-                            Text(
-                                text = placeholder,
-                                fontSize = 18.sp,
-                                color = color_letra_topbar,
-                                letterSpacing = 3.sp,
-                                modifier = Modifier
-                                    .align(Alignment.CenterVertically)
-
-                            )
-                        }
-                        innerTextField()
+                        )
                     }
+                    innerTextField()
                 }
-            )
-        }
+            }
+        )
     }
+
 }
 
 @Composable
@@ -393,7 +391,7 @@ private fun PlaceOption(
             .fillMaxWidth(0.85f)
             .heightIn(70.dp)
             .background(
-                color_fondo_topbar,
+                MaterialTheme.colorScheme.primary,
                 RoundedCornerShape(
                     topEnd = 10.dp,
                     bottomStart = 10.dp,
@@ -414,8 +412,8 @@ private fun PlaceOption(
 
             Text(
                 text = numero.toString(),
-                fontSize = 20.sp,
-                color = color_letra_topbar,
+                fontSize = 30.sp,
+                color = MaterialTheme.colorScheme.onPrimary,
                 fontWeight = FontWeight.Bold
             )
 
@@ -426,13 +424,13 @@ private fun PlaceOption(
                 Text(
                     text = nombreCalle,
                     fontSize = 16.sp,
-                    color = color_letra_topbar,
+                    color = MaterialTheme.colorScheme.onPrimary,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = colonia,
                     fontSize = 12.sp,
-                    color = color_letra_topbar
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
 
@@ -444,7 +442,7 @@ private fun PlaceOption(
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = null,
-                    tint = color_letrain,
+                    tint = MaterialTheme.colorScheme.error,
                     modifier = Modifier
                         .fillMaxSize()
                 )
@@ -469,7 +467,8 @@ private fun TopBarBody(
                 text = myViewModel.languageType().get(35),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -477,14 +476,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
-                    tint = color_icon
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }

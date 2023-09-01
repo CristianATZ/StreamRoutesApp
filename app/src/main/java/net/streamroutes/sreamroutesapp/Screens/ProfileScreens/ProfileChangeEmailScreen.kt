@@ -29,6 +29,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -76,7 +77,7 @@ fun ProfileChangeEmailScren(navController: NavController){
 
     Scaffold(
         topBar = { TopBarBody(navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -106,8 +107,7 @@ fun ProfileChangeEmailScren(navController: NavController){
 
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                    contentColor = color_letra_topbar
+                    containerColor = MaterialTheme.colorScheme.tertiary
                 ),
                 shape = roundCornerShape,
                 modifier = Modifier
@@ -117,7 +117,8 @@ fun ProfileChangeEmailScren(navController: NavController){
                 Text(
                     text = "ENVIAR CODIGO",
                     fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
 
@@ -141,8 +142,7 @@ fun ProfileChangeEmailScren(navController: NavController){
 
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = color_botones, // Cambiamos el color de fondo del botón aquí
-                    contentColor = color_letra_topbar
+                    containerColor = MaterialTheme.colorScheme.tertiary
                 ),
                 shape = roundCornerShape,
                 modifier = Modifier
@@ -152,7 +152,8 @@ fun ProfileChangeEmailScren(navController: NavController){
                 Text(
                     text = "CAMBIAR",
                     fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
         }
@@ -170,7 +171,8 @@ private fun TopBarBody(
                 text = "Cambiar Correo",
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -180,14 +182,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te mostrara el menu",
-                    tint = color_letra_topbar
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }
@@ -219,7 +220,7 @@ private fun PasswordTextfield(
             text = tittle,
             modifier = Modifier
                 .fillMaxWidth(),
-            color = color_letraout,
+            color = MaterialTheme.colorScheme.onBackground,
             fontFamily = FontFamily.SansSerif,
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
@@ -230,7 +231,7 @@ private fun PasswordTextfield(
         modifier = Modifier
             .fillMaxWidth(0.85f)
             .background(
-                color_fondo_textfield,
+                MaterialTheme.colorScheme.primaryContainer,
                 roundedCornerShape
             )
     ){
@@ -247,7 +248,7 @@ private fun PasswordTextfield(
             keyboardOptions = keyboardOptions,
             textStyle = LocalTextStyle.current.copy(
                 fontSize = 18.sp,
-                color = color_letrain,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 textAlign = TextAlign.Left,
                 fontWeight = FontWeight.Bold,
                 letterSpacing = 2.sp
@@ -255,7 +256,7 @@ private fun PasswordTextfield(
             decorationBox = { innerTextField ->
                 Row(
                     Modifier
-                        .background(color_fondo_textfield, RoundedCornerShape(percent = 30))
+                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
                         .padding(16.dp)
                         .fillMaxWidth(0.8f)
                 ){
@@ -263,7 +264,7 @@ private fun PasswordTextfield(
                         Text(
                             text = placeholder,
                             fontSize = 18.sp,
-                            color = color_letraout.copy(0.5f),
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
                             letterSpacing = 3.sp,
                             modifier = Modifier
                                 .align(Alignment.CenterVertically)

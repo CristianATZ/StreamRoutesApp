@@ -19,6 +19,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Scaffold
@@ -61,7 +62,7 @@ fun CambiarCiudad(myViewModel: MyViewModel,navController: NavController) {
 
     Scaffold(
         topBar = { TopBarBody(myViewModel = myViewModel, navController = navController)},
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -115,14 +116,14 @@ private fun Options(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .height(45.dp)
                     .fillMaxWidth(0.95f)
-                    .background(color_botones)
+                    .background(MaterialTheme.colorScheme.primaryContainer)
             ) {
                 Text(
                     text = option,
                     modifier = Modifier
                         .align(Alignment.CenterStart)
                         .padding(start = 10.dp),
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     fontSize = 19.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -131,9 +132,10 @@ private fun Options(modifier: Modifier = Modifier) {
                     selected = isOptionSelected(option),
                     onClick = { onOptionSelected(option) },
                     colors = RadioButtonDefaults.colors(
-                        selectedColor = color_letrain,
-                        unselectedColor = Color.White,
-                        disabledSelectedColor = Color.White
+                        selectedColor = MaterialTheme.colorScheme.primary,
+                        unselectedColor = MaterialTheme.colorScheme.onPrimary,
+                        disabledSelectedColor = MaterialTheme.colorScheme.onPrimary
+
                     ),
                     modifier = Modifier
                         .padding(16.dp)
@@ -158,7 +160,8 @@ private fun TopBarBody(
             Text(text = myViewModel.languageType().get(53),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -166,15 +169,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de configuraciones",
-                    tint = color_icon
-
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }

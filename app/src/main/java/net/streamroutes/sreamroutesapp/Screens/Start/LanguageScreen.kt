@@ -78,7 +78,7 @@ fun LanguageTittle(){
     Column(
         modifier = Modifier
             .background(
-                MaterialTheme.colorScheme.surfaceVariant,
+                MaterialTheme.colorScheme.primaryContainer,
                 RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
             )
             .fillMaxWidth()
@@ -91,13 +91,13 @@ fun LanguageTittle(){
         CustomText(
             firstString = "Selecciona el idioma de tu preferencia.",
             horizontal = Arrangement.Center,
-            colorText = MaterialTheme.colorScheme.onSurfaceVariant
+            colorText = MaterialTheme.colorScheme.onPrimaryContainer
         )
 
         CustomText(
             firstString = "Select your preferred language.",
             horizontal = Arrangement.Center,
-            colorText = MaterialTheme.colorScheme.onSurfaceVariant
+            colorText = MaterialTheme.colorScheme.onPrimaryContainer
         )
     }
 }
@@ -113,7 +113,7 @@ fun LanguageOptions(
     ){
         LazyRow (
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .background(MaterialTheme.colorScheme.primaryContainer)
         ){
             item {
                 OptionLanguage(
@@ -194,7 +194,7 @@ fun OptionLanguage(
         CustomText(
             firstString = first,
             horizontal = Arrangement.Center,
-            colorText = MaterialTheme.colorScheme.onSurfaceVariant
+            colorText = MaterialTheme.colorScheme.onPrimaryContainer
         )
         Spacer(modifier = Modifier.size(5.dp))
         Image(
@@ -207,7 +207,7 @@ fun OptionLanguage(
         CustomText(
             firstString = second,
             horizontal = Arrangement.Center,
-            colorText = MaterialTheme.colorScheme.onSurfaceVariant
+            colorText = MaterialTheme.colorScheme.onPrimaryContainer
         )
         Spacer(modifier = Modifier.size(5.dp))
     }

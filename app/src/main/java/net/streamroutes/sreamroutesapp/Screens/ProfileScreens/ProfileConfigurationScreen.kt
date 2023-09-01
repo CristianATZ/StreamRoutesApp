@@ -16,6 +16,7 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -45,7 +46,7 @@ import net.streamroutes.sreamroutesapp.R
 fun ProfileConfigurationScreen(navController: NavController){
     Scaffold(
         topBar = { TopBarBody(navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -82,7 +83,8 @@ private fun TopBarBody(
                 text = "Configuracion de perfil",
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -94,14 +96,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara a la ventana principal",
-                    tint = color_letra_botones
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }
@@ -119,7 +120,7 @@ private fun Options(
     text: String,
     sub_text: String,
     onClick: () -> Unit,
-    text_color: Color = color_letraout
+    text_color: Color = MaterialTheme.colorScheme.onBackground
 ) {
     Row(
         modifier = Modifier

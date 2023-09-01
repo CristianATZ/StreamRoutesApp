@@ -13,6 +13,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -43,7 +44,7 @@ import net.streamroutes.sreamroutesapp.R
 fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = color_fondo
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -68,7 +69,7 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
 
                 Text(
                     text = myViewModel.languageType().get(107) + " 3.0",
-                    color = color_letraout,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
@@ -85,7 +86,7 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
             ) {
                 Text(
                     text = myViewModel.languageType().get(108),
-                    color = color_letraout,
+                    color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
                 )
@@ -105,7 +106,8 @@ private fun TopBarBody(
             Text(text = myViewModel.languageType().get(106),
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
             )
         },
         navigationIcon = {
@@ -113,14 +115,13 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
-                    tint = color_icon
+                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primary
             )
     )
 }

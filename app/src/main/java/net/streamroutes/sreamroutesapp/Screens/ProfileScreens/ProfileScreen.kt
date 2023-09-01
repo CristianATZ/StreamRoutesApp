@@ -26,6 +26,7 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -75,7 +76,7 @@ fun ProfileScreen(navController: NavController){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color_fondo),
+            .background(MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
@@ -96,7 +97,7 @@ fun ProfileScreen(navController: NavController){
                         .fillMaxSize()
                         .background(Color.Transparent)
                         .clip(RoundedCornerShape(bottomStart = 30.dp, bottomEnd = 30.dp)),
-                    colorFilter = ColorFilter.tint(color_fondo_topbar)
+                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary)
                 )
 
                 Column(
@@ -122,7 +123,7 @@ fun ProfileScreen(navController: NavController){
                             Icon(
                                 painterResource(id = R.drawable.back),
                                 contentDescription = "Regresara a la ventana de perfil",
-                                tint = color_letra_topbar,
+                                tint = MaterialTheme.colorScheme.onPrimary,
                                 modifier = Modifier
                                     .size(50.dp)
                             )
@@ -136,7 +137,7 @@ fun ProfileScreen(navController: NavController){
                             CustomText(
                                 firstString = "Bienvenido de vuelta",
                                 horizontal = Arrangement.Start,
-                                color = color_letra_topbar,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontWeight = FontWeight.Normal,
                                 size = 14,
                                 modifier = Modifier.fillMaxWidth(0.95f)
@@ -145,7 +146,7 @@ fun ProfileScreen(navController: NavController){
                             CustomText(
                                 firstString = "Cristian Alexis Torres Zavavla",
                                 horizontal = Arrangement.Start,
-                                color = color_letra_topbar,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 size = 20,
                                 modifier = Modifier.fillMaxWidth(0.95f)
                             )
@@ -153,7 +154,7 @@ fun ProfileScreen(navController: NavController){
                             CustomText(
                                 firstString = "s20120154@alumnos.itsur.edu.mx",
                                 horizontal = Arrangement.Start,
-                                color = color_letra_topbar,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontWeight = FontWeight.Normal,
                                 size = 15,
                                 modifier = Modifier.fillMaxWidth(0.95f)
@@ -175,7 +176,6 @@ fun ProfileScreen(navController: NavController){
                     infoItems = info,
                     icon = painterResource(id = R.drawable.info),
                     text = "Informacion",
-                    color = color_letraout,
                     onClick = {
                         navController.navigate(AppScreens.ProfileConfigurationScreen.route)
                     }
@@ -186,7 +186,6 @@ fun ProfileScreen(navController: NavController){
                     infoItems = memb,
                     icon = painterResource(id = R.drawable.premium),
                     text = "Membresia",
-                    color = color_letraout,
                     onClick = {
 
                     }
@@ -236,8 +235,7 @@ private fun CustomText(
 @Composable
 private fun HeaderText(
     icon: Painter,
-    text: String,
-    color: Color
+    text: String
 ) {
     Row(
         modifier = Modifier
@@ -248,7 +246,7 @@ private fun HeaderText(
         Icon(
             painter = icon,
             contentDescription = null,
-            tint = color,
+            tint = MaterialTheme.colorScheme.onBackground.copy(0.5f),
             modifier = Modifier
                 .size(30.dp),
         )
@@ -258,7 +256,7 @@ private fun HeaderText(
         CustomText(
             firstString = text,
             horizontal = Arrangement.Start,
-            color = color,
+            color = MaterialTheme.colorScheme.onBackground.copy(0.5f),
             size = 20
         )
     }
@@ -278,14 +276,14 @@ private fun SuscripcionOptions(
         CustomText(
             firstString = first,
             horizontal = Arrangement.Start,
-            color = color_letraout,
+            color = MaterialTheme.colorScheme.onBackground,
             size = 17
         )
 
         CustomText(
             firstString = second,
             horizontal = Arrangement.Start,
-            color = color_letraout,
+            color = MaterialTheme.colorScheme.onBackground,
             size = 17,
             fontWeight = FontWeight.Normal
         )
@@ -297,7 +295,6 @@ fun UserProfileInfoSection(
     infoItems: List<Pair<String, String>>,
     icon: Painter,
     text: String,
-    color: Color,
     onClick: () -> Unit
 ) {
     Column(
@@ -306,15 +303,15 @@ fun UserProfileInfoSection(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        Box(modifier = Modifier
+        Spacer(modifier = Modifier
             .height(1.dp)
             .fillMaxWidth(0.9f)
-            .background(color_fondo_textfield))
+            .background(MaterialTheme.colorScheme.primary.copy(0.5f))
+        )
 
         HeaderText(
             icon = icon,
-            text = text,
-            color = color.copy(0.5f)
+            text = text
         )
 
         Spacer(modifier = Modifier.height(5.dp))
@@ -336,7 +333,7 @@ fun UserProfileInfoSection(
             modifier = Modifier
                 .height(40.dp)
                 .fillMaxWidth(0.5f)
-                .background(color_fondo_textfield, RoundedCornerShape(100))
+                .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(100))
                 .clickable(onClick = onClick),
             contentAlignment = Alignment.Center
         ){
@@ -344,7 +341,7 @@ fun UserProfileInfoSection(
                 painter = painterResource(id = R.drawable.edit),
                 contentDescription = null,
                 modifier = Modifier.size(25.dp),
-                tint = color
+                tint = MaterialTheme.colorScheme.onTertiary
             )
         }
     }

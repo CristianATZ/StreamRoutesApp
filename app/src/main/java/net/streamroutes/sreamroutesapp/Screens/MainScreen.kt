@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -56,6 +57,7 @@ import androidx.compose.material.rememberDrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -93,6 +95,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
+import com.google.android.filament.Material
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -279,7 +282,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                 drawerState = drawerState
             )
         },
-        drawerBackgroundColor = color_fondo,
+        drawerBackgroundColor = MaterialTheme.colorScheme.background,
         gesturesEnabled = false
     ) {
         Scaffold(
@@ -312,33 +315,45 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                             .padding(10.dp),
                         horizontalArrangement = Arrangement.End
                     ){
-                        BoxOption(img = painterResource(id = R.drawable.translate)) {
-                            myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
-                        }
+                        BoxOption(
+                            img = painterResource(id = R.drawable.translate),
+                            onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
+                                .clickable {
+
+                                }
+                        )
 
                         Spacer(modifier = Modifier.size(10.dp))
 
-                        BoxOption(img = painterResource(id = R.drawable.change)) {
-                            when (changeMap) {
-                                1 -> {
-                                    currentMapType = MapType.NORMAL
-                                }
+                        BoxOption(
+                            img = painterResource(id = R.drawable.change),
+                            onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
+                            modifier = Modifier
+                                .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
+                                .clickable{
+                                    when (changeMap) {
+                                        1 -> {
+                                            currentMapType = MapType.NORMAL
+                                        }
 
-                                2 -> {
-                                    currentMapType = MapType.SATELLITE
-                                }
+                                        2 -> {
+                                            currentMapType = MapType.SATELLITE
+                                        }
 
-                                3 -> {
-                                    currentMapType = MapType.TERRAIN
-                                }
+                                        3 -> {
+                                            currentMapType = MapType.TERRAIN
+                                        }
 
-                                4 -> {
-                                    currentMapType = MapType.HYBRID
+                                        4 -> {
+                                            currentMapType = MapType.HYBRID
+                                        }
+                                    }
+                                    changeMap++
+                                    if (changeMap == 5) changeMap = 1
                                 }
-                            }
-                            changeMap++
-                            if (changeMap == 5) changeMap = 1
-                        }
+                        )
                     }
                 }
             }
@@ -359,7 +374,8 @@ private fun TopBarBody(
                 text = myViewModel.languageType()[0],
                 modifier = Modifier
                     .fillMaxWidth(),
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         },
         navigationIcon = {
@@ -373,14 +389,13 @@ private fun TopBarBody(
                 Icon(
                     painter = painterResource(id = R.drawable.menu),
                     contentDescription = "Te mostrara el menu",
-                    tint = color_letra_topbar
+                    tint = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         },
         colors = TopAppBarDefaults
             .smallTopAppBarColors(
-                containerColor = color_fondo_topbar,
-                titleContentColor = color_letra_topbar
+                containerColor = MaterialTheme.colorScheme.primaryContainer
             )
     )
 }
@@ -439,7 +454,7 @@ fun DrawerBody(
     Column (
         modifier = Modifier
             .background(
-                color_fondo_topbar //Brush.verticalGradient(colors = listOf(color_fondo_topbar, colorOscuro2))
+                MaterialTheme.colorScheme.primaryContainer
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
@@ -450,7 +465,7 @@ fun DrawerBody(
                 // crear la variable para el tema claro
                 // y el tema oscuro por el color a continuaacion
                 .background(
-                    color_fondo_perfil,
+                    MaterialTheme.colorScheme.primary,
                     RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
                 )
                 .clickable {
@@ -469,7 +484,8 @@ fun DrawerBody(
                     firstString = "Cristian Alexis Torres Zavala",
                     horizontal = Arrangement.Start,
                     size = 20,
-                    modifier = Modifier.fillMaxWidth(0.95f)
+                    modifier = Modifier.fillMaxWidth(0.95f),
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
 
                 CustomText(
@@ -477,7 +493,8 @@ fun DrawerBody(
                     horizontal = Arrangement.Start,
                     fontWeight = FontWeight.Normal,
                     size = 15,
-                    modifier = Modifier.fillMaxWidth(0.95f)
+                    modifier = Modifier.fillMaxWidth(0.95f),
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
             }
 
@@ -489,11 +506,17 @@ fun DrawerBody(
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.End
             ) {
-                BoxOption(img = painterResource(id = R.drawable.back)) {
-                    scope.launch {
-                        drawerState.close()
-                    }
-                }
+                BoxOption(
+                    img = painterResource(id = R.drawable.back),
+                    onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
+                        .clickable {
+                            scope.launch {
+                                drawerState.close()
+                            }
+                        }
+                )
             }
 
             // cuadro de informacion de suscripcion
@@ -506,14 +529,17 @@ fun DrawerBody(
                     modifier = Modifier
                         .fillMaxWidth(0.75f)
                         .height(55.dp)
-                        .background(color_fondo_topbar, RoundedCornerShape(percent = 15)),
+                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 15))
+                        .border(2.dp,MaterialTheme.colorScheme.onPrimary),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CustomText(
                         firstString = "P R E M I U M",
                         horizontal = Arrangement.Center,
-                        size = 20)
+                        size = 20,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
                 }
             }
         }
@@ -532,7 +558,7 @@ fun DrawerBody(
                     .fillMaxWidth(0.5f)
                     .height(1.dp)
                     .background(
-                        color_fondo_textfield
+                        MaterialTheme.colorScheme.primary.copy(0.5f)
                     )
                     .align(Alignment.CenterHorizontally)
             )
@@ -600,7 +626,7 @@ fun DrawerBody(
                     .fillMaxWidth(0.5f)
                     .height(1.dp)
                     .background(
-                        color_fondo_textfield
+                        MaterialTheme.colorScheme.primary.copy(0.5f)
                     )
                     .align(Alignment.CenterHorizontally)
             )
@@ -631,7 +657,7 @@ fun DrawerBody(
                     .fillMaxWidth(0.5f)
                     .height(1.dp)
                     .background(
-                        color_fondo_textfield
+                        MaterialTheme.colorScheme.primary.copy(0.5f)
                     )
                     .align(Alignment.CenterHorizontally)
             )
@@ -678,12 +704,11 @@ fun MapBody(
 private fun BoxOption(
     img: Any,
     desc: String? = null,
-    onClick: () -> Unit
+    onBackground: Color,
+    modifier: Modifier
 ) {
     Row(
-        modifier = Modifier
-            .background(color_fondo_topbar, RoundedCornerShape(percent = 10))
-            .clickable(onClick = onClick),
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ){
@@ -696,7 +721,7 @@ private fun BoxOption(
                         .padding(10.dp)
                         .size(35.dp),
                     colorFilter = ColorFilter.tint(
-                        color_icon
+                        onBackground
                     )
                 )
             }
@@ -707,7 +732,7 @@ private fun BoxOption(
                     modifier = Modifier
                         .padding(10.dp)
                         .size(35.dp),
-                    tint = color_icon
+                    tint = onBackground
                 )
             }
         }
@@ -732,11 +757,11 @@ private fun DrawerItem(
     ){
         Spacer(modifier = Modifier.width(15.dp))
 
-        Icon(painter = icon, contentDescription = text, tint = color_letra_botones)
+        Icon(painter = icon, contentDescription = text, tint = MaterialTheme.colorScheme.onPrimaryContainer)
         
         Spacer(modifier = Modifier.width(12.dp))
 
-        TextOption(text = text)
+        TextOption(text = text, color = MaterialTheme.colorScheme.onPrimaryContainer)
     }
 }
 
