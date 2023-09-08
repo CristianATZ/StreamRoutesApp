@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package net.streamroutes.sreamroutesapp.Screens.HelpScreens
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,8 +31,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -46,11 +51,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
@@ -71,12 +78,12 @@ import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
-    var nombre by remember { mutableStateOf(TextFieldValue()) }
-    var mensaje by remember { mutableStateOf(TextFieldValue()) }
-    var mail by remember { mutableStateOf(TextFieldValue("streamroutes2.0@gmail.com")) }
+    var nombre by remember { mutableStateOf("") }
+    var mensaje by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
@@ -91,39 +98,49 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
             Spacer(modifier = Modifier.size(30.dp))
 
             // nombre
-            TextWTittle(
-                tittle = myViewModel.languageType().get(100),
-                placeholder = myViewModel.languageType().get(100),
-                readOnly = false,
+            HeaderTextField(
+                tittle = "Nomnre",
+                placeholder = "Nombre",
                 size = 70,
                 variable = nombre,
-                onVariableChange = { newValue -> nombre = newValue }
+                onValueChange = {newValue -> nombre = newValue},
+                visualTransformation = VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                enabled = true
             )
 
             Spacer(modifier = Modifier.size(30.dp))
 
             // destinatario
-            TextWTittle(
-                tittle = myViewModel.languageType().get(101),
-                placeholder = "",
-                readOnly = true,
+            HeaderTextField(
+                tittle = "Nuestro correo",
+                placeholder = "streamroutes2.0@gmail.com",
                 size = 70,
-                variable = mail,
-                onVariableChange = { newValue -> mail = newValue }
+                variable = "",
+                onValueChange = {},
+                visualTransformation = VisualTransformation.None,
+                keyboardOptions = KeyboardOptions.Default,
+                enabled = false
             )
 
             Spacer(modifier = Modifier.size(30.dp))
 
             // mensaje
-            TextWTittle(
-                tittle = myViewModel.languageType().get(102),
-                placeholder = "",
-                readOnly = false,
-                singleLine = false,
-                size = 150,
+            HeaderTextField(
+                tittle = "Mensaje",
+                placeholder = "Escribe tu inconveniente.",
+                size = 200,
                 variable = mensaje,
-                onVariableChange = { newValue -> mensaje = newValue },
-                roundedCornerShape = RoundedCornerShape(percent = 5)
+                onValueChange = {newValue -> mensaje = newValue},
+                visualTransformation = VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.None
+                ),
+                enabled = true,
+                singleLine = false,
+                shape = 10
             )
 
 
@@ -134,7 +151,6 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 // button enviar
-                val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
                 Button(
                     onClick = {
 
@@ -142,15 +158,17 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary
                     ),
-                    shape = roundCornerShape,
+                    shape = RoundedCornerShape(percent = 40),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 5.dp
+                    ),
                     modifier = Modifier
-                        .wrapContentSize()
+                        .fillMaxWidth(0.65f)
                         .padding(16.dp)
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(103),
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
+                        text = "Enviar",
+                        fontSize = 24.sp,
                         color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
@@ -208,15 +226,17 @@ private fun TopBarBody(
 }
 
 @Composable
-private fun TextWTittle(
+private fun HeaderTextField(
     tittle: String,
     placeholder: String,
-    readOnly: Boolean,
     singleLine: Boolean = true,
     size: Int,
-    variable: TextFieldValue,
-    onVariableChange: (TextFieldValue) -> Unit,
-    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30)
+    variable: String,
+    onValueChange: (String) -> Unit,
+    visualTransformation: VisualTransformation,
+    keyboardOptions: KeyboardOptions,
+    enabled: Boolean,
+    shape: Int = 30
 ) {
     // nombre
     Row (
@@ -225,7 +245,7 @@ private fun TextWTittle(
             .size(48.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
-        // forgot
+        // header
         Text(
             text = tittle,
             modifier = Modifier
@@ -237,56 +257,36 @@ private fun TextWTittle(
         )
     }
 
-    Box(
+    OutlinedTextField(
+        value = variable,
+        onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth(0.85f)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                roundedCornerShape
-            )
-    ){
-        BasicTextField(
-            value = variable,
-            onValueChange = onVariableChange,
-            singleLine = singleLine,
-            readOnly = readOnly,
-            modifier = Modifier
-                .height(size.dp)
-                .fillMaxWidth()
-                .padding(4.dp),
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            ),
-            textStyle = LocalTextStyle.current.copy(
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                textAlign = TextAlign.Left,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    Modifier
-                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
-                        .padding(16.dp)
-                        .fillMaxWidth(0.8f)
-                ){
-                    if (variable.text.isEmpty()){
-                        Text(
-                            text = placeholder,
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                            letterSpacing = 3.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-
-                        )
-                    }
-                    innerTextField()
-                }
-            }
-        )
-    }
+            .heightIn(size.dp),
+        // icono para mostrar la contraseña
+        // trailingIcon =
+        placeholder = {
+            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f))
+        },
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp
+        ),
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        shape = RoundedCornerShape(percent = shape),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        singleLine = singleLine,
+        enabled = enabled
+    )
 }
 
 @Composable

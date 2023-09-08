@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package net.streamroutes.sreamroutesapp.Screens.ProfileScreens
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -11,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -26,8 +30,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -43,6 +49,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -67,8 +74,8 @@ import net.streamroutes.sreamroutesapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileChangePhoneScreen(navController: NavController){
-    var telefono by remember { mutableStateOf(TextFieldValue("")) }
-    var codigo by remember { mutableStateOf(TextFieldValue("")) }
+    var telefono by remember { mutableStateOf("") }
+    var codigo by remember { mutableStateOf("") }
 
     Scaffold(
         topBar = { TopBarBody(navController) },
@@ -81,19 +88,17 @@ fun ProfileChangePhoneScreen(navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.size(15.dp))
-            PasswordTextfield(
-                tittle = "Telefono Nuevo",
-                placeholder = "10 Digitos",
-                readOnly = false,
+            HeaderTextField(
+                tittle = "Telefono nuevo",
+                placeholder = "Telefono",
                 size = 70,
                 variable = telefono,
-                onVariableChange = {newValue -> telefono = newValue},
-                passwordVisibility = remember {mutableStateOf(false)},
+                onValueChange = {newValue -> telefono = newValue},
                 visualTransformation = VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                ),
-                icono = false
+                    imeAction = ImeAction.Next,
+                    keyboardType = KeyboardType.Number
+                )
             )
 
             val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
@@ -104,32 +109,32 @@ fun ProfileChangePhoneScreen(navController: NavController){
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.tertiary
                 ),
-                shape = roundCornerShape,
+                shape = RoundedCornerShape(percent = 40),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 5.dp
+                ),
                 modifier = Modifier
-                    .wrapContentSize()
+                    .fillMaxWidth(0.65f)
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "ENVIAR CODIGO",
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    text = "Enviar codigo",
+                    fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             }
 
-            PasswordTextfield(
-                tittle = "Codigo",
+            HeaderTextField(
+                tittle = "Codigo de verificacion",
                 placeholder = "Codigo",
-                readOnly = false,
                 size = 70,
                 variable = codigo,
-                onVariableChange = {newValue -> codigo = newValue},
-                passwordVisibility = remember {mutableStateOf(false)},
+                onValueChange = {newValue -> codigo = newValue},
                 visualTransformation = VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                icono = false
+                    imeAction = ImeAction.Done,
+                    keyboardType = KeyboardType.Number
+                )
             )
 
             Button(
@@ -139,15 +144,17 @@ fun ProfileChangePhoneScreen(navController: NavController){
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.tertiary
                 ),
-                shape = roundCornerShape,
+                shape = RoundedCornerShape(percent = 40),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 5.dp
+                ),
                 modifier = Modifier
-                    .wrapContentSize()
+                    .fillMaxWidth(0.65f)
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "CAMBIAR",
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    text = "Cambiar",
+                    fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             }
@@ -189,19 +196,15 @@ private fun TopBarBody(
 }
 
 @Composable
-private fun PasswordTextfield(
+private fun HeaderTextField(
     tittle: String,
     placeholder: String,
-    readOnly: Boolean,
     singleLine: Boolean = true,
     size: Int,
-    variable: TextFieldValue,
-    onVariableChange: (TextFieldValue) -> Unit,
-    passwordVisibility: MutableState<Boolean>,
-    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    variable: String,
+    onValueChange: (String) -> Unit,
     visualTransformation: VisualTransformation,
-    keyboardOptions: KeyboardOptions,
-    icono: Boolean = true
+    keyboardOptions: KeyboardOptions
 ) {
     // nombre
     Row (
@@ -222,79 +225,33 @@ private fun PasswordTextfield(
         )
     }
 
-    Box(
+    OutlinedTextField(
+        value = variable,
+        onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth(0.85f)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                roundedCornerShape
-            )
-    ){
-        // caja de texto
-        BasicTextField(
-            value = variable,
-            onValueChange = onVariableChange,
-            singleLine = singleLine,
-            readOnly = readOnly,
-            modifier = Modifier
-                .height(size.dp)
-                .fillMaxWidth()
-                .padding(4.dp),
-            keyboardOptions = keyboardOptions,
-            textStyle = LocalTextStyle.current.copy(
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                textAlign = TextAlign.Left,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    Modifier
-                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
-                        .padding(16.dp)
-                        .fillMaxWidth(0.8f)
-                ){
-                    if (variable.text.isEmpty()){
-                        Text(
-                            text = placeholder,
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                            letterSpacing = 3.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-
-                        )
-                    }
-                    innerTextField()
-                }
-            },
-            visualTransformation = visualTransformation
-        )
-
-        if(icono){
-            // icono
-            Row(
-                modifier = Modifier
-                    .height(size.dp)
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = {
-                    passwordVisibility.value = !passwordVisibility.value
-                }) {
-                    Icon(
-                        painter = if (passwordVisibility.value)
-                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
-                        contentDescription = "visibilidad contraseña",
-                        modifier = Modifier
-                            .size(32.dp),
-                        tint = color_letraout
-                    )
-                }
-            }
-        }
-    }
+            .heightIn(size.dp),
+        // icono para mostrar la contraseña
+        // trailingIcon =
+        placeholder = {
+            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f))
+        },
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp
+        ),
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        shape = RoundedCornerShape(percent = 30),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        singleLine = singleLine
+    )
 }

@@ -251,7 +251,7 @@ fun DialogPermisos(
         ) {
             Column(
                 modifier = Modifier
-                    .background(color_fondo_topbar)
+                    .background(MaterialTheme.colorScheme.primary)
                     .height(450.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
@@ -261,7 +261,7 @@ fun DialogPermisos(
                     contentDescription = null, // decorative
                     contentScale = ContentScale.Fit,
                     colorFilter  = ColorFilter.tint(
-                        color = color_icon
+                        color = MaterialTheme.colorScheme.onPrimary
                     ),
                     modifier = Modifier
                         .padding(top = 35.dp)
@@ -286,7 +286,7 @@ fun DialogPermisos(
                         fontWeight = FontWeight.Bold,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 20.sp,
-                        color = color_letra_topbar
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                     Text(
                         text = text,
@@ -296,7 +296,7 @@ fun DialogPermisos(
                         style = MaterialTheme.typography.bodyMedium,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 15.sp,
-                        color = color_letra_topbar
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
 
@@ -317,8 +317,8 @@ fun DialogPermisos(
                             checked = acepto.value,
                             onCheckedChange = null,
                             colors = CheckboxDefaults.colors(
-                                checkedColor = color_letrain,
-                                checkmarkColor = color_icon,
+                                checkedColor = MaterialTheme.colorScheme.tertiary,
+                                checkmarkColor = MaterialTheme.colorScheme.background,
                                 uncheckedColor = Color.Gray
                             )
                         )
@@ -328,7 +328,7 @@ fun DialogPermisos(
                             style = MaterialTheme.typography.labelLarge,
                             fontFamily = FontFamily.SansSerif,
                             fontSize = 12.sp,
-                            color = color_letra_topbar
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                     // botones
@@ -347,14 +347,14 @@ fun DialogPermisos(
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(if (acepto.value) color_letrain else Color.LightGray),
+                                .background(if (acepto.value) MaterialTheme.colorScheme.tertiary else Color.LightGray),
                             enabled = acepto.value
                         ) {
 
                             Text(
                                 text = "Continuar",
                                 fontWeight = FontWeight.ExtraBold,
-                                color = if(acepto.value) color_letra_topbar else Color.DarkGray,
+                                color = if(acepto.value) MaterialTheme.colorScheme.onTertiary else Color.DarkGray,
                                 modifier = Modifier.padding(top = 5.dp, bottom = 5.dp),
                                 fontSize = 15.sp
                             )
@@ -873,7 +873,7 @@ fun DialogTutorial(
             shape = RoundedCornerShape(percent = 10),
         ){
             Column(modifier = Modifier
-                .background(color_fondo_topbar)
+                .background(MaterialTheme.colorScheme.primary)
                 .height(450.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.SpaceBetween            ) {
@@ -891,7 +891,7 @@ fun DialogTutorial(
                             modifier = Modifier
                                 .size(15.dp)
                                 .background(
-                                    if (i == index) color_letrain else Color.LightGray,
+                                    if (i == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.primaryContainer,
                                     RoundedCornerShape(percent = 100)
                                 )
                         )
@@ -912,7 +912,7 @@ fun DialogTutorial(
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 20.sp,
-                    color = color_letra_topbar
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
 
                 Image(
@@ -920,7 +920,7 @@ fun DialogTutorial(
                     contentDescription = null, // decorative
                     contentScale = ContentScale.Fit,
                     colorFilter  = ColorFilter.tint(
-                        color = color_icon
+                        color = MaterialTheme.colorScheme.onPrimary
                     ),
                     modifier = Modifier
                         .padding(vertical = 10.dp)
@@ -936,7 +936,7 @@ fun DialogTutorial(
                     style = MaterialTheme.typography.bodyMedium,
                     fontFamily = FontFamily.SansSerif,
                     fontSize = 15.sp,
-                    color = color_letra_topbar
+                    color = MaterialTheme.colorScheme.onPrimary
                 )
 
                 // botones
@@ -951,10 +951,10 @@ fun DialogTutorial(
                     // regresar
                     TextButton(
                         onClick = {
-                            if(index == 1) dialogo.value = false
+                            if(index == 0) dialogo.value = false
                             else {
-                                dialogo.value = false
                                 antDialogo.value = true
+                                dialogo.value = false
                             }
                         },
                         modifier = Modifier
@@ -974,8 +974,8 @@ fun DialogTutorial(
                         onClick = {
                             if(index == 5) dialogo.value = false
                             else {
-                                dialogo.value = false
                                 sigDialogo.value = true
+                                dialogo.value = false
                             }
                         },
                         modifier = Modifier

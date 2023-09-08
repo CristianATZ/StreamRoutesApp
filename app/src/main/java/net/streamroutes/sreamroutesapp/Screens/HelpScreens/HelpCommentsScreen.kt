@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+
 package net.streamroutes.sreamroutesapp.Screens.HelpScreens
 
 import androidx.compose.foundation.background
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -29,8 +32,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -45,10 +50,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,7 +77,7 @@ import net.streamroutes.sreamroutesapp.R
 @Composable
 fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
 
-    var comment by remember { mutableStateOf(TextFieldValue("")) }
+    var comment by remember { mutableStateOf("") }
     val checkedState = remember { mutableStateOf(true) }
 
     Scaffold(
@@ -85,43 +92,15 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
         ) {
             Spacer(modifier = Modifier.size(15.dp))
 
-            // textfield comment
-            BasicTextField(
-                value = comment,
-                onValueChange = {comment = it},
-                singleLine = false,
-                modifier = Modifier
-                    .height(300.dp)
-                    .fillMaxWidth(0.9f)
-                    .padding(4.dp),
+            HeaderTextField(
+                placeholder = "Cuentamos como podemos ayudarte.",
+                size = 300,
+                variable = comment,
+                onValueChange = {newValue -> comment = newValue},
+                visualTransformation = VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    textAlign = TextAlign.Left,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 5))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (comment.text.isEmpty()){
-                            Text(
-                                text = myViewModel.languageType().get(94),
-                                fontSize = 18.sp,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                                letterSpacing = 3.sp
-                            )
-                        }
-                        innerTextField()
-                    }
-                }
+                    imeAction = ImeAction.None
+                )
             )
 
             // SUGERENCIA Y CHECKBOX
@@ -161,45 +140,26 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
             }
 
             // boton y subtitulo
-            Column(
+            Button(
+                onClick = {
+
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiary
+                ),
+                shape = RoundedCornerShape(percent = 40),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 5.dp
+                ),
                 modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxWidth(0.65f)
+                    .padding(16.dp)
             ) {
-                val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                Button(
-                    onClick = {
-
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    shape = roundCornerShape,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(97),
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 10.dp),
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(98),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = "Enviar",
+                    fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onTertiary
+                )
             }
         }
     }
@@ -242,4 +202,45 @@ private fun TopBarBody(
 @Composable
 fun HelpCommmentsView(){
 
+}
+
+@Composable
+private fun HeaderTextField(
+    placeholder: String,
+    singleLine: Boolean = false,
+    size: Int,
+    variable: String,
+    onValueChange: (String) -> Unit,
+    visualTransformation: VisualTransformation,
+    keyboardOptions: KeyboardOptions
+) {
+    OutlinedTextField(
+        value = variable,
+        onValueChange = onValueChange,
+        modifier = Modifier
+            .fillMaxWidth(0.85f)
+            .heightIn(size.dp),
+        // icono para mostrar la contraseña
+        // trailingIcon =
+        placeholder = {
+            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f))
+        },
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp
+        ),
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        shape = RoundedCornerShape(percent = 10),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        singleLine = singleLine
+    )
 }

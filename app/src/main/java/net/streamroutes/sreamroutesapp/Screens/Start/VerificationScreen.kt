@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package net.streamroutes.sreamroutesapp.Screens.Start
 
 import android.Manifest
@@ -18,6 +20,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -36,8 +39,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -54,6 +59,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -109,8 +115,8 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
         }
     }
 
-    var telefono by remember { mutableStateOf(TextFieldValue()) }
-    var codigo by remember { mutableStateOf(TextFieldValue("")) }
+    var telefono by remember { mutableStateOf("") }
+    var codigo by remember { mutableStateOf("") }
     var codigoGenerado by remember { mutableStateOf("") }
 
 
@@ -150,13 +156,13 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
             Spacer(modifier = Modifier.size(15.dp))
 
             // telefono
-            PasswordTextfield(
-                tittle = myViewModel.languageType().get(122),
-                placeholder = myViewModel.languageType().get(122),
-                readOnly = false,
+            HeaderTextField(
+                tittle = "Telefono",
+                placeholder = "Telefono",
                 size = 70,
                 variable = telefono,
-                onVariableChange = {newValue -> telefono = newValue},
+                onValueChange = {newValue -> telefono = newValue},
+                visualTransformation = VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next,
                     keyboardType = KeyboardType.Number
@@ -166,7 +172,6 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
             Spacer(modifier = Modifier.size(5.dp))
 
             // boton enviar codigo de verificacion
-            val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
             Button(
                 onClick = {
                     if (!smsPermissionState.status.isGranted) {
@@ -174,10 +179,10 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                     }
 
                     if(isPermissionsGranted(context)){
-                        if(!telefono.text.isEmpty()){
+                        if(!telefono.isEmpty()){
                             codigoGenerado = generarCodigo()
                             val smsManager: SmsManager = SmsManager.getDefault()
-                            smsManager.sendTextMessage(telefono.text, null, codigoGenerado, null, null)
+                            smsManager.sendTextMessage(telefono, null, codigoGenerado, null, null)
                             Toast.makeText(context, myViewModel.languageType().get(123) + " $codigoGenerado", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(context, myViewModel.languageType().get(124), Toast.LENGTH_SHORT).show()
@@ -187,29 +192,31 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary, // Cambiamos el color de fondo del botón aquí
+                    containerColor = MaterialTheme.colorScheme.tertiary
                 ),
-                shape = roundCornerShape,
+                shape = RoundedCornerShape(percent = 40),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 5.dp
+                ),
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(10.dp)
+                    .fillMaxWidth(0.65f)
+                    .padding(16.dp)
             ) {
                 Text(
-                    text = myViewModel.languageType().get(125),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    text = "Enviar",
+                    fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             }
 
             // codigo de verificacion
-            PasswordTextfield(
-                tittle = myViewModel.languageType().get(126),
-                placeholder = myViewModel.languageType().get(127),
-                readOnly = false,
+            HeaderTextField(
+                tittle = "Codigo de verificacion",
+                placeholder = "Codigo",
                 size = 70,
                 variable = codigo,
-                onVariableChange = {newValue -> codigo = newValue},
+                onValueChange = {newValue -> codigo = newValue},
+                visualTransformation = VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done,
                     keyboardType = KeyboardType.Number
@@ -222,21 +229,23 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
             Button(
                 onClick = {
                     navController.navigate(route = AppScreens.ChangeScreen.route)
-                    if(codigoGenerado.equals(codigo.text)) navController.navigate(route = AppScreens.ChangeScreen.route)
+                    if(codigoGenerado == codigo) navController.navigate(route = AppScreens.ChangeScreen.route)
                     else Toast.makeText(context, myViewModel.languageType().get(128), Toast.LENGTH_SHORT).show()
                 },
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary, // Cambiamos el color de fondo del botón aquí
+                    containerColor = MaterialTheme.colorScheme.tertiary
                 ),
-                shape = roundCornerShape,
+                shape = RoundedCornerShape(percent = 40),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 5.dp
+                ),
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(10.dp)
+                    .fillMaxWidth(0.65f)
+                    .padding(16.dp)
             ) {
                 Text(
-                    text = myViewModel.languageType().get(129),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
+                    text = "Verificar",
+                    fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
             }
@@ -276,15 +285,14 @@ private fun TopBarBody(
 }
 
 @Composable
-private fun PasswordTextfield(
+private fun HeaderTextField(
     tittle: String,
     placeholder: String,
-    readOnly: Boolean,
     singleLine: Boolean = true,
     size: Int,
-    variable: TextFieldValue,
-    onVariableChange: (TextFieldValue) -> Unit,
-    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    variable: String,
+    onValueChange: (String) -> Unit,
+    visualTransformation: VisualTransformation,
     keyboardOptions: KeyboardOptions
 ) {
     // nombre
@@ -294,7 +302,7 @@ private fun PasswordTextfield(
             .size(48.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
-        // forgot
+        // header
         Text(
             text = tittle,
             modifier = Modifier
@@ -306,55 +314,35 @@ private fun PasswordTextfield(
         )
     }
 
-    Box(
+    OutlinedTextField(
+        value = variable,
+        onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth(0.85f)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                roundedCornerShape
-            )
-    ){
-        // caja de texto
-        BasicTextField(
-            value = variable,
-            onValueChange = onVariableChange,
-            singleLine = singleLine,
-            readOnly = readOnly,
-            modifier = Modifier
-                .height(size.dp)
-                .fillMaxWidth()
-                .padding(4.dp),
-            keyboardOptions = keyboardOptions,
-            textStyle = LocalTextStyle.current.copy(
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                textAlign = TextAlign.Left,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    Modifier
-                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
-                        .padding(16.dp)
-                        .fillMaxWidth(0.8f)
-                ){
-                    if (variable.text.isEmpty()){
-                        Text(
-                            text = placeholder,
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                            letterSpacing = 3.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-
-                        )
-                    }
-                    innerTextField()
-                }
-            }
-        )
-    }
+            .heightIn(size.dp),
+        // icono para mostrar la contraseña
+        // trailingIcon =
+        placeholder = {
+            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f))
+        },
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp
+        ),
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        shape = RoundedCornerShape(percent = 30),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        singleLine = singleLine
+    )
 }
 
 private fun generarCodigo(): String {

@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package net.streamroutes.sreamroutesapp.Screens.Start
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -29,7 +33,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -45,6 +51,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -75,14 +82,15 @@ fun RegistrationScreen (myViewModel: MyViewModel,navController: NavController) {
     Registration(myViewModel,navController)
 }
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Registration (myViewModel: MyViewModel,navController: NavController) {
-    var telefono by remember { mutableStateOf(TextFieldValue()) }
+    var telefono by remember { mutableStateOf("") }
     var telefonoVisibility = remember { mutableStateOf(false) }
-    var password by remember { mutableStateOf(TextFieldValue()) }
+    var password by remember { mutableStateOf("") }
     var passwordVisibility = remember { mutableStateOf(true) }
-    var confirm by remember { mutableStateOf(TextFieldValue()) }
+    var confirm by remember { mutableStateOf("") }
     var confirmVisibility = remember { mutableStateOf(true) }
 
     Scaffold(
@@ -110,19 +118,16 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
             }
 
             // telefono
-            PasswordTextfield(
-                tittle = myViewModel.languageType().get(117),
-                placeholder = myViewModel.languageType().get(117),
-                readOnly = false,
-                singleLine = false,
+            HeaderTextField(
+                tittle = "Telefono",
+                placeholder = "Telefono",
                 size = 70,
                 variable = telefono,
-                onVariableChange = { newValue -> telefono = newValue },
-                passwordVisibility = telefonoVisibility,
-                roundedCornerShape = RoundedCornerShape(percent = 30),
+                onValueChange = {newValue -> telefono = newValue},
+                passwordVisibility = mutableStateOf(true),
+                visualTransformation = VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
+                    imeAction = ImeAction.Next
                 ),
                 icono = false
             )
@@ -130,16 +135,15 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
             Spacer(modifier = Modifier.size(15.dp))
 
             // contrasenia
-            PasswordTextfield(
-                tittle = myViewModel.languageType().get(118),
-                placeholder = myViewModel.languageType().get(118),
-                readOnly = false,
-                singleLine = false,
+            HeaderTextField(
+                tittle = "Contraseña",
+                placeholder = "Contraseña",
                 size = 70,
                 variable = password,
-                onVariableChange = { newValue -> password = newValue },
+                onValueChange = {newValue -> password = newValue},
                 passwordVisibility = passwordVisibility,
-                roundedCornerShape = RoundedCornerShape(percent = 30),
+                visualTransformation = if (passwordVisibility.value)
+                    PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 )
@@ -148,23 +152,21 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
             Spacer(modifier = Modifier.size(40.dp))
 
             // confirmar
-            PasswordTextfield(
-                tittle = myViewModel.languageType().get(119),
-                placeholder = myViewModel.languageType().get(119),
-                readOnly = false,
-                singleLine = false,
+            HeaderTextField(
+                tittle = "Confirmar contraseña",
+                placeholder = "Confirmar contraseña",
                 size = 70,
                 variable = confirm,
-                onVariableChange = { newValue -> confirm = newValue },
+                onValueChange = {newValue -> confirm = newValue},
                 passwordVisibility = confirmVisibility,
-                roundedCornerShape = RoundedCornerShape(percent = 30),
+                visualTransformation = if (passwordVisibility.value)
+                    PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 )
             )
 
             // button registrarse
-            val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
             Button(
                 onClick = {
 
@@ -172,16 +174,15 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = MaterialTheme.colorScheme.tertiary, // Cambiamos el color de fondo del botón aquí
                 ),
-                shape = roundCornerShape,
+                shape = RoundedCornerShape(percent = 40),
                 modifier = Modifier
-                    .wrapContentSize()
-                    .padding(15.dp)
+                    .fillMaxWidth(0.65f)
+                    .padding(16.dp)
             ) {
                 Text(
-                    text = myViewModel.languageType().get(120),
-                    fontSize = 26.sp,
-                    color = MaterialTheme.colorScheme.onTertiary,
-                    fontWeight = FontWeight.Bold
+                    text = "Registrarse",
+                    fontSize = 24.sp,
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
         }
@@ -220,16 +221,15 @@ private fun TopBarBody(
 }
 
 @Composable
-private fun PasswordTextfield(
+private fun HeaderTextField(
     tittle: String,
     placeholder: String,
-    readOnly: Boolean,
     singleLine: Boolean = true,
     size: Int,
-    variable: TextFieldValue,
-    onVariableChange: (TextFieldValue) -> Unit,
+    variable: String,
+    onValueChange: (String) -> Unit,
     passwordVisibility: MutableState<Boolean>,
-    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 30),
+    visualTransformation: VisualTransformation,
     keyboardOptions: KeyboardOptions,
     icono: Boolean = true
 ) {
@@ -240,7 +240,7 @@ private fun PasswordTextfield(
             .size(48.dp),
         verticalAlignment = Alignment.CenterVertically
     ){
-        // forgot
+        // header
         Text(
             text = tittle,
             modifier = Modifier
@@ -252,82 +252,55 @@ private fun PasswordTextfield(
         )
     }
 
-    Box(
+    OutlinedTextField(
+        value = variable,
+        onValueChange = onValueChange,
         modifier = Modifier
             .fillMaxWidth(0.85f)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                roundedCornerShape
-            )
-    ){
-        // caja de texto
-        BasicTextField(
-            value = variable,
-            onValueChange = onVariableChange,
-            singleLine = singleLine,
-            readOnly = readOnly,
-            modifier = Modifier
-                .height(size.dp)
-                .fillMaxWidth()
-                .padding(4.dp),
-            keyboardOptions = keyboardOptions,
-            textStyle = LocalTextStyle.current.copy(
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                textAlign = TextAlign.Left,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            ),
-            decorationBox = { innerTextField ->
-                Row(
-                    Modifier
-                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 30))
-                        .padding(16.dp)
-                        .fillMaxWidth(0.8f)
-                ){
-                    if (variable.text.isEmpty()){
-                        Text(
-                            text = placeholder,
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                            letterSpacing = 3.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-
-                        )
-                    }
-                    innerTextField()
-                }
-            },
-            visualTransformation = if (passwordVisibility.value)
-                PasswordVisualTransformation() else VisualTransformation.None
-        )
-
-        if(icono){
-            // icono
-            Row(
-                modifier = Modifier
-                    .height(size.dp)
-                    .fillMaxWidth()
-                    .padding(4.dp),
-                horizontalArrangement = Arrangement.End,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                IconButton(onClick = {
-                    passwordVisibility.value = !passwordVisibility.value
-                }) {
+            .heightIn(size.dp),
+        // icono para mostrar la contraseña
+        // trailingIcon =
+        placeholder = {
+            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f))
+        },
+        textStyle = TextStyle(
+            fontSize = 18.sp,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            textAlign = TextAlign.Left,
+            fontWeight = FontWeight.Bold,
+            letterSpacing = 2.sp
+        ),
+        keyboardOptions = keyboardOptions,
+        visualTransformation = visualTransformation,
+        shape = RoundedCornerShape(percent = 30),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
+            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        singleLine = singleLine,
+        trailingIcon = {
+            if(icono){
+                IconButton(
+                    onClick = {
+                        passwordVisibility.value = !passwordVisibility.value
+                    },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                ) {
                     Icon(
                         painter = if (passwordVisibility.value)
                             painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
                             .size(32.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
         }
-    }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

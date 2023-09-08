@@ -172,7 +172,10 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                                 modifier = Modifier
                                     .fillMaxWidth(1f)
                                     .fillMaxHeight(.3f)
-                                    .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+                                    .background(
+                                        MaterialTheme.colorScheme.primaryContainer,
+                                        RoundedCornerShape(15.dp)
+                                    )
                                     .padding(start = 12.dp)
                                     .wrapContentHeight(align = Alignment.CenterVertically),
                                 textStyle = TextStyle(
@@ -202,7 +205,10 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                         modifier = Modifier
                             .fillMaxWidth()
                             .fillMaxHeight(.53f)
-                            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(15.dp))
+                            .background(
+                                MaterialTheme.colorScheme.primaryContainer,
+                                RoundedCornerShape(15.dp)
+                            )
                             .padding(start = 12.dp)
                             .wrapContentHeight(align = Alignment.CenterVertically),
                         textStyle = TextStyle(
@@ -264,8 +270,7 @@ fun map(myViewModel: MyViewModel) {
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
+            .fillMaxSize()
     ) {
         GoogleMap(
             modifier = Modifier
@@ -442,35 +447,32 @@ fun map(myViewModel: MyViewModel) {
 fun Botones(
     myViewModel: MyViewModel
 ) {
-    Box(
+    Row(
         modifier = Modifier
-            .fillMaxSize())
-    {
-        //Boton parte inferior
-        val roundCornerShape = RoundedCornerShape(
-            topEnd = 30.dp,
-            bottomStart = 30.dp,
-            topStart = 10.dp,
-            bottomEnd = 10.dp
-        )
+            .fillMaxSize(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.Bottom
+    ) {
         Button(
             onClick = {
+
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.tertiary
             ),
-            shape = roundCornerShape,
+            shape = RoundedCornerShape(percent = 40),
+            elevation = ButtonDefaults.buttonElevation(
+                defaultElevation = 5.dp
+            ),
             modifier = Modifier
-                .wrapContentSize()
-                .padding(7.dp)
-                .align(Alignment.BottomCenter)
-            ) {
-                Text(
-                    text = myViewModel.languageType().get(32),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
-            }
+                .fillMaxWidth(0.9f)
+                .padding(16.dp)
+        ) {
+            Text(
+                text = "Buscar",
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.onTertiary
+            )
+        }
     }
 }

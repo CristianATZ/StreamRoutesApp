@@ -219,10 +219,10 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
             dialogo = tutorial.value[4],
             antDialogo = tutorial.value[3]
         )
-    }
+    }*/
 
 
-    if( ubicacion.value ){
+    /*if( ubicacion.value ){
         DialogHabilitarUbicacion(
             dialogo = ubicacion
         ) {
@@ -244,7 +244,8 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
         ) {
 
         }
-    }
+    }*/
+
     // variable internet
     val internet = remember { mutableStateOf(false) }
 
@@ -255,7 +256,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
     LaunchedEffect(Unit){
         while(true){
             internet.value = !isInternetAvailable(context)
-            delay(1000)
+            delay(100)
         }
     }
 
@@ -270,7 +271,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
             internet.value = false
             internet.value = !isInternetAvailable(context)
         }
-    }*/
+    }
 
     ModalDrawer(
         drawerState = drawerState,
@@ -465,7 +466,7 @@ fun DrawerBody(
                 // crear la variable para el tema claro
                 // y el tema oscuro por el color a continuaacion
                 .background(
-                    MaterialTheme.colorScheme.primary,
+                    MaterialTheme.colorScheme.tertiary,
                     RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
                 )
                 .clickable {
@@ -485,7 +486,7 @@ fun DrawerBody(
                     horizontal = Arrangement.Start,
                     size = 20,
                     modifier = Modifier.fillMaxWidth(0.95f),
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
 
                 CustomText(
@@ -494,7 +495,7 @@ fun DrawerBody(
                     fontWeight = FontWeight.Normal,
                     size = 15,
                     modifier = Modifier.fillMaxWidth(0.95f),
-                    color = MaterialTheme.colorScheme.onPrimary
+                    color = MaterialTheme.colorScheme.onTertiary
                 )
             }
 
@@ -529,8 +530,8 @@ fun DrawerBody(
                     modifier = Modifier
                         .fillMaxWidth(0.75f)
                         .height(55.dp)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 15))
-                        .border(2.dp,MaterialTheme.colorScheme.onPrimary),
+                        .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(percent = 15))
+                        .border(2.dp,MaterialTheme.colorScheme.onTertiary),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -538,7 +539,7 @@ fun DrawerBody(
                         firstString = "P R E M I U M",
                         horizontal = Arrangement.Center,
                         size = 20,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
             }
