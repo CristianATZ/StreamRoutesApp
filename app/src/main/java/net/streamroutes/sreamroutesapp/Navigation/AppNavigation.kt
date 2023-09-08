@@ -20,6 +20,7 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
+import net.streamroutes.sreamroutesapp.Screens.Mapas.StreamRoutesMapScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
@@ -156,6 +157,11 @@ fun AppNavigation(myViewModel: MyViewModel) {
         // SUSCRIPTION CONFIGURATION
         composable(AppScreens.SuscriptionConfigurationScreen.route){
             SuscriptionConfigurationScreen()
+        }
+
+        // MAPA
+        composable(AppScreens.StreamRoutesMapScreen.route){
+            StreamRoutesMapScreen()
         }
     }
 }

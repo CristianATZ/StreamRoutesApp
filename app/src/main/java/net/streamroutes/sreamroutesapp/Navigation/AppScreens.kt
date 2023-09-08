@@ -29,5 +29,6 @@ sealed class AppScreens (val route: String) {
     object LanguageScreen: AppScreens("language_screen")
     object ResenaScreen: AppScreens("resena_screen")
     object SuscriptionConfigurationScreen: AppScreens("suscripction_configuration_screen")
+    object StreamRoutesMapScreen: AppScreens("stream_routes_map_screen")
 }
 

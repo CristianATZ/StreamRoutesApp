@@ -566,6 +566,10 @@ fun DrawerBody(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
+                DrawerItem(text = "Stream Routes Map", icon = painterResource(id = R.drawable.routes)) {
+                    navController.navigate(AppScreens.StreamRoutesMapScreen.route)
+                }
+
                 DrawerItem(text = "Rutas", icon = painterResource(id = R.drawable.routes)) {
                     navController.navigate(AppScreens.RoutesScreen.route)
                 }
