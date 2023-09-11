@@ -1,0 +1,355 @@
+package net.streamroutes.sreamroutesapp.Screens.MenuScreens
+
+import android.widget.Toast
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Colores.color_botones
+import net.streamroutes.sreamroutesapp.Colores.color_fondo
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
+import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
+import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
+import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
+import net.streamroutes.sreamroutesapp.Colores.color_letrain
+import net.streamroutes.sreamroutesapp.Colores.color_letraout
+import net.streamroutes.sreamroutesapp.Colores.cuatro
+import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.R
+
+@Preview (showBackground = true)
+@Composable
+fun suscripcionView() {
+    //suscripcion()
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
+    val context = LocalContext.current
+
+    var mensual = remember { mutableStateOf(true) }
+    var anual = remember { mutableStateOf(false) }
+
+    mensual.value = !anual.value
+
+
+    Scaffold(
+        topBar = {
+            TopBarBody(myViewModel,navController)
+        },
+        containerColor = MaterialTheme.colorScheme.background
+    ) { paddingValues ->
+            // cuerpo de las ventajas de la suscripcion
+            // cambiar a uso de lazyColumn
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                SuscripcionDatos(
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(16),
+                    descripcion = myViewModel.languageType().get(17),
+                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    onClick = { }
+                )
+
+                SuscripcionDatos(
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(18),
+                    descripcion = myViewModel.languageType().get(19),
+                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    onClick = { }
+                )
+
+                SuscripcionDatos(
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(20),
+                    descripcion = myViewModel.languageType().get(21),
+                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    onClick = { }
+                )
+
+                SuscripcionDatos(
+                    myViewModel,
+                    titulo = myViewModel.languageType().get(22),
+                    descripcion = myViewModel.languageType().get(23),
+                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    onClick = { }
+                )
+
+                // cuerpo para las opciones de suscripcion
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 10.dp, bottom = 20.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ){
+                    // caja para la suscripcion mensual
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.45f)
+                            .height(125.dp)
+                            .padding(3.dp)
+                            .background(
+                                MaterialTheme.colorScheme.tertiary,
+                                RoundedCornerShape(
+                                    topEnd = 10.dp,
+                                    bottomStart = 10.dp,
+                                    topStart = 10.dp,
+                                    bottomEnd = 10.dp
+                                )
+                            )
+                            .toggleable(
+                                value = mensual.value,
+                                onValueChange = { mensual.value = it },
+                                role = Role.RadioButton
+                            )
+                    ){
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                        ) {
+                            TextUser(
+                                text = myViewModel.languageType().get(24),
+                                fontSize = 25,
+                                color = MaterialTheme.colorScheme.onTertiary ,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.size(5.dp))
+                            TextUser(
+                                text = "$ 15.00",
+                                fontSize = 30,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.size(10.dp))
+
+                    // caja para la suscripcion anual
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth(0.9f)
+                            .height(125.dp)
+                            .padding(3.dp)
+                            .background(
+                                MaterialTheme.colorScheme.tertiary,
+                                RoundedCornerShape(
+                                    topEnd = 10.dp,
+                                    bottomStart = 10.dp,
+                                    topStart = 10.dp,
+                                    bottomEnd = 10.dp
+                                )
+                            )
+                            .toggleable(
+                                value = anual.value,
+                                onValueChange = { anual.value = it },
+                                role = Role.RadioButton,
+                            )
+                    ){
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize(),
+                            verticalArrangement = Arrangement.Center
+                        ) {
+                            TextUser(
+                                text = myViewModel.languageType().get(25),
+                                fontSize = 25,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center
+                            )
+                            Spacer(modifier = Modifier.size(5.dp))
+                            TextUser(
+                                text = "$ 120.00",
+                                fontSize = 30,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center
+                            )
+                            TextUser(
+                                text = "$ 10.00/" + myViewModel.languageType().get(26),
+                                fontSize = 15,
+                                color = MaterialTheme.colorScheme.onTertiary,
+                                textAlign = TextAlign.Center)
+
+                        }
+                    }
+                }
+            }
+
+            // cuerpo para el tipo de suscripcion
+            /*Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+                        cuatro,
+                        RoundedCornerShape(
+                            topEnd = 15.dp,
+                            bottomStart = 0.dp,
+                            topStart = 15.dp,
+                            bottomEnd = 0.dp
+                        )
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
+            }*/
+        }
+    }
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBarBody(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    TopAppBar(
+        title = {
+            Text(text = myViewModel.languageType().get(15),
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
+        },
+        navigationIcon = {
+            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+                Icon(
+                    painterResource(id = R.drawable.back),
+                    contentDescription = "Te enviara al menu de opciones",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        },
+        colors = TopAppBarDefaults
+            .smallTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
+    )
+}
+
+@Composable
+private fun TextUser(
+    text: String,
+    fontSize: Int,
+    fontWeight: FontWeight = FontWeight.Bold,
+    color: Color,
+    textAlign: TextAlign = TextAlign.Start
+) {
+    Text(
+        text = text, // texto
+        modifier = Modifier
+            .fillMaxWidth(), // esto acapara el tamaño completo del Row=0.8f
+        color = color,
+        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
+        fontWeight = fontWeight,
+        fontSize = fontSize.sp,
+        textAlign = textAlign
+    )
+}
+
+@Composable
+private fun SuscripcionDatos(
+    myViewModel: MyViewModel,
+    titulo: String,
+    descripcion: String,
+    roundedCornerShape: RoundedCornerShape,
+    painter: Painter,
+    onClick: () -> Unit
+){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+            .background(
+                MaterialTheme.colorScheme.primaryContainer,
+                roundedCornerShape
+            ),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ){
+        Spacer(modifier = Modifier.size(15.dp))
+        Icon(
+            painter = painter,
+            contentDescription = null
+        )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+        ){
+            TextUser(text = titulo, fontSize = 25, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            TextUser(text = descripcion, fontSize = 15, color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Normal)
+            Spacer(modifier = Modifier.size(30.dp))
+            ClickableText(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold)
+                    ) {
+                        append(myViewModel.languageType().get(28))
+                    }
+                },
+                modifier = Modifier.fillMaxWidth(),
+                onClick = { onClick }
+            )
+        }
+    }
+}
