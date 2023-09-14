@@ -32,6 +32,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Clear
@@ -112,7 +114,10 @@ fun RoutesScreen(myViewModel: MyViewModel, navController: NavController){
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
+fun RoutesScreenView(
+    myViewModel: MyViewModel,
+    navController: NavController
+){
 
     val autobus = remember { mutableStateOf(true) }
     val paradas = remember { mutableStateOf(true) }
@@ -163,7 +168,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
 
     Scaffold(
         topBar = { TopBarBody() },
-        floatingActionButton = { Fab(text = "Rutas") }
+        floatingActionButton = { Fab(dest) }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -179,8 +184,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.SpaceEvenly
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
                 OutlinedTextField(
                     value = dest,
@@ -194,7 +198,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                     },
                     trailingIcon = {
                         IconButton(
-                            onClick = { dest = ""}
+                            onClick = { dest = "" }
                         ) {
                             Icon(
                                 imageVector = Icons.Outlined.Clear,
@@ -211,7 +215,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                     },
                     shape = RoundedCornerShape(15),
                     keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Search
+                        imeAction = ImeAction.Done
                     ),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         containerColor = MaterialTheme.colorScheme.primary,
@@ -226,10 +230,13 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
                 )
 
                 Spacer(modifier = Modifier.size(16.dp))
-                
+
                 Row(
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(15))
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(15)
+                        )
                         .size(60.dp)
                         .clickable { },
                     verticalAlignment = Alignment.CenterVertically,
@@ -248,6 +255,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
             }
         }
     }
+
     /*Column(
         modifier = Modifier
             .fillMaxSize()
@@ -347,36 +355,7 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
         //MAP
         map(myViewModel)
     }*/
-}
 
-@Composable
-fun TopBarBody() {
-    TopAppBar(
-        title = {
-            Text(
-                text = "Rutas",
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = { /*TODO*/ }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowBack,
-                    contentDescription = "Regresar al menu principal",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
 }
 
 object SharedState {
@@ -403,7 +382,7 @@ fun map(myViewModel: MyViewModel) {
     //Variable de seleccion de ubicacion
     var selectedLocationD by remember { mutableStateOf<LatLng?>(null) }
 
-    
+
     // Mapa
     val itsur = LatLng(20.139468718311957, -101.15069924573676)
     val cameraPositionState = rememberCameraPositionState() {
@@ -624,139 +603,72 @@ fun Botones(
     }
 }
 
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview()
 @Composable
-fun Body() {
-    var text by remember {
-        mutableStateOf("")
-    }
-
-    Scaffold(
-        topBar = { Top() },
-        floatingActionButton = { Fab(text) }
-    ) { paddingValues ->
-        Box(modifier = Modifier
-            .padding(paddingValues)
-            .fillMaxSize()){
-            GoogleMap(
-                modifier = Modifier
-                    .padding(paddingValues)
-                    .fillMaxSize()
-            ) {
-
-            }
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                OutlinedTextField(
-                    value = text,
-                    onValueChange = {text = it},
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onTertiary
-                        )
-                    },
-                    trailingIcon = {
-                        IconButton(onClick = { text = "" }) {
-                            Icon(
-                                imageVector = Icons.Outlined.Clear,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onTertiary
-                            )
-                        }
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Destino",
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    },
-                    shape = RoundedCornerShape(15),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary,
-                        textColor = MaterialTheme.colorScheme.onTertiary,
-                        focusedBorderColor = MaterialTheme.colorScheme.onTertiary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                        cursorColor = MaterialTheme.colorScheme.onTertiary
-                    ),
-                    modifier = Modifier
-                        .height(60.dp)
-                        .weight(1f)
-                )
-
-                Spacer(Modifier.size(16.dp))
-
-                Column(
-                    modifier = Modifier
-                        .size(60.dp)
-                        .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(15))
-                        .clickable { },
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ){
-                    Icon(
-                        imageVector = Icons.Outlined.Refresh,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onTertiary,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(35.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun Fab(text: String) {
+fun Fab(
+    destino: String
+) {
     var openDialog by remember {
         mutableStateOf(false)
     }
 
     if(openDialog){
-        DiloagRutas(onClick = {openDialog != openDialog})
+        DialogBody(){
+            openDialog = !openDialog
+        }
     }
 
     ExtendedFloatingActionButton(
-        text = { Text(text = if(text.isEmpty()) "Rutas" else "Buscar") },
-        icon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = null) },
-        onClick = { openDialog = !openDialog }
+        modifier = Modifier
+            .padding(16.dp),
+        text = {
+            Text(
+                text = if (destino.isEmpty()) "Rutas" else "Buscar"
+            )
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Outlined.Search,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onTertiary,
+                modifier = Modifier
+                    .size(34.dp)
+            )
+        },
+        onClick = {
+            if( destino.isEmpty() ) openDialog = !openDialog
+            else {
+                // buscar una ruta
+            }
+        },
+        containerColor = MaterialTheme.colorScheme.tertiary
     )
 }
 
+@ExperimentalMaterial3Api
 @Composable
-fun DiloagRutas(
+fun DialogBody(
     onClick: () -> Unit
 ) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
         properties = DialogProperties(
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
         )
     ) {
         Surface(
             modifier = Modifier
                 .fillMaxSize(),
-            color = MaterialTheme.colorScheme.surface
+            color = MaterialTheme.colorScheme.surface,
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 RutasHeader(
-                    title = "Moroleon",
-                    onClick = { onClick() }
+                    tittle = "Ciudad",
+                    onClick = {
+                        onClick()
+                    }
                 )
                 RutasBody()
             }
@@ -765,10 +677,50 @@ fun DiloagRutas(
 }
 
 @Composable
-fun RutasBody() {
-    var expanded by remember {
-        mutableStateOf(false)
+fun RutasHeader(
+    tittle: String,
+    onClick: () -> Unit
+) {
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.size(16.dp))
+        IconButton(
+            onClick = { onClick() },
+            modifier = Modifier
+                .size(40.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Outlined.Close,
+                contentDescription = "Icono para cerrar el dialogo",
+                modifier = Modifier
+                    .size(24.dp)
+            )
+        }
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Text(
+            text = tittle,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
     }
+    Divider(
+        color = MaterialTheme.colorScheme.onSurface
+    )
+}
+
+@Preview
+@Composable
+fun RutasBody() {
+    var expanded by remember { mutableStateOf(false) }
 
     Card(
         elevation = CardDefaults.elevatedCardElevation(
@@ -778,113 +730,47 @@ fun RutasBody() {
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         ),
         modifier = Modifier
-            .animateContentSize(
-                animationSpec = spring(
-                    dampingRatio = Spring.DampingRatioNoBouncy,
-                    stiffness = Spring.StiffnessMedium
-                )
-            )
+            .fillMaxWidth(0.9f)
+            .padding(top = 16.dp)
     ) {
-        Row(
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp)
+                .animateContentSize(
+                    animationSpec = spring(
+                        dampingRatio = Spring.DampingRatioNoBouncy,
+                        stiffness = Spring.StiffnessMedium
+                    )
+                )
         ) {
-            RouteInformacion()
-
-            Spacer(Modifier.weight(1f))
-
-            RouteButton(
-                expanded = expanded,
-                onClick = { expanded = !expanded }
-            )
-
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp)
+            ){
+                RouteInformation()
+                Spacer(Modifier.weight(1f))
+                RouteButton(
+                    expanded = expanded,
+                    onClick = { expanded = !expanded }
+                )
+            }
             if(expanded){
+                // inicio y destino
                 RouteDirection()
-
+                // paradas
                 RouteStops()
             }
         }
     }
 
+    // menu de iconos
     IconsMenu()
 }
 
-@Composable
-fun IconsMenu(
-    onClickFav: () -> Unit = {},
-    onClickAdd: () -> Unit = {},
-    onClickShare: () -> Unit = {},
-    modifier: Modifier = Modifier
-) {
-    // iconos de accion FAV, ADD y SHARE
-    Card(
-        shape = CircleShape,
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent
-        ),
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
-        modifier = Modifier
-            .padding(top = 8.dp, bottom = 16.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .height(50.dp)
-                .fillMaxWidth(0.9f),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ){
-            // fav
-            IconButton(
-                onClick = { onClickFav() },
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Star,
-                    contentDescription = "Icono de favorito",
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-
-            Spacer(modifier = Modifier
-                .height(50.dp)
-                .width(1.dp)
-                .background(MaterialTheme.colorScheme.onSurface)
-            )
-
-            // add
-            IconButton(
-                onClick = { onClickAdd() },
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Add,
-                    contentDescription = "Icono de agregar",
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-
-            Spacer(modifier = Modifier
-                .height(50.dp)
-                .width(1.dp)
-                .background(MaterialTheme.colorScheme.onSurface)
-            )
-
-            // share
-            IconButton(
-                onClick = { onClickShare() },
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Share,
-                    contentDescription = "Icono de compartir",
-                    tint = MaterialTheme.colorScheme.onSurface
-                )
-            }
-
-        }
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RouteStops(
-    paradas: List<String> = listOf("Parada 1","Parada 2","Parada 3")
+    listOf: List<String> = listOf("","","","","")
 ) {
     Text(
         text = "Paradas",
@@ -898,27 +784,96 @@ fun RouteStops(
     LazyRow(
         modifier = Modifier
             .padding(bottom = 8.dp)
-    ) {
-        items(paradas.size){ index ->
+    ){
+        items(listOf.size){ index ->
             AssistChip(
-                onClick = { /*TODO*/ },
+                onClick = {},
                 label = {
-                    Text(text = paradas[index])
+                    Text(text = listOf[index])
                 },
+                modifier = Modifier
+                    .padding(horizontal = 8.dp),
                 colors = AssistChipDefaults.assistChipColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    labelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    labelColor = MaterialTheme.colorScheme.onTertiaryContainer
                 ),
                 border = AssistChipDefaults.assistChipBorder(
-                    borderColor = MaterialTheme.colorScheme.primaryContainer,
+                    borderColor = MaterialTheme.colorScheme.tertiaryContainer,
                     borderWidth = 0.dp
                 ),
-                elevation = AssistChipDefaults.assistChipElevation(
+                elevation = AssistChipDefaults.elevatedAssistChipElevation(
                     defaultElevation = 5.dp
-                ),
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
+                )
             )
+        }
+    }
+}
+
+@Composable
+fun IconsMenu(
+    modifier: Modifier = Modifier,
+    onClickFav: () -> Unit = {},
+    onClickAdd: () -> Unit = {},
+    onClickShare: () -> Unit = {}
+) {
+    // iconos de accion FAV, agregar a la ruta como destino
+    Card(
+        shape = CircleShape,
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent
+        ),
+        border = BorderStroke(1.dp,MaterialTheme.colorScheme.onSurface),
+        modifier = Modifier
+            .padding(top = 8.dp, bottom = 16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth(0.9f),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            // fav
+            IconButton(
+                onClick = onClickFav
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Star,
+                    contentDescription = "Icono de favorito",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier
+                .height(50.dp)
+                .width(1.dp)
+                .background(MaterialTheme.colorScheme.onSurfaceVariant))
+
+            // add
+            IconButton(
+                onClick = onClickAdd
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = "Icono de agregar como destino",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier
+                .height(50.dp)
+                .width(1.dp)
+                .background(MaterialTheme.colorScheme.onSurfaceVariant))
+
+            // share
+            IconButton(
+                onClick = onClickShare
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Share,
+                    contentDescription = "Icono de compartir ruta",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
@@ -961,81 +916,39 @@ fun RouteDirection(
 
 @Composable
 fun RouteButton(
+    modifier: Modifier = Modifier,
     expanded: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
 ) {
     IconButton(
-        onClick = { onClick() }
+        onClick = onClick,
+        modifier = modifier
     ) {
         Icon(
-            imageVector = if(expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
+            imageVector = if (expanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
             contentDescription = "Mas informacion",
-            tint = MaterialTheme.colorScheme.onSurfaceVariant
+            tint = MaterialTheme.colorScheme.secondary
         )
     }
 }
 
 @Composable
-fun RouteInformacion(
+fun RouteInformation(
     name: String = "Name",
     duration: String = "Duracion",
     modifier: Modifier = Modifier
 ) {
-    Column(
-        modifier = modifier
-    ) {
+    Column(modifier = modifier) {
         Text(
             text = name,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier
-                .padding(top = 8.dp)
+            modifier = Modifier.padding(top = 8.dp)
         )
         Text(
             text = duration,
             fontSize = 16.sp,
-            modifier = Modifier
-                .padding(bottom = 8.dp)
-        )
-    }
-}
-
-@Composable
-fun RutasHeader(
-    title: String,
-    onClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(70.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Spacer(modifier = Modifier.size(16.dp))
-        IconButton(onClick = { onClick() }) {
-            Icon(
-                imageVector = Icons.Outlined.Close,
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.onSurface,
-                modifier = Modifier
-                    .size(24.dp)
-            )
-        }
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Text(
-            text = title,
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-
-        Divider(
-            color = MaterialTheme.colorScheme.onSurface
+            modifier = Modifier.padding(bottom = 8.dp)
         )
     }
 }
@@ -1057,6 +970,38 @@ fun Top() {
             containerColor = MaterialTheme.colorScheme.primary,
             titleContentColor = MaterialTheme.colorScheme.onPrimary,
             navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TopBarBody() {
+    TopAppBar(
+        title = {
+            Text(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                text = "Rutas",
+                textAlign = TextAlign.Center
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(24.dp)
+                )
+            }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
         )
     )
 }

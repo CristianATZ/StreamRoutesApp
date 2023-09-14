@@ -80,8 +80,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
     ){
 
         Image(
-            painter = painterResource(id = R.drawable.ic_launcher_background),
-            contentDescription = null,
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "Logo Stream Routes",
             modifier = Modifier
                 .size(200.dp)
         )

@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -60,12 +61,17 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.close),
-                    contentDescription = "Logo Stream Routes",
-                    modifier = Modifier
-                        .size(200.dp),
-                    colorFilter = ColorFilter.tint(color_letraout)
+                    painter = painterResource(id = R.drawable.logo),
+                    contentDescription = "Logo Stream Routes"
                 )
+                Image(
+                    painter = if(myViewModel.tema) painterResource(id = R.drawable.letrablanca) else painterResource(id = R.drawable.letranegra),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth(0.85f)
+                )
+
+                Spacer(modifier = Modifier.size(32.dp))
 
                 Text(
                     text = myViewModel.languageType().get(107) + " 3.0",

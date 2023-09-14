@@ -103,19 +103,15 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.size(32.dp))
+
             // logo
-            Row(
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo Stream Routes",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(30.dp),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Image(
-                    modifier = Modifier
-                        .size(150.dp),
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "null")
-            }
+                    .size(150.dp)
+            )
 
             // telefono
             HeaderTextField(

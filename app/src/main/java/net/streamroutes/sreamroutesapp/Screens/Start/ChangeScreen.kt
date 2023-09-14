@@ -98,23 +98,17 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.size(30.dp))
+            Spacer(modifier = Modifier.size(32.dp))
 
             // imagen logo
-            Column(
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo Stream Routes",
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    modifier = Modifier
-                        .size(150.dp),
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = "null")
-            }
+                    .size(150.dp)
+            )
 
-            Spacer(modifier = Modifier.size(15.dp))
+            Spacer(modifier = Modifier.size(16.dp))
 
             // contrasenia
             HeaderTextField(

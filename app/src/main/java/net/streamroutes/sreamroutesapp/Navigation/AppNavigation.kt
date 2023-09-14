@@ -47,7 +47,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
     NavHost(navController = NavController, startDestination = AppScreens.SplashScreen.route) {
         // splash screen
         composable(AppScreens.SplashScreen.route){
-            SplashScreen(NavController)
+            SplashScreen(NavController,myViewModel)
         }
         // pantalla principal
         composable(AppScreens.MainScreen.route){
