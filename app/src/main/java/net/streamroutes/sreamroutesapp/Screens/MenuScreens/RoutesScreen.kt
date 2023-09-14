@@ -1,7 +1,13 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
 import android.location.Address
 import android.location.Geocoder
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -18,19 +24,42 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.KeyboardArrowDown
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Refresh
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.AssistChip
+import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,21 +70,23 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import com.google.android.filament.Material
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.android.gms.maps.model.PolylineOptions
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
@@ -65,11 +96,6 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_icon
-import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Dialogs.DialogAutobusCercano
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -90,7 +116,11 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
 
     val autobus = remember { mutableStateOf(true) }
     val paradas = remember { mutableStateOf(true) }
-    val destino = remember { mutableStateOf(true) }
+    var destino = remember { mutableStateOf(true) }
+
+    var dest by remember {
+        mutableStateOf("")
+    }
 
    /* if( autobus.value ){
         DialogAutobusCercano(
@@ -131,7 +161,94 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
     val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
     val formattedTime = sdf.format(currentTime)
 
-    Column(
+    Scaffold(
+        topBar = { TopBarBody() },
+        floatingActionButton = { Fab(text = "Rutas") }
+    ) { paddingValues ->
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+        ){
+            GoogleMap(
+                modifier = Modifier
+                    .fillMaxSize()
+            ) {
+
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                OutlinedTextField(
+                    value = dest,
+                    onValueChange = {dest = it},
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = { dest = ""}
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Clear,
+                                contentDescription = "Borrar texto de destino",
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Buscar destino",
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    },
+                    shape = RoundedCornerShape(15),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Search
+                    ),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        textColor = MaterialTheme.colorScheme.onPrimary,
+                        focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.primary,
+                        cursorColor = MaterialTheme.colorScheme.onPrimary
+                    ),
+                    modifier = Modifier
+                        .height(60.dp)
+                        .weight(1f)
+                )
+
+                Spacer(modifier = Modifier.size(16.dp))
+                
+                Row(
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(15))
+                        .size(60.dp)
+                        .clickable { },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+
+                ){
+                    Icon(
+                        imageVector = Icons.Outlined.Refresh,
+                        contentDescription = "Cambiar el tipo de mapa",
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(35.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
+        }
+    }
+    /*Column(
         modifier = Modifier
             .fillMaxSize()
     ){
@@ -229,7 +346,37 @@ fun RoutesScreenView(myViewModel: MyViewModel, navController: NavController){
 
         //MAP
         map(myViewModel)
-    }
+    }*/
+}
+
+@Composable
+fun TopBarBody() {
+    TopAppBar(
+        title = {
+            Text(
+                text = "Rutas",
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = { /*TODO*/ }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack,
+                    contentDescription = "Regresar al menu principal",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    )
 }
 
 object SharedState {
@@ -475,4 +622,441 @@ fun Botones(
             )
         }
     }
+}
+
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview()
+@Composable
+fun Body() {
+    var text by remember {
+        mutableStateOf("")
+    }
+
+    Scaffold(
+        topBar = { Top() },
+        floatingActionButton = { Fab(text) }
+    ) { paddingValues ->
+        Box(modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()){
+            GoogleMap(
+                modifier = Modifier
+                    .padding(paddingValues)
+                    .fillMaxSize()
+            ) {
+
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                OutlinedTextField(
+                    value = text,
+                    onValueChange = {text = it},
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onTertiary
+                        )
+                    },
+                    trailingIcon = {
+                        IconButton(onClick = { text = "" }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Clear,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onTertiary
+                            )
+                        }
+                    },
+                    placeholder = {
+                        Text(
+                            text = "Destino",
+                            color = MaterialTheme.colorScheme.onTertiary
+                        )
+                    },
+                    shape = RoundedCornerShape(15),
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    colors = TextFieldDefaults.outlinedTextFieldColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        textColor = MaterialTheme.colorScheme.onTertiary,
+                        focusedBorderColor = MaterialTheme.colorScheme.onTertiary,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.tertiary,
+                        cursorColor = MaterialTheme.colorScheme.onTertiary
+                    ),
+                    modifier = Modifier
+                        .height(60.dp)
+                        .weight(1f)
+                )
+
+                Spacer(Modifier.size(16.dp))
+
+                Column(
+                    modifier = Modifier
+                        .size(60.dp)
+                        .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(15))
+                        .clickable { },
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ){
+                    Icon(
+                        imageVector = Icons.Outlined.Refresh,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onTertiary,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(35.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun Fab(text: String) {
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if(openDialog){
+        DiloagRutas(onClick = {openDialog != openDialog})
+    }
+
+    ExtendedFloatingActionButton(
+        text = { Text(text = if(text.isEmpty()) "Rutas" else "Buscar") },
+        icon = { Icon(imageVector = Icons.Outlined.Search, contentDescription = null) },
+        onClick = { openDialog = !openDialog }
+    )
+}
+
+@Composable
+fun DiloagRutas(
+    onClick: () -> Unit
+) {
+    Dialog(
+        onDismissRequest = { /*TODO*/ },
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false
+        )
+    ) {
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
+            color = MaterialTheme.colorScheme.surface
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                RutasHeader(
+                    title = "Moroleon",
+                    onClick = { onClick() }
+                )
+                RutasBody()
+            }
+        }
+    }
+}
+
+@Composable
+fun RutasBody() {
+    var expanded by remember {
+        mutableStateOf(false)
+    }
+
+    Card(
+        elevation = CardDefaults.elevatedCardElevation(
+            defaultElevation = 5.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant
+        ),
+        modifier = Modifier
+            .animateContentSize(
+                animationSpec = spring(
+                    dampingRatio = Spring.DampingRatioNoBouncy,
+                    stiffness = Spring.StiffnessMedium
+                )
+            )
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp)
+        ) {
+            RouteInformacion()
+
+            Spacer(Modifier.weight(1f))
+
+            RouteButton(
+                expanded = expanded,
+                onClick = { expanded = !expanded }
+            )
+
+            if(expanded){
+                RouteDirection()
+
+                RouteStops()
+            }
+        }
+    }
+
+    IconsMenu()
+}
+
+@Composable
+fun IconsMenu(
+    onClickFav: () -> Unit = {},
+    onClickAdd: () -> Unit = {},
+    onClickShare: () -> Unit = {},
+    modifier: Modifier = Modifier
+) {
+    // iconos de accion FAV, ADD y SHARE
+    Card(
+        shape = CircleShape,
+        colors = CardDefaults.cardColors(
+            containerColor = Color.Transparent
+        ),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.onSurface),
+        modifier = Modifier
+            .padding(top = 8.dp, bottom = 16.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .height(50.dp)
+                .fillMaxWidth(0.9f),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ){
+            // fav
+            IconButton(
+                onClick = { onClickFav() },
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Star,
+                    contentDescription = "Icono de favorito",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier
+                .height(50.dp)
+                .width(1.dp)
+                .background(MaterialTheme.colorScheme.onSurface)
+            )
+
+            // add
+            IconButton(
+                onClick = { onClickAdd() },
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = "Icono de agregar",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+            Spacer(modifier = Modifier
+                .height(50.dp)
+                .width(1.dp)
+                .background(MaterialTheme.colorScheme.onSurface)
+            )
+
+            // share
+            IconButton(
+                onClick = { onClickShare() },
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Share,
+                    contentDescription = "Icono de compartir",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+
+        }
+    }
+}
+
+@Composable
+fun RouteStops(
+    paradas: List<String> = listOf("Parada 1","Parada 2","Parada 3")
+) {
+    Text(
+        text = "Paradas",
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, top = 8.dp)
+    )
+
+    LazyRow(
+        modifier = Modifier
+            .padding(bottom = 8.dp)
+    ) {
+        items(paradas.size){ index ->
+            AssistChip(
+                onClick = { /*TODO*/ },
+                label = {
+                    Text(text = paradas[index])
+                },
+                colors = AssistChipDefaults.assistChipColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    labelColor = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                border = AssistChipDefaults.assistChipBorder(
+                    borderColor = MaterialTheme.colorScheme.primaryContainer,
+                    borderWidth = 0.dp
+                ),
+                elevation = AssistChipDefaults.assistChipElevation(
+                    defaultElevation = 5.dp
+                ),
+                modifier = Modifier
+                    .padding(horizontal = 8.dp)
+            )
+        }
+    }
+}
+
+@Composable
+fun RouteDirection(
+    modifier: Modifier = Modifier,
+    start: String = "",
+    end: String = ""
+) {
+    Divider()
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
+    ) {
+        Text(
+            text = "Inicio:",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = start,
+            fontSize = 12.sp
+        )
+        Text(
+            text = "Destino:",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = end,
+            fontSize = 12.sp
+        )
+    }
+
+    Divider()
+}
+
+@Composable
+fun RouteButton(
+    expanded: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    IconButton(
+        onClick = { onClick() }
+    ) {
+        Icon(
+            imageVector = if(expanded) Icons.Outlined.KeyboardArrowUp else Icons.Outlined.KeyboardArrowDown,
+            contentDescription = "Mas informacion",
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+@Composable
+fun RouteInformacion(
+    name: String = "Name",
+    duration: String = "Duracion",
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        Text(
+            text = name,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier
+                .padding(top = 8.dp)
+        )
+        Text(
+            text = duration,
+            fontSize = 16.sp,
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+        )
+    }
+}
+
+@Composable
+fun RutasHeader(
+    title: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(70.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(modifier = Modifier.size(16.dp))
+        IconButton(onClick = { onClick() }) {
+            Icon(
+                imageVector = Icons.Outlined.Close,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier
+                    .size(24.dp)
+            )
+        }
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Text(
+            text = title,
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
+
+        Divider(
+            color = MaterialTheme.colorScheme.onSurface
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Top() {
+    TopAppBar(
+        title = { Text(text = "Rutas") },
+        navigationIcon = {
+            IconButton(onClick = { /*TODO*/ }) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBack,
+                    contentDescription = null
+                )
+            }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    )
 }

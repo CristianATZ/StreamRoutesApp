@@ -253,7 +253,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 
 
     // valor del dialog en funcion de la conexion de internet
-    LaunchedEffect(Unit){
+    /*LaunchedEffect(Unit){
         while(true){
             internet.value = !isInternetAvailable(context)
             delay(100)
@@ -271,7 +271,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
             internet.value = false
             internet.value = !isInternetAvailable(context)
         }
-    }
+    }*/
 
     ModalDrawer(
         drawerState = drawerState,
