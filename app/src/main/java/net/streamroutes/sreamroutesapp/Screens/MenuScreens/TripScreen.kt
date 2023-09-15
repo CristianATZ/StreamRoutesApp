@@ -139,7 +139,6 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
             ){
                 // Mapa
                 val itsur = LatLng(20.139468718311957, -101.15069924573676)
-                val itsurState = MarkerState(position = itsur)
                 val cameraPositionState = rememberCameraPositionState(){
                     position = CameraPosition.fromLatLngZoom(itsur,17f)
                 }

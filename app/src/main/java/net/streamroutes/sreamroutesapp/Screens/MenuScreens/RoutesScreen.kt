@@ -167,16 +167,39 @@ fun RoutesScreenView(
     val formattedTime = sdf.format(currentTime)
 
     Scaffold(
-        topBar = { TopBarBody() },
+        topBar = { TopBarBody(navController) },
         floatingActionButton = { Fab(dest) }
     ) { paddingValues ->
         Box(
             modifier = Modifier
                 .padding(paddingValues)
         ){
+            val itsur = LatLng(20.139468718311957, -101.15069924573676)
+            val cameraPositionState = rememberCameraPositionState(){
+                position = CameraPosition.fromLatLngZoom(itsur,17f)
+            }
+            
             GoogleMap(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                cameraPositionState = cameraPositionState,
+                uiSettings = MapUiSettings(
+                    compassEnabled = false,
+                    indoorLevelPickerEnabled = false,
+                    mapToolbarEnabled = false,
+                    myLocationButtonEnabled = false,
+                    rotationGesturesEnabled = true,
+                    scrollGesturesEnabled = true,
+                    scrollGesturesEnabledDuringRotateOrZoom = false,
+                    tiltGesturesEnabled = false,
+                    zoomControlsEnabled = false,
+                    zoomGesturesEnabled = true
+                ),
+                properties = MapProperties(
+                    mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
+                    mapType = MapType.NORMAL,
+                    maxZoomPreference = 17f
+                )
             ) {
 
             }
@@ -193,24 +216,26 @@ fun RoutesScreenView(
                         Icon(
                             imageVector = Icons.Outlined.Search,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimary
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
                         )
                     },
                     trailingIcon = {
-                        IconButton(
-                            onClick = { dest = "" }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Clear,
-                                contentDescription = "Borrar texto de destino",
-                                tint = MaterialTheme.colorScheme.onPrimary
-                            )
+                        if(!dest.isEmpty()){
+                            IconButton(
+                                onClick = { dest = "" }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Clear,
+                                    contentDescription = "Borrar texto de destino",
+                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            }
                         }
                     },
                     placeholder = {
                         Text(
                             text = "Buscar destino",
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
                         )
                     },
                     shape = RoundedCornerShape(15),
@@ -218,11 +243,11 @@ fun RoutesScreenView(
                         imeAction = ImeAction.Done
                     ),
                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        textColor = MaterialTheme.colorScheme.onPrimary,
-                        focusedBorderColor = MaterialTheme.colorScheme.onPrimary,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primary,
-                        cursorColor = MaterialTheme.colorScheme.onPrimary
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                        unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                        cursorColor = MaterialTheme.colorScheme.onPrimaryContainer
                     ),
                     modifier = Modifier
                         .height(60.dp)
@@ -234,7 +259,7 @@ fun RoutesScreenView(
                 Row(
                     modifier = Modifier
                         .background(
-                            MaterialTheme.colorScheme.primary,
+                            MaterialTheme.colorScheme.primaryContainer,
                             RoundedCornerShape(15)
                         )
                         .size(60.dp)
@@ -249,7 +274,7 @@ fun RoutesScreenView(
                         modifier = Modifier
                             .padding(10.dp)
                             .size(35.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             }
@@ -364,7 +389,9 @@ object SharedState {
 }
 
 @Composable
-fun map(myViewModel: MyViewModel) {
+fun map(
+    myViewModel: MyViewModel
+) {
 
     /*
     *VARIABLES PARA EL MARCADOR DE ORIGEN
@@ -934,8 +961,8 @@ fun RouteButton(
 
 @Composable
 fun RouteInformation(
-    name: String = "Name",
-    duration: String = "Duracion",
+    name: String = "Nombre Ruta",
+    duration: String = "Duracion Ruta",
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -955,28 +982,9 @@ fun RouteInformation(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Top() {
-    TopAppBar(
-        title = { Text(text = "Rutas") },
-        navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowBack,
-                    contentDescription = null
-                )
-            }
-        },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TopBarBody() {
+fun TopBarBody(
+    navController: NavController
+) {
     TopAppBar(
         title = {
             Text(
@@ -988,7 +996,7 @@ fun TopBarBody() {
         },
         navigationIcon = {
             IconButton(
-                onClick = { /*TODO*/ }
+                onClick = { navController.navigate(AppScreens.MainScreen.route) }
             ) {
                 Icon(
                     imageVector = Icons.Outlined.ArrowBack,

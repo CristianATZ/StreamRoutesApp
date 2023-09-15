@@ -67,10 +67,10 @@ fun ProfileScreen(navController: NavController){
     )
 
     val memb = listOf(
-        "Tipo" to "chingon",
-        "Duracion" to "Mes/Anual",
-        "Corte" to "Mar, 29 Ago 2023",
-        "Prueba" to "Si/No"
+        "Tipo" to "Estudiantil",
+        "Duracion" to "Mensual",
+        "Corte" to "Vie, 29 Sep 2023",
+        "Prueba" to "No"
     )
 
     Column(
