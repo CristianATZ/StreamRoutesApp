@@ -16,18 +16,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Surface
@@ -38,9 +35,6 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Close
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.KeyboardArrowUp
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Star
@@ -64,6 +58,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -75,7 +70,6 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -85,22 +79,21 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
-import com.google.android.filament.Material
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.Polyline
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.Marker
+import com.utsman.osmandcompose.MarkerState
+import com.utsman.osmandcompose.OpenStreetMap
+import com.utsman.osmandcompose.OverlayManagerState
+import com.utsman.osmandcompose.Polyline
+import com.utsman.osmandcompose.ZoomButtonVisibility
+import com.utsman.osmandcompose.rememberCameraState
+import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.delay
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -122,10 +115,6 @@ fun RoutesScreenView(
     val autobus = remember { mutableStateOf(true) }
     val paradas = remember { mutableStateOf(true) }
     var destino = remember { mutableStateOf(true) }
-
-    var dest by remember {
-        mutableStateOf("")
-    }
 
    /* if( autobus.value ){
         DialogAutobusCercano(
@@ -166,116 +155,161 @@ fun RoutesScreenView(
     val sdf = SimpleDateFormat("HH:mm", Locale.getDefault())
     val formattedTime = sdf.format(currentTime)
 
+
+    var fabButton by remember {
+        mutableStateOf("")
+    }
+
+
+    // ruta 1
     Scaffold(
         topBar = { TopBarBody(navController) },
-        floatingActionButton = { Fab(dest) }
+        floatingActionButton = { Fab(fabButton) },
+        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
-        Box(
+        Column(
             modifier = Modifier
                 .padding(paddingValues)
-        ){
-            val itsur = LatLng(20.139468718311957, -101.15069924573676)
-            val cameraPositionState = rememberCameraPositionState(){
-                position = CameraPosition.fromLatLngZoom(itsur,17f)
-            }
-            
-            GoogleMap(
+        ) {
+            Box(
                 modifier = Modifier
-                    .fillMaxSize(),
-                cameraPositionState = cameraPositionState,
-                uiSettings = MapUiSettings(
-                    compassEnabled = false,
-                    indoorLevelPickerEnabled = false,
-                    mapToolbarEnabled = false,
-                    myLocationButtonEnabled = false,
-                    rotationGesturesEnabled = true,
-                    scrollGesturesEnabled = true,
-                    scrollGesturesEnabledDuringRotateOrZoom = false,
-                    tiltGesturesEnabled = false,
-                    zoomControlsEnabled = false,
-                    zoomGesturesEnabled = true
-                ),
-                properties = MapProperties(
-                    mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-                    mapType = MapType.NORMAL,
-                    maxZoomPreference = 17f
+                    .fillMaxSize()
+            ){
+                val cameraState = rememberCameraState {
+                    geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
+                    zoom = 17.0
+                }
+
+                val ruta1I = listOf(
+                    GeoPoint(20.132195, -101.186513),
+                    GeoPoint(20.130103, -101.187440),
+                    GeoPoint(20.129952, -101.185994),
+                    GeoPoint(20.126200, -101.186821),
+                    GeoPoint(20.126371, -101.189060),
+                    GeoPoint(20.126477, -101.190613),
+                    GeoPoint(20.126474, -101.190628),
+                    GeoPoint(20.128377, -101.190353),
+                    GeoPoint(20.129459, -101.190800),
+                    GeoPoint(20.128658, -101.191782),
+                    GeoPoint(20.127031, -101.192631),
+                    GeoPoint(20.126338, -101.193629),
+                    GeoPoint(20.126167, -101.193720),
+                    GeoPoint(20.125250, -101.193859),
+                    GeoPoint(20.125212, -101.194554),
+                    GeoPoint(20.122248, -101.194691),
+                    GeoPoint(20.119407, -101.195200),
+                    GeoPoint(20.118674, -101.195259),
+                    GeoPoint(20.117485, -101.195490),
+                    GeoPoint(20.117352, -101.194554),
+                    GeoPoint(20.116483, -101.194825),
+                    GeoPoint(20.114481, -101.191281),
+                    GeoPoint(20.114421, -101.190940),
+                    GeoPoint(20.114470, -101.187700),
+                    GeoPoint(20.114447, -101.187574),
+                    GeoPoint(20.114374, -101.187461),
+                    GeoPoint(20.114706, -101.187499),
+                    GeoPoint(20.115807, -101.187730),
+                    GeoPoint(20.115848, -101.186948),
+                    GeoPoint(20.116284, -101.187047),
+                    GeoPoint(20.118583, -101.187491)
                 )
-            ) {
 
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                OutlinedTextField(
-                    value = dest,
-                    onValueChange = {dest = it},
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    },
-                    trailingIcon = {
-                        if(!dest.isEmpty()){
-                            IconButton(
-                                onClick = { dest = "" }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Clear,
-                                    contentDescription = "Borrar texto de destino",
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                            }
-                        }
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Buscar destino",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
-                        )
-                    },
-                    shape = RoundedCornerShape(15),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        cursorColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
+                var mostrar = if(myViewModel.ruta == 1 ) 1 else 0
+                OpenStreetMap(
                     modifier = Modifier
-                        .height(60.dp)
-                        .weight(1f)
-                )
-
-                Spacer(modifier = Modifier.size(16.dp))
+                        .fillMaxSize(),
+                    cameraState = cameraState,
+                    properties = DefaultMapProperties.copy(
+                        maxZoomLevel = 18.0,
+                        minZoomLevel = 15.0,
+                        tileSources = TileSourceFactory.MAPNIK,
+                        zoomButtonVisibility = ZoomButtonVisibility.NEVER
+                    )
+                ) {
+                    if(mostrar == 1){
+                        Polyline(
+                            geoPoints = ruta1I
+                        )
+                    }
+                }
 
                 Row(
                     modifier = Modifier
-                        .background(
-                            MaterialTheme.colorScheme.primaryContainer,
-                            RoundedCornerShape(15)
-                        )
-                        .size(60.dp)
-                        .clickable { },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    var dest by remember {
+                        mutableStateOf("")
+                    }
 
-                ){
-                    Icon(
-                        imageVector = Icons.Outlined.Refresh,
-                        contentDescription = "Cambiar el tipo de mapa",
+                    OutlinedTextField(
+                        value = dest,
+                        onValueChange = {dest = it},
+                        leadingIcon = {
+                            Icon(
+                                imageVector = Icons.Outlined.Search,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            )
+                        },
+                        trailingIcon = {
+                            if(!dest.isEmpty()){
+                                IconButton(
+                                    onClick = { dest = "" }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Clear,
+                                        contentDescription = "Borrar texto de destino",
+                                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                }
+                            }
+                        },
+                        placeholder = {
+                            Text(
+                                text = "Buscar destino",
+                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+                            )
+                        },
+                        shape = RoundedCornerShape(15),
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done
+                        ),
+                        colors = TextFieldDefaults.outlinedTextFieldColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                            unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                            cursorColor = MaterialTheme.colorScheme.onPrimaryContainer
+                        ),
                         modifier = Modifier
-                            .padding(10.dp)
-                            .size(35.dp),
-                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                            .height(60.dp)
+                            .weight(1f)
                     )
+
+                    Spacer(modifier = Modifier.size(16.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .background(
+                                MaterialTheme.colorScheme.primaryContainer,
+                                RoundedCornerShape(15)
+                            )
+                            .size(60.dp)
+                            .clickable { },
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+
+                    ){
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            contentDescription = "Cambiar el tipo de mapa",
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(35.dp),
+                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
+                    }
                 }
             }
         }
@@ -395,15 +429,15 @@ fun map(
 
     /*
     *VARIABLES PARA EL MARCADOR DE ORIGEN
-    */
+    *//*
     //acceder al contexto actual del componente @Composable.
     val context = LocalContext.current
     //Variable de seleccion de ubicacion
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
 
-    /*
+    *//*
     *VARIABLES PARA EL MARCADOR DE DESTINO
-    */
+    *//*
     //acceder al contexto actual del componente @Composable.
     val contextD = LocalContext.current
     //Variable de seleccion de ubicacion
@@ -592,8 +626,8 @@ fun map(
                 )
             }
         }
-        Botones(myViewModel)
-    }
+        Botones(myViewModel)*/
+    //}
 }
 
 @Composable

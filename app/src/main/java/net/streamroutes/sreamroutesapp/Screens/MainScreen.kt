@@ -7,7 +7,6 @@ import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
@@ -38,21 +37,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.ExitToApp
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.List
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -63,7 +47,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -72,12 +55,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -92,47 +73,36 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.filament.Material
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
+import com.utsman.osmandcompose.CameraState
+import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.Marker
+import com.utsman.osmandcompose.MarkerState
+import com.utsman.osmandcompose.OpenStreetMap
+import com.utsman.osmandcompose.OverlayManagerState
+import com.utsman.osmandcompose.ZoomButtonVisibility
+import com.utsman.osmandcompose.rememberCameraState
+import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.Colores.colorOscuro1
-import net.streamroutes.sreamroutesapp.Colores.colorOscuro2
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_perfil
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
-import net.streamroutes.sreamroutesapp.Dialogs.DialogAvisoDePrivacidad
-import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarContactos
-import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarUbicacion
-import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain1
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain2
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain3
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain4
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain5
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
+import net.streamroutes.sreamroutesapp.ui.theme.StreamRoutesAppTheme
+import org.osmdroid.tileprovider.tilesource.ITileSource
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.CopyrightOverlay
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -300,13 +270,13 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                val itsur = LatLng(20.139468718311957, -101.15069924573676)
-                val cameraPositionState = rememberCameraPositionState{
-                    position = CameraPosition.fromLatLngZoom(itsur,17f)
+                val cameraState = rememberCameraState {
+                    geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
+                    zoom = 17.0
                 }
                 Box(modifier = Modifier.fillMaxSize()){
 
-                    MapBody(cameraPositionState, currentMapType)
+                    MapBody(cameraState)
 
                     // Botón cambio tipo de mapa en la parte superior derecha
                     Row(
@@ -320,7 +290,10 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                             img = painterResource(id = R.drawable.translate),
                             onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier
-                                .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
+                                .background(
+                                    MaterialTheme.colorScheme.primaryContainer,
+                                    RoundedCornerShape(percent = 10)
+                                )
                                 .clickable {
 
                                 }
@@ -332,8 +305,11 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                             img = painterResource(id = R.drawable.change),
                             onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
                             modifier = Modifier
-                                .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
-                                .clickable{
+                                .background(
+                                    MaterialTheme.colorScheme.primaryContainer,
+                                    RoundedCornerShape(percent = 10)
+                                )
+                                .clickable {
                                     when (changeMap) {
                                         1 -> {
                                             currentMapType = MapType.NORMAL
@@ -511,7 +487,10 @@ fun DrawerBody(
                     img = painterResource(id = R.drawable.back),
                     onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
+                        .background(
+                            MaterialTheme.colorScheme.primaryContainer,
+                            RoundedCornerShape(percent = 10)
+                        )
                         .clickable {
                             scope.launch {
                                 drawerState.close()
@@ -530,8 +509,11 @@ fun DrawerBody(
                     modifier = Modifier
                         .fillMaxWidth(0.75f)
                         .height(55.dp)
-                        .background(MaterialTheme.colorScheme.tertiary, RoundedCornerShape(percent = 15))
-                        .border(2.dp,MaterialTheme.colorScheme.onTertiary),
+                        .background(
+                            MaterialTheme.colorScheme.tertiary,
+                            RoundedCornerShape(percent = 15)
+                        )
+                        .border(2.dp, MaterialTheme.colorScheme.onTertiary),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -671,32 +653,29 @@ fun DrawerBody(
 }
 
 @Composable
-fun MapBody(
-    cameraPositionState: CameraPositionState,
-    currentMapType: MapType
+private fun MapBody(
+    cameraPositionState: CameraState,
 ) {
-    GoogleMap(
+    val context = LocalContext.current
+    val overlayManagerState = rememberOverlayManagerState()
+
+    OpenStreetMap(
         modifier = Modifier
             .fillMaxSize(),
-        cameraPositionState = cameraPositionState,
-        uiSettings = MapUiSettings(
-            compassEnabled = false,
-            indoorLevelPickerEnabled = false,
-            mapToolbarEnabled = false,
-            myLocationButtonEnabled = false,
-            rotationGesturesEnabled = true,
-            scrollGesturesEnabled = true,
-            scrollGesturesEnabledDuringRotateOrZoom = false,
-            tiltGesturesEnabled = false,
-            zoomControlsEnabled = false,
-            zoomGesturesEnabled = true
+        cameraState = cameraPositionState,
+        properties = DefaultMapProperties.copy(
+            maxZoomLevel = 18.0,
+            minZoomLevel = 15.0,
+            tileSources = TileSourceFactory.MAPNIK,
+            zoomButtonVisibility = ZoomButtonVisibility.NEVER
         ),
-        properties = MapProperties(
-            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-            mapType = currentMapType,
-            maxZoomPreference = 17f
-        )
-    ){
+        overlayManagerState = overlayManagerState,
+        onFirstLoadListener = {
+            val copyright = CopyrightOverlay(context)
+            overlayManagerState.overlayManager.add(copyright)
+
+        }
+    ) {
 
     }
 }

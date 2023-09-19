@@ -27,18 +27,22 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -46,8 +50,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -68,31 +70,20 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.OpenStreetMap
+import com.utsman.osmandcompose.ZoomButtonVisibility
+import com.utsman.osmandcompose.rememberCameraState
+import com.utsman.osmandcompose.rememberOverlayManagerState
 import net.streamroutes.sreamroutesapp.AddressInfo
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_icon
-import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letrain
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.CopyrightOverlay
 
 @Preview ( showBackground = true )
 @Composable
@@ -138,40 +129,44 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                     .fillMaxHeight(0.6f)
             ){
                 // Mapa
-                val itsur = LatLng(20.139468718311957, -101.15069924573676)
-                val cameraPositionState = rememberCameraPositionState(){
-                    position = CameraPosition.fromLatLngZoom(itsur,17f)
+                val cameraState = rememberCameraState {
+                    geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
+                    zoom = 17.0
                 }
 
-                GoogleMap(
+                val context = LocalContext.current
+                val overlayManagerState = rememberOverlayManagerState()
+
+                var point by remember {
+                    mutableStateOf(GeoPoint(12,12))
+                }
+
+
+                OpenStreetMap(
                     modifier = Modifier
                         .fillMaxSize(),
-                    cameraPositionState = cameraPositionState,
-                    uiSettings = MapUiSettings(
-                        compassEnabled = false,
-                        indoorLevelPickerEnabled = false,
-                        mapToolbarEnabled = false,
-                        myLocationButtonEnabled = false,
-                        rotationGesturesEnabled = true,
-                        scrollGesturesEnabled = true,
-                        scrollGesturesEnabledDuringRotateOrZoom = false,
-                        tiltGesturesEnabled = false,
-                        zoomControlsEnabled = false,
-                        zoomGesturesEnabled = true
+                    cameraState = cameraState,
+                    properties = DefaultMapProperties.copy(
+                        maxZoomLevel = 18.0,
+                        minZoomLevel = 15.0,
+                        tileSources = TileSourceFactory.MAPNIK,
+                        zoomButtonVisibility = ZoomButtonVisibility.NEVER
                     ),
-                    onMapClick = { latLng ->
-                        selectedLocation = latLng
+                    overlayManagerState = overlayManagerState,
+                    onFirstLoadListener = {
+                        val copyright = CopyrightOverlay(context)
+                        overlayManagerState.overlayManager.add(copyright)
+
                     },
-                    properties = MapProperties(
-                        mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-                        mapType = MapType.NORMAL,
-                        maxZoomPreference = 17f
-                    )
-                ){
+                    onMapClick = {
+                        selectedLocation = LatLng(it.latitude,it.longitude)
+                    }
+                ) {
                     selectedLocation?.let {
-                        Marker(
-                            state = MarkerState(position = it),
-                            title = myViewModel.languageType().get(36)
+                        com.utsman.osmandcompose.Marker(
+                            state = com.utsman.osmandcompose.MarkerState(
+                                geoPoint = GeoPoint(selectedLocation!!.latitude, selectedLocation!!.longitude)
+                            )
                         )
                     }
                 }
@@ -187,16 +182,50 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         var searchText by remember { mutableStateOf("") }
-                        val keyboardController = LocalSoftwareKeyboardController.current
 
-                        val onSearch: (String) -> Unit = { text ->
-                            searchText = text
-                            keyboardController?.hide()
-                        }
-                        SearchBar(
-                            onSearch = onSearch,
-                            placeholder = myViewModel.languageType().get(37),
-                            size = 70
+                        OutlinedTextField(
+                            value = searchText,
+                            onValueChange = {searchText = it},
+                            leadingIcon = {
+                                Icon(
+                                    imageVector = Icons.Outlined.Search,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                )
+                            },
+                            trailingIcon = {
+                                if(!searchText.isEmpty()){
+                                    IconButton(
+                                        onClick = { searchText = "" }
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Outlined.Clear,
+                                            contentDescription = "Borrar texto de destino",
+                                            tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                        )
+                                    }
+                                }
+                            },
+                            placeholder = {
+                                Text(
+                                    text = "Buscar destino",
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+                                )
+                            },
+                            shape = RoundedCornerShape(15),
+                            keyboardOptions = KeyboardOptions(
+                                imeAction = ImeAction.Done
+                            ),
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                textColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                                unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
+                                cursorColor = MaterialTheme.colorScheme.onPrimaryContainer
+                            ),
+                            modifier = Modifier
+                                .height(60.dp)
+                                .weight(1f)
                         )
                     }
                 }
@@ -234,7 +263,8 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize() // Aseguramos que el LazyColumn tenga un tamaño acotado
-                    .weight(1f), // Permitimos que el LazyColumn se expanda para ocupar el espacio restante
+                    .weight(1f)
+                    .background(MaterialTheme.colorScheme.background), // Permitimos que el LazyColumn se expanda para ocupar el espacio restante
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 // encabezado

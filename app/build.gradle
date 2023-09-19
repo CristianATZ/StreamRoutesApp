@@ -67,6 +67,8 @@ dependencies {
     implementation 'com.google.ar.sceneform:filament-android:1.17.1'
     
     // osm map
+    implementation 'org.osmdroid:osmdroid-android:6.1.16'
+    implementation "tech.utsmankece:osm-android-compose:0.0.5"
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
