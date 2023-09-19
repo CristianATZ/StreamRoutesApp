@@ -840,7 +840,7 @@ fun isInternetAvailable(
     return false
 }
 
-private fun startDownload(context: Context, pdfUrl: String = "https://drive.google.com/uc?export=download&id=10O0RgVqlyorbydLp4T0QY12mAxUsMn-W") {
+private fun startDownload(context: Context, pdfUrl: String = "https://drive.google.com/uc?export=download&id=1Xt85BpR47S6adKdRlh_ERVfo8TxD1fM4") {
     val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     val request = DownloadManager.Request(Uri.parse(pdfUrl))
