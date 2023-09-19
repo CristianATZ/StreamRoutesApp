@@ -2,13 +2,10 @@
 
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
-import android.location.Address
-import android.location.Geocoder
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -58,7 +55,6 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -66,10 +62,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
@@ -80,21 +72,15 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.utsman.osmandcompose.DefaultMapProperties
-import com.utsman.osmandcompose.Marker
-import com.utsman.osmandcompose.MarkerState
 import com.utsman.osmandcompose.OpenStreetMap
-import com.utsman.osmandcompose.OverlayManagerState
 import com.utsman.osmandcompose.Polyline
 import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberCameraState
-import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.delay
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
-import net.streamroutes.sreamroutesapp.R
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
-import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -214,7 +200,6 @@ fun RoutesScreenView(
                     GeoPoint(20.118583, -101.187491)
                 )
 
-                var mostrar = if(myViewModel.ruta == 1 ) 1 else 0
                 OpenStreetMap(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -226,11 +211,9 @@ fun RoutesScreenView(
                         zoomButtonVisibility = ZoomButtonVisibility.NEVER
                     )
                 ) {
-                    if(mostrar == 1){
-                        Polyline(
-                            geoPoints = ruta1I
-                        )
-                    }
+                    Polyline(
+                        geoPoints = ruta1I
+                    )
                 }
 
                 Row(
@@ -731,7 +714,9 @@ fun DialogBody(
                         onClick()
                     }
                 )
-                RutasBody()
+                RutasBody(
+                    onClick = { onClick() }
+                )
             }
         }
     }
@@ -778,9 +763,10 @@ fun RutasHeader(
     )
 }
 
-@Preview
 @Composable
-fun RutasBody() {
+fun RutasBody(
+    onClick: () -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
 
     Card(
@@ -825,7 +811,9 @@ fun RutasBody() {
     }
 
     // menu de iconos
-    IconsMenu()
+    IconsMenu(
+        onClickAdd = { onClick() }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
