@@ -72,6 +72,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
 import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.Marker
+import com.utsman.osmandcompose.MarkerState
 import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.Polyline
 import com.utsman.osmandcompose.ZoomButtonVisibility
@@ -200,6 +202,23 @@ fun RoutesScreenView(
                     GeoPoint(20.118583, -101.187491)
                 )
 
+                val paradaRuta1I = listOf(
+                    GeoPoint(20.132148784075383, -101.18658401178985),
+                    GeoPoint(20.130100414302177, -101.18685751997809),
+                    GeoPoint(20.1286624384808, -101.18630239997012),
+                    GeoPoint(20.12626607542876, -101.18713239733687),
+                    GeoPoint(20.126443968930666, -101.1897577478104),
+                    GeoPoint(20.12845156492248, -101.19041183942103),
+                    GeoPoint(20.128053430395777, -101.19201321119603),
+                    GeoPoint(20.125728467872396, -101.19377208621506),
+                    GeoPoint(20.124796416351554, -101.19458943512876),
+                    GeoPoint(20.117503956009642, -101.19544254943673),
+                    GeoPoint(20.116224965329312, -101.19409890304624),
+                    GeoPoint(20.11454992685379, -101.19015376389814),
+                    GeoPoint(20.115158873743283, -101.18754702065762),
+                    GeoPoint(20.118136641252413, -101.1873841522879)
+                )
+
                 OpenStreetMap(
                     modifier = Modifier
                         .fillMaxSize(),
@@ -214,6 +233,14 @@ fun RoutesScreenView(
                     Polyline(
                         geoPoints = ruta1I
                     )
+
+                    paradaRuta1I.forEach(){
+                        Marker(
+                            state = MarkerState(
+                                geoPoint = it
+                            )
+                        )
+                    }
                 }
 
                 Row(
@@ -794,7 +821,10 @@ fun RutasBody(
                     .fillMaxWidth()
                     .padding(start = 16.dp)
             ){
-                RouteInformation()
+                RouteInformation(
+                    name = "Ruta 1",
+                    duration = "Duración: 02:30 Hrs"
+                )
                 Spacer(Modifier.weight(1f))
                 RouteButton(
                     expanded = expanded,
@@ -803,9 +833,14 @@ fun RutasBody(
             }
             if(expanded){
                 // inicio y destino
-                RouteDirection()
+                RouteDirection(
+                    start = "12 de Octubre",
+                    end = "Auditorio Municipal"
+                )
                 // paradas
-                RouteStops()
+                RouteStops(
+
+                )
             }
         }
     }
@@ -819,7 +854,9 @@ fun RutasBody(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RouteStops(
-    listOf: List<String> = listOf("","","","","")
+    listOf: List<String> = listOf("12 de Octubre","Av. America","Calle Querétaro",
+        "Avenida Puebla","5 de Mayo", "Guadalupe Victoria", "Avenida Morelos", "Plan Sexenal",
+        "Chamizal", "Chamizal esquina San Rogelio", "Blvd. Señor de Esquipulas", "Moroleón - Piñicuaro", "Salvador Díaz Mirón")
 ) {
     Text(
         text = "Paradas",
