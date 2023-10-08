@@ -164,7 +164,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
 
         composable(AppScreens.FastScreen.route){
-            FastScreen()
+            FastScreen(NavController)
         }
     }
 }

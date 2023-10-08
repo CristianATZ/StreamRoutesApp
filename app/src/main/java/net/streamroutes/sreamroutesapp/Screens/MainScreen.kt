@@ -587,9 +587,8 @@ fun DrawerBody(
                                 .verticalScroll(rememberScrollState())
                         ) {
                             DrawerItem(text = "Ruta mas rapida", icon = painterResource(id = R.drawable.routes)) {
-                                // navController.navigate(AppScreens.RoutesScreen.route)
+                                navController.navigate(AppScreens.FastScreen.route)
                             }
-
 
                             DrawerItem(text = myViewModel.languageType().get(167), icon = painterResource(id = R.drawable.routes)) {
                                 navController.navigate(AppScreens.RoutesScreen.route)
@@ -600,7 +599,7 @@ fun DrawerBody(
                             }
 
                             DrawerItem(text = "Turismo", icon = painterResource(id = R.drawable.routes)) {
-                                //navController.navigate(AppScreens.RoutesScreen.route)
+
                             }
 
                             DrawerItem(text = myViewModel.languageType().get(155), icon = painterResource(id = R.drawable.share_location)) {
