@@ -19,7 +19,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val myViewModel = viewModel<MyViewModel>()
+            val myViewModel : MyViewModel = viewModel()
             StreamRoutesAppTheme (myViewModel.tema){
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -31,4 +31,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
