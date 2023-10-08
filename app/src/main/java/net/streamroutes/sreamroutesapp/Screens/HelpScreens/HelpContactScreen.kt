@@ -182,8 +182,8 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                 ) {
                     // text ubicacion
                     CustomText(
-                        firstString = myViewModel.languageType().get(104),
-                        secondString = myViewModel.languageType().get(105),
+                        firstString = myViewModel.languageType().get(265),
+                        secondString = myViewModel.languageType().get(266),
                         horizontal = Arrangement.Center
                     ) {
 

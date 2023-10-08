@@ -70,40 +70,40 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
         ) {
             // paradas
             Options(
-                text = myViewModel.languageType().get(67),
-                sub_text = myViewModel.languageType().get(68),
+                text = myViewModel.languageType().get(235),
+                sub_text = myViewModel.languageType().get(236),
                 variable = paradas,
                 altura = 70
             )
 
             // terminales
             Options(
-                text = myViewModel.languageType().get(69),
-                sub_text = myViewModel.languageType().get(70),
+                text = myViewModel.languageType().get(237),
+                sub_text = myViewModel.languageType().get(238),
                 variable = terminales,
                 altura = 70
             )
 
             // ubicacion
             Options(
-                text = myViewModel.languageType().get(71),
-                sub_text = myViewModel.languageType().get(72),
+                text = myViewModel.languageType().get(239),
+                sub_text = myViewModel.languageType().get(240),
                 variable = ubicacion,
                 altura = 90
             )
 
             // comida
             Options(
-                text = myViewModel.languageType().get(73),
-                sub_text = myViewModel.languageType().get(74),
+                text = myViewModel.languageType().get(241),
+                sub_text = myViewModel.languageType().get(242),
                 variable = comida,
                 altura = 70
             )
 
             // salud
             Options(
-                text = myViewModel.languageType().get(75),
-                sub_text = myViewModel.languageType().get(76),
+                text = myViewModel.languageType().get(243),
+                sub_text = myViewModel.languageType().get(244),
                 variable = salud,
                 altura = 70
             )
@@ -120,7 +120,7 @@ private fun TopBarBody(
     // top app bar
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(66),
+            Text(text = myViewModel.languageType().get(234),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,

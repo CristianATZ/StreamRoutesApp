@@ -88,8 +88,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
 
         // telefono
         HeaderTextField(
-            tittle = "Telefono",
-            placeholder = "Telefono",
+            tittle = myViewModel.languageType().get(270),
+            placeholder = myViewModel.languageType().get(270),
             size = 70,
             variable = telefono,
             onValueChange = { newValue -> telefono = newValue},
@@ -107,8 +107,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
 
         // contraseña
         HeaderTextField(
-            tittle = "Contraseña",
-            placeholder = "Contraseña",
+            tittle = myViewModel.languageType().get(271),
+            placeholder = myViewModel.languageType().get(271),
             size = 70,
             variable = password,
             onValueChange = {newValue -> password = newValue},
@@ -122,8 +122,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
         )
 
         CustomText(
-            firstString = myViewModel.languageType().get(111),
-            secondString = myViewModel.languageType().get(112),
+            firstString = myViewModel.languageType().get(272),
+            secondString = myViewModel.languageType().get(273),
             horizontal = Arrangement.End,
             onClick = {
                 navController.navigate(route = AppScreens.VerificationScreen.route)
@@ -147,7 +147,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
                 .padding(16.dp)
         ) {
             Text(
-                text = "Ingresar",
+                text = myViewModel.languageType().get(274),
                 fontSize = 24.sp,
                 color = MaterialTheme.colorScheme.onTertiary
             )
@@ -155,8 +155,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
 
         // registration
         CustomText(
-            firstString = myViewModel.languageType().get(114),
-            secondString = myViewModel.languageType().get(115),
+            firstString = myViewModel.languageType().get(275),
+            secondString = myViewModel.languageType().get(276),
             horizontal = Arrangement.Center,
             onClick = {
                 navController.navigate(route = AppScreens.RegistrationScreen.route)

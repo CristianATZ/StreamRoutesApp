@@ -69,6 +69,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -76,7 +77,8 @@ data class DataInfoItem(val title: String, val inf: String)
 
 @Composable
 fun ProfileScreen(
-    navController: NavController
+    navController: NavController,
+    myViewModel: MyViewModel
 ) {
     Column(
         modifier = Modifier
@@ -89,16 +91,16 @@ fun ProfileScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderProfile(navController)
+            HeaderProfile(navController,myViewModel)
 
-            FeaturedProfile()
+            FeaturedProfile(myViewModel)
         }
     }
 }
 
 @Composable
 fun FooterProfile(
-
+ myViewModel: MyViewModel
 ) {
     var user by remember {
         mutableStateOf(false)
@@ -115,10 +117,10 @@ fun FooterProfile(
     var userInfo by remember {
         mutableStateOf(
             listOf(
-                DataInfoItem("Cumpleaños","Mie, 27 Nov 2002"),
-                DataInfoItem("Telefono","445 141 1834"),
-                DataInfoItem("Pais","Mexico"),
-                DataInfoItem("Ciudad","Moroleon, Gto")
+                DataInfoItem(myViewModel.languageType().get(109),"Mie, 27 Nov 2002"),
+                DataInfoItem(myViewModel.languageType().get(143),"445 141 1834"),
+                DataInfoItem(myViewModel.languageType().get(140),"Mexico"),
+                DataInfoItem(myViewModel.languageType().get(96),"Moroleon, Gto")
             )
         )
     }
@@ -126,10 +128,10 @@ fun FooterProfile(
     var secInfo by remember {
         mutableStateOf(
             listOf(
-                DataInfoItem("Contraseña","Vigente"),
-                DataInfoItem("Verificacion", "Activada"),
-                DataInfoItem("Correo", "Autenticado"),
-                DataInfoItem("Telefono", "Autenticado")
+                DataInfoItem(myViewModel.languageType().get(103),myViewModel.languageType().get(151)),
+                DataInfoItem(myViewModel.languageType().get(148), myViewModel.languageType().get(86)),
+                DataInfoItem(myViewModel.languageType().get(106), myViewModel.languageType().get(89)),
+                DataInfoItem(myViewModel.languageType().get(143), myViewModel.languageType().get(89))
             )
         )
     }
@@ -137,9 +139,9 @@ fun FooterProfile(
     var memberInfo by remember {
         mutableStateOf(
             listOf(
-                DataInfoItem("Tipo","Estudiantil"),
-                DataInfoItem("Duracion","Mensual"),
-                DataInfoItem("Corte","Vie, 29 Sep 2023"),
+                DataInfoItem(myViewModel.languageType().get(145),myViewModel.languageType().get(119)),
+                DataInfoItem(myViewModel.languageType().get(112),myViewModel.languageType().get(131)),
+                DataInfoItem(myViewModel.languageType().get(107),"Vie, 29 Sep 2023"),
             )
         )
     }
@@ -164,53 +166,59 @@ fun FooterProfile(
 
         if(openUse){
             UserDialogEdit(
-                onClose = { openUse = !openUse }
+                onClose = { openUse = !openUse },
+                myViewModel = myViewModel
             )
         }
 
         if(openMem){
             MembDialogEdit(
-                onClose = { openMem = !openMem }
+                onClose = { openMem = !openMem },
+                myViewModel = myViewModel
             )
         }
 
         if(openSec){
             SecuDialogEdit(
-                onClose = { openSec = !openSec }
+                onClose = { openSec = !openSec },
+                myViewModel = myViewModel
             )
         }
 
         ProfileItems(
-            title = "Informacion personal",
-            description = "Fecha nac, pais, telefono, etc.",
+            title = myViewModel.languageType().get(125),
+            description = myViewModel.languageType().get(121),
             open = user,
             items = userInfo,
             onClick = {
                 user = !user
             },
-            onEdit = { openUse = !openUse }
+            onEdit = { openUse = !openUse },
+            myViewModel = myViewModel
         )
 
         Spacer(modifier = Modifier.size(8.dp))
 
         ProfileItems(
-            title = "Membresia",
-            description = "Tipo, duracion, corte, etc.",
+            title = myViewModel.languageType().get(129),
+            description = myViewModel.languageType().get(126),
             open = member,
             items = memberInfo,
             onClick = { member = !member },
-            onEdit = { openMem = !openMem }
+            onEdit = { openMem = !openMem },
+            myViewModel = myViewModel
         )
 
         Spacer(modifier = Modifier.size(8.dp))
 
         ProfileItems(
-            title = "Seguridad",
-            description = "Contraseña, verificacion en dos pasos.",
+            title = myViewModel.languageType().get(142),
+            description = myViewModel.languageType().get(104),
             open = seguridad,
             items = secInfo,
             onClick = { seguridad = !seguridad },
-            onEdit = { openSec = !openSec }
+            onEdit = { openSec = !openSec },
+            myViewModel = myViewModel
         )
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -220,7 +228,8 @@ fun FooterProfile(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SecuDialogEdit(
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    myViewModel: MyViewModel
 ) {
     var changePhone by remember {
         mutableStateOf(false)
@@ -285,7 +294,7 @@ fun SecuDialogEdit(
                             onValueChange = {},
                             label = {
                                 Text(
-                                    text = "Telefono",
+                                    text = myViewModel.languageType().get(143),
                                     color = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
                             },
@@ -304,7 +313,7 @@ fun SecuDialogEdit(
                                 onValueChange = {},
                                 label = {
                                     Text(
-                                        text = "Nuevo telefono",
+                                        text = myViewModel.languageType().get(138),
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
                                     )
                                 },
@@ -338,7 +347,7 @@ fun SecuDialogEdit(
                                     .height(50.dp)
                             ) {
                                 Text(
-                                    text = "Enviar codigo",
+                                    text = myViewModel.languageType().get(115),
                                     color = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
                             }
@@ -349,7 +358,7 @@ fun SecuDialogEdit(
                                     onValueChange = {},
                                     label = {
                                         Text(
-                                            text = "Codigo",
+                                            text = myViewModel.languageType().get(110),
                                             color = MaterialTheme.colorScheme.onTertiaryContainer
                                         )
                                     },
@@ -383,7 +392,7 @@ fun SecuDialogEdit(
                                         .height(50.dp)
                                 ) {
                                     Text(
-                                        text = "Verificar codigo",
+                                        text = myViewModel.languageType().get(150),
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
                                     )
                                 }
@@ -394,7 +403,7 @@ fun SecuDialogEdit(
                                         onValueChange = {},
                                         label = {
                                             Text(
-                                                text = "Nuevo telefono",
+                                                text = myViewModel.languageType().get(138),
                                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                                             )
                                         },
@@ -426,7 +435,7 @@ fun SecuDialogEdit(
                                         onValueChange = {},
                                         label = {
                                             Text(
-                                                text = "Confirmar telefono",
+                                                text = myViewModel.languageType().get(100),
                                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                                             )
                                         },
@@ -467,7 +476,7 @@ fun SecuDialogEdit(
                                         )
                                     ) {
                                         Text(
-                                            text = "Cambiar telefono",
+                                            text = myViewModel.languageType().get(92),
                                             color = MaterialTheme.colorScheme.onTertiary
                                         )
                                     }
@@ -490,7 +499,7 @@ fun SecuDialogEdit(
                             .height(50.dp)
                     ) {
                         Text(
-                            text = if(!changePhone) "Cambiar telefono" else "Cancelar",
+                            text = if(!changePhone) myViewModel.languageType().get(92) else myViewModel.languageType().get(94),
                             color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
@@ -510,7 +519,7 @@ fun SecuDialogEdit(
                             onValueChange = {},
                             label = {
                                 Text(
-                                    text = "Correo",
+                                    text = myViewModel.languageType().get(106),
                                     color = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
                             },
@@ -529,7 +538,7 @@ fun SecuDialogEdit(
                                 onValueChange = {},
                                 label = {
                                     Text(
-                                        text = "Nuevo correo",
+                                        text = myViewModel.languageType().get(137),
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
                                     )
                                 },
@@ -563,7 +572,7 @@ fun SecuDialogEdit(
                                     .height(50.dp)
                             ) {
                                 Text(
-                                    text = "Enviar codigo",
+                                    text = myViewModel.languageType().get(115),
                                     color = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
                             }
@@ -574,7 +583,7 @@ fun SecuDialogEdit(
                                     onValueChange = {},
                                     label = {
                                         Text(
-                                            text = "Codigo",
+                                            text = myViewModel.languageType().get(110),
                                             color = MaterialTheme.colorScheme.onTertiaryContainer
                                         )
                                     },
@@ -608,7 +617,7 @@ fun SecuDialogEdit(
                                         .height(50.dp)
                                 ) {
                                     Text(
-                                        text = "Verificar codigo",
+                                        text = myViewModel.languageType().get(150),
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
                                     )
                                 }
@@ -619,7 +628,7 @@ fun SecuDialogEdit(
                                         onValueChange = {},
                                         label = {
                                             Text(
-                                                text = "Nuevo correo",
+                                                text = myViewModel.languageType().get(137),
                                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                                             )
                                         },
@@ -651,7 +660,7 @@ fun SecuDialogEdit(
                                         onValueChange = {},
                                         label = {
                                             Text(
-                                                text = "Confirmar correo",
+                                                text = myViewModel.languageType().get(99),
                                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                                             )
                                         },
@@ -692,7 +701,7 @@ fun SecuDialogEdit(
                                         )
                                     ) {
                                         Text(
-                                            text = "Cambiar correo",
+                                            text = myViewModel.languageType().get(91),
                                             color = MaterialTheme.colorScheme.onTertiary
                                         )
                                     }
@@ -715,7 +724,7 @@ fun SecuDialogEdit(
                             .height(50.dp)
                     ) {
                         Text(
-                            text = if(!changeEmail) "Cambiar correo" else "Cancelar",
+                            text = if(!changeEmail) myViewModel.languageType().get(91) else myViewModel.languageType().get(94),
                             color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
@@ -735,7 +744,7 @@ fun SecuDialogEdit(
                                 onValueChange = {},
                                 label = {
                                     Text(
-                                        text = "Contrasenia actual",
+                                        text = myViewModel.languageType().get(101),
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
                                     )
                                 },
@@ -769,7 +778,7 @@ fun SecuDialogEdit(
                                     .height(50.dp)
                             ) {
                                 Text(
-                                    text = "Verificar contrasenia",
+                                    text = myViewModel.languageType().get(149),
                                     color = MaterialTheme.colorScheme.onTertiaryContainer
                                 )
                             }
@@ -780,7 +789,7 @@ fun SecuDialogEdit(
                                     onValueChange = {},
                                     label = {
                                         Text(
-                                            text = "Contrasenia nueva",
+                                            text = myViewModel.languageType().get(101),
                                             color = MaterialTheme.colorScheme.onTertiaryContainer
                                         )
                                     },
@@ -812,7 +821,7 @@ fun SecuDialogEdit(
                                     onValueChange = {},
                                     label = {
                                         Text(
-                                            text = "Confirmar contrasenia",
+                                            text = myViewModel.languageType().get(98),
                                             color = MaterialTheme.colorScheme.onTertiaryContainer
                                         )
                                     },
@@ -846,7 +855,7 @@ fun SecuDialogEdit(
                                         .height(50.dp)
                                 ) {
                                     Text(
-                                        text = "Cambiar contrasenia",
+                                        text = myViewModel.languageType().get(90),
                                         color = MaterialTheme.colorScheme.onTertiaryContainer
                                     )
                                 }
@@ -876,7 +885,7 @@ fun SecuDialogEdit(
                         )
                     ) {
                         Text(
-                            text = if(changePass) "Cancelar" else "Cambiar contrasenia",
+                            text = if(changePass) myViewModel.languageType().get(94) else myViewModel.languageType().get(90),
                             color = MaterialTheme.colorScheme.onTertiary
                         )
                     }
@@ -889,7 +898,8 @@ fun SecuDialogEdit(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MembDialogEdit(
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    myViewModel: MyViewModel
 ) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
@@ -920,7 +930,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Id. Membresia",
+                                text = myViewModel.languageType().get(124),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -943,7 +953,7 @@ fun MembDialogEdit(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Estatus",
+                        text = myViewModel.languageType().get(117),
                         color = MaterialTheme.colorScheme.onTertiaryContainer
                     )
 
@@ -953,7 +963,7 @@ fun MembDialogEdit(
                         onClick = { },
                         label = {
                             Text(
-                                text = "Activo",
+                                text = myViewModel.languageType().get(87),
                                 color = MaterialTheme.colorScheme.onTertiary
                             )
                         },
@@ -977,7 +987,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Usuario",
+                                text = myViewModel.languageType().get(147),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1003,7 +1013,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Inicio",
+                                text = myViewModel.languageType().get(126),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1029,7 +1039,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Expiracion",
+                                text = myViewModel.languageType().get(120),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1051,11 +1061,11 @@ fun MembDialogEdit(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     OutlinedTextField(
-                        value = "Mensual (Estudiantil)",
+                        value = myViewModel.languageType().get(130),
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Tipo membresia",
+                                text = myViewModel.languageType().get(144),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1077,11 +1087,11 @@ fun MembDialogEdit(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     OutlinedTextField(
-                        value = "MXN (Peso mexicano)",
+                        value = myViewModel.languageType().get(133),
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Moneda pago",
+                                text = myViewModel.languageType().get(132),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1109,7 +1119,7 @@ fun MembDialogEdit(
                             .height(50.dp)
                     ) {
                         Text(
-                            text = "Mejorar suscripcion",
+                            text = myViewModel.languageType().get(128),
                             color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
@@ -1135,7 +1145,7 @@ fun MembDialogEdit(
                         )
                     ) {
                         Text(
-                            text = "Cancelar suscripcion",
+                            text = myViewModel.languageType().get(93),
                             color = MaterialTheme.colorScheme.onTertiary
                         )
                     }
@@ -1148,7 +1158,8 @@ fun MembDialogEdit(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDialogEdit(
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    myViewModel: MyViewModel
 ) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
@@ -1179,7 +1190,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Nombre",
+                                text = myViewModel.languageType().get(136),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1212,7 +1223,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Apellidos",
+                                text = myViewModel.languageType().get(88),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1250,7 +1261,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Correo electronico",
+                                text = myViewModel.languageType().get(105),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1288,7 +1299,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Pais",
+                                text = myViewModel.languageType().get(140),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1321,7 +1332,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Estado",
+                                text = myViewModel.languageType().get(116),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1359,7 +1370,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Direccion",
+                                text = myViewModel.languageType().get(111),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1430,7 +1441,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Colonia",
+                                text = myViewModel.languageType().get(97),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1463,7 +1474,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "CP",
+                                text = myViewModel.languageType().get(108),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1501,7 +1512,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Cumpleaños",
+                                text = myViewModel.languageType().get(109),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1534,7 +1545,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Genero",
+                                text = myViewModel.languageType().get(123),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1569,7 +1580,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = "Ocupacion",
+                                text = myViewModel.languageType().get(139),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1616,7 +1627,7 @@ fun UserDialogEdit(
                         )
                     ) {
                         Text(
-                            text = "Guardar informacion",
+                            text = myViewModel.languageType().get(122),
                             color = MaterialTheme.colorScheme.onTertiary
                         )
                     }
@@ -1648,9 +1659,7 @@ fun HeaderDialog(
 }
 
 @Composable
-fun FeaturedProfile(
-
-) {
+fun FeaturedProfile(myViewModel: MyViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -1665,23 +1674,26 @@ fun FeaturedProfile(
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            FeaturedInformation(inf = "0", title = "Rutas favoritas")
+            FeaturedInformation(inf = "0", title = myViewModel.languageType().get(141))
 
-            FeaturedInformation(inf = "Estudiante",title = "Ocupacion")
+            FeaturedInformation(
+                inf = myViewModel.languageType().get(118),
+                title = myViewModel.languageType().get(128)
+            )
 
-            FeaturedInformation(icon = Icons.Outlined.Check,title = "Verificacion dos pasos")
+            FeaturedInformation(icon = Icons.Outlined.Check,title = myViewModel.languageType().get(148))
         }
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            FeaturedInformation(inf = "Entretenimeinto, comida, ropa",title = "Intereses", large = true)
+            FeaturedInformation(inf = myViewModel.languageType().get(114),title = myViewModel.languageType().get(127), large = true)
 
-            FeaturedInformation(icon = Icons.Outlined.ExitToApp,title = "Cerrar sesion")
+            FeaturedInformation(icon = Icons.Outlined.ExitToApp,title = myViewModel.languageType().get(95))
         }
 
-        FooterProfile()
+        FooterProfile(myViewModel)
 
     }
 }
@@ -1755,6 +1767,7 @@ fun ProfileItems(
     items: List<DataInfoItem>,
     onClick: () -> Unit,
     onEdit: () -> Unit = {},
+    myViewModel: MyViewModel
 ) {
     Card(
         modifier = Modifier
@@ -1809,17 +1822,17 @@ fun ProfileItems(
                 ) {
                     Icon(
                         imageVector = if (open) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                        contentDescription = "Mas informacion",
+                        contentDescription = myViewModel.languageType().get(134),
                         tint = MaterialTheme.colorScheme.onSecondary
                     )
                 }
             }
             if(open){
                 ProfileInfo(
-                    list = items
-                ) {
-                    onEdit()
-                }
+                    list = items,
+                    myViewModel = myViewModel,
+                    onClick = { onEdit() }
+                )
             }
 
         }
@@ -1829,7 +1842,8 @@ fun ProfileItems(
 @Composable
 fun ProfileInfo(
     list: List<DataInfoItem>,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    myViewModel: MyViewModel
 ) {
     Column(
         modifier = Modifier
@@ -1850,7 +1864,7 @@ fun ProfileInfo(
                 .padding(16.dp)
         ) {
             Text(
-                text = "EDITAR",
+                text = myViewModel.languageType().get(113),
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
@@ -1884,7 +1898,7 @@ fun InfoItem(
 }
 
 @Composable
-fun HeaderProfile(navController: NavController) {
+fun HeaderProfile(navController: NavController, myViewModel: MyViewModel) {
     Column(
         modifier = Modifier
             .background(
@@ -1934,7 +1948,7 @@ fun HeaderProfile(navController: NavController) {
             }
         }
         Text(
-            text = "Nombre de usuario",
+            text = myViewModel.languageType().get(135),
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier

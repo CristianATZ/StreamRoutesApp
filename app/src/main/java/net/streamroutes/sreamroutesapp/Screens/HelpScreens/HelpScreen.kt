@@ -67,37 +67,24 @@ fun HelpScreen(myViewModel: MyViewModel,navController: NavController) {
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-
-            // reseñas
-            Options(
-                text = "Reseñas",
-                sub_text = "Revisa y opina.",
-                onClick = { navController.navigate(AppScreens.ResenaScreen.route) }
-            )
-
-            Spacer(modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .background(MaterialTheme.colorScheme.primary.copy(0.25f))
-                .height(1.dp))
-
             // comentarios
             Options(
-                text = myViewModel.languageType().get(87),
-                sub_text = myViewModel.languageType().get(88),
+                text = myViewModel.languageType().get(255),
+                sub_text = myViewModel.languageType().get(256),
                 onClick = { navController.navigate(AppScreens.HelpCommentsScreen.route) }
             )
 
             // contactanos
             Options(
-                text = myViewModel.languageType().get(89),
-                sub_text = myViewModel.languageType().get(90),
+                text = myViewModel.languageType().get(257),
+                sub_text = myViewModel.languageType().get(258),
                 onClick = { navController.navigate(AppScreens.HelpContactScreen.route) }
             )
 
             // acerca de
             Options(
-                text = myViewModel.languageType().get(91),
-                sub_text = myViewModel.languageType().get(92),
+                text = myViewModel.languageType().get(259),
+                sub_text = myViewModel.languageType().get(260),
                 onClick = { navController.navigate(AppScreens.HelpAboutAppScreen.route) }
             )
         }
@@ -112,7 +99,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(86),
+            Text(text = myViewModel.languageType().get(254),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,

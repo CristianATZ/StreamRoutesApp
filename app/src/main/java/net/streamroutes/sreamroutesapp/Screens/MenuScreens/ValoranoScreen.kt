@@ -91,7 +91,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(44),
+            Text(text = myViewModel.languageType().get(212),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
@@ -131,7 +131,7 @@ fun Down(myViewModel: MyViewModel) {
                     .fillMaxWidth()
             ){
                 Text(
-                    text = myViewModel.languageType().get(45),
+                    text = myViewModel.languageType().get(213),
                     fontSize = 30.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground,
@@ -148,7 +148,7 @@ fun Down(myViewModel: MyViewModel) {
             horizontalArrangement = Arrangement.Center
         ){
             Text(
-                text = myViewModel.languageType().get(46),
+                text = myViewModel.languageType().get(214),
                 fontSize = 16.sp,
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
@@ -177,7 +177,7 @@ fun Down(myViewModel: MyViewModel) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = myViewModel.languageType().get(47),
+                    text = myViewModel.languageType().get(215),
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onTertiary

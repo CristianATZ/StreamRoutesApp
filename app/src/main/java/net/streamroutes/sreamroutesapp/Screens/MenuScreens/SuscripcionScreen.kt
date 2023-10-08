@@ -97,8 +97,8 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
             ) {
                 SuscripcionDatos(
                     myViewModel,
-                    titulo = myViewModel.languageType().get(16),
-                    descripcion = myViewModel.languageType().get(17),
+                    titulo = myViewModel.languageType().get(186),
+                    descripcion = myViewModel.languageType().get(187),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
@@ -106,8 +106,8 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 
                 SuscripcionDatos(
                     myViewModel,
-                    titulo = myViewModel.languageType().get(18),
-                    descripcion = myViewModel.languageType().get(19),
+                    titulo = myViewModel.languageType().get(188),
+                    descripcion = myViewModel.languageType().get(189),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
@@ -115,8 +115,8 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 
                 SuscripcionDatos(
                     myViewModel,
-                    titulo = myViewModel.languageType().get(20),
-                    descripcion = myViewModel.languageType().get(21),
+                    titulo = myViewModel.languageType().get(190),
+                    descripcion = myViewModel.languageType().get(191),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
@@ -124,8 +124,8 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 
                 SuscripcionDatos(
                     myViewModel,
-                    titulo = myViewModel.languageType().get(22),
-                    descripcion = myViewModel.languageType().get(23),
+                    titulo = myViewModel.languageType().get(192),
+                    descripcion = myViewModel.languageType().get(193),
                     roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
                     painter = painterResource(id = R.drawable.ic_launcher_background),
                     onClick = { }
@@ -165,7 +165,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                                 .fillMaxSize()
                         ) {
                             TextUser(
-                                text = myViewModel.languageType().get(24),
+                                text = myViewModel.languageType().get(194),
                                 fontSize = 25,
                                 color = MaterialTheme.colorScheme.onTertiary ,
                                 textAlign = TextAlign.Center
@@ -208,7 +208,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                             verticalArrangement = Arrangement.Center
                         ) {
                             TextUser(
-                                text = myViewModel.languageType().get(25),
+                                text = myViewModel.languageType().get(195),
                                 fontSize = 25,
                                 color = MaterialTheme.colorScheme.onTertiary,
                                 textAlign = TextAlign.Center
@@ -221,7 +221,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                                 textAlign = TextAlign.Center
                             )
                             TextUser(
-                                text = "$ 10.00/" + myViewModel.languageType().get(26),
+                                text = "$ 10.00/" + myViewModel.languageType().get(196),
                                 fontSize = 15,
                                 color = MaterialTheme.colorScheme.onTertiary,
                                 textAlign = TextAlign.Center)
@@ -261,7 +261,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(15),
+            Text(text = myViewModel.languageType().get(185),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
@@ -344,7 +344,7 @@ private fun SuscripcionDatos(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold)
                     ) {
-                        append(myViewModel.languageType().get(28))
+                        append(myViewModel.languageType().get(198))
                     }
                 },
                 modifier = Modifier.fillMaxWidth(),

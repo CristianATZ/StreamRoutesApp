@@ -150,8 +150,8 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
 
             // telefono
             HeaderTextField(
-                tittle = "Telefono",
-                placeholder = "Telefono",
+                tittle = myViewModel.languageType().get(283),
+                placeholder = myViewModel.languageType().get(283),
                 size = 70,
                 variable = telefono,
                 onValueChange = {newValue -> telefono = newValue},
@@ -176,12 +176,12 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                             codigoGenerado = generarCodigo()
                             val smsManager: SmsManager = SmsManager.getDefault()
                             smsManager.sendTextMessage(telefono, null, codigoGenerado, null, null)
-                            Toast.makeText(context, myViewModel.languageType().get(123) + " $codigoGenerado", Toast.LENGTH_SHORT).show()
+                            //Toast.makeText(context, myViewModel.languageType().get(284) + " $codigoGenerado", Toast.LENGTH_SHORT).show()
                         } else {
-                            Toast.makeText(context, myViewModel.languageType().get(124), Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, myViewModel.languageType().get(285), Toast.LENGTH_SHORT).show()
                         }
                     } else {
-                        Toast.makeText(context, "Por favor ve a la configuracion de la aplicacion y habilita los permisos de mensajeria.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, "Por favor ve a la configuración de la aplicación y habilita los permisos de mensajería.", Toast.LENGTH_LONG).show()
                     }
                 },
                 colors = ButtonDefaults.buttonColors(
@@ -196,7 +196,7 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Enviar",
+                    text = myViewModel.languageType().get(286),
                     fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
@@ -204,8 +204,8 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
 
             // codigo de verificacion
             HeaderTextField(
-                tittle = "Codigo de verificacion",
-                placeholder = "Codigo",
+                tittle = myViewModel.languageType().get(287),
+                placeholder = myViewModel.languageType().get(288),
                 size = 70,
                 variable = codigo,
                 onValueChange = {newValue -> codigo = newValue},
@@ -222,8 +222,7 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
             Button(
                 onClick = {
                     navController.navigate(route = AppScreens.ChangeScreen.route)
-                    if(codigoGenerado == codigo) navController.navigate(route = AppScreens.ChangeScreen.route)
-                    else Toast.makeText(context, myViewModel.languageType().get(128), Toast.LENGTH_SHORT).show()
+                    if(codigoGenerado != codigo) Toast.makeText(context, myViewModel.languageType().get(289), Toast.LENGTH_SHORT).show()
                 },
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.tertiary
@@ -237,7 +236,7 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Verificar",
+                    text = myViewModel.languageType().get(290),
                     fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
@@ -255,7 +254,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(121),
+            Text(text = myViewModel.languageType().get(282),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )

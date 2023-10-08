@@ -121,13 +121,13 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
                         .fillMaxWidth(0.75f)
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(55), // texto
+                        text = myViewModel.languageType().get(222), // texto
                         color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 18.sp
                     )
                     Text(
-                        text = myViewModel.languageType().get(56), // texto
+                        text = myViewModel.languageType().get(223), // texto
                         color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                         fontSize = 12.sp
@@ -138,22 +138,22 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
             // noticias
             OptionSwitch(
                 variable = noticias,
-                text = myViewModel.languageType().get(60),
-                sub_text = myViewModel.languageType().get(61)
+                text = myViewModel.languageType().get(228),
+                sub_text = myViewModel.languageType().get(229)
             )
 
             // alertas
             OptionSwitch(
                 variable = alertas,
-                text = myViewModel.languageType().get(62),
-                sub_text = myViewModel.languageType().get(63)
+                text = myViewModel.languageType().get(230),
+                sub_text = myViewModel.languageType().get(231)
             )
 
             // suscripcion
             OptionSwitch(
                 variable = suscripcion,
-                text = myViewModel.languageType().get(64),
-                sub_text = myViewModel.languageType().get(65)
+                text = myViewModel.languageType().get(232),
+                sub_text = myViewModel.languageType().get(233)
             )
         }
     }

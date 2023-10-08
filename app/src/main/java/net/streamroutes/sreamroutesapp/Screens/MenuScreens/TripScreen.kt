@@ -208,7 +208,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                             },
                             placeholder = {
                                 Text(
-                                    text = "Buscar destino",
+                                    text = myViewModel.languageType().get(205),
                                     color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
                                 )
                             },
@@ -270,7 +270,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                 // encabezado
                 item {
                     Text(
-                        text = myViewModel.languageType().get(38),
+                        text = myViewModel.languageType().get(206),
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onBackground,
@@ -285,7 +285,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                     val location = markers[index]
                     PlaceOption(
                         nombreCalle = "${location.streetName}",
-                        colonia = myViewModel.languageType().get(39) + ": ${location.neighborhood} - " + myViewModel.languageType().get(40) + ": ${location.postalCode}",
+                        colonia = myViewModel.languageType().get(207) + ": ${location.neighborhood} - " + myViewModel.languageType().get(208) + ": ${location.postalCode}",
                         numero = index + 1,
                         onRemove = {
                             removeMarker(index)
@@ -304,7 +304,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                 val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
                 Button(
                     onClick = {
-                        Toast.makeText(context, myViewModel.languageType().get(41) + " ${markers.size} " + myViewModel.languageType().get(42), Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, myViewModel.languageType().get(209) + " ${markers.size} " + myViewModel.languageType().get(210), Toast.LENGTH_LONG).show()
                         removeAll()
                     },
                     colors = ButtonDefaults.buttonColors(
@@ -316,7 +316,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
                         .padding(16.dp),
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(43),
+                        text = myViewModel.languageType().get(211),
                         fontSize = 26.sp,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onTertiary
@@ -391,7 +391,7 @@ private fun SearchBar(
                 ) {
                     if (text.text.isEmpty()) {
                         Text(
-                            text = placeholder,
+                            text = "Ubicación",
                             fontSize = 18.sp,
                             color = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
                             letterSpacing = 3.sp,
@@ -493,7 +493,7 @@ private fun TopBarBody(
     TopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType().get(35),
+                text = myViewModel.languageType().get(203),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,

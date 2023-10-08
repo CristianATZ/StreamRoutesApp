@@ -18,366 +18,771 @@ class MyViewModel : ViewModel() {
 
     // lista de idioma ES
     val es = listOf(
-        // main screen
-        "Ciudad", // 0
+        // Dialogs > Dialogs.kt
+        " y vuelve a intentarlo nuevamente.",                                                                       // 0
+        ", baja del autobús con cuidado. ¡Esperamos verte de nuevo!",                                               // 1
+        ", verifica si necesitas bajarte aquí.",                                                                    // 2
+        "Aceptar",                                                                                                  // 3
+        "Acepto los términos y condiciones",                                                                        // 4
+        "Al utilizar nuestra aplicación, aceptas los términos y condiciones de nuestro aviso de privacidad.",       // 5
+        "autobús",                                                                                                  // 6
+        "Aviso de privacidad",                                                                                      // 7
+        "Cambia el tipo de mapa en el botón de la parte superior derecha a lado izquierdo de idioma.",              // 8
+        "conexión a internet",                                                                                      // 9
+        "Continuar",                                                                                                // 10
+        "destino",                                                                                                  // 11
+        "El menú de opciones esta posicionado en la parte superior izquierda.",                                     // 12
+        "está cerca. Mantente alerta para abordarlo.",                                                              // 13
+        "Finalizar",                                                                                                // 14
+        "Has llegado a tu ",                                                                                        // 15
+        "Hemos llegado a una ",                                                                                     // 16
+        "Idioma de la aplicación",                                                                                  // 17
+        "Interactúa con el mapa desplazandote por el usando tus dedos.",                                            // 18
+        "La aplicación no tendrá acceso a algunas funciones.",                                                      // 19
+        "Mapa interactivo",                                                                                         // 20
+        "Marcadores",                                                                                               // 21
+        "Menú de opciones",                                                                                         // 22
+        "No permitir",                                                                                              // 23
+        "Omitir",                                                                                                   // 24
+        "parada",                                                                                                   // 25
+        "Permitir acceso a tu ubicación",                                                                           // 26
+        "Permitir acceso a tus contactos",                                                                          // 27
+        "Permitir",                                                                                                 // 28
+        "Puedes cambiar el idioma en el botón de la parte superior derecha, de igual forma en configuración.",      // 29
+        "Regresar",                                                                                                 // 30
+        "Siguiente",                                                                                                // 31
+        "Stream Routes necesita acceder a tu ubicación para ofrecerte una experiencia más personalizada, mostrarte rutas y lugares de interés cercanos.",       // 32
+        "Stream Routes necesita acceder a tus contactos para propocionar una experiencia personalizada, facilitar la conexión con tus amigos y contactos.",     // 33
+        "Tipo de mapa",                                                                                             // 34
+        "Toca los marcadores del mapa para obtener mas información sobre el.",                                      // 35
+        "Tu ",                                                                                                      // 36
+        "Verifica tu ",                                                                                             // 37
 
-        // menu screen
-        "Menu", // 1
-        "Nombre Usuario", // 2
-        "Tipo Membresia", // 3
-        "Ciudad", // 4
-        "Version Premium", // 5
-        "Rutas", // 6
-        "Planifica tu viaje", // 7
-        "Compartir Ubicacion", // 8
-        "Ubi. act:", // 9
-        "No se pudo obtener la ubicacion actual. Asegurate de tener la ubicacion encendida", // 10
-        "Comparte", // 11
-        "Valoranos", // 12
-        "Configuracion", // 13
-        "Ayuda y soporte", // 14
 
-        // SuscripcionScreen
-        "Suscripcion", // 15
-        "Elimina anuncios", // 16
-        "Disfruta de tu viaje sin los anuncios emergentes de la aplicacion.", // 17
-        "Muevete seguro", // 18
-        "Comparte tu ubicacion real en todo momento con tu gente de confianza.", // 19
-        "Prepara tu viaje", // 20
-        "Programa una lista de ubicaciones las cuales quieras visitar sin perder tanto tiempo buscando una ruta.", // 21
-        "Ubicaciones en tiempo real", // 22
-        "Ten presente la ubicacion de tu autobus en todo momento.", // 23
-        "Mensual", // 24
-        "Anual", // 25
-        "Mes", // 26
-        "SUSCRIBIRSE", // 27
-        "Saber mas...", // 28
 
-        // RoutesScreen
-        "Origen", // 29
-        "Destino", // 30
-        "Hora", // 31
-        "BUSCAR", // 32
+        // ConfigurationScreens > ChangeCityScreen.kt
+        "Te enviará al menú de configuraciones",            // 38
 
-        // Menu (compartir ubicacion)
-        "Comparte tu ubicacion en tiempo real", // 33
+        // ConfigurationScreens > ConfigurationScreen.kt
+        "Idioma de la aplicación",                          // 39
+        "Modo claro",                                       // 40
+        "Modo oscuro",                                      // 41
+        "Te enviará al menú de opciones",                   // 42
 
-        // Menu (compartir aplicacion)
-        "Comparte la aplicacion con tus amigos", // 34
+        // ConfigurationScreens > MapScreen.kt
+        "Te enviará al menú de configuraciones",            // 43
 
-        // TripScreen
-        "Planifica tu viaje", // 35
-        "Marcador Origen", // 36
-        "Ubicacion", // 37
-        "Lugares seleccionados", // 38
-        "Colonia", // 39
-        "CP", // 40
-        "Plan guardado a", // 41
-        "ubicacion(es)", // 42
-        "PLANEAR", // 43
+        // ConfigurationScreens > NotificationScreen.kt
+        "Te enviará al menú de configuraciones",            // 44
 
-        // ValoranoScreen
-        "Valoranos", // 44
-        "¡Calificanos!", // 45
+        // ConfigurationScreens > PrivacityScreen.kt
+        "Te enviará al menú de configuraciones",            // 45
+
+
+
+        // HelpScreens > HelAboutAppScreen.kt
+        "Logo Stream Routes",                               // 46
+        "Te enviará al menú de opciones",                   // 47
+
+        // HelpScreens > HelpCommentsScreen.kt
+        "Cuentanos cómo podemos ayudarte.",                 // 48
+        "Te enviará al menú de opciones",                   // 49
+        "Enviar",
+
+        // HelpScreens > HelpContactScreen.kt
+        "Nombre",                                           // 50
+        "Nuestro correo",                                   // 51
+        "Mensaje",                                          // 52
+        "Escribe tu inconveniente.",                        // 53
+        "Enviar",                                           // 54
+        "Te enviará al menú de opciones",                   // 55
+
+        // HelpScreens > HelpScreen.kt
+        "Reseñas",                                          // 56
+        "Revisa y opina.",                                  // 57
+        "Te enviará al menú de opciones",                   // 58
+
+        // HelpScreens > ResenaScreen.kt
+        "Te enviará al menú de opciones",                   // 59
+        "Reseñas",                                          // 60
+        "Comparte tu opinión",                              // 61
+        "Imagen",                                           // 62
+        "Comenta tu viaje",                                 // 63
+
+
+
+        // MenuScreens > RoutesScreen
+        "Borrar texto de destino",              // 64
+        "Buscar destino",                       // 65
+        "Buscar",                               // 66
+        "Cambiar el tipo de mapa",              // 67
+        "Ciudad",                               // 68
+        "Destino:",                             // 69
+        "Duración ruta:",                        // 70
+        "Icono de agregar como destino",        // 71
+        "Icono de compartir ruta",              // 72
+        "Icono de favorito",                    // 73
+        "Icono para cerrar el dialogo",         // 74
+        "Inicio:",                              // 75
+        "Marcador Destino",                     // 76
+        "Más información",                      // 77
+        "Nombre Ruta",                          // 78
+        "Paradas",                              // 79
+        "Rutas",                                // 80
+        "Tipo de mapa",                         // 81
+
+        // MenuScreens > SuscripcionScreen.kt
+        "Te enviará al menú de opciones",       // 82
+
+        // MenuScreens > TipScreen.kt
+        "Te enviará al menú de opciones",       // 83
+
+        // MenuScreens > ValoranoScreen.kt
+        "Te enviará al menú de opciones",       // 84
+
+
+
+        // ProfileScreens > ProfileScreen.kt
+        "Activada",                 // 85
+        "Activo",                   // 86
+        "Apellidos",                // 87
+        "Autenticado",              // 88
+        "Cambiar contraseña",       // 89
+        "Cambiar correo",           // 90
+        "Cambiar teléfono",         // 91
+        "Cancelar suscripción",     // 92
+        "Cancelar",                 // 93
+        "Cerrar sesión",            // 94
+        "Ciudad",                   // 95
+        "Colonia",                  // 96
+        "Confirmar contraseña",     // 97
+        "Confirmar correo",         // 98
+        "Confirmar teléfono",       // 99
+        "Contraseña actual",        // 100
+        "Contraseña nueva",         // 101
+        "Contraseña",               // 102
+        "Contraseña, verificación en dos pasos.",   // 103
+        "Correo electrónico",       // 104
+        "Correo",                   // 105
+        "Corte",                    // 106
+        "CP",                       // 107
+        "Cumpleaños",               // 108
+        "Código",                   // 109
+        "Dirección",                // 110
+        "Duración",                 // 111
+        "Editar",                   // 112
+        "Entretenimiento, comida, ropa",    // 113
+        "Enviar código",            // 114
+        "Estado",                   // 115
+        "Estatus",                  // 116
+        "Estudiante",               // 117
+        "Estudiantil",              // 118
+        "Expiración",               // 119
+        "Fecha nac, país, teléfono, etc.",  // 120
+        "Guardar información",      // 121
+        "Género",                   // 122
+        "Id. Membresia",            // 123
+        "Información personal",     // 124
+        "Inicio",                   // 125
+        "Intereses",                // 126
+        "Mejorar suscripción",      // 127
+        "Membresía",                // 128
+        "Mensual (Estudiantil)",    // 129
+        "Mensual",                  // 130
+        "Moneda pago",              // 131
+        "MXN (Peso mexicano)",      // 132
+        "Más información",          // 133
+        "Nombre de usuario",        // 134
+        "Nombre",                   // 135
+        "Nuevo correo",             // 136
+        "Nuevo teléfono",           // 137
+        "Ocupación",                // 138
+        "País",                     // 139
+        "Rutas favoritas",          // 140
+        "Seguridad",                // 141
+        "Teléfono",                 // 142
+        "Tipo membresía",           // 143
+        "Tipo",                     // 144
+        "Tipo, duración, corte, etc.",  // 145
+        "Usuario",                  // 146
+        "Verificación",             // 147
+        "Verificar contraseña",     // 148
+        "Verificar código",         // 149
+        "Vigente",                  // 150
+
+
+
+
+        // Start > MainScreen.kt
+        "Ayuda y soporte",          // 151
+        "Cerrar sesión",            // 152
+        "Comparte",                 // 153
+        "Compartir ubicación",      // 154
+        "Configuración",            // 155
+        "Descargando ruta (nombre)",    // 156
+        "Descargando rutas",        // 157
+        "Descargar rutas",          // 158
+        "Entretenimiento",          // 159
+        "Error al obtener la ubicación actual. Inténtalo mas tarde.",   // 160
+        "Hospitales",               // 161
+        "Paradas",                  // 162
+        "Planifica tu viaje",       // 163
+        "Por favor ve a la configuración de la aplicación y habilita los permisos de ubicación.",   // 164
+        "Resturantes",              // 165
+        "Rutas",                    // 166
+        "Te mostrara el menú",      // 167
+        "Terminales",               // 168
+        "Valóranos",                // 169
+        "Versión Premium",          // 170
+        "Ciudad",                   // 171
+
+
+
+        // ORACIONES FALTANTES
+        // MenuScreen.kt
+        "Menú",                     // 172
+        "Nombre Usuario",           // 173
+        "Tipo Membresía",           // 174
+        "Versión Premium",          // 175
+        "Planifica tu viaje",       // 176
+        "Compartir Ubicación",      // 177
+        "Ubi. act:",                // 178
+        "No se pudo obtener la ubicacion actual. Asegurate de tener la ubicación encendida",    // 179
+        "Comparte",                 // 180
+        "Valóranos",                // 181
+        "Configuración",            // 182
+        "Ayuda y soporte",          // 183
+
+        // MenuScreens > SuscriptionScreen.kt
+        "Suscripción",              // 184
+        "Elimina anuncios",         // 185
+        "Disfruta de tu viaje sin los anuncios emergentes de la aplicación.",       // 186
+        "Muévete seguro",           // 187
+        "Comparte tu ubicación real en todo momento con tu gente de confianza.",    // 188
+        "Prepara tu viaje",         // 189
+        "Programa una lista de ubicaciones las cuales quieras visitar sin perder tanto tiempo buscando una ruta.",  // 190
+        "Ubicaciones en tiempo real",   // 191
+        "Ten presente la ubicación de tu autobús en todo momento.", // 192
+        "Mensual",                  // 193
+        "Anual",                    // 194
+        "Mes",                      // 195
+        "Suscribirse",              // 196
+        "Saber más...",             // 197
+
+        // MenuScreens > RouteScreen.kt
+        "Origen",       // 198
+        "Hora",         // 199
+        "Comparte tu ubicación en tiempo real",     // 200
+        "Comparte la aplicación con tus amigos",    // 201
+
+        // MenuScreens > TripScreen.kt
+        "Planifica tu viaje",       // 202
+        "Marcador Origen",          // 203
+        "Buscar destino",                // 204
+        "Lugares seleccionados",    // 205
+        "Colonia",                  // 206
+        "CP",                       // 207
+        "Plan guardado a",          // 208
+        "ubicación(es)",            // 209
+        "Planear",                  // 210
+
+        // MenuScreens > ValoranoScreen.kt
+        "Valóranos",                // 211
+        "¡Califícanos!",            // 212
         "Haznos saber tu conformidad con la aplicación, " +
                 "tu opinión es muy importante para nosotros. " +
                 "Saber tu conformidad en una escala nos ayuda " +
                 "a mejorar la aplicación y lanzar una mejor " +
-                "interfaz para el usuario.", // 46
-        "ENVIAR", // 47
+                "interfaz para el usuario.",    // 213
+        "Enviar",                   // 214
 
-        // ConfigurationScreen
-        "Configuracion", // 48
-        "Cambiar de ciudad", // 49
-        "Notificaciones", // 50
-        "Mapa", // 51
-        "Privacidad", // 52
+        // ConfigurationScreen > ConfigurationScreen.kt
+        "Configuración",        // 215
+        "Cambiar de ciudad",    // 216
+        "Notificaciones",       // 217
+        "Mapa",                 // 218
+        "Privacidad",           // 219
 
-        // ChangeCityScreen
-        "Cambiar Ciudad", // 53
+        // ConfigurationScreen > ConfigurationScreen.kt
+        "Cambiar Ciudad",       // 220
 
         // NotificationScreen
-        "Notificaciones", // 54
-        "Notificaciones push", // 55
-        "Tipo de notificacion", // 56
-        "Siempre", // 57
-        "Durante", // 58
-        "Nunca", // 59
-        "Noticias de la aplicacion", // 60
-        "Nuevas versiones, promociones, etc.", // 61
-        "Alertas", // 62
-        "Cambios de horarios, rutas, etc.", // 63
-        "Suscripcion", // 64
-        "Expiracion de la suscripcion, etc.", // 65
+        "Notificaciones",       // 221
+        "Notificaciones push",  // 222
+        "Tipo de notificación", // 223
+        "Siempre",              // 224
+        "Durante",              // 225
+        "Nunca",                // 226
+        "Noticias de la aplicación",    // 227
+        "Nuevas versiones, promociones, etc.",  // 228
+        "Alertas",              // 229
+        "Cambios de horarios, rutas, etc.", // 230
+        "Suscripción",          // 231
+        "Expiración de la suscripción, etc.",   // 232
 
         // MapScreen
-        "Mapa", // 66
-        "Marcadores de paradas", // 67
-        "Indica donde son las paradas.", // 68
-        "Marcadores de terminales", // 69
-        "Indica estaciones de autobuses.", // 70
-        "Marcadores de ubicacion act.", // 71
-        "Mira tu ubicacion actual.", // 72
-        "Comida", // 73
-        "Restaurantes, puestos de comida, etc.", // 74
-        "Salud", // 75
-        "Hospitales, farmacias, consultorios, etc.", // 76
+        "Mapa",                                         // 233
+        "Marcadores de paradas",                        // 234
+        "Indica dónde son las paradas.",                // 235
+        "Marcadores de terminales",                     // 236
+        "Indica estaciones de autobúses.",              // 237
+        "Marcadores de ubicación act.",                 // 238
+        "Mira tu ubicación actual.",                    // 239
+        "Comida",                                       // 240
+        "Restaurantes, puestos de comida, etc.",        // 241
+        "Salud",                                        // 242
+        "Hospitales, farmacias, consultorios, etc.",    // 243
 
         // PrivacityScreeen
-        "Privacidad", // 77
-        "Localizacion", // 78
-        "Podremos sugerirte mejores rutas en base a tu ubicacion. Permite este servicio incluso cuando la app no este en uso.", // 79
-        "Anuncios personalizados", // 80
-        "Podremos usar tus datos para mostrarte anuncios que podrian ser relevantes para ti. Si esta opcion no esta marcada se mostraran anuncios genericos.", // 81
-        "Rutas personalizadas", // 82
-        "Usar tus rutas frecuentes para generarte un plan de viaje personalizado para ti. Si esta opcion no esta marcada no se mostratan estrategias de viajes personaliszadas.", // 83
-        "Pago de suscripcion", // 84
-        "Si esta opcion esta marcada se permitira el cobro automatico de la suscripcion cada mes.", // 85
+        "Privacidad",           // 244
+        "Localización",         // 245
+        "Podremos sugerirte mejores rutas en base a tu ubicación. Permite este servicio incluso cuando la app no esté en uso.",     // 246
+        "Anuncios personalizados",      // 247
+        "Podremos usar tus datos para mostrarte anuncios que podrían ser relevantes para ti. Si esta opción no esta marcada se mostrarán anuncios genéricos.",  // 248
+        "Rutas personalizadas",         // 249
+        "Usar tus rutas frecuentes para generarte un plan de viaje personalizado para ti. Si esta opción no esta marcada no se mostrarán estrategias de viajes personaliszadas.",   // 250
+        "Pago de suscripción",          // 251
+        "Si esta opción está marcada se permitirá el cobro automatico de la suscripción cada mes.",     // 252
 
         // HelpScreen
-        "Ayuda", // 86
-        "Comentarios", // 87
-        "¿Sugerencias?", // 88
-        "Contactanos", // 89
-        "Cuentanos tu experiencia.", // 90
-        "Acerca de", // 91
-        "Version de la aplicacion.", // 92
+        "Ayuda",                        // 253
+        "Comentarios",                  // 254
+        "¿Sugerencias?",                // 255
+        "Contáctanos",                  // 256
+        "Cuéntanos tu experiencia.",    // 257
+        "Acerca de",                    // 258
+        "Versión de la aplicación.",    // 259
 
-        // HelpCommentScreen
-        "Comentarios", // 93
-        "Cuentanos como podemos ayudarte", // 94
-        "¿Deseas incluir información de la cuenta? (Opcional)", // 95
+        "Comentarios",                  // 260
+        "¿Deseas incluir información de la cuenta? (Opcional)",                             // 261
         "Si incluyes detalles de la cuenta en tu comentario," +
-                "como correo, etc. Sera mas facil para nosotros responderte", // 96
-        "ENVIAR", // 97
-        "Se tomara en cuenta tus sugerencias para futuras versiones de la aplicación", // 98
+                "como correo, etc. Será más fácil para nosotros responderte",               // 262
+        "Se tomará en cuenta tus sugerencias para futuras versiones de la aplicación.",      // 263
 
         // HelpContactScreen
-        "Contactanos", // 99
-        "Nombre", // 100
-        "Nuestro correo", // 101
-        "Mensaje", // 102
-        "ENVIAR", // 103
-        "ITSUR, Uriangato, Gto.", // 104
-        "¿Como llegar?", // 105
+        "ITSUR, Uriangato, Gto.",       // 264
+        "¿Cómo llegar?",                // 265
 
         // HelpAboutScreen
-        "Acerca de", // 106
-        "Version", // 107
-        "Stream Routes. ® Todos los derechos reservados 2023-2024.", // 108
+        "Acerca de",                    // 266
+        "Versión",                      // 267
+        "Stream Routes. ® Todos los derechos reservados 2023-2024.",    // 268
 
         // login screen
-        "Telefono", // 109
-        "Contraseña", // 110
-        "Olvide mi", // 111
-        "contraseña", // 112
-        "INGRESAR", // 113
-        "¿No tienes cuenta?", // 114
-        "Registrate", // 115
+        "Teléfono",                 // 269
+        "Contraseña",               // 270
+        "Olvidé mi",                // 271
+        "contraseña",               // 272
+        "Ingresar",                 // 273
+        "¿No tienes cuenta?",       // 274
+        "Registrate",               // 275
 
         // registration screen
-        "Registrate", // 116
-        "Telefono", // 117
-        "Contraseña", // 118
-        "Confirmar Contraseña", // 119
-        "REGISTRARSE", // 120
+        "Registrate",               // 276
+        "Teléfono",                 // 277
+        "Contraseña",               // 278
+        "Confirmar Contraseña",     // 279
+        "Registrarte",              // 280
 
         // verification screen
-        "Olvide mi contraseña", // 121
-        "Telefono", // 122
-        "Codigo enviado", // 123
-        "Ingresa un telefono valido", // 124
-        "ENVIAR", // 125
-        "Codgio de verificacion", // 126
-        "Codigo", // 127
-        "Codigo incorrecto", // 128
-        "VERIFICAR", // 129
+        "Olvidé mi contraseña",         // 281
+        "Teléfono",                     // 282
+        "Código enviado",               // 283
+        "Ingresa un teléfono válido",   // 284
+        "Enviar",                       // 285
+        "Código de verificación",       // 286
+        "Código",                       // 287
+        "Código incorrecto",            // 288
+        "Verificar",                    // 289
 
         // changeScreen
-        "Cambiar Contraseña", // 130
-        "Contraseña", // 131
-        "Confirmar contraseña", // 132
-        "Contraseña", // 133
-        "CAMBIAR" // 134
+        "Cambiar Contraseña",           // 290
+        "Contraseña",                   // 291
+        "Confirmar contraseña",         // 292
+        "Contraseña",                   // 293
+        "Cambiar",                      // 294
+
+        // extras
+        "Ruta"
     )
 
-    // lista de idioma EN
+
+
+
+
+
+
+
     val en = listOf(
-        // Main screen
-        "City", // 0
-        // Menu screen
-        "Menu", // 1
-        "Username", // 2
-        "Membership Type", // 3
-        "City", // 4
-        "Premium Version", // 5
-        "Routes", // 6
-        "Plan Your Trip", // 7
-        "Share Location", // 8
-        "Current Location", // 9
-        "Could not retrieve current location. Make sure location services are enabled.", // 10
-        "Share", // 11
-        "Rate Us", // 12
-        "Settings", // 13
-        "Help and Support", // 14
+        // Dialogs > Dialogs.kt
+        " and try again.",                                                                              // 0
+        ", step off the bus carefully. We hope to see you again!",                                      // 1
+        ", check if you need to get off here.",                                                         // 2
+        "Accept",                                                                                       // 3
+        "I accept the terms and conditions",                                                            // 4
+        "By using our application, you accept the terms and conditions of our privacy policy.",         // 5
+        "bus",                                                                                          // 6
+        "Privacy notice",                                                                               // 7
+        "Change the map type in the button on the top right to the left language side.",                // 8
+        "internet connection",                                                                          // 9
+        "Continue",                                                                                     // 10
+        "destination",                                                                                  // 11
+        "The options menu is located at the top left.",                                                 // 12
+        "is nearby. Stay alert to board it.",                                                           // 13
+        "Finish",                                                                                       // 14
+        "You have reached your ",                                                                       // 15
+        "We have arrived at a ",                                                                        // 16
+        "App language",                                                                                 // 17
+        "Interact with the map by scrolling it using your fingers.",                                    // 18
+        "The application will not have access to some functions.",                                      // 19
+        "Interactive map",                                                                              // 20
+        "Markers",                                                                                      // 21
+        "Options menu",                                                                                 // 22
+        "Don't allow",                                                                                  // 23
+        "Skip",                                                                                         // 24
+        "bus stop",                                                                                     // 25
+        "Allow access to your location",                                                                // 26
+        "Allow access to your contacts",                                                                // 27
+        "Allow",                                                                                        // 28
+        "You can change the language in the button at the top right, similarly in settings.",           // 29
+        "Back",                                                                                         // 30
+        "Next",                                                                                         // 31
+        "Stream Routes needs access to your location to offer you a more personalized experience, show you routes, and nearby points of interest.",     // 32
+        "Stream Routes needs access to your contacts to provide a personalized experience, facilitate connecting with your friends and contacts.",      // 33
+        "Map type",                                                                                     // 34
+        "Tap the map markers to get more information about them.",                                      // 35
+        "Your ",                                                                                        // 36
+        "Verify your ",                                                                                 // 37
 
-        // Subscription Screen
-        "Subscription", // 15
-        "Remove Ads", // 16
-        "Enjoy your journey without popup ads in the application.", // 17
-        "Travel Safely", // 18
-        "Share your real-time location with your trusted contacts.", // 19
-        "Plan Your Journeys", // 20
-        "Create a list of locations to visit without wasting time searching for routes.", // 21
-        "Real-Time Locations", // 22
-        "Keep track of your bus's location at all times.", // 23
-        "Monthly", // 24
-        "Annual", // 25
-        "Month", // 26
-        "SUBSCRIBE", // 27
-        "Learn More...", // 28
+        // ConfigurationScreens > ChangeCityScreen.kt
+        "It will send you to the settings menu",            // 38
 
-        // Routes Screen
-        "Origin", // 29
-        "Destination", // 30
-        "Time", // 31
-        "Search", // 32
+        // ConfigurationScreens > ConfigurationScreen.kt
+        "App language",                                     // 39
+        "Light mode",                                       // 40
+        "Dark mode",                                        // 41
+        "It will send you to the options menu",             // 42
 
-        // Menu (Share Location)
-        "Share Your Location in Real-Time", // 33
+        // ConfigurationScreens > MapScreen.kt
+        "It will send you to the settings menu",            // 43
 
-        // Menu (Share App)
-        "Share the App with Friends", // 34
+        // ConfigurationScreens > NotificationScreen.kt
+        "It will send you to the settings menu",            // 44
 
-        // Trip Screen
-        "Plan Your Trip", // 35
-        "Origin Marker", // 36
-        "Location", // 37
-        "Selected Places", // 38
-        "Neighborhood", // 39
-        "PC", // 40
-        "Saved as Plan for", // 41
-        "location(s)", // 42
-        "PLAN", // 43
+        // ConfigurationScreens > PrivacityScreen.kt
+        "It will send you to the settings menu",            // 45
 
-        // Rate Us Screen
-        "Rate Us", // 44
-        "Rate the App!", // 45
-        "Let us know your satisfaction with the application. Your feedback is crucial to us. Understanding your satisfaction on a scale helps us enhance the app and deliver a better user interface.", // 46
-        "SEND", // 47
+        // HelpScreens > HelAboutAppScreen.kt
+        "Stream Routes logo",                               // 46
+        "It will send you to the options menu",             // 47
 
-        // Settings Screen
-        "Settings", // 48
-        "Change City", // 49
-        "Notifications", // 50
-        "Map", // 51
-        "Privacy", // 52
+        // HelpScreens > HelpCommentsScreen.kt
+        "Tell us how we can help you.",                     // 48
+        "It will send you to the options menu",             // 49
+        "Send",
 
-        // Change City Screen
-        "Change City", // 53
+        // HelpScreens > HelpContactScreen.kt
+        "Name",                                             // 50
+        "Our email",                                        // 51
+        "Message",                                          // 52
+        "Write down your issue.",                           // 53
+        "Send",                                             // 54
+        "It will send you to the options menu",             // 55
 
-        // Notification Screen
-        "Notifications", // 54
-        "Push Notifications", // 55
-        "Notification Type", // 56
-        "Always", // 57
-        "During", // 58
-        "Never", // 59
-        "App News", // 60
-        "New Versions, Promotions, etc.", // 61
-        "Alerts", // 62
-        "Schedule Changes, Routes, etc.", // 63
-        "Subscription", // 64
-        "Subscription Expiry, etc.", // 65
+        // HelpScreens > HelpScreen.kt
+        "Reviews",                                          // 56
+        "Review and give your opinion.",                    // 57
+        "It will send you to the options menu",             // 58
 
-        // Map Screen
-        "Map", // 66
-        "Stop Markers", // 67
-        "Indicate where the stops are.", // 68
-        "Terminal Markers", // 69
-        "Indicate bus stations.", // 70
-        "Current Location Markers", // 71
-        "See your current location.", // 72
-        "Food", // 73
-        "Restaurants, Food Stalls, etc.", // 74
-        "Healthcare", // 75
-        "Hospitals, Pharmacies, Clinics, etc.", // 76
+        // HelpScreens > ResenaScreen.kt
+        "It will send you to the options menu",             // 59
+        "Reviews",                                          // 60
+        "Share your opinion",                               // 61
+        "Image",                                            // 62
+        "Comment on your trip",                             // 63
 
-        // Privacy Screen
-        "Privacy", // 77
-        "Location", // 78
-        "We can suggest better routes based on your location. Allow this service even when the app is not in use.", // 79
-        "Personalized Ads", // 80
-        "We may use your data to show you ads relevant to you. If this option is not selected, generic ads will be displayed.", // 81
-        "Custom Routes", // 82
-        "Use your frequent routes to generate a personalized travel plan. If this option is not selected, personalized travel strategies will not be shown.", // 83
-        "Subscription Payment", // 84
-        "If this option is enabled, automatic subscription billing will be allowed every month.", // 85
+        // MenuScreens > RoutesScreen
+        "Clear destination text",               // 64
+        "Search destination",                   // 65
+        "Search",                               // 66
+        "Change map type",                      // 67
+        "City",                                 // 68
+        "Destination:",                         // 69
+        "Route duration:",                       // 70
+        "Add as destination icon",              // 71
+        "Share route icon",                     // 72
+        "Favorite icon",                        // 73
+        "Close dialog icon",                    // 74
+        "Start:",                               // 75
+        "Destination Marker",                   // 76
+        "More information",                     // 77
+        "Route Name",                           // 78
+        "Stops",                                // 79
+        "Routes",                               // 80
+        "Map type",                             // 81
 
-        // Help Screen
-        "Help", // 86
-        "Comments", // 87
-        "Suggestions?", // 88
-        "Contact Us", // 89
-        "Share your experience with us.", // 90
-        "About", // 91
-        "App Version", // 92
+        // MenuScreens > SuscripcionScreen.kt
+        "It will send you to the options menu", // 82
 
-        // Help Comment Screen
-        "Comments", // 93
-        "Tell us how we can assist you", // 94
-        "Include account information? (Optional)", // 95
-        "Including account details, such as email, will help us respond to you more effectively.", // 96
-        "SEND", // 97
-        "Your suggestions will be considered for future versions of the app.", // 98
+        // MenuScreens > TipScreen.kt
+        "It will send you to the options menu", // 83
 
-        // Help Contact Screen
-        "Contact Us", // 99
-        "Name", // 100
-        "Our Email", // 101
-        "Message", // 102
-        "SEND", // 103
-        "ITSUR, Uriangato, Gto.", // 104
-        "How to Reach Us?", // 105
+        // MenuScreens > ValoranoScreen.kt
+        "It will send you to the options menu", // 84
 
-        // Help About Screen
-        "About", // 106
-        "Version", // 107
-        "Stream Routes. ® All rights reserved 2023-2024.", // 108
+        // ProfileScreens > ProfileScreen.kt
+        "Activated",                            // 85
+        "Active",                               // 86
+        "Last Name",                            // 87
+        "Authenticated",                        // 88
+        "Change password",                      // 89
+        "Change email",                         // 90
+        "Change phone number",                  // 91
+        "Cancel subscription",                  // 92
+        "Cancel",                               // 93
+        "Log out",                              // 94
+        "City",                                 // 95
+        "Neighborhood",                         // 96
+        "Confirm password",                     // 97
+        "Confirm email",                        // 98
+        "Confirm phone number",                 // 99
+        "Current password",                     // 100
+        "New password",                         // 101
+        "Password",                             // 102
+        "Password, two-step verification.",     // 103
+        "Email",                                // 104
+        "Email",                                // 105
+        "Cut",                                  // 106
+        "Postal Code",                          // 107
+        "Birthday",                             // 108
+        "Code",                                 // 109
+        "Address",                              // 110
+        "Duration",                             // 111
+        "Edit",                                 // 112
+        "Entertainment, food, clothing",        // 113
+        "Send code",                            // 114
+        "State",                                // 115
+        "Status",                               // 116
+        "Student",                              // 117
+        "Student",                              // 118
+        "Expiration",                           // 119
+        "Date of birth, country, phone, etc.",  // 120
+        "Save information",                     // 121
+        "Gender",                               // 122
+        "Membership ID",                        // 123
+        "Personal information",                 // 124
+        "Home",                                 // 125
+        "Interests",                            // 126
+        "Upgrade subscription",                 // 127
+        "Membership",                           // 128
+        "Monthly (Student)",                    // 129
+        "Monthly",                              // 130
+        "Payment currency",                     // 131
+        "MXN (Mexican Peso)",                   // 132
+        "More information",                     // 133
+        "Username",                             // 134
+        "Name",                                 // 135
+        "New email",                            // 136
+        "New phone number",                     // 137
+        "Occupation",                           // 138
+        "Country",                              // 139
+        "Favorite routes",                      // 140
+        "Security",                             // 141
+        "Phone",                                // 142
+        "Membership type",                      // 143
+        "Type",                                 // 144
+        "Type, duration, cut, etc.",            // 145
+        "User",                                 // 146
+        "Verification",                         // 147
+        "Verify password",                      // 148
+        "Verify code",                          // 149
+        "Valid",                                // 150
 
-        // Login Screen
-        "Phone Number", // 109
-        "Password", // 110
-        "Forgot My", // 111
-        "Password", // 112
-        "LOGIN", // 113
-        "Don't have an account?", // 114
-        "Sign Up", // 115
+        // Start > MainScreen.kt
+        "Help and support",                     // 151
+        "Log out",                              // 152
+        "Share",                                // 153
+        "Share location",                       // 154
+        "Settings",                             // 155
+        "Downloading route (name)",             // 156
+        "Downloading routes",                   // 157
+        "Download routes",                      // 158
+        "Entertainment",                        // 159
+        "Error obtaining current location. Please try again later.",    // 160
+        "Hospitals",                            // 161
+        "Stops",                                // 162
+        "Plan your trip",                       // 163
+        "Please go to the app settings and enable location permissions.",       // 164
+        "Restaurants",                          // 165
+        "Routes",                               // 166
+        "It will show you the menu",            // 167
+        "Terminals",                            // 168
+        "Rate us",                              // 169
+        "Premium Version",                      // 170
+        "City",                                 // 171
 
-        // Registration Screen
-        "Sign Up", // 116
-        "Phone Number", // 117
-        "Password", // 118
-        "Confirm Password", // 119
-        "REGISTER", // 120
 
-        // Verification Screen
-        "Forgot Password", // 121
-        "Phone Number", // 122
-        "Code Sent", // 123
-        "Enter a valid phone number", // 124
-        "SEND", // 125
-        "Verification Code", // 126
-        "Code", // 127
-        "Incorrect Code", // 128
-        "VERIFY", // 129
 
-        // Change Password Screen
-        "Change Password", // 130
-        "Password", // 131
-        "Confirm Password", // 132
-        "Password", // 133
-        "CHANGE" // 134
+        // MISSING SENTENCES
+        // MenuScreen.kt
+        "Menu",                     // 172
+        "Username",                 // 173
+        "Membership Type",          // 174
+        "Premium Version",          // 175
+        "Plan Your Trip",           // 176
+        "Share Location",           // 177
+        "Real-time Location:",      // 178
+        "Failed to retrieve current location. Make sure your location is enabled.",    // 179
+        "Share",                    // 180
+        "Rate Us",                  // 181
+        "Settings",                 // 182
+        "Help and Support",         // 183
+
+        // MenuScreens > SuscriptionScreen.kt
+        "Subscription",             // 184
+        "Remove Ads",               // 185
+        "Enjoy your trip without app pop-up ads.",       // 186
+        "Move Safely",              // 187
+        "Share your real-time location with your trusted contacts.",    // 188
+        "Plan Your Trip",           // 189
+        "Create a list of locations you want to visit without wasting time searching for a route.",  // 190
+        "Real-time Locations",      // 191
+        "Keep track of your bus's location at all times.", // 192
+        "Monthly",                  // 193
+        "Annual",                   // 194
+        "Month",                    // 195
+        "SUBSCRIBE",                // 196
+        "Learn more...",            // 197
+
+        // MenuScreens > RouteScreen.kt
+        "Origin",       // 198
+        "Time",         // 199
+        "Share your real-time location",        // 200
+        "Share the app with your friends",      // 201
+
+        // MenuScreens > TripScreen.kt
+        "Plan Your Trip",       // 202
+        "Origin Marker",        // 203
+        "Location",             // 204
+        "Selected Places",      // 205
+        "Neighborhood",         // 206
+        "ZIP Code",             // 207
+        "Saved Plan to",        // 208
+        "location(s)",          // 209
+        "PLAN",                 // 210
+
+        // MenuScreens > ValoranoScreen.kt
+        "Rate Us",          // 211
+        "Rate Us!",         // 212
+        "Let us know your satisfaction with the app; your feedback is very important to us. " +
+                "Rating us on a scale helps us improve the app and release a better user interface.",    // 213
+        "SEND",             // 214
+
+        // ConfigurationScreen > ConfigurationScreen.kt
+        "Settings",             // 215
+        "Change City",          // 216
+        "Notifications",        // 217
+        "Map",                  // 218
+        "Privacy",              // 219
+
+        // ConfigurationScreen > ConfigurationScreen.kt
+        "Change City",       // 220
+
+        // NotificationScreen
+        "Notifications",                            // 221
+        "Push Notifications",                       // 222
+        "Notification Type",                        // 223
+        "Always",                                   // 224
+        "During",                                   // 225
+        "Never",                                    // 226
+        "App Updates",                              // 227
+        "New versions, promotions, etc.",           // 228
+        "Alerts",                                   // 229
+        "Schedule changes, route changes, etc.",    // 230
+        "Subscription",                             // 231
+        "Subscription expiration, etc.",            // 232
+
+        // MapScreen
+        "Map",                                      // 233
+        "Stop Markers",                             // 234
+        "Indicates where the stops are.",           // 235
+        "Terminal Markers",                         // 236
+        "Indicates bus stations.",                  // 2z7
+        "Real-time Location Markers",               // 238
+        "View your current location.",              // 239
+        "Food",                                     // 240
+        "Restaurants, food stalls, etc.",           // 241
+        "Health",                                   // 242
+        "Hospitals, pharmacies, clinics, etc.",     // 243
+
+        // PrivacyScreeen
+        "Privacy",              // 244
+        "Location",             // 245
+        "We may suggest better routes based on your location. Allow this service even when the app is not in use.",     // 246
+        "Personalized Ads",      // 247
+        "We may use your data to show you ads that may be relevant to you. If this option is not selected, generic ads will be shown.",  // 248
+        "Personalized Routes",         // 249
+        "Use your frequent routes to generate a personalized travel plan for you. If this option is not selected, personalized travel strategies will not be shown.",   // 250
+        "Subscription Payment",          // 251
+        "If this option is selected, automatic subscription payment will be allowed every month.",     // 252
+
+        // HelpScreen
+        "Help",                         // 253
+        "Feedback",                     // 254
+        "Suggestions?",                 // 255
+        "Contact Us",                   // 256
+        "Share your experience.",       // 257
+        "About",                        // 258
+        "App Version",                  // 259
+        "Feedback",                     // 260
+        "Do you want to include account information? (Optional)",                             // 261
+        "If you include account details in your feedback, such as email, etc., it will be easier for us to respond to you.",   // 262
+        "Your suggestions will be considered for future app versions.",      // 263
+
+        // HelpContactScreen
+        "ITSUR, Uriangato, Gto.",       // 264
+        "How to Get Here?",             // 265
+
+        // HelpAboutScreen
+        "About",                                                // 266
+        "Version",                                              // 267
+        "Stream Routes. ® All rights reserved 2023-2024.",      // 268
+
+        // login screen
+        "Phone Number",             // 269
+        "Password",                 // 270
+        "I forgot my",              // 271
+        "password",                 // 272
+        "Login",                    // 273
+        "Don't have an account?",   // 274
+        "Sign Up",                  // 275
+
+        // registration screen
+        "Sign Up",                  // 276
+        "Phone Number",             // 277
+        "Password",                 // 278
+        "Confirm Password",         // 279
+        "Register",                 // 280
+
+        // verification screen
+        "I forgot my password",         // 281
+        "Phone Number",                 // 282
+        "Code Sent",                    // 283
+        "Enter a valid phone number",   // 284
+        "Send",                         // 285
+        "Verification Code",            // 286
+        "Code",                         // 287
+        "Incorrect Code",               // 288
+        "Verify",                       // 289
+
+        // changeScreen
+        "Change Password",      // 290
+        "Password",             // 291
+        "Confirm Password",     // 292
+        "Password",             // 293
+        "Change",               // 294
+        // extra
+        "Route"
     )
 
     fun languageType(): List<String> {

@@ -70,32 +70,32 @@ fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
 
             // localizacion
             Options(
-                text = myViewModel.languageType().get(78),
-                sub_text = myViewModel.languageType().get(79),
+                text = myViewModel.languageType().get(246),
+                sub_text = myViewModel.languageType().get(247),
                 color_letra = MaterialTheme.colorScheme.onBackground,
                 variable = localizacion
             )
 
             // anuncios
             Options(
-                text = myViewModel.languageType().get(80), // texto
-                sub_text = myViewModel.languageType().get(81),
+                text = myViewModel.languageType().get(248), // texto
+                sub_text = myViewModel.languageType().get(249),
                 color_letra = MaterialTheme.colorScheme.onBackground,
                 variable = anuncios
             )
 
             // rutas
             Options(
-                text = myViewModel.languageType().get(82), // texto
-                sub_text = myViewModel.languageType().get(83),
+                text = myViewModel.languageType().get(250), // texto
+                sub_text = myViewModel.languageType().get(251),
                 color_letra = MaterialTheme.colorScheme.onBackground,
                 variable = rutas
             )
 
             // suscripcion
             Options(
-                text = myViewModel.languageType().get(84), // texto
-                sub_text = myViewModel.languageType().get(85),
+                text = myViewModel.languageType().get(252), // texto
+                sub_text = myViewModel.languageType().get(253),
                 color_letra = MaterialTheme.colorScheme.onBackground,
                 variable = suscripcion
             )
@@ -111,7 +111,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(77),
+            Text(text = myViewModel.languageType().get(245),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,

@@ -77,8 +77,6 @@ fun ChangeScreen(myViewModel: MyViewModel,navController: NavController){
     Change(myViewModel,navController)
 }
 
-val color_fond = Color(0xFFFFF7E7)
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Change( myViewModel: MyViewModel,navController: NavController ){
@@ -112,8 +110,8 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
 
             // contrasenia
             HeaderTextField(
-                tittle = "Contraseña",
-                placeholder = "Contraseña",
+                tittle = myViewModel.languageType().get(292),
+                placeholder = myViewModel.languageType().get(292),
                 size = 70,
                 variable = password,
                 onValueChange = {newValue -> password = newValue},
@@ -129,8 +127,8 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
 
             // confirmar contrasenia
             HeaderTextField(
-                tittle = "Confirmar contraseña",
-                placeholder = "Confirmar contraseña",
+                tittle = myViewModel.languageType().get(293),
+                placeholder = myViewModel.languageType().get(293),
                 size = 70,
                 variable = confirmPass,
                 onValueChange = {newValue -> confirmPass = newValue},
@@ -159,7 +157,7 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Cambiar",
+                    text = myViewModel.languageType().get(295),
                     fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
@@ -177,7 +175,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(130),
+            Text(text = myViewModel.languageType().get(291),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center
             )

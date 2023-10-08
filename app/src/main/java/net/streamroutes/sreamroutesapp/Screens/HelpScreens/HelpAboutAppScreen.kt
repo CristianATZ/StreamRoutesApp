@@ -74,7 +74,7 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
                 Spacer(modifier = Modifier.size(32.dp))
 
                 Text(
-                    text = myViewModel.languageType().get(107) + " 3.0",
+                    text = myViewModel.languageType().get(268) + " 3.0",
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
                     fontSize = 18.sp,
@@ -91,7 +91,7 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
                 verticalAlignment = Alignment.Bottom
             ) {
                 Text(
-                    text = myViewModel.languageType().get(108),
+                    text = myViewModel.languageType().get(269),
                     color = MaterialTheme.colorScheme.onBackground,
                     textAlign = TextAlign.Center,
                     fontWeight = FontWeight.Bold
@@ -109,7 +109,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(106),
+            Text(text = myViewModel.languageType().get(267),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,

@@ -102,21 +102,21 @@ fun DialogNotificationPush(
                 ) {
                     // siempre
                     PushOptions(
-                        text = myViewModel.languageType().get(57),
+                        text = myViewModel.languageType()[225],
                         color_letra = color_letra_topbar,
                         variable = siempre
                     )
 
                     // durante
                     PushOptions(
-                        text = myViewModel.languageType().get(58),
+                        text = myViewModel.languageType()[226],
                         color_letra = color_letra_topbar,
                         variable = durante
                     )
 
                     // nunca
                     PushOptions(
-                        text = myViewModel.languageType().get(59),
+                        text = myViewModel.languageType()[227],
                         color_letra = color_letra_topbar,
                         variable = nunca
                     )

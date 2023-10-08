@@ -87,7 +87,6 @@ fun RegistrationScreen (myViewModel: MyViewModel,navController: NavController) {
 @Composable
 fun Registration (myViewModel: MyViewModel,navController: NavController) {
     var telefono by remember { mutableStateOf("") }
-    var telefonoVisibility = remember { mutableStateOf(false) }
     var password by remember { mutableStateOf("") }
     var passwordVisibility = remember { mutableStateOf(true) }
     var confirm by remember { mutableStateOf("") }
@@ -115,8 +114,8 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
 
             // telefono
             HeaderTextField(
-                tittle = "Telefono",
-                placeholder = "Telefono",
+                tittle = myViewModel.languageType().get(278),
+                placeholder = myViewModel.languageType().get(278),
                 size = 70,
                 variable = telefono,
                 onValueChange = {newValue -> telefono = newValue},
@@ -132,8 +131,8 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
 
             // contrasenia
             HeaderTextField(
-                tittle = "Contraseña",
-                placeholder = "Contraseña",
+                tittle = myViewModel.languageType().get(279),
+                placeholder = myViewModel.languageType().get(279),
                 size = 70,
                 variable = password,
                 onValueChange = {newValue -> password = newValue},
@@ -149,8 +148,8 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
 
             // confirmar
             HeaderTextField(
-                tittle = "Confirmar contraseña",
-                placeholder = "Confirmar contraseña",
+                tittle = myViewModel.languageType().get(280),
+                placeholder = myViewModel.languageType().get(280),
                 size = 70,
                 variable = confirm,
                 onValueChange = {newValue -> confirm = newValue},
@@ -176,7 +175,7 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
                     .padding(16.dp)
             ) {
                 Text(
-                    text = "Registrarse",
+                    text = myViewModel.languageType().get(281),
                     fontSize = 24.sp,
                     color = MaterialTheme.colorScheme.onTertiary
                 )
@@ -193,7 +192,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(116),
+            Text(text = myViewModel.languageType().get(277),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center

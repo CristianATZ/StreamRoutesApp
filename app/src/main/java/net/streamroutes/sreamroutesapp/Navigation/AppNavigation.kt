@@ -71,7 +71,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
         // PROFILE
         composable(AppScreens.ProfileScreen.route){
-            ProfileScreen(NavController)
+            ProfileScreen(NavController,myViewModel)
         }
         composable(AppScreens.ProfileChangePhoneScreen.route){
             ProfileChangePhoneScreen(NavController)

@@ -295,7 +295,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                                     RoundedCornerShape(percent = 10)
                                 )
                                 .clickable {
-
+                                    myViewModel.idioma = if(myViewModel.idioma==1) 0 else 1
                                 }
                         )
 
@@ -348,7 +348,7 @@ private fun TopBarBody(
     TopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType()[0],
+                text = myViewModel.languageType()[172],
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
@@ -532,7 +532,7 @@ fun DrawerBody(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            DrawerItem(text = "Version Premium", icon = painterResource(id = R.drawable.premium)) {
+            DrawerItem(text = myViewModel.languageType().get(171), icon = painterResource(id = R.drawable.premium)) {
                 navController.navigate(AppScreens.SuscripcionScreen.route)
             }
 
@@ -549,22 +549,22 @@ fun DrawerBody(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                DrawerItem(text = "Rutas", icon = painterResource(id = R.drawable.routes)) {
+                DrawerItem(text = myViewModel.languageType().get(167), icon = painterResource(id = R.drawable.routes)) {
                     navController.navigate(AppScreens.RoutesScreen.route)
                 }
 
-                DrawerItem(text = "Planifica tu viaje", icon = painterResource(id = R.drawable.add_location)) {
+                DrawerItem(text = myViewModel.languageType().get(164), icon = painterResource(id = R.drawable.add_location)) {
                     navController.navigate(AppScreens.TripScreen.route)
                 }
 
-                DrawerItem(text = "Compartir ubicacion", icon = painterResource(id = R.drawable.share_location)) {
+                DrawerItem(text = myViewModel.languageType().get(155), icon = painterResource(id = R.drawable.share_location)) {
                     if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
                         locationPermissionState.launchPermissionRequest()
                         backgroundLocationPermissionState.launchPermissionRequest()
                     }
 
                     if (!areLocationServicesEnabled(context)) {
-                        Toast.makeText(context, "Los servicios de ubicación están deshabilitados. Por favor activa la ubicacion del dispositivo.", Toast.LENGTH_LONG).show()
+                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
                         // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
                         // y proporcionar una opción para abrir la configuración para habilitarlos
                     } else {
@@ -579,8 +579,8 @@ fun DrawerBody(
                                         // Construir la URL con el marcador en tu ubicación actual
                                         val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
                                         val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
-                                        val message = myViewModel.languageType().get(9) + addressInfo?.cityName + " " +
-                                                addressInfo?.streetName +  " " + addressInfo?.postalCode + "\n"
+                                        val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
+                                                addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
 
                                         val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
                                         context.startActivity(shareIntent)
@@ -591,16 +591,16 @@ fun DrawerBody(
                                 }
                                 .addOnFailureListener {
                                     // Manejar el error al obtener la ubicación actual
-                                    Toast.makeText(context, "Error al obtener la ubicación actual. Intentalo mas tarde.", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
                                 }
                         } else {
-                            Toast.makeText(context, "Por favor ve a la configuracion de la aplicacion y habilita los permisos de ubicacion.", Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
                         }
                     }
                 }
 
-                DrawerItem(text = "Descargar rutas", icon = painterResource(id = R.drawable.download)) {
-                    startDownload(context = context)
+                DrawerItem(text = myViewModel.languageType().get(159), icon = painterResource(id = R.drawable.download)) {
+                    startDownload(context = context, myViewModel = myViewModel)
                 }
             }
 
@@ -617,20 +617,20 @@ fun DrawerBody(
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                DrawerItem(text = "Comparte", icon = painterResource(id = R.drawable.share)) {
+                DrawerItem(text = myViewModel.languageType().get(154), icon = painterResource(id = R.drawable.share)) {
                     val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
                     context.startActivity(shareIntent)
                 }
 
-                DrawerItem(text = "Valoranos", icon = painterResource(id = R.drawable.star)) {
+                DrawerItem(text = myViewModel.languageType().get(170), icon = painterResource(id = R.drawable.star)) {
                     navController.navigate(AppScreens.ValoranoScreen.route)
                 }
 
-                DrawerItem(text = "Configuracion", icon = painterResource(id = R.drawable.settings)) {
+                DrawerItem(text = myViewModel.languageType().get(156), icon = painterResource(id = R.drawable.settings)) {
                     navController.navigate(AppScreens.ConfigurationScreen.route)
                 }
 
-                DrawerItem(text = "Ayuda y soporte", icon = painterResource(id = R.drawable.help)) {
+                DrawerItem(text = myViewModel.languageType().get(152), icon = painterResource(id = R.drawable.help)) {
                     navController.navigate(AppScreens.HelpScreen.route)
                 }
             }
@@ -645,7 +645,7 @@ fun DrawerBody(
                     .align(Alignment.CenterHorizontally)
             )
 
-            DrawerItem(text = "Cerrar sesion", icon = painterResource(id = R.drawable.logout)) {
+            DrawerItem(text = myViewModel.languageType().get(153), icon = painterResource(id = R.drawable.logout)) {
 
             }
         }
@@ -799,7 +799,7 @@ fun getShareApp(
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(34))
         type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, "https://stream_routes_official.com.mx")
+        putExtra(Intent.EXTRA_TEXT, "https://streamroutes.com")
         type = "text/plain"
     }
     return shareApp
@@ -813,7 +813,7 @@ fun getShareUbi(
 ) : Intent{
     val shareUbi: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(33))
+        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(178))
         val manager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
         val level: Int = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
         putExtra(Intent.EXTRA_TEXT, "Bat:$level% $message\n")
@@ -840,16 +840,20 @@ fun isInternetAvailable(
     return false
 }
 
-private fun startDownload(context: Context, pdfUrl: String = "https://drive.google.com/uc?export=download&id=1Xt85BpR47S6adKdRlh_ERVfo8TxD1fM4") {
+private fun startDownload(
+    context: Context,
+    pdfUrl: String = "https://drive.google.com/uc?export=download&id=1Xt85BpR47S6adKdRlh_ERVfo8TxD1fM4",
+    myViewModel: MyViewModel
+) {
     val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     val request = DownloadManager.Request(Uri.parse(pdfUrl))
-        .setTitle("Descargando rutas")
-        .setDescription("Descargando ruta (nombre)")
+        .setTitle(myViewModel.languageType().get(158))
+        .setDescription(myViewModel.languageType().get(159))
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         .setDestinationInExternalPublicDir(
             Environment.DIRECTORY_DOWNLOADS,
-            "prueba.pdf"
+            "RutaRoute1.pdf"
         )
 
     downloadManager.enqueue(request)

@@ -151,8 +151,8 @@ fun RoutesScreenView(
 
     // ruta 1
     Scaffold(
-        topBar = { TopBarBody(navController) },
-        floatingActionButton = { Fab(fabButton) },
+        topBar = { TopBarBody(navController,myViewModel) },
+        floatingActionButton = { Fab(fabButton,myViewModel) },
         containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
@@ -275,9 +275,11 @@ fun RoutesScreenView(
                                 }
                             }
                         },
+
                         placeholder = {
                             Text(
-                                text = "Buscar destino",
+                                text = "Buscar destino" +
+                                        "",
                                 color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
                             )
                         },
@@ -677,16 +679,20 @@ fun Botones(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Fab(
-    destino: String
+    destino: String,
+    myViewModel: MyViewModel
 ) {
     var openDialog by remember {
         mutableStateOf(false)
     }
 
     if(openDialog){
-        DialogBody(){
-            openDialog = !openDialog
-        }
+        DialogBody(
+            onClick = {
+                openDialog = !openDialog
+            },
+            myViewModel = myViewModel
+        )
     }
 
     ExtendedFloatingActionButton(
@@ -694,7 +700,7 @@ fun Fab(
             .padding(16.dp),
         text = {
             Text(
-                text = if (destino.isEmpty()) "Rutas" else "Buscar"
+                text = if (destino.isEmpty()) myViewModel.languageType().get(81) else myViewModel.languageType().get(67)
             )
         },
         icon = {
@@ -719,7 +725,8 @@ fun Fab(
 @ExperimentalMaterial3Api
 @Composable
 fun DialogBody(
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    myViewModel: MyViewModel
 ) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
@@ -736,13 +743,14 @@ fun DialogBody(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 RutasHeader(
-                    tittle = "Ciudad",
+                    tittle = myViewModel.languageType().get(69),
                     onClick = {
                         onClick()
                     }
                 )
                 RutasBody(
-                    onClick = { onClick() }
+                    onClick = { onClick() },
+                    myViewModel = myViewModel
                 )
             }
         }
@@ -792,7 +800,8 @@ fun RutasHeader(
 
 @Composable
 fun RutasBody(
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    myViewModel: MyViewModel
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -822,8 +831,8 @@ fun RutasBody(
                     .padding(start = 16.dp)
             ){
                 RouteInformation(
-                    name = "Ruta 1",
-                    duration = "Duración: 02:30 Hrs"
+                    name = myViewModel.languageType().get(296) +" 1",
+                    duration = myViewModel.languageType().get(71) + " 02:30 Hrs"
                 )
                 Spacer(Modifier.weight(1f))
                 RouteButton(
@@ -835,11 +844,12 @@ fun RutasBody(
                 // inicio y destino
                 RouteDirection(
                     start = "12 de Octubre",
-                    end = "Auditorio Municipal"
+                    end = "Auditorio Municipal",
+                    myViewModel = myViewModel
                 )
                 // paradas
                 RouteStops(
-
+                    myViewModel = myViewModel
                 )
             }
         }
@@ -856,10 +866,11 @@ fun RutasBody(
 fun RouteStops(
     listOf: List<String> = listOf("12 de Octubre","Av. America","Calle Querétaro",
         "Avenida Puebla","5 de Mayo", "Guadalupe Victoria", "Avenida Morelos", "Plan Sexenal",
-        "Chamizal", "Chamizal esquina San Rogelio", "Blvd. Señor de Esquipulas", "Moroleón - Piñicuaro", "Salvador Díaz Mirón")
+        "Chamizal", "Chamizal esquina San Rogelio", "Blvd. Señor de Esquipulas", "Moroleón - Piñicuaro", "Salvador Díaz Mirón"),
+    myViewModel: MyViewModel
 ) {
     Text(
-        text = "Paradas",
+        text = myViewModel.languageType().get(80),
         fontSize = 20.sp,
         fontWeight = FontWeight.Bold,
         modifier = Modifier
@@ -968,7 +979,8 @@ fun IconsMenu(
 fun RouteDirection(
     modifier: Modifier = Modifier,
     start: String = "",
-    end: String = ""
+    end: String = "",
+    myViewModel: MyViewModel
 ) {
     Divider()
 
@@ -978,7 +990,7 @@ fun RouteDirection(
             .padding(start = 16.dp, top = 8.dp, bottom = 8.dp)
     ) {
         Text(
-            text = "Inicio:",
+            text = myViewModel.languageType().get(76),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
@@ -987,7 +999,7 @@ fun RouteDirection(
             fontSize = 12.sp
         )
         Text(
-            text = "Destino:",
+            text = myViewModel.languageType().get(70),
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
@@ -1021,7 +1033,7 @@ fun RouteButton(
 @Composable
 fun RouteInformation(
     name: String = "Nombre Ruta",
-    duration: String = "Duracion Ruta",
+    duration: String = "Duración Ruta",
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -1041,15 +1053,16 @@ fun RouteInformation(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarBody(
-    navController: NavController
+private fun TopBarBody(
+    navController: NavController,
+    myViewModel: MyViewModel
 ) {
     TopAppBar(
         title = {
             Text(
                 modifier = Modifier
                     .fillMaxWidth(),
-                text = "Rutas",
+                text = myViewModel.languageType().get(81),
                 textAlign = TextAlign.Center
             )
         },

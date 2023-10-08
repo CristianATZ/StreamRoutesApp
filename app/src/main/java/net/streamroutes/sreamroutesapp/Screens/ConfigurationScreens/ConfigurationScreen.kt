@@ -62,7 +62,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
         ) {
             // cambiar de ciudad
             Options(
-                text = myViewModel.languageType().get(49),
+                text = myViewModel.languageType().get(217),
                 color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.ChangeCityScreen.route)
@@ -71,7 +71,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
 
             // notificaciones
             Options(
-                text = myViewModel.languageType().get(50),
+                text = myViewModel.languageType().get(218),
                 color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.NotificationsScreen.route)
@@ -80,7 +80,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
 
             // mapa
             Options(
-                text = myViewModel.languageType().get(51),
+                text = myViewModel.languageType().get(219),
                 color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.MapOptionsScreen.route)
@@ -89,7 +89,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
 
             // Privacidad
             Options(
-                text = myViewModel.languageType().get(52),
+                text = myViewModel.languageType().get(220),
                 color_texto = MaterialTheme.colorScheme.onBackground,
                 onClick = {
                     navController.navigate(route = AppScreens.PrivacityScreen.route)
@@ -125,7 +125,7 @@ private fun TopBarBody(
 ) {
     TopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(48),
+            Text(text = myViewModel.languageType().get(216),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
                 color = MaterialTheme.colorScheme.onPrimary

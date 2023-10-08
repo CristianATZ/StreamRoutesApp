@@ -93,7 +93,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
             Spacer(modifier = Modifier.size(15.dp))
 
             HeaderTextField(
-                placeholder = "Cuentamos como podemos ayudarte.",
+                placeholder = myViewModel.languageType().get(262),
                 size = 300,
                 variable = comment,
                 onValueChange = {newValue -> comment = newValue},
@@ -118,12 +118,12 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                     horizontalAlignment = Alignment.Start
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(95),
+                        text = myViewModel.languageType().get(263),
                         color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                     )
                     Text(
-                        text = myViewModel.languageType().get(96),
+                        text = myViewModel.languageType().get(264),
                         color = MaterialTheme.colorScheme.onBackground,
                         fontFamily = FontFamily.SansSerif,
                     )
@@ -174,7 +174,7 @@ private fun TopBarBody(
     TopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType().get(93),
+                text = myViewModel.languageType().get(261),
                 modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Center,
