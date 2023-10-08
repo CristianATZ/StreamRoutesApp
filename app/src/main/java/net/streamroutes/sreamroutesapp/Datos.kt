@@ -229,7 +229,7 @@ class MyViewModel : ViewModel() {
         "Planifica tu viaje",       // 163
         "Por favor ve a la configuración de la aplicación y habilita los permisos de ubicación.",   // 164
         "Resturantes",              // 165
-        "Rutas",                    // 166
+        "Rutas de transporte",                    // 166
         "Te mostrara el menú",      // 167
         "Terminales",               // 168
         "Valóranos",                // 169

@@ -17,6 +17,9 @@ import android.os.Build
 import android.os.Environment
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -32,16 +35,24 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowDropDown
 import androidx.compose.material.rememberDrawerState
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -295,7 +306,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                                     RoundedCornerShape(percent = 10)
                                 )
                                 .clickable {
-                                    myViewModel.idioma = if(myViewModel.idioma==1) 0 else 1
+                                    myViewModel.idioma = if (myViewModel.idioma == 1) 0 else 1
                                 }
                         )
 
@@ -546,61 +557,112 @@ fun DrawerBody(
                     .align(Alignment.CenterHorizontally)
             )
 
+            var more by remember {
+                mutableStateOf(false)
+            }
+
             Column(
+                modifier = Modifier
+                    .animateContentSize(
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioNoBouncy,
+                            stiffness = Spring.StiffnessVeryLow
+                        )
+                    ),
                 verticalArrangement = Arrangement.SpaceEvenly
             ) {
-                DrawerItem(text = myViewModel.languageType().get(167), icon = painterResource(id = R.drawable.routes)) {
-                    navController.navigate(AppScreens.RoutesScreen.route)
+                DrawerItem(
+                    text = "Transporte",
+                    icon = painterResource(id = R.drawable.routes),
+                    selected = more
+                ) {
+                    more = !more
                 }
 
-                DrawerItem(text = myViewModel.languageType().get(164), icon = painterResource(id = R.drawable.add_location)) {
-                    navController.navigate(AppScreens.TripScreen.route)
-                }
+                if(more){
+                    Box {
+                        Column(
+                            modifier = Modifier
+                                .height(200.dp)
+                                .verticalScroll(rememberScrollState())
+                        ) {
+                            DrawerItem(text = "Ruta mas rapida", icon = painterResource(id = R.drawable.routes)) {
+                                // navController.navigate(AppScreens.RoutesScreen.route)
+                            }
 
-                DrawerItem(text = myViewModel.languageType().get(155), icon = painterResource(id = R.drawable.share_location)) {
-                    if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
-                        locationPermissionState.launchPermissionRequest()
-                        backgroundLocationPermissionState.launchPermissionRequest()
-                    }
 
-                    if (!areLocationServicesEnabled(context)) {
-                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
-                        // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
-                        // y proporcionar una opción para abrir la configuración para habilitarlos
-                    } else {
-                        if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
-                            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-                            fusedLocationClient.lastLocation
-                                .addOnSuccessListener { location: Location? ->
-                                    if (location != null) {
-                                        val latitude = location.latitude
-                                        val longitude = location.longitude
+                            DrawerItem(text = myViewModel.languageType().get(167), icon = painterResource(id = R.drawable.routes)) {
+                                navController.navigate(AppScreens.RoutesScreen.route)
+                            }
 
-                                        // Construir la URL con el marcador en tu ubicación actual
-                                        val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
-                                        val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
-                                        val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
-                                                addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
+                            DrawerItem(text = myViewModel.languageType().get(164), icon = painterResource(id = R.drawable.add_location)) {
+                                navController.navigate(AppScreens.TripScreen.route)
+                            }
 
-                                        val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
-                                        context.startActivity(shareIntent)
+                            DrawerItem(text = "Turismo", icon = painterResource(id = R.drawable.routes)) {
+                                //navController.navigate(AppScreens.RoutesScreen.route)
+                            }
 
+                            DrawerItem(text = myViewModel.languageType().get(155), icon = painterResource(id = R.drawable.share_location)) {
+                                if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
+                                    locationPermissionState.launchPermissionRequest()
+                                    backgroundLocationPermissionState.launchPermissionRequest()
+                                }
+
+                                if (!areLocationServicesEnabled(context)) {
+                                    Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
+                                    // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
+                                    // y proporcionar una opción para abrir la configuración para habilitarlos
+                                } else {
+                                    if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
+                                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+                                        fusedLocationClient.lastLocation
+                                            .addOnSuccessListener { location: Location? ->
+                                                if (location != null) {
+                                                    val latitude = location.latitude
+                                                    val longitude = location.longitude
+
+                                                    // Construir la URL con el marcador en tu ubicación actual
+                                                    val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
+                                                    val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
+                                                    val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
+                                                            addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
+
+                                                    val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
+                                                    context.startActivity(shareIntent)
+
+                                                } else {
+                                                    Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
+                                                }
+                                            }
+                                            .addOnFailureListener {
+                                                // Manejar el error al obtener la ubicación actual
+                                                Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
+                                            }
                                     } else {
-                                        Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
+                                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
                                     }
                                 }
-                                .addOnFailureListener {
-                                    // Manejar el error al obtener la ubicación actual
-                                    Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
-                                }
-                        } else {
-                            Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
+                            }
+
+                            DrawerItem(text = myViewModel.languageType().get(159), icon = painterResource(id = R.drawable.download)) {
+                                startDownload(context = context, myViewModel = myViewModel)
+                            }
+                        }
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp),
+                            horizontalArrangement = Arrangement.End,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.ArrowDropDown,
+                                contentDescription = null
+                            )
+                            Spacer(modifier = Modifier.size(32.dp))
                         }
                     }
-                }
-
-                DrawerItem(text = myViewModel.languageType().get(159), icon = painterResource(id = R.drawable.download)) {
-                    startDownload(context = context, myViewModel = myViewModel)
                 }
             }
 
@@ -723,6 +785,7 @@ private fun BoxOption(
 private fun DrawerItem(
     text: String,
     icon: Painter,
+    selected: Boolean = false,
     onItemClick: () -> Unit
 ) {
     Row(
@@ -731,6 +794,7 @@ private fun DrawerItem(
             .height(60.dp)
             .padding(start = 15.dp, top = 2.dp, end = 15.dp)
             .clip(RoundedCornerShape(50))
+            .background(if (selected) colorScheme.onPrimary else Color.Transparent)
             .clickable(onClick = onItemClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start

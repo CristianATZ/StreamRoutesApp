@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -23,13 +22,15 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
-import net.streamroutes.sreamroutesapp.Screens.MenuScreens.RoutesScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfilePersonalInfoScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.SuscriptionConfigurationScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LanguageScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
@@ -156,6 +157,14 @@ fun AppNavigation(myViewModel: MyViewModel) {
         // SUSCRIPTION CONFIGURATION
         composable(AppScreens.SuscriptionConfigurationScreen.route){
             SuscriptionConfigurationScreen()
+        }
+
+        composable(AppScreens.TurismScreen.route){
+            TurismScreen()
+        }
+
+        composable(AppScreens.FastScreen.route){
+            FastScreen()
         }
     }
 }
