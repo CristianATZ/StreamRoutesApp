@@ -663,6 +663,13 @@ fun DrawerBody(
                         }
                     }
                 }
+
+                DrawerItem(
+                    text = "Chat general",
+                    icon = painterResource(id = R.drawable.routes),
+                ) {
+
+                }
             }
 
             Spacer(

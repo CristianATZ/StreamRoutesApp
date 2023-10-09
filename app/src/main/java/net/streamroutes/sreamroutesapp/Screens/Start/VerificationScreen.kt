@@ -112,7 +112,7 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
             }
 
             if(isPermissionsGranted(context)){
-                if(!telefono.isEmpty()){
+                if(telefono.isNotEmpty()){
                     codigoGenerado = generarCodigo()
                     val smsManager: SmsManager = SmsManager.getDefault()
                     smsManager.sendTextMessage(telefono, null, codigoGenerado, null, null)
@@ -148,123 +148,127 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
 
             Spacer(modifier = Modifier.size(64.dp))
 
-            // telefono
-            OutlinedTextField(
-                value = telefono,
-                onValueChange = { telefono = it },
-                label = {
-                    Text(
-                        text = myViewModel.languageType().get(270),
-                        style = typography.titleMedium
-                    )
-                },
-                shape = RoundedCornerShape(16.dp),
-                trailingIcon = {
-                    if( telefono.isNotEmpty() ){
-                        IconButton(
-                            onClick = {
-                                telefono = ""
+            if(!habilitar){
+                // telefono
+                OutlinedTextField(
+                    value = telefono,
+                    onValueChange = { telefono = it },
+                    label = {
+                        Text(
+                            text = myViewModel.languageType().get(270),
+                            style = typography.titleMedium
+                        )
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    trailingIcon = {
+                        if( telefono.isNotEmpty() ){
+                            IconButton(
+                                onClick = {
+                                    telefono = ""
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Clear,
+                                    contentDescription = "borrar telefono",
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                )
                             }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Clear,
-                                contentDescription = "borrar telefono",
-                                modifier = Modifier
-                                    .size(32.dp)
-                            )
                         }
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
-                ),
-                keyboardActions = KeyboardActions(
-                    onNext = {
-                        sendCode()
-                    }
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-            )
-
-            // enviar codigo
-            TextButton(
-                onClick = {
-                    sendCode()
-                },
-                /*colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                ),*/
-                modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .padding(top = 16.dp)
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = myViewModel.languageType().get(286),
-                    style = typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Next,
+                        keyboardType = KeyboardType.Number
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            sendCode()
+                        }
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
                 )
+
+                // enviar codigo
+                Button(
+                    onClick = {
+                        sendCode()
+                    },
+                    /*colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    ),*/
+                    modifier = Modifier
+                        .fillMaxWidth(0.85f)
+                        .padding(top = 16.dp)
+                        .height(50.dp)
+                ) {
+                    Text(
+                        text = myViewModel.languageType().get(286),
+                        style = typography.bodyLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
 
-            Spacer(modifier = Modifier.size(8.dp))
+            //Spacer(modifier = Modifier.size(8.dp))
 
-            // codigo de verificacino
-            OutlinedTextField(
-                value = codigo,
-                onValueChange = { codigo = it },
-                label = {
-                    Text(
-                        text = myViewModel.languageType().get(287),
-                        style = typography.titleMedium
-                    )
-                },
-                shape = RoundedCornerShape(16.dp),
-                trailingIcon = {
-                    if( codigo.isNotEmpty() ){
-                        IconButton(
-                            onClick = {
-                                codigo = ""
+            if(habilitar){
+                // codigo de verificacino
+                OutlinedTextField(
+                    value = codigo,
+                    onValueChange = { codigo = it },
+                    label = {
+                        Text(
+                            text = myViewModel.languageType().get(287),
+                            style = typography.titleMedium
+                        )
+                    },
+                    shape = RoundedCornerShape(16.dp),
+                    trailingIcon = {
+                        if( codigo.isNotEmpty() ){
+                            IconButton(
+                                onClick = {
+                                    codigo = ""
+                                }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Clear,
+                                    contentDescription = "borrar telefono",
+                                    modifier = Modifier
+                                        .size(32.dp)
+                                )
                             }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Clear,
-                                contentDescription = "borrar telefono",
-                                modifier = Modifier
-                                    .size(32.dp)
-                            )
                         }
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                    keyboardType = KeyboardType.Number
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-            )
-
-            // verificar codigo
-            Button(
-                onClick = {
-                    /*if(codigoGenerado != codigo)
-                        Toast.makeText(context, myViewModel.languageType().get(289), Toast.LENGTH_SHORT).show()
-                    else
-                        navController.navigate(route = AppScreens.ChangeScreen.route)*/
-                    navController.navigate(route = AppScreens.ChangeScreen.route)
-                },
-                enabled = true,
-                modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .padding(top = 16.dp)
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = myViewModel.languageType().get(290),
-                    style = typography.bodyLarge
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                        keyboardType = KeyboardType.Number
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(0.9f)
                 )
+
+                // verificar codigo
+                Button(
+                    onClick = {
+                        /*if(codigoGenerado != codigo)
+                            Toast.makeText(context, myViewModel.languageType().get(289), Toast.LENGTH_SHORT).show()
+                        else
+                            navController.navigate(route = AppScreens.ChangeScreen.route)*/
+                        navController.navigate(route = AppScreens.ChangeScreen.route)
+                    },
+                    enabled = true,
+                    modifier = Modifier
+                        .fillMaxWidth(0.85f)
+                        .padding(top = 16.dp)
+                        .height(50.dp)
+                ) {
+                    Text(
+                        text = myViewModel.languageType().get(290),
+                        style = typography.bodyLarge
+                    )
+                }
             }
         }
     }
