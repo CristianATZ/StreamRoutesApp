@@ -5,69 +5,43 @@ package net.streamroutes.sreamroutesapp.Screens.Start
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarColors
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.MutableState
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letrain
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -77,205 +51,176 @@ fun ChangeScreen(myViewModel: MyViewModel,navController: NavController){
     Change(myViewModel,navController)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Change( myViewModel: MyViewModel,navController: NavController ){
     var password by remember { mutableStateOf("") }
-    var passwordVisibility = remember { mutableStateOf(true) }
+    var passwordVisibility by remember { mutableStateOf(true) }
     var confirmPass by remember { mutableStateOf("") }
-    var confirmPassVisibility = remember { mutableStateOf(true) }
+    var confirmPassVisibility by remember { mutableStateOf(true) }
+
+    val focusManager = LocalFocusManager.current
+    val keyboardController = LocalSoftwareKeyboardController.current
+
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
+        topBar = { TopBar(navController,myViewModel) }
     ) { paddingValues ->
-        // todo
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.size(32.dp))
+            Spacer(modifier = Modifier.size(64.dp))
 
-            // imagen logo
+            // logo
             Image(
                 painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo Stream Routes",
+                contentDescription = "logo"
+            )
+
+            Spacer(modifier = Modifier.size(64.dp))
+
+            // contrasenia
+            OutlinedTextField(
+                value = password,
+                onValueChange = { password = it },
+                label = {
+                    Text(
+                        text = myViewModel.languageType().get(292),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                },
+                shape = RoundedCornerShape(16.dp),
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            passwordVisibility = !passwordVisibility
+                        }
+                    ) {
+                        Icon(
+                            painter = if (!passwordVisibility)
+                                painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
+                            contentDescription = "visibilidad contraseña",
+                            modifier = Modifier
+                                .size(32.dp)
+                        )
+                    }
+                },
+                visualTransformation = if (passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Next
+                ),
+                keyboardActions = KeyboardActions(
+                    onNext = {
+                        passwordVisibility = true
+                        focusManager.moveFocus(FocusDirection.Down)
+                    }
+                ),
                 modifier = Modifier
-                    .size(150.dp)
+                    .fillMaxWidth(0.9f)
             )
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            // contrasenia
-            HeaderTextField(
-                tittle = myViewModel.languageType().get(292),
-                placeholder = myViewModel.languageType().get(292),
-                size = 70,
-                variable = password,
-                onValueChange = {newValue -> password = newValue},
-                passwordVisibility = passwordVisibility,
-                visualTransformation = if (passwordVisibility.value)
-                    PasswordVisualTransformation() else VisualTransformation.None,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                )
-            )
-
-            Spacer(modifier = Modifier.size(15.dp))
-
-            // confirmar contrasenia
-            HeaderTextField(
-                tittle = myViewModel.languageType().get(293),
-                placeholder = myViewModel.languageType().get(293),
-                size = 70,
-                variable = confirmPass,
-                onValueChange = {newValue -> confirmPass = newValue},
-                passwordVisibility = confirmPassVisibility,
-                visualTransformation = if (confirmPassVisibility.value)
-                    PasswordVisualTransformation() else VisualTransformation.None,
+            // confimar contrasenia
+            OutlinedTextField(
+                value = confirmPass,
+                onValueChange = { confirmPass = it },
+                label = {
+                    Text(
+                        text = myViewModel.languageType().get(293),
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                },
+                shape = RoundedCornerShape(16.dp),
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            confirmPassVisibility = !confirmPassVisibility
+                        }
+                    ) {
+                        Icon(
+                            painter = if (!confirmPassVisibility)
+                                painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
+                            contentDescription = "visibilidad contraseña",
+                            modifier = Modifier
+                                .size(32.dp)
+                        )
+                    }
+                },
+                visualTransformation = if (confirmPassVisibility) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
-                )
-            )
-
-            // boton cambiar contrasenia
-            Button(
-                onClick = {
-
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
                 ),
-                shape = RoundedCornerShape(percent = 40),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 5.dp
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        confirmPassVisibility = true
+                        keyboardController?.hide()
+                        navController.navigate(AppScreens.LoginScreen.route)
+                    }
                 ),
                 modifier = Modifier
-                    .fillMaxWidth(0.65f)
-                    .padding(16.dp)
+                    .fillMaxWidth(0.9f)
+            )
+
+            // boton cambiar
+            Button(
+                onClick = {
+                    navController.navigate(AppScreens.LoginScreen.route)
+                },
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .padding(top = 16.dp)
+                    .height(50.dp)
             ) {
                 Text(
                     text = myViewModel.languageType().get(295),
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.onTertiary
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+
+            // boton cancelar
+            TextButton(
+                onClick = {
+                    navController.navigate(AppScreens.LoginScreen.route)
+                },
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = "Cancelar",
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
         }
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
+private fun TopBar(
+    navController: NavController,
+    myViewModel: MyViewModel
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(291),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center
+            Text(
+                text = myViewModel.languageType().get(291),
+                style = MaterialTheme.typography.titleLarge
             )
         },
         navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.LoginScreen.route) }) {
-                Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "te regresara al login",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                titleContentColor = MaterialTheme.colorScheme.onPrimary
-            )
-    )
-}
-
-
-@Composable
-private fun HeaderTextField(
-    tittle: String,
-    placeholder: String,
-    singleLine: Boolean = true,
-    size: Int,
-    variable: String,
-    onValueChange: (String) -> Unit,
-    passwordVisibility: MutableState<Boolean>,
-    visualTransformation: VisualTransformation,
-    keyboardOptions: KeyboardOptions,
-    icono: Boolean = true
-) {
-    // nombre
-    Row (
-        modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .size(48.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        // header
-        Text(
-            text = tittle,
-            modifier = Modifier
-                .fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
-        )
-    }
-
-    OutlinedTextField(
-        value = variable,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth(0.85f)
-            .heightIn(size.dp),
-        // icono para mostrar la contraseña
-        // trailingIcon =
-        placeholder = {
-            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f))
-        },
-        textStyle = TextStyle(
-            fontSize = 18.sp,
-            color = MaterialTheme.colorScheme.onPrimaryContainer,
-            textAlign = TextAlign.Left,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 2.sp
-        ),
-        keyboardOptions = keyboardOptions,
-        visualTransformation = visualTransformation,
-        shape = RoundedCornerShape(percent = 30),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        singleLine = singleLine,
-        trailingIcon = {
-            if(icono){
-                IconButton(
-                    onClick = {
-                        passwordVisibility.value = !passwordVisibility.value
-                    },
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Icon(
-                        painter = if (passwordVisibility.value)
-                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
-                        contentDescription = "visibilidad contraseña",
-                        modifier = Modifier
-                            .size(32.dp),
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
+            IconButton(
+                onClick = {
+                    navController.navigate(AppScreens.LoginScreen.route)
                 }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    contentDescription = "regresar al login"
+                )
             }
         }
     )
