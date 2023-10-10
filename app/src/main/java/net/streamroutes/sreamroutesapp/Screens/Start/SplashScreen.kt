@@ -58,24 +58,6 @@ fun Splash(myViewModel: MyViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.85f)
         )
-        /*Text(
-            text = "STREAM",
-            fontSize = 40.sp,
-            fontWeight = FontWeight.ExtraBold,
-            fontFamily = FontFamily.SansSerif,
-            letterSpacing = 5.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-        Text(
-            text = "ROUTES",
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            fontFamily = FontFamily.SansSerif,
-            letterSpacing = 3.sp,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground
-        )*/
     }
 }
 

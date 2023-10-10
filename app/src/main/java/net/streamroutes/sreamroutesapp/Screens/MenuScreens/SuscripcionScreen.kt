@@ -1,52 +1,34 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
-import android.widget.ImageView
-import android.widget.Toast
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,42 +37,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_icon
-import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letrain
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
-import net.streamroutes.sreamroutesapp.Colores.cuatro
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
-
-@Preview (showBackground = true)
-@Composable
-fun suscripcionView() {
-    //suscripcion()
-}
-
 
 data class ProfitItem(
     val name: String,
@@ -185,7 +139,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                 item {
                     // logo
                     Image(
-                        painter = painterResource(id = R.drawable.logonletran),
+                        painter = if(myViewModel.tema) painterResource(id = R.drawable.logonletrab) else painterResource(id = R.drawable.logonletran),
                         contentDescription = null,
                         modifier = Modifier
                             .padding(16.dp)
@@ -328,108 +282,6 @@ fun ProfiBody(
                 )
             }
 
-        }
-    }
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
-) {
-    TopAppBar(
-        title = {
-            Text(text = myViewModel.languageType().get(185),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-    )
-}
-
-@Composable
-private fun TextUser(
-    text: String,
-    fontSize: Int,
-    fontWeight: FontWeight = FontWeight.Bold,
-    color: Color,
-    textAlign: TextAlign = TextAlign.Start
-) {
-    Text(
-        text = text, // texto
-        modifier = Modifier
-            .fillMaxWidth(), // esto acapara el tamaño completo del Row=0.8f
-        color = color,
-        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-        fontWeight = fontWeight,
-        fontSize = fontSize.sp,
-        textAlign = textAlign
-    )
-}
-
-@Composable
-private fun SuscripcionDatos(
-    myViewModel: MyViewModel,
-    titulo: String,
-    descripcion: String,
-    roundedCornerShape: RoundedCornerShape,
-    painter: Painter,
-    onClick: () -> Unit
-){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                roundedCornerShape
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ){
-        Spacer(modifier = Modifier.size(15.dp))
-        Icon(
-            painter = painter,
-            contentDescription = null
-        )
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        ){
-            TextUser(text = titulo, fontSize = 25, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            TextUser(text = descripcion, fontSize = 15, color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Normal)
-            Spacer(modifier = Modifier.size(30.dp))
-            ClickableText(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold)
-                    ) {
-                        append(myViewModel.languageType().get(198))
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onClick }
-            )
         }
     }
 }
