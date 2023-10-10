@@ -540,7 +540,8 @@ fun DrawerBody(
 
         Column(
             modifier = Modifier
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
             DrawerItem(text = myViewModel.languageType().get(171), icon = painterResource(id = R.drawable.premium)) {
@@ -583,7 +584,7 @@ fun DrawerBody(
                     Box {
                         Column(
                             modifier = Modifier
-                                .height(200.dp)
+                                .height(190.dp)
                                 .verticalScroll(rememberScrollState())
                         ) {
                             DrawerItem(text = "Ruta mas rapida", icon = painterResource(id = R.drawable.routes)) {
@@ -601,57 +602,11 @@ fun DrawerBody(
                             DrawerItem(text = "Turismo", icon = painterResource(id = R.drawable.routes)) {
 
                             }
-
-                            DrawerItem(text = myViewModel.languageType().get(155), icon = painterResource(id = R.drawable.share_location)) {
-                                if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
-                                    locationPermissionState.launchPermissionRequest()
-                                    backgroundLocationPermissionState.launchPermissionRequest()
-                                }
-
-                                if (!areLocationServicesEnabled(context)) {
-                                    Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
-                                    // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
-                                    // y proporcionar una opción para abrir la configuración para habilitarlos
-                                } else {
-                                    if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
-                                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-                                        fusedLocationClient.lastLocation
-                                            .addOnSuccessListener { location: Location? ->
-                                                if (location != null) {
-                                                    val latitude = location.latitude
-                                                    val longitude = location.longitude
-
-                                                    // Construir la URL con el marcador en tu ubicación actual
-                                                    val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
-                                                    val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
-                                                    val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
-                                                            addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
-
-                                                    val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
-                                                    context.startActivity(shareIntent)
-
-                                                } else {
-                                                    Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
-                                                }
-                                            }
-                                            .addOnFailureListener {
-                                                // Manejar el error al obtener la ubicación actual
-                                                Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
-                                            }
-                                    } else {
-                                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                            }
-
-                            DrawerItem(text = myViewModel.languageType().get(159), icon = painterResource(id = R.drawable.download)) {
-                                startDownload(context = context, myViewModel = myViewModel)
-                            }
                         }
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(200.dp),
+                                .height(190.dp),
                             horizontalArrangement = Arrangement.End,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -669,6 +624,52 @@ fun DrawerBody(
                     icon = painterResource(id = R.drawable.routes),
                 ) {
 
+                }
+
+                DrawerItem(text = myViewModel.languageType().get(155), icon = painterResource(id = R.drawable.share_location)) {
+                    if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
+                        locationPermissionState.launchPermissionRequest()
+                        backgroundLocationPermissionState.launchPermissionRequest()
+                    }
+
+                    if (!areLocationServicesEnabled(context)) {
+                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
+                        // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
+                        // y proporcionar una opción para abrir la configuración para habilitarlos
+                    } else {
+                        if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
+                            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+                            fusedLocationClient.lastLocation
+                                .addOnSuccessListener { location: Location? ->
+                                    if (location != null) {
+                                        val latitude = location.latitude
+                                        val longitude = location.longitude
+
+                                        // Construir la URL con el marcador en tu ubicación actual
+                                        val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
+                                        val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
+                                        val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
+                                                addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
+
+                                        val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
+                                        context.startActivity(shareIntent)
+
+                                    } else {
+                                        Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
+                                    }
+                                }
+                                .addOnFailureListener {
+                                    // Manejar el error al obtener la ubicación actual
+                                    Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
+                                }
+                        } else {
+                            Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+
+                DrawerItem(text = myViewModel.languageType().get(159), icon = painterResource(id = R.drawable.download)) {
+                    startDownload(context = context, myViewModel = myViewModel)
                 }
             }
 

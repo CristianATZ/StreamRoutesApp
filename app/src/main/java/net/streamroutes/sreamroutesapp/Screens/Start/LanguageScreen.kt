@@ -149,7 +149,7 @@ fun Languague(
             Column {
                 Text(
                     text = item.es,
-                    style = typography.labelLarge
+                    style = typography.titleMedium
                 )
                 Text(
                     text = item.en,
@@ -180,7 +180,7 @@ fun TopBar(
         
         Text(
             text = "Select your preferred language.",
-            style = typography.titleLarge,
+            style = typography.titleMedium,
             textAlign = TextAlign.Center
         )
     }
