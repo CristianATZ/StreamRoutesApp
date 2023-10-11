@@ -600,7 +600,7 @@ fun DrawerBody(
                             }
 
                             DrawerItem(text = "Turismo", icon = painterResource(id = R.drawable.routes)) {
-
+                                navController.navigate(AppScreens.TurismScreen.route)
                             }
                         }
                         Row(

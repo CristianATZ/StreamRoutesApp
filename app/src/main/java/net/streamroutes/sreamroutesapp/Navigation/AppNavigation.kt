@@ -160,7 +160,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
 
         composable(AppScreens.TurismScreen.route){
-            TurismScreen()
+            TurismScreen(myViewModel, NavController)
         }
 
         composable(AppScreens.FastScreen.route){

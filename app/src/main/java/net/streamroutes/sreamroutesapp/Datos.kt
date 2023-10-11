@@ -403,7 +403,10 @@ class MyViewModel : ViewModel() {
         "Cambiar",                      // 294
 
         // extras
-        "Ruta"
+        "Ruta",                         // 295
+
+        // TurismScreen
+        "Turismo"                       // 296
     )
 
 
@@ -781,8 +784,12 @@ class MyViewModel : ViewModel() {
         "Confirm Password",     // 292
         "Password",             // 293
         "Change",               // 294
+
         // extra
-        "Route"
+        "Route",                // 295
+
+        // TurismScreen
+        "Tourism"               // 296
     )
 
     fun languageType(): List<String> {
