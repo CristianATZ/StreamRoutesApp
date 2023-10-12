@@ -167,7 +167,7 @@ private fun TopBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.navigate(AppScreens.LoginScreen.route)
+                    navController.navigate(AppScreens.MainScreen.route)
                 }
             ) {
                 androidx.compose.material3.Icon(

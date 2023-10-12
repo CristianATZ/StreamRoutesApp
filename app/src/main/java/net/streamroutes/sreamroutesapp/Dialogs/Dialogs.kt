@@ -68,63 +68,6 @@ import net.streamroutes.sreamroutesapp.R
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
 
-@Composable
-fun DialogNotificationPush(
-    dialogo: MutableState<Boolean>,
-    siempre: MutableState<Boolean>,
-    durante: MutableState<Boolean>,
-    nunca: MutableState<Boolean>,
-    myViewModel: MyViewModel
-){
-    Dialog(
-        onDismissRequest = {
-            dialogo.value = false
-        },
-        content = {
-            // plano
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(percent = 30),
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 15.dp
-                ),
-                colors = CardDefaults.cardColors(
-                    containerColor = color_fondo_topbar
-                )
-            ) {
-                // cuerpo
-                Column(
-                    modifier = Modifier
-                        .padding(10.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    // siempre
-                    PushOptions(
-                        text = myViewModel.languageType()[225],
-                        color_letra = color_letra_topbar,
-                        variable = siempre
-                    )
-
-                    // durante
-                    PushOptions(
-                        text = myViewModel.languageType()[226],
-                        color_letra = color_letra_topbar,
-                        variable = durante
-                    )
-
-                    // nunca
-                    PushOptions(
-                        text = myViewModel.languageType()[227],
-                        color_letra = color_letra_topbar,
-                        variable = nunca
-                    )
-                }
-            }
-        }
-    )
-}
 
 @Composable
 fun PushOptions(
