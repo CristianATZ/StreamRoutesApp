@@ -406,7 +406,9 @@ class MyViewModel : ViewModel() {
         "Ruta",                         // 295
 
         // TurismScreen
-        "Turismo"                       // 296
+        "Turismo",                      // 296
+        "Chat de apoyo",                // 297
+        "Atención al turista"           // 298
     )
 
 
@@ -789,7 +791,9 @@ class MyViewModel : ViewModel() {
         "Route",                // 295
 
         // TurismScreen
-        "Tourism"               // 296
+        "Tourism",                  // 296
+        "ChatBot",                  // 297
+        "Tourist Support"           // 298
     )
 
     fun languageType(): List<String> {

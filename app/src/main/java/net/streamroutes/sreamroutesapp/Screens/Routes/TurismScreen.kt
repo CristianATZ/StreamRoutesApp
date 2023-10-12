@@ -3,6 +3,7 @@ package net.streamroutes.sreamroutesapp.Screens.Routes
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,12 +15,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Call
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +46,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -57,7 +67,8 @@ fun TurismScreen(myViewModel: MyViewModel, navController: NavController) {
 @Composable
 fun Tourism(myViewModel: MyViewModel, navController: NavController){
     Scaffold (
-        topBar = { TopBar(myViewModel, navController) }
+        topBar = { TopBar(myViewModel, navController) },
+        bottomBar = { BottomBar(myViewModel, navController) }
     ){ paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -70,14 +81,16 @@ fun Tourism(myViewModel: MyViewModel, navController: NavController){
                 Text(
                     text = "\"No hay que llegar primero... pero hay que saber llegar\"",
                     modifier = Modifier.fillMaxWidth(0.9f),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium,
                 )
             }
             item {
                 Text(
                     text = "- José Alfredo Jiménez",
                     modifier = Modifier.fillMaxWidth(0.9f),
-                    textAlign = TextAlign.End
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.labelLarge
                 )
             }
             item{
@@ -87,6 +100,9 @@ fun Tourism(myViewModel: MyViewModel, navController: NavController){
                 Tarjeta("Palacio de Gobierno", R.drawable.lugar_palacio)
                 Tarjeta("Minas", R.drawable.lugar_minas)
                 Tarjeta("Teatro Juárez", R.drawable.lugar_teatro_juarez)
+                Tarjeta("Casa del Conce Rul", R.drawable.lugar_casa_conde_rul)
+                Tarjeta("Puente del Campanero", R.drawable.lugar_puente_campanero)
+                Tarjeta("Sierra de Santa Rosa", R.drawable.lugar_sierra_santa_rosa)
             }
         }
     }
@@ -120,6 +136,34 @@ private fun TopBar(
     )
 }
 
+@Composable
+private fun BottomBar(
+    myViewModel: MyViewModel,
+    navController: NavController
+){
+    BottomAppBar (
+        containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimary
+    ) {
+        Row (
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = myViewModel.languageType().get(299)
+            )
+            ExtendedFloatingActionButton(
+                onClick = { /*TODO*/ },
+                icon = { Icon(Icons.Filled.Chat, contentDescription = "Invocar Chatbot") },
+                text = { Text(text = myViewModel.languageType().get(298)) },
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+            )
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -150,7 +194,7 @@ fun Tarjeta(titulo: String, id_foto: Int){
         ElevatedCard(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .padding(10.dp)
+                .padding(16.dp)
                 .graphicsLayer {
                     rotationY = rotationFront
                     cameraDistance = 8 * density
@@ -180,10 +224,10 @@ fun Tarjeta(titulo: String, id_foto: Int){
                     )
                     Text(
                         text = titulo,
-                        color = Color.White,
-                        fontSize = 24.sp,
+                        style = MaterialTheme.typography.headlineSmall,
+                        color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier
-                            .padding(6.dp)
+                            .padding(8.dp)
                             .graphicsLayer {
                                 alpha = animateFront
                             }
@@ -195,18 +239,14 @@ fun Tarjeta(titulo: String, id_foto: Int){
                 Box(
                     modifier = Modifier
                         .height(150.dp)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.BottomEnd
+                        .fillMaxWidth()
                 ){
-                    Column {
-                        Text(
-                            text = "REVERSO DE LA CARD. Estás viendo " + titulo,
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    alpha = animateBack
-                                    rotationY = rotationBack
-                                }
-                        )
+                    Column (
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
                         Button(
                             onClick = {
                                 /* TODO */
@@ -216,8 +256,22 @@ fun Tarjeta(titulo: String, id_foto: Int){
                                     alpha = animateBack
                                     rotationY = rotationBack
                                 }
+                                .padding(8.dp)
                         ) {
-                            Text(text = "Soy un botón jajaja")
+                            Text(text = "Leer más...")
+                        }
+                        Button(
+                            onClick = {
+                                /* TODO */
+                            },
+                            modifier = Modifier
+                                .graphicsLayer {
+                                    alpha = animateBack
+                                    rotationY = rotationBack
+                                }
+                                .padding(8.dp)
+                        ) {
+                            Text(text = "Ver ruta")
                         }
                     }
                 }
