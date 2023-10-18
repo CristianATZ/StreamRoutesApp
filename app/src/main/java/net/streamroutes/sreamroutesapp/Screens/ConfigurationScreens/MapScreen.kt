@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,7 @@ import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -72,32 +74,32 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
 
     val map_items = listOf(
         MapItem(
-            name = myViewModel.languageType().get(225),
-            desc = myViewModel.languageType().get(226),
+            name = myViewModel.languageType().get(235),
+            desc = myViewModel.languageType().get(236),
             value = paradas,
             action = { paradas = !paradas }
         ),
         MapItem(
-            name = myViewModel.languageType().get(226),
-            desc = myViewModel.languageType().get(227),
+            name = myViewModel.languageType().get(237),
+            desc = myViewModel.languageType().get(238),
             value = terminales,
             action = { terminales = !terminales }
         ),
         MapItem(
-            name = myViewModel.languageType().get(228),
-            desc = myViewModel.languageType().get(229),
+            name = myViewModel.languageType().get(239),
+            desc = myViewModel.languageType().get(240),
             value = ubicacion,
             action = { ubicacion = !ubicacion }
         ),
         MapItem(
-            name = myViewModel.languageType().get(230),
-            desc = myViewModel.languageType().get(231),
+            name = myViewModel.languageType().get(241),
+            desc = myViewModel.languageType().get(242),
             value = comida,
             action = { comida = !comida }
         ),
         MapItem(
-            name = myViewModel.languageType().get(232),
-            desc = myViewModel.languageType().get(233),
+            name = myViewModel.languageType().get(243),
+            desc = myViewModel.languageType().get(244),
             value = salud,
             action = { salud = !salud }
         ),
@@ -112,9 +114,44 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
+            HeaderMarcadores()
+
+            map_items.forEach(){ item ->
+                OptionSwitch(
+                    item = item
+                )
+            }
+
+            Spacer(modifier = Modifier.size(32.dp))
+            
+            HeaderMapOptions()
 
         }
     }
+}
+
+@Composable
+fun HeaderMapOptions() {
+    Text(
+        text = "Mapa",
+        style = typography.titleSmall,
+        modifier = Modifier
+            .padding(PaddingValues(16.dp))
+    )
+
+    Divider()
+}
+
+@Composable
+fun HeaderMarcadores() {
+    Text(
+        text = "Marcadores",
+        style = typography.titleSmall,
+        modifier = Modifier
+            .padding(PaddingValues(16.dp))
+    )
+
+    Divider()
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -144,15 +181,13 @@ private fun TopBarBody(
 
 @Composable
 private fun OptionSwitch(
-    item: MapItem,
-    value: Boolean,
-    onClick: () -> Unit
+    item: MapItem
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(70.dp)
-            .clickable { onClick() },
+            .clickable { item.action() },
         verticalAlignment = Alignment.CenterVertically
     ) {
 
@@ -174,9 +209,9 @@ private fun OptionSwitch(
 
         // switch
         Switch(
-            checked = value,
+            checked = item.value,
             onCheckedChange = {
-                onClick()
+                item.action()
             }
         )
     }
