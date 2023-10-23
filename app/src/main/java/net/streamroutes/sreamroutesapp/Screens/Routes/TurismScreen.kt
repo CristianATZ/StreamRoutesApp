@@ -94,15 +94,16 @@ fun Tourism(myViewModel: MyViewModel, navController: NavController){
                 )
             }
             item{
-                Tarjeta("Alhóndiga de Granaditas", R.drawable.lugar_alhondiga)
-                Tarjeta("Universidad de Guanajuato", R.drawable.lugar_universidad_gto)
-                Tarjeta("Parque Bicentenario", R.drawable.lugar_parque_bicentenario)
-                Tarjeta("Palacio de Gobierno", R.drawable.lugar_palacio)
-                Tarjeta("Minas", R.drawable.lugar_minas)
-                Tarjeta("Teatro Juárez", R.drawable.lugar_teatro_juarez)
-                Tarjeta("Casa del Conce Rul", R.drawable.lugar_casa_conde_rul)
-                Tarjeta("Puente del Campanero", R.drawable.lugar_puente_campanero)
-                Tarjeta("Sierra de Santa Rosa", R.drawable.lugar_sierra_santa_rosa)
+                Tarjeta("Callejón del Beso", R.drawable.lugar_callejon_beso, "callejon-del-beso")
+                Tarjeta("Alhóndiga de Granaditas", R.drawable.lugar_alhondiga, "alhondiga-de-granaditas")
+                Tarjeta("Universidad de Guanajuato", R.drawable.lugar_universidad_gto, "universidad-guanajuato")
+                Tarjeta("Parque Bicentenario", R.drawable.lugar_parque_bicentenario, "parque-bicentenario")
+                Tarjeta("Palacio de Gobierno", R.drawable.lugar_palacio, "palacio-de-gobierno")
+                Tarjeta("Minas", R.drawable.lugar_minas, "minas")
+                Tarjeta("Teatro Juárez", R.drawable.lugar_teatro_juarez, "teatro-juarez")
+                Tarjeta("Casa del Conde Rul", R.drawable.lugar_casa_conde_rul, "casa-conde-rul")
+                Tarjeta("Puente del Campanero", R.drawable.lugar_puente_campanero, "puente-campanero")
+                Tarjeta("Sierra de Santa Rosa", R.drawable.lugar_sierra_santa_rosa, "sierra-santa-rosa")
             }
         }
     }
@@ -167,7 +168,7 @@ private fun BottomBar(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Tarjeta(titulo: String, id_foto: Int){
+fun Tarjeta(titulo: String, id_foto: Int, url: String){
     var rotated by remember { mutableStateOf(false) }
 
     val rotationFront by animateFloatAsState(
@@ -247,9 +248,10 @@ fun Tarjeta(titulo: String, id_foto: Int){
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
+                        val uriHandler = LocalUriHandler.current
                         Button(
                             onClick = {
-                                /* TODO */
+                                uriHandler.openUri("http://streamroutes.com/tourism.html#"+url)
                             },
                             modifier = Modifier
                                 .graphicsLayer {
