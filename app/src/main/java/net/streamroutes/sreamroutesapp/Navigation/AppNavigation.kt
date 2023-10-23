@@ -19,6 +19,7 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ChatScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
@@ -165,6 +166,10 @@ fun AppNavigation(myViewModel: MyViewModel) {
 
         composable(AppScreens.FastScreen.route){
             FastScreen(NavController)
+        }
+
+        composable(AppScreens.ChatScreen.route){
+            ChatScreen(NavController)
         }
     }
 }

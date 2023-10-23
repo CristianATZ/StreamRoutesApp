@@ -11,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -32,6 +33,7 @@ import androidx.compose.material.icons.outlined.Add
 import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Close
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.Star
@@ -41,6 +43,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -61,6 +64,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -151,8 +155,7 @@ fun RoutesScreenView(
     // ruta 1
     Scaffold(
         topBar = { TopBarBody(navController,myViewModel) },
-        floatingActionButton = { Fab(fabButton,myViewModel) },
-        containerColor = MaterialTheme.colorScheme.background
+        floatingActionButton = { Fab(fabButton,myViewModel) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -242,14 +245,16 @@ fun RoutesScreenView(
                     }
                 }
 
-                Row(
+                var dest by remember {
+                    mutableStateOf("")
+                }
+
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    var dest by remember {
-                        mutableStateOf("")
-                    }
+                    Spacer(modifier = Modifier.size(16.dp))
 
                     OutlinedTextField(
                         value = dest,
@@ -258,7 +263,6 @@ fun RoutesScreenView(
                             Icon(
                                 imageVector = Icons.Outlined.Search,
                                 contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         },
                         trailingIcon = {
@@ -268,8 +272,7 @@ fun RoutesScreenView(
                                 ) {
                                     Icon(
                                         imageVector = Icons.Outlined.Clear,
-                                        contentDescription = "Borrar texto de destino",
-                                        tint = MaterialTheme.colorScheme.onPrimaryContainer
+                                        contentDescription = "Borrar texto de destino"
                                     )
                                 }
                             }
@@ -277,368 +280,26 @@ fun RoutesScreenView(
 
                         placeholder = {
                             Text(
-                                text = "Buscar destino" +
-                                        "",
-                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+                                text = "Buscar destino"
                             )
                         },
                         shape = RoundedCornerShape(15),
                         keyboardOptions = KeyboardOptions(
                             imeAction = ImeAction.Done
                         ),
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            containerColor = MaterialTheme.colorScheme.primaryContainer,
-                            textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onPrimaryContainer
-                        ),
                         modifier = Modifier
                             .height(60.dp)
-                            .weight(1f)
+                            .fillMaxWidth(0.9f)
                     )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .background(
-                                MaterialTheme.colorScheme.primaryContainer,
-                                RoundedCornerShape(15)
-                            )
-                            .size(60.dp)
-                            .clickable { },
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-
-                    ){
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = "Cambiar el tipo de mapa",
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(35.dp),
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    }
                 }
             }
         }
     }
-
-    /*Column(
-        modifier = Modifier
-            .fillMaxSize()
-    ){
-        Box(
-            modifier = Modifier
-                .fillMaxWidth(1f)
-                .fillMaxHeight(0.18f)
-                .background(MaterialTheme.colorScheme.primary) // Color de fondo del Box
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 12.dp, end = 12.dp)
-            ){
-                Row{
-                    IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                        Icon(
-                            painterResource(id = R.drawable.back),
-                            contentDescription = "Te enviara al menu de opciones",
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                    Column {
-                        Row {
-                            Text(
-                                text = myViewModel.languageType().get(29),
-                                color = MaterialTheme.colorScheme.onPrimary,
-                                modifier = Modifier.padding(start = 2.dp)
-                            )
-                        }
-                        Row {
-                            val origen = remember { mutableStateOf("") }
-                            BasicTextField(
-                                value = SharedState.MarcadorOrigen,//origen.value,
-                                onValueChange = {newValue ->
-                                    SharedState.MarcadorOrigen = newValue
-                                                },
-                                modifier = Modifier
-                                    .fillMaxWidth(1f)
-                                    .fillMaxHeight(.3f)
-                                    .background(
-                                        MaterialTheme.colorScheme.primaryContainer,
-                                        RoundedCornerShape(15.dp)
-                                    )
-                                    .padding(start = 12.dp)
-                                    .wrapContentHeight(align = Alignment.CenterVertically),
-                                textStyle = TextStyle(
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                            )
-                        }
-                    }
-
-                }
-
-                Row{
-                    Text(
-                        text=myViewModel.languageType().get(30),
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.padding(start = 50.dp)
-                    )
-                }
-                Row{
-                    Spacer(modifier = Modifier.width(48.dp))
-
-                    val dest = remember { mutableStateOf("") }
-                    BasicTextField(
-                        value = SharedState.MarcadorDestino,//dest.value,
-                        onValueChange = {newValue ->
-                            SharedState.MarcadorDestino = newValue},
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight(.53f)
-                            .background(
-                                MaterialTheme.colorScheme.primaryContainer,
-                                RoundedCornerShape(15.dp)
-                            )
-                            .padding(start = 12.dp)
-                            .wrapContentHeight(align = Alignment.CenterVertically),
-                        textStyle = TextStyle(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    )
-                }
-
-                Row{
-                    Text(
-                        text = myViewModel.languageType().get(31)+ ": $formattedTime",
-                        color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.padding(start = 16.dp, top = 5.dp)
-                    )
-                }
-            }
-        }
-
-        //MAP
-        map(myViewModel)
-    }*/
-
 }
 
 object SharedState {
     var MarcadorOrigen by mutableStateOf("")
     var MarcadorDestino by mutableStateOf("")
-}
-
-@Composable
-fun map(
-    myViewModel: MyViewModel
-) {
-
-    /*
-    *VARIABLES PARA EL MARCADOR DE ORIGEN
-    *//*
-    //acceder al contexto actual del componente @Composable.
-    val context = LocalContext.current
-    //Variable de seleccion de ubicacion
-    var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
-
-    *//*
-    *VARIABLES PARA EL MARCADOR DE DESTINO
-    *//*
-    //acceder al contexto actual del componente @Composable.
-    val contextD = LocalContext.current
-    //Variable de seleccion de ubicacion
-    var selectedLocationD by remember { mutableStateOf<LatLng?>(null) }
-
-
-    // Mapa
-    val itsur = LatLng(20.139468718311957, -101.15069924573676)
-    val cameraPositionState = rememberCameraPositionState() {
-        position = CameraPosition.fromLatLngZoom(itsur, 17f)
-    }
-
-    // Variable para almacenar el tipo de mapa actual y su estado
-    val defaultMapType = MapType.NORMAL
-    var currentMapType by remember { mutableStateOf(defaultMapType) }
-    var changeMap by remember { mutableStateOf(1) }
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        GoogleMap(
-            modifier = Modifier
-                .fillMaxSize(),
-            cameraPositionState = cameraPositionState,
-            uiSettings = MapUiSettings(
-                compassEnabled = false,
-                indoorLevelPickerEnabled = false,
-                mapToolbarEnabled = false,
-                myLocationButtonEnabled = false,
-                rotationGesturesEnabled = true,
-                scrollGesturesEnabled = true,
-                scrollGesturesEnabledDuringRotateOrZoom = false,
-                tiltGesturesEnabled = false,
-                zoomControlsEnabled = false,
-                zoomGesturesEnabled = true
-            ),
-            onMapClick = { latLng ->
-                if (selectedLocation == null) {
-                    // Agregar el primer marcador
-                    selectedLocation = latLng
-
-                    // Crear un objeto Geocoder para realizar geocodificación inversa (latitud y longitud a dirección)
-                    val geocoder = Geocoder(context, Locale.getDefault())
-
-                    try {
-                        // Obtener la lista de direcciones correspondientes a la latitud y longitud
-                        val addresses: List<Address> = geocoder.getFromLocation(
-                            latLng.latitude, latLng.longitude, 1
-                        ) as List<Address>
-
-                        if (addresses.isNotEmpty()) {
-                            // Si se encontró al menos una dirección, tomar la primera
-                            val address: Address = addresses[0]
-
-                            // Construir la dirección completa a partir de las partes disponibles
-                            val fullAddress = buildString {
-                                address.getAddressLine(0)?.let { append(it) } // Direccion
-                            }
-
-                            // Actualizar el estado compartido con la dirección completa
-                            SharedState.MarcadorOrigen = fullAddress
-                        } else {
-                            // Si no se encontraron direcciones, mostrar las coordenadas
-                            SharedState.MarcadorOrigen = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
-                        }
-                    } catch (e: IOException) {
-                        // Manejar errores de geocodificación
-                        SharedState.MarcadorOrigen = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
-                    }
-                }
-                //Destino MARCADOR
-                else if (selectedLocationD == null) {
-                    // Agregar el segundo marcador
-                    selectedLocationD = latLng
-
-                    // Crear un objeto Geocoder para realizar geocodificación inversa (latitud y longitud a dirección)
-                    val geocoder = Geocoder(contextD, Locale.getDefault())
-
-                    try {
-                        // Obtener la lista de direcciones correspondientes a la latitud y longitud
-                        val addresses: List<Address> = geocoder.getFromLocation(
-                            latLng.latitude, latLng.longitude, 1
-                        ) as List<Address>
-
-                        if (addresses.isNotEmpty()) {
-                            // Si se encontró al menos una dirección, tomar la primera
-                            val address: Address = addresses[0]
-
-                            // Construir la dirección completa a partir de las partes disponibles
-                            val fullAddress = buildString {
-                                address.getAddressLine(0)?.let { append(it) } // Direccion
-                            }
-
-                            // Actualizar el estado compartido con la dirección completa
-                            SharedState.MarcadorDestino = fullAddress
-
-                        } else {
-                            // Si no se encontraron direcciones, mostrar las coordenadas
-                            SharedState.MarcadorDestino = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
-                        }
-                    } catch (e: IOException) {
-                        // Manejar errores de geocodificación
-                        SharedState.MarcadorDestino = "Latitud: ${latLng.latitude}, Longitud: ${latLng.longitude}"
-                    }
-                }
-
-
-            },
-
-            properties = MapProperties(
-                mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-                mapType = currentMapType, // Usar el tipo de mapa actual
-                maxZoomPreference = 17f
-            )
-        ){
-            selectedLocation?.let {
-                val originMarker = Marker(
-                    state = MarkerState(position = it),
-                    title = myViewModel.languageType().get(36)
-                )
-            }
-
-            selectedLocationD?.let {
-                val destinyMarker = Marker(
-                    state = MarkerState(position = it),
-                    title = "Marcador Destino"
-
-                )
-            }
-
-            // Dibuja la polilínea si ambos marcadores están disponibles
-            if (selectedLocation != null && selectedLocationD != null) {
-                Polyline(
-                    points = listOf(selectedLocation!!, selectedLocationD!!),
-                    color = Color.Blue,
-                    width = 5f
-                )
-            }
-        }
-
-        // Botón cambio tipo de mapa en la parte superior derecha
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(75.dp)
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.End
-        ){
-            Row(
-                modifier = Modifier
-                    .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 10))
-                    .clickable {
-                        when (changeMap) {
-                            1 -> {
-                                currentMapType = MapType.NORMAL
-                            }
-
-                            2 -> {
-                                currentMapType = MapType.SATELLITE
-                            }
-
-                            3 -> {
-                                currentMapType = MapType.TERRAIN
-                            }
-
-                            4 -> {
-                                currentMapType = MapType.HYBRID
-                            }
-                        }
-                        changeMap++
-                        if (changeMap == 5) changeMap = 1
-                    },
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ){
-                Image(
-                    painter = painterResource(id = R.drawable.change),
-                    contentDescription = "Tipo de mapa",
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(34.dp),
-                    colorFilter = ColorFilter.tint(
-                        MaterialTheme.colorScheme.onPrimary
-                    )
-                )
-            }
-        }
-        Botones(myViewModel)*/
-    //}
 }
 
 @Composable
@@ -706,7 +367,6 @@ fun Fab(
             Icon(
                 imageVector = Icons.Outlined.Search,
                 contentDescription = null,
-                tint = MaterialTheme.colorScheme.onTertiary,
                 modifier = Modifier
                     .size(34.dp)
             )
@@ -716,8 +376,7 @@ fun Fab(
             else {
                 // buscar una ruta
             }
-        },
-        containerColor = MaterialTheme.colorScheme.tertiary
+        }
     )
 }
 
@@ -1056,13 +715,10 @@ private fun TopBarBody(
     navController: NavController,
     myViewModel: MyViewModel
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = myViewModel.languageType().get(81),
-                textAlign = TextAlign.Center
+                text = myViewModel.languageType().get(81)
             )
         },
         navigationIcon = {
@@ -1070,17 +726,12 @@ private fun TopBarBody(
                 onClick = { navController.navigate(AppScreens.MainScreen.route) }
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.ArrowBack,
+                    imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = null,
                     modifier = Modifier
                         .size(24.dp)
                 )
             }
-        },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-        )
+        }
     )
 }

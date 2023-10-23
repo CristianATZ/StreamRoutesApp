@@ -156,7 +156,9 @@ private fun BottomBar(
                 text = myViewModel.languageType().get(299)
             )
             ExtendedFloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    navController.navigate(AppScreens.ChatScreen.route)
+                },
                 icon = { Icon(Icons.Filled.Chat, contentDescription = "Invocar Chatbot") },
                 text = { Text(text = myViewModel.languageType().get(298)) },
                 containerColor = MaterialTheme.colorScheme.tertiaryContainer,

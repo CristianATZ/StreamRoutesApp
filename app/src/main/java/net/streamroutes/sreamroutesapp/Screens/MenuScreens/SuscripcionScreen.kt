@@ -16,9 +16,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -29,6 +31,7 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.MyViewModel
@@ -170,14 +174,31 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                 onClick = {
                     navController.navigate(AppScreens.MainScreen.route)
                 },
+                shape = RoundedCornerShape(16),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.tertiary
+                ),
                 modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .padding(top = 16.dp)
+                    .fillMaxWidth(0.9f)
                     .height(50.dp)
             ) {
                 Text(
                     text = "Contratar",
                     style = typography.bodyLarge
+                )
+            }
+
+            TextButton(
+                onClick = { /*TODO*/ },
+                shape = RoundedCornerShape(16),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = "Saber mas",
+                    style = typography.bodyLarge,
+                    textDecoration = TextDecoration.Underline
                 )
             }
 

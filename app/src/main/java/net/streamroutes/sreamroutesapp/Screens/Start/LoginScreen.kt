@@ -19,6 +19,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -173,8 +174,12 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
             onClick = {
                 navController.navigate(AppScreens.MainScreen.route)
             },
+            shape = RoundedCornerShape(16),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.tertiary
+            ),
             modifier = Modifier
-                .fillMaxWidth(0.85f)
+                .fillMaxWidth(0.9f)
                 .padding(top = 16.dp)
                 .height(50.dp)
         ) {

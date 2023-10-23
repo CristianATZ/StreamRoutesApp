@@ -1,7 +1,9 @@
 package net.streamroutes.sreamroutesapp.Screens.Routes
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,14 +14,20 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -79,43 +87,6 @@ fun FastScreen(navController: NavHostController) {
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.size(16.dp))
-
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {},
-                    leadingIcon = {
-                        Icon(
-                            imageVector = Icons.Outlined.Search,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                        )
-                    },
-                    trailingIcon = {
-
-                    },
-                    placeholder = {
-                        Text(
-                            text = "Destino",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
-                        )
-                    },
-                    shape = RoundedCornerShape(15),
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    ),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                        unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                        cursorColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),
-                    modifier = Modifier
-                        .height(60.dp)
-                        .fillMaxWidth(0.9f)
-                )
-
                 Spacer(modifier = Modifier.weight(1f))
 
                 Button(
@@ -123,23 +94,24 @@ fun FastScreen(navController: NavHostController) {
                         navController.navigate(route = AppScreens.MainScreen.route)
                     },
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
+                        containerColor = colorScheme.tertiary
                     ),
                     shape = RoundedCornerShape(16),
                     elevation = ButtonDefaults.buttonElevation(
                         defaultElevation = 5.dp
                     ),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(75.dp)
-                        .padding(16.dp)
+                        .fillMaxWidth(0.9f)
+                        .height(50.dp)
                 ) {
                     Text(
                         text = "Calcular destino",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onTertiary
+                        style = typography.bodyLarge,
+                        color = colorScheme.onTertiary
                     )
                 }
+                
+                Spacer(modifier = Modifier.size(16.dp))
             }
         }
     }
@@ -176,31 +148,55 @@ fun DialogStart(
 private fun TopBarBody(
     navController: NavHostController
 ) {
-    TopAppBar(
-        title = {
-            Text(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                text = "Viaja rapido",
-                textAlign = TextAlign.Center
-            )
-        },
-        navigationIcon = {
+    Column(
+        modifier = Modifier
+            .background(colorScheme.background)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             IconButton(
                 onClick = { navController.navigate(AppScreens.MainScreen.route) }
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.ArrowBack,
-                    contentDescription = null,
+                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    contentDescription = "Regresar al menu principal",
                     modifier = Modifier
                         .size(24.dp)
                 )
             }
-        },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-        )
-    )
+
+            OutlinedTextField(
+                value = "",
+                onValueChange = {},
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Outlined.Search,
+                        contentDescription = null,
+                        tint = colorScheme.onPrimaryContainer
+                    )
+                },
+                trailingIcon = {
+
+                },
+                placeholder = {
+                    Text(
+                        text = "Destino",
+                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+                    )
+                },
+                shape = RoundedCornerShape(15),
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                modifier = Modifier
+                    .weight(1f)
+            )
+            
+            Spacer(modifier = Modifier.size(8.dp))
+        }
+    }
 }

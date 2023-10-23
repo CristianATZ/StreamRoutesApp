@@ -185,7 +185,7 @@ class MyViewModel : ViewModel() {
         "Información personal",     // 124
         "Inicio",                   // 125
         "Intereses",                // 126
-        "Mejorar suscripción",      // 127
+        "Suscripción",      // 127
         "Membresía",                // 128
         "Mensual (Estudiantil)",    // 129
         "Mensual",                  // 130
@@ -322,11 +322,11 @@ class MyViewModel : ViewModel() {
 
         // MapScreen
         "Mapa",                                         // 233
-        "Marcadores de paradas",                        // 234
+        "Paradas",                        // 234
         "Indica dónde son las paradas.",                // 235
-        "Marcadores de terminales",                     // 236
+        "Terminales",                     // 236
         "Indica estaciones de autobúses.",              // 237
-        "Marcadores de ubicación act.",                 // 238
+        "Ubicacion actual",                 // 238
         "Mira tu ubicación actual.",                    // 239
         "Comida",                                       // 240
         "Restaurantes, puestos de comida, etc.",        // 241

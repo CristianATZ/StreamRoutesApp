@@ -5,9 +5,11 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +19,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -31,6 +35,7 @@ import androidx.compose.material.icons.outlined.ArrowBack
 import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.ExitToApp
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
@@ -43,6 +48,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -69,6 +76,9 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.navigation.NavController
+import net.streamroutes.sreamroutesapp.Dialogs.MembDialogEdit
+import net.streamroutes.sreamroutesapp.Dialogs.SecuDialogEdit
+import net.streamroutes.sreamroutesapp.Dialogs.UserDialogEdit
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -94,6 +104,8 @@ fun ProfileScreen(
             HeaderProfile(navController,myViewModel)
 
             FeaturedProfile(myViewModel)
+
+            FooterProfile(myViewModel)
         }
     }
 }
@@ -225,1445 +237,40 @@ fun FooterProfile(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun SecuDialogEdit(
-    onClose: () -> Unit,
-    myViewModel: MyViewModel
-) {
-    var changePhone by remember {
-        mutableStateOf(false)
-    }
-
-    var sendCodePhone by remember {
-        mutableStateOf(false)
-    }
-
-    var codeCorrectPhone by remember {
-        mutableStateOf(false)
-    }
-
-    var changeEmail by remember {
-        mutableStateOf(false)
-    }
-
-    var sendCodeEmail by remember {
-        mutableStateOf(false)
-    }
-
-    var codeCorrectEmail by remember {
-        mutableStateOf(false)
-    }
-
-    var changePass by remember {
-        mutableStateOf(false)
-    }
-
-    var checkPass by remember {
-        mutableStateOf(false)
-    }
-
-    Dialog(
-        onDismissRequest = { /*TODO*/ },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Card(
-
-        ) {
-            HeaderDialog(
-                onClose = { onClose() }
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-            ) {
-
-                // telefono actual
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    if(!changePhone){
-                        OutlinedTextField(
-                            value = "445 141 1834",
-                            onValueChange = {},
-                            label = {
-                                Text(
-                                    text = myViewModel.languageType().get(143),
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            },
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                disabledBorderColor = MaterialTheme.colorScheme.outline
-                            ),
-                            enabled = false,
-                            modifier = Modifier
-                                .weight(1f)
-                        )
-                    } else {
-                        Column {
-                            OutlinedTextField(
-                                value = "",
-                                onValueChange = {},
-                                label = {
-                                    Text(
-                                        text = myViewModel.languageType().get(138),
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
-                                },
-                                trailingIcon = {
-                                    IconButton(onClick = { /*TODO*/ }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Clear,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    }
-                                },
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                ),
-                                keyboardOptions = KeyboardOptions(
-                                    imeAction = ImeAction.Next
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth(1f)
-                                    .padding(vertical = 8.dp)
-                            )
-
-                            TextButton(
-                                onClick = { sendCodePhone = !sendCodePhone },
-                                modifier = Modifier
-                                    .fillMaxWidth(1f)
-                                    .height(50.dp)
-                            ) {
-                                Text(
-                                    text = myViewModel.languageType().get(115),
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-
-                            if(sendCodePhone){
-                                OutlinedTextField(
-                                    value = "",
-                                    onValueChange = {},
-                                    label = {
-                                        Text(
-                                            text = myViewModel.languageType().get(110),
-                                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    },
-                                    trailingIcon = {
-                                        IconButton(onClick = { /*TODO*/ }) {
-                                            Icon(
-                                                imageVector = Icons.Filled.Clear,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        }
-                                    },
-                                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                    ),
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Next
-                                    ),
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .padding(vertical = 8.dp)
-                                )
-
-                                TextButton(
-                                    onClick = { codeCorrectPhone = true },
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .height(50.dp)
-                                ) {
-                                    Text(
-                                        text = myViewModel.languageType().get(150),
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
-                                }
-
-                                if(codeCorrectPhone){
-                                    OutlinedTextField(
-                                        value = "",
-                                        onValueChange = {},
-                                        label = {
-                                            Text(
-                                                text = myViewModel.languageType().get(138),
-                                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        },
-                                        trailingIcon = {
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Clear,
-                                                    contentDescription = null,
-                                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                                )
-                                            }
-                                        },
-                                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                        ),
-                                        keyboardOptions = KeyboardOptions(
-                                            imeAction = ImeAction.Next
-                                        ),
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .padding(vertical = 8.dp)
-                                    )
-
-                                    OutlinedTextField(
-                                        value = "",
-                                        onValueChange = {},
-                                        label = {
-                                            Text(
-                                                text = myViewModel.languageType().get(100),
-                                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        },
-                                        trailingIcon = {
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Clear,
-                                                    contentDescription = null,
-                                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                                )
-                                            }
-                                        },
-                                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                        ),
-                                        keyboardOptions = KeyboardOptions(
-                                            imeAction = ImeAction.Done
-                                        ),
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .padding(vertical = 8.dp)
-                                    )
-
-                                    Button(
-                                        onClick = { /*TODO*/ },
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .height(50.dp),
-                                        shape = RoundedCornerShape(15.dp),
-                                        elevation = ButtonDefaults.elevatedButtonElevation(
-                                            defaultElevation = 5.dp
-                                        ),
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = MaterialTheme.colorScheme.tertiary
-                                        )
-                                    ) {
-                                        Text(
-                                            text = myViewModel.languageType().get(92),
-                                            color = MaterialTheme.colorScheme.onTertiary
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // cambiar telefono
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ){
-                    TextButton(
-                        onClick = { changePhone = !changePhone },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                    ) {
-                        Text(
-                            text = if(!changePhone) myViewModel.languageType().get(92) else myViewModel.languageType().get(94),
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                        )
-                    }
-                }
-
-                Divider(modifier = Modifier.padding(bottom = 16.dp))
-
-                // correo actual
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    if(!changeEmail){
-                        OutlinedTextField(
-                            value = "s20120154@alumnos.itsur.edu.mx",
-                            onValueChange = {},
-                            label = {
-                                Text(
-                                    text = myViewModel.languageType().get(106),
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            },
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                disabledBorderColor = MaterialTheme.colorScheme.outline
-                            ),
-                            enabled = false,
-                            modifier = Modifier
-                                .weight(1f)
-                        )
-                    } else {
-                        Column {
-                            OutlinedTextField(
-                                value = "",
-                                onValueChange = {},
-                                label = {
-                                    Text(
-                                        text = myViewModel.languageType().get(137),
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
-                                },
-                                trailingIcon = {
-                                    IconButton(onClick = { /*TODO*/ }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Clear,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    }
-                                },
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                ),
-                                keyboardOptions = KeyboardOptions(
-                                    imeAction = ImeAction.Next
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth(1f)
-                                    .padding(vertical = 8.dp)
-                            )
-
-                            TextButton(
-                                onClick = { sendCodeEmail = !sendCodeEmail },
-                                modifier = Modifier
-                                    .fillMaxWidth(1f)
-                                    .height(50.dp)
-                            ) {
-                                Text(
-                                    text = myViewModel.languageType().get(115),
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-
-                            if(sendCodeEmail){
-                                OutlinedTextField(
-                                    value = "",
-                                    onValueChange = {},
-                                    label = {
-                                        Text(
-                                            text = myViewModel.languageType().get(110),
-                                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    },
-                                    trailingIcon = {
-                                        IconButton(onClick = { /*TODO*/ }) {
-                                            Icon(
-                                                imageVector = Icons.Filled.Clear,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        }
-                                    },
-                                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                    ),
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Next
-                                    ),
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .padding(vertical = 8.dp)
-                                )
-
-                                TextButton(
-                                    onClick = { codeCorrectEmail = true },
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .height(50.dp)
-                                ) {
-                                    Text(
-                                        text = myViewModel.languageType().get(150),
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
-                                }
-
-                                if(codeCorrectEmail){
-                                    OutlinedTextField(
-                                        value = "",
-                                        onValueChange = {},
-                                        label = {
-                                            Text(
-                                                text = myViewModel.languageType().get(137),
-                                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        },
-                                        trailingIcon = {
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Clear,
-                                                    contentDescription = null,
-                                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                                )
-                                            }
-                                        },
-                                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                        ),
-                                        keyboardOptions = KeyboardOptions(
-                                            imeAction = ImeAction.Next
-                                        ),
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .padding(vertical = 8.dp)
-                                    )
-
-                                    OutlinedTextField(
-                                        value = "",
-                                        onValueChange = {},
-                                        label = {
-                                            Text(
-                                                text = myViewModel.languageType().get(99),
-                                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        },
-                                        trailingIcon = {
-                                            IconButton(onClick = { /*TODO*/ }) {
-                                                Icon(
-                                                    imageVector = Icons.Filled.Clear,
-                                                    contentDescription = null,
-                                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                                )
-                                            }
-                                        },
-                                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                        ),
-                                        keyboardOptions = KeyboardOptions(
-                                            imeAction = ImeAction.Done
-                                        ),
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .padding(vertical = 8.dp)
-                                    )
-
-                                    Button(
-                                        onClick = { /*TODO*/ },
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .height(50.dp),
-                                        shape = RoundedCornerShape(15.dp),
-                                        elevation = ButtonDefaults.elevatedButtonElevation(
-                                            defaultElevation = 5.dp
-                                        ),
-                                        colors = ButtonDefaults.buttonColors(
-                                            containerColor = MaterialTheme.colorScheme.tertiary
-                                        )
-                                    ) {
-                                        Text(
-                                            text = myViewModel.languageType().get(91),
-                                            color = MaterialTheme.colorScheme.onTertiary
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // cambiar correo
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ){
-                    TextButton(
-                        onClick = { changeEmail = !changeEmail },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                    ) {
-                        Text(
-                            text = if(!changeEmail) myViewModel.languageType().get(91) else myViewModel.languageType().get(94),
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                        )
-                    }
-                }
-
-                Divider(modifier = Modifier.padding(bottom = 16.dp))
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    if(changePass){
-                        Column {
-                            OutlinedTextField(
-                                value = "",
-                                onValueChange = {},
-                                label = {
-                                    Text(
-                                        text = myViewModel.languageType().get(101),
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
-                                },
-                                trailingIcon = {
-                                    IconButton(onClick = { /*TODO*/ }) {
-                                        Icon(
-                                            imageVector = Icons.Filled.Clear,
-                                            contentDescription = null,
-                                            tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    }
-                                },
-                                colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                    focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                    unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                ),
-                                keyboardOptions = KeyboardOptions(
-                                    imeAction = ImeAction.Next
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth(1f)
-                                    .padding(vertical = 8.dp)
-                            )
-
-                            TextButton(
-                                onClick = { checkPass = !checkPass },
-                                modifier = Modifier
-                                    .fillMaxWidth(1f)
-                                    .height(50.dp)
-                            ) {
-                                Text(
-                                    text = myViewModel.languageType().get(149),
-                                    color = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-
-                            if(checkPass){
-                                OutlinedTextField(
-                                    value = "",
-                                    onValueChange = {},
-                                    label = {
-                                        Text(
-                                            text = myViewModel.languageType().get(101),
-                                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    },
-                                    trailingIcon = {
-                                        IconButton(onClick = { /*TODO*/ }) {
-                                            Icon(
-                                                imageVector = Icons.Filled.Clear,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        }
-                                    },
-                                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                    ),
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Next
-                                    ),
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .padding(vertical = 8.dp)
-                                )
-
-                                OutlinedTextField(
-                                    value = "",
-                                    onValueChange = {},
-                                    label = {
-                                        Text(
-                                            text = myViewModel.languageType().get(98),
-                                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                                        )
-                                    },
-                                    trailingIcon = {
-                                        IconButton(onClick = { /*TODO*/ }) {
-                                            Icon(
-                                                imageVector = Icons.Filled.Clear,
-                                                contentDescription = null,
-                                                tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                            )
-                                        }
-                                    },
-                                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                                        focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                                        unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                                    ),
-                                    keyboardOptions = KeyboardOptions(
-                                        imeAction = ImeAction.Next
-                                    ),
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .padding(vertical = 8.dp)
-                                )
-
-                                TextButton(
-                                    onClick = { /* TODO */ },
-                                    modifier = Modifier
-                                        .fillMaxWidth(1f)
-                                        .height(50.dp)
-                                ) {
-                                    Text(
-                                        text = myViewModel.languageType().get(90),
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                                    )
-                                }
-
-                            }
-                        }
-                    }
-                }
-
-                // cambiar correo
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ){
-                    Button(
-                        onClick = { changePass = !changePass },
-                        modifier = Modifier
-                            .fillMaxWidth(1f)
-                            .height(50.dp),
-                        shape = RoundedCornerShape(15.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(
-                            defaultElevation = 5.dp
-                        ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(
-                            text = if(changePass) myViewModel.languageType().get(94) else myViewModel.languageType().get(90),
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MembDialogEdit(
-    onClose: () -> Unit,
-    myViewModel: MyViewModel
-) {
-    Dialog(
-        onDismissRequest = { /*TODO*/ },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Card(
-
-        ) {
-            HeaderDialog(
-                onClose = { onClose() }
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-
-                // id de membresia
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "1234",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(124),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            disabledBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        enabled = false,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                }
-
-                // estatus de la membresia
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(117),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    AssistChip(
-                        onClick = { },
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(87),
-                                color = MaterialTheme.colorScheme.onTertiary
-                            )
-                        },
-                        colors = AssistChipDefaults.assistChipColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary,
-                        ),
-                        border = AssistChipDefaults.assistChipBorder(
-                            borderColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    )
-                }
-
-                // usuario
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "CristianToZa",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(147),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            disabledBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        enabled = false,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                }
-
-                // inicio
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "Vie 29 Sep 2023",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(126),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            disabledBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        enabled = false,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                }
-
-                // expiracion
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "Dom 29 Oct 2023",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(120),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            disabledBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        enabled = false,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                }
-
-                // tipo membresia
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = myViewModel.languageType().get(130),
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(144),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            disabledBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        enabled = false,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                }
-
-                // moneda
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = myViewModel.languageType().get(133),
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(132),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            disabledTextColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            disabledBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        enabled = false,
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                }
-
-                // mejorar suscripcion
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ){
-                    TextButton(
-                        onClick = { /*TODO*/ },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                    ) {
-                        Text(
-                            text = myViewModel.languageType().get(128),
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                        )
-                    }
-                }
-
-                // cancelar suscripcion
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Button(
-                        onClick = { onClose() },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
-                        shape = RoundedCornerShape(15.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(
-                            defaultElevation = 5.dp
-                        ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(
-                            text = myViewModel.languageType().get(93),
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun UserDialogEdit(
-    onClose: () -> Unit,
-    myViewModel: MyViewModel
-) {
-    Dialog(
-        onDismissRequest = { /*TODO*/ },
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false
-        )
-    ) {
-        Card(
-
-        ) {
-            HeaderDialog(
-                onClose = { onClose() }
-            )
-
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-            ) {
-
-                // nombre y apellidos
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(136),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(88),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                }
-
-                // correo electronico
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(105),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                }
-
-                // pais y etado
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(140),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(116),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                }
-
-                // direccion y num interior
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(111),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(2f)
-                    )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = "# Int.",
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                }
-
-                // colonia y codigo postal
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(97),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(108),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                }
-
-                // cumpleaños y genero
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(109),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(123),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Next
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                }
-
-                // ocupacion
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
-                        label = {
-                            Text(
-                                text = myViewModel.languageType().get(139),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer
-                            )
-                        },
-                        trailingIcon = {
-                            IconButton(onClick = { /*TODO*/ }) {
-                                Icon(
-                                    imageVector = Icons.Filled.Clear,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onTertiaryContainer
-                                )
-                            }
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                            focusedBorderColor = MaterialTheme.colorScheme.tertiary,
-                            unfocusedBorderColor = MaterialTheme.colorScheme.outline
-                        ),
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done
-                        ),
-                        modifier = Modifier
-                            .weight(1f)
-                    )
-                }
-
-                // guardar cambios
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Button(
-                        onClick = { onClose() },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
-                        shape = RoundedCornerShape(15.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(
-                            defaultElevation = 5.dp
-                        ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(
-                            text = myViewModel.languageType().get(122),
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun HeaderDialog(
-    onClose: () -> Unit
-) {
-    Row {
-        IconButton(
-            onClick = { onClose() },
-            modifier = Modifier
-                .size(64.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Close,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(40.dp),
-                //tint =
-            )
-        }
-    }
-}
+data class FeaturedItem(
+    val name: String,
+    val value: String
+)
 
 @Composable
 fun FeaturedProfile(myViewModel: MyViewModel) {
+    val featured_items = listOf(
+        FeaturedItem(
+            name = myViewModel.languageType().get(141),
+            value = "0"
+        ),
+        FeaturedItem(
+            name = myViewModel.languageType().get(128),
+            value = myViewModel.languageType().get(118)
+        ),
+        FeaturedItem(
+            name = myViewModel.languageType().get(148),
+            value = "Icono"
+        ),
+        FeaturedItem(
+            name = myViewModel.languageType().get(127),
+            value = myViewModel.languageType().get(114)
+        ),
+        FeaturedItem(
+            name = myViewModel.languageType().get(95),
+            value = "Icono"
+        ),
+    )
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(colorScheme.surface),
         verticalArrangement = Arrangement.Center,
     ) {
 
@@ -1688,12 +295,12 @@ fun FeaturedProfile(myViewModel: MyViewModel) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            FeaturedInformation(inf = myViewModel.languageType().get(114),title = myViewModel.languageType().get(127), large = true)
+            FeaturedInformation(
+                inf = myViewModel.languageType().get(114),
+                title = myViewModel.languageType().get(127), large = true)
 
             FeaturedInformation(icon = Icons.Outlined.ExitToApp,title = myViewModel.languageType().get(95))
         }
-
-        FooterProfile(myViewModel)
 
     }
 }
@@ -1706,29 +313,24 @@ fun FeaturedInformation(
     large: Boolean = false
 ) {
     Card(
-        shape = RoundedCornerShape(0),
         elevation = CardDefaults.cardElevation(
             defaultElevation = 10.dp
         ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
         modifier = Modifier
             .padding(8.dp)
-            .width(if (!large) 125.dp else 266.dp)
+            .width(if (!large) 125.dp else 250.dp)
             .height(100.dp)
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp),
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if( !inf.isEmpty() ){
                 Text(
                     text = inf,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = typography.bodyMedium,
                     color =  Color(0xFFE8AA42),
                     textAlign = TextAlign.Center,
                     overflow = TextOverflow.Ellipsis,
@@ -1740,20 +342,15 @@ fun FeaturedInformation(
                 Icon(
                     imageVector = icon,
                     contentDescription = null,
-                    tint = Color(0xFFE8AA42),
-                    modifier = Modifier
-                        .size(32.dp)
+                    tint = Color(0xFFE8AA42)
                 )
             }
 
             Text(
                 text = title,
-                fontSize = 12.sp,
+                style = typography.titleSmall,
                 fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center,
-                letterSpacing = 1.sp,
-                lineHeight = 12.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
+                textAlign = TextAlign.Center
             )
         }
     }
@@ -1771,14 +368,11 @@ fun ProfileItems(
 ) {
     Card(
         modifier = Modifier
-            .fillMaxWidth(0.95f)
+            .fillMaxWidth()
             .heightIn(80.dp)
             .padding(top = 16.dp, start = 16.dp, end = 16.dp),
         elevation = CardDefaults.elevatedCardElevation(
             defaultElevation = 5.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondary
         )
     ) {
         Column(
@@ -1802,16 +396,14 @@ fun ProfileItems(
                 ) {
                     Text(
                         text = title,
-                        fontSize = 18.sp,
+                        style = typography.bodyLarge,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSecondary,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
                     )
                     Text(
                         text = description,
-                        color = MaterialTheme.colorScheme.onSecondary,
-                        fontSize = 14.sp,
+                        style = typography.bodySmall
                     )
                 }
 
@@ -1823,7 +415,6 @@ fun ProfileItems(
                     Icon(
                         imageVector = if (open) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
                         contentDescription = myViewModel.languageType().get(134),
-                        tint = MaterialTheme.colorScheme.onSecondary
                     )
                 }
             }
@@ -1939,20 +530,19 @@ fun HeaderProfile(navController: NavController, myViewModel: MyViewModel) {
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Add,
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(36.dp),
-                        tint = Color.White
+                        contentDescription = "Agregar imagen de perfil",
+                        tint = colorScheme.onPrimary
                     )
                 }
             }
         }
         Text(
-            text = myViewModel.languageType().get(135),
-            fontSize = 24.sp,
+            text = "Cristian Alexis Torres Zavala",
+            style = typography.titleLarge,
             fontWeight = FontWeight.Bold,
+            color = Color(0xFF281800),
             modifier = Modifier
-                .padding(16.dp)
+                .padding(PaddingValues(16.dp))
         )
     }
 }
@@ -1970,10 +560,9 @@ private fun TopBarBody(navController: NavController) {
             onClick = { navController.navigate(AppScreens.MainScreen.route) }
         ) {
             Icon(
-                imageVector = Icons.Outlined.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(24.dp)
+                imageVector = Icons.Outlined.KeyboardArrowLeft,
+                contentDescription = "Regresar a la pantalla principal",
+                tint = Color(0xFF281800)
             )
         }
     }

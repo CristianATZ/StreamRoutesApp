@@ -27,6 +27,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -43,16 +44,36 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBackIos
 import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.outlined.AttachMoney
+import androidx.compose.material.icons.outlined.Chat
+import androidx.compose.material.icons.outlined.DirectionsBus
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.GTranslate
+import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.MenuOpen
+import androidx.compose.material.icons.outlined.Museum
+import androidx.compose.material.icons.outlined.Route
+import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.Share
+import androidx.compose.material.icons.outlined.ShareLocation
+import androidx.compose.material.icons.outlined.Shortcut
+import androidx.compose.material.icons.outlined.StarRate
+import androidx.compose.material.icons.outlined.SwitchAccessShortcut
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -66,10 +87,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -264,7 +287,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                 drawerState = drawerState
             )
         },
-        drawerBackgroundColor = MaterialTheme.colorScheme.background,
+        //drawerBackgroundColor = MaterialTheme.colorScheme.background,
         gesturesEnabled = false
     ) {
         Scaffold(
@@ -273,7 +296,27 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                     myViewModel = myViewModel,
                     scope = scope,
                     drawerState = drawerState
-                )
+                ){
+                    when (changeMap) {
+                        1 -> {
+                            currentMapType = MapType.NORMAL
+                        }
+
+                        2 -> {
+                            currentMapType = MapType.SATELLITE
+                        }
+
+                        3 -> {
+                            currentMapType = MapType.TERRAIN
+                        }
+
+                        4 -> {
+                            currentMapType = MapType.HYBRID
+                        }
+                    }
+                    changeMap++
+                    if (changeMap == 5) changeMap = 1
+                }
             },
         ) { paddingValues ->
             Column(
@@ -285,64 +328,10 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                     geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
                     zoom = 17.0
                 }
-                Box(modifier = Modifier.fillMaxSize()){
-
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ){
                     MapBody(cameraState)
-
-                    // Botón cambio tipo de mapa en la parte superior derecha
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(75.dp)
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.End
-                    ){
-                        BoxOption(
-                            img = painterResource(id = R.drawable.translate),
-                            onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier
-                                .background(
-                                    MaterialTheme.colorScheme.primaryContainer,
-                                    RoundedCornerShape(percent = 10)
-                                )
-                                .clickable {
-                                    myViewModel.idioma = if (myViewModel.idioma == 1) 0 else 1
-                                }
-                        )
-
-                        Spacer(modifier = Modifier.size(10.dp))
-
-                        BoxOption(
-                            img = painterResource(id = R.drawable.change),
-                            onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier
-                                .background(
-                                    MaterialTheme.colorScheme.primaryContainer,
-                                    RoundedCornerShape(percent = 10)
-                                )
-                                .clickable {
-                                    when (changeMap) {
-                                        1 -> {
-                                            currentMapType = MapType.NORMAL
-                                        }
-
-                                        2 -> {
-                                            currentMapType = MapType.SATELLITE
-                                        }
-
-                                        3 -> {
-                                            currentMapType = MapType.TERRAIN
-                                        }
-
-                                        4 -> {
-                                            currentMapType = MapType.HYBRID
-                                        }
-                                    }
-                                    changeMap++
-                                    if (changeMap == 5) changeMap = 1
-                                }
-                        )
-                    }
                 }
             }
         }
@@ -354,16 +343,13 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 private fun TopBarBody(
     myViewModel: MyViewModel,
     scope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    changeMap: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType()[172],
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                text = myViewModel.languageType()[172]
             )
         },
         navigationIcon = {
@@ -375,16 +361,34 @@ private fun TopBarBody(
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.menu),
-                    contentDescription = "Te mostrara el menu",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    imageVector = Icons.Outlined.MenuOpen,
+                    contentDescription = "Abrir el menu de opciones"
                 )
             }
         },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
+        actions = {
+            IconButton(
+                onClick = {
+                    myViewModel.idioma = if (myViewModel.idioma == 1) 0 else 1
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.GTranslate,
+                    contentDescription = "Cambiar el idioma"
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    changeMap()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Map,
+                    contentDescription = "Cambiar el tipo de mapa"
+                )
+            }
+        }
     )
 }
 
@@ -441,282 +445,256 @@ fun DrawerBody(
 
     Column (
         modifier = Modifier
-            .background(
-                MaterialTheme.colorScheme.primaryContainer
-            ),
+            .background(colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Box(
-            modifier = Modifier
-                .height(180.dp)
-                .fillMaxWidth()
-                // crear la variable para el tema claro
-                // y el tema oscuro por el color a continuaacion
-                .background(
-                    MaterialTheme.colorScheme.tertiary,
-                    RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
-                )
-                .clickable {
-                    navController.navigate(AppScreens.ProfileScreen.route)
-                }
-        ){
-            // nombre, correo y boton para cerrar el menu
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 15.dp, bottom = 25.dp),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.Start
-            ) {
-                CustomText(
-                    firstString = "Cristian Alexis Torres Zavala",
-                    horizontal = Arrangement.Start,
-                    size = 20,
-                    modifier = Modifier.fillMaxWidth(0.95f),
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
+        // header perfil
+        HeaderProfileMenu(
+            navController = navController,
+            scope = scope,
+            drawerState = drawerState
+        )
 
-                CustomText(
-                    firstString = "s20120154@alumnos.itsur.edu.mx",
-                    horizontal = Arrangement.Start,
-                    fontWeight = FontWeight.Normal,
-                    size = 15,
-                    modifier = Modifier.fillMaxWidth(0.95f),
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
-            }
-
-            // boton de cerrar menu
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(15.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.End
-            ) {
-                BoxOption(
-                    img = painterResource(id = R.drawable.back),
-                    onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier
-                        .background(
-                            MaterialTheme.colorScheme.primaryContainer,
-                            RoundedCornerShape(percent = 10)
-                        )
-                        .clickable {
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        }
-                )
-            }
-
-            // cuadro de informacion de suscripcion
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.75f)
-                        .height(55.dp)
-                        .background(
-                            MaterialTheme.colorScheme.tertiary,
-                            RoundedCornerShape(percent = 15)
-                        )
-                        .border(2.dp, MaterialTheme.colorScheme.onTertiary),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CustomText(
-                        firstString = "P R E M I U M",
-                        horizontal = Arrangement.Center,
-                        size = 20,
-                        color = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
-            }
-        }
-
+        // cuerpo opciones del menu
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.SpaceEvenly
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DrawerItem(text = myViewModel.languageType().get(171), icon = painterResource(id = R.drawable.premium)) {
+
+            // premium
+
+            Text(
+                text = "Premium",
+                style = typography.titleSmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
+            )
+
+            DrawerItem(
+                text = "Paquetes",
+                icon = Icons.Outlined.AttachMoney
+            ) {
                 navController.navigate(AppScreens.SuscripcionScreen.route)
             }
 
-            Spacer(
+            // transporte
+
+            Text(
+                text = "Transporte",
+                style = typography.titleSmall,
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(1.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.5f)
-                    )
-                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
             )
 
-            var more by remember {
-                mutableStateOf(false)
+            DrawerItem(
+                text = "Ruta mas rapida",
+                icon = Icons.Outlined.SwitchAccessShortcut
+            ) {
+                navController.navigate(AppScreens.FastScreen.route)
             }
 
-            Column(
-                modifier = Modifier
-                    .animateContentSize(
-                        animationSpec = spring(
-                            dampingRatio = Spring.DampingRatioNoBouncy,
-                            stiffness = Spring.StiffnessVeryLow
-                        )
-                    ),
-                verticalArrangement = Arrangement.SpaceEvenly
+            DrawerItem(
+                text = myViewModel.languageType().get(167),
+                icon = Icons.Outlined.DirectionsBus
             ) {
-                DrawerItem(
-                    text = "Transporte",
-                    icon = painterResource(id = R.drawable.routes),
-                    selected = more
-                ) {
-                    more = !more
+                navController.navigate(AppScreens.RoutesScreen.route)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(164),
+                icon = Icons.Outlined.Route
+            ) {
+                navController.navigate(AppScreens.TripScreen.route)
+            }
+
+            DrawerItem(
+                text = "Turismo",
+                icon = Icons.Outlined.Museum
+            ) {
+                navController.navigate(AppScreens.TurismScreen.route)
+            }
+
+            // funciones extra
+            Text(
+                text = "Funciones",
+                style = typography.titleSmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
+            )
+
+            DrawerItem(
+                text = "Chat general",
+                icon = Icons.Outlined.Chat,
+            ) {
+                navController.navigate(AppScreens.ChatScreen.route)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(155),
+                icon = Icons.Outlined.ShareLocation
+            ) {
+                if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
+                    locationPermissionState.launchPermissionRequest()
+                    backgroundLocationPermissionState.launchPermissionRequest()
                 }
 
-                if(more){
-                    Box {
-                        Column(
-                            modifier = Modifier
-                                .height(190.dp)
-                                .verticalScroll(rememberScrollState())
-                        ) {
-                            DrawerItem(text = "Ruta mas rapida", icon = painterResource(id = R.drawable.routes)) {
-                                navController.navigate(AppScreens.FastScreen.route)
+                if (!areLocationServicesEnabled(context)) {
+                    Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
+                    // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
+                    // y proporcionar una opción para abrir la configuración para habilitarlos
+                } else {
+                    if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
+                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+                        fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location: Location? ->
+                                if (location != null) {
+                                    val latitude = location.latitude
+                                    val longitude = location.longitude
+
+                                    // Construir la URL con el marcador en tu ubicación actual
+                                    val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
+                                    val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
+                                    val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
+                                            addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
+
+                                    val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
+                                    context.startActivity(shareIntent)
+
+                                } else {
+                                    Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
+                                }
                             }
-
-                            DrawerItem(text = myViewModel.languageType().get(167), icon = painterResource(id = R.drawable.routes)) {
-                                navController.navigate(AppScreens.RoutesScreen.route)
+                            .addOnFailureListener {
+                                // Manejar el error al obtener la ubicación actual
+                                Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
                             }
-
-                            DrawerItem(text = myViewModel.languageType().get(164), icon = painterResource(id = R.drawable.add_location)) {
-                                navController.navigate(AppScreens.TripScreen.route)
-                            }
-
-                            DrawerItem(text = "Turismo", icon = painterResource(id = R.drawable.routes)) {
-                                navController.navigate(AppScreens.TurismScreen.route)
-                            }
-                        }
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(190.dp),
-                            horizontalArrangement = Arrangement.End,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.ArrowDropDown,
-                                contentDescription = null
-                            )
-                            Spacer(modifier = Modifier.size(32.dp))
-                        }
-                    }
-                }
-
-                DrawerItem(
-                    text = "Chat general",
-                    icon = painterResource(id = R.drawable.routes),
-                ) {
-
-                }
-
-                DrawerItem(text = myViewModel.languageType().get(155), icon = painterResource(id = R.drawable.share_location)) {
-                    if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
-                        locationPermissionState.launchPermissionRequest()
-                        backgroundLocationPermissionState.launchPermissionRequest()
-                    }
-
-                    if (!areLocationServicesEnabled(context)) {
-                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
-                        // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
-                        // y proporcionar una opción para abrir la configuración para habilitarlos
                     } else {
-                        if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
-                            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-                            fusedLocationClient.lastLocation
-                                .addOnSuccessListener { location: Location? ->
-                                    if (location != null) {
-                                        val latitude = location.latitude
-                                        val longitude = location.longitude
-
-                                        // Construir la URL con el marcador en tu ubicación actual
-                                        val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
-                                        val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
-                                        val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
-                                                addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
-
-                                        val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
-                                        context.startActivity(shareIntent)
-
-                                    } else {
-                                        Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                                .addOnFailureListener {
-                                    // Manejar el error al obtener la ubicación actual
-                                    Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
-                                }
-                        } else {
-                            Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
-                        }
+                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
                     }
                 }
-
-                DrawerItem(text = myViewModel.languageType().get(159), icon = painterResource(id = R.drawable.download)) {
-                    startDownload(context = context, myViewModel = myViewModel)
-                }
             }
 
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(1.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.5f)
-                    )
-                    .align(Alignment.CenterHorizontally)
-            )
-
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly
+            DrawerItem(
+                text = myViewModel.languageType().get(159),
+                icon = Icons.Outlined.Download
             ) {
-                DrawerItem(text = myViewModel.languageType().get(154), icon = painterResource(id = R.drawable.share)) {
-                    val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
-                    context.startActivity(shareIntent)
-                }
-
-                DrawerItem(text = myViewModel.languageType().get(170), icon = painterResource(id = R.drawable.star)) {
-                    navController.navigate(AppScreens.ValoranoScreen.route)
-                }
-
-                DrawerItem(text = myViewModel.languageType().get(156), icon = painterResource(id = R.drawable.settings)) {
-                    navController.navigate(AppScreens.ConfigurationScreen.route)
-                }
-
-                DrawerItem(text = myViewModel.languageType().get(152), icon = painterResource(id = R.drawable.help)) {
-                    navController.navigate(AppScreens.HelpScreen.route)
-                }
+                startDownload(context = context, myViewModel = myViewModel)
             }
 
-            Spacer(
+            DrawerItem(
+                text = myViewModel.languageType().get(154),
+                icon = Icons.Outlined.Share
+            ) {
+                val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
+                context.startActivity(shareIntent)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(170),
+                icon = Icons.Outlined.StarRate
+            ) {
+                navController.navigate(AppScreens.ValoranoScreen.route)
+            }
+
+            // configuracion y soporte
+
+            Text(
+                text = "Configuracion y soporte",
+                style = typography.titleSmall,
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(1.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.5f)
-                    )
-                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
             )
 
-            DrawerItem(text = myViewModel.languageType().get(153), icon = painterResource(id = R.drawable.logout)) {
+            DrawerItem(
+                text = myViewModel.languageType().get(156),
+                icon = Icons.Outlined.Settings
+            ) {
+                navController.navigate(AppScreens.ConfigurationScreen.route)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(152),
+                icon = Icons.Outlined.HelpOutline
+            ) {
+                navController.navigate(AppScreens.HelpScreen.route)
+            }
+        }
+    }
+}
+
+@Composable
+fun HeaderProfileMenu(
+    navController: NavController,
+    scope: CoroutineScope,
+    drawerState: DrawerState
+) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(Color(0xFFE8CF41), Color(0xFFE8AA42))
+                ),
+                RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp)
+            )
+            .clickable {
+                navController.navigate(AppScreens.ProfileScreen.route)
+            }
+
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(PaddingValues(16.dp))
+        ) {
+            // imagen y boton de regresar
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(100))
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.ArrowBackIos,
+                        contentDescription = null
+                    )
+                }
 
             }
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            // nombre de usuario
+            Text(
+                text = "Cristian Alexis Torres Zavala",
+                style = typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "s20120154@alumnos.itsur.edu.mx",
+                style = typography.bodySmall
+            )
         }
     }
 }
@@ -756,33 +734,31 @@ private fun BoxOption(
     onBackground: Color,
     modifier: Modifier
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ){
-        when (img) {
-            is Painter -> {
-                Image(
-                    painter = img,
-                    contentDescription = desc,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(35.dp),
-                    colorFilter = ColorFilter.tint(
-                        onBackground
+    Card {
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+            when (img) {
+                is Painter -> {
+                    Image(
+                        painter = img,
+                        contentDescription = desc,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(35.dp)
                     )
-                )
-            }
-            is ImageVector -> {
-                Icon(
-                    imageVector = img,
-                    contentDescription = desc,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(35.dp),
-                    tint = onBackground
-                )
+                }
+                is ImageVector -> {
+                    Icon(
+                        imageVector = img,
+                        contentDescription = desc,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(35.dp)
+                    )
+                }
             }
         }
     }
@@ -791,7 +767,7 @@ private fun BoxOption(
 @Composable
 private fun DrawerItem(
     text: String,
-    icon: Painter,
+    icon: ImageVector,
     selected: Boolean = false,
     onItemClick: () -> Unit
 ) {
@@ -799,63 +775,19 @@ private fun DrawerItem(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .padding(start = 15.dp, top = 2.dp, end = 15.dp)
-            .clip(RoundedCornerShape(50))
-            .background(if (selected) colorScheme.onPrimary else Color.Transparent)
             .clickable(onClick = onItemClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ){
-        Spacer(modifier = Modifier.width(15.dp))
+        Spacer(modifier = Modifier.width(32.dp))
 
-        Icon(painter = icon, contentDescription = text, tint = MaterialTheme.colorScheme.onPrimaryContainer)
+        Icon(imageVector = icon, contentDescription = text)
         
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
-        TextOption(text = text, color = MaterialTheme.colorScheme.onPrimaryContainer)
-    }
-}
-
-@Composable
-fun TextOption(
-    text: String,
-    color: Color = color_letra_botones
-) {
-    Text(
-        text = text,
-        color = color,
-        fontSize = 18.sp,
-        fontFamily = FontFamily.SansSerif
-    )
-}
-
-@Composable
-private fun CustomText(
-    firstString: String,
-    horizontal: Arrangement.Horizontal,
-    color: Color = color_letra_botones,
-    fontWeight: FontWeight = FontWeight.Bold,
-    size: Int,
-    modifier: Modifier = Modifier
-) {
-    Row (
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = horizontal
-    ){
-        // forgot
         Text(
-            text = buildAnnotatedString{
-                withStyle(style = SpanStyle(color = color,
-                    fontWeight = fontWeight,
-                    fontSize = size.sp,
-                    fontFamily = FontFamily.SansSerif)
-                ) {
-                    append(firstString)
-                }
-            },
-            modifier = Modifier
-                .wrapContentWidth()
+            text = text,
+            style = typography.bodyLarge
         )
     }
 }

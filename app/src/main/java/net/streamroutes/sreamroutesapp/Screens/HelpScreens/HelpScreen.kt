@@ -99,7 +99,7 @@ private fun TopBarBody(
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = "Notificaciones",
+                text = "Ayuda y soporte",
                 style = typography.titleLarge
             )
         },

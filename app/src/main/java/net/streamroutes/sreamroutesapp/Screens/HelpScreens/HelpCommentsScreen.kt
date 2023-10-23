@@ -26,12 +26,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -81,8 +83,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
     val checkedState = remember { mutableStateOf(true) }
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
+        topBar = { TopBarBody(myViewModel,navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -92,73 +93,57 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
         ) {
             Spacer(modifier = Modifier.size(15.dp))
 
-            HeaderTextField(
-                placeholder = myViewModel.languageType().get(262),
-                size = 300,
-                variable = comment,
-                onValueChange = {newValue -> comment = newValue},
-                visualTransformation = VisualTransformation.None,
+            OutlinedTextField(
+                value = comment,
+                onValueChange = { comment = it },
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.None
-                )
+                ),
+                placeholder = {
+                    Text(
+                        text = myViewModel.languageType().get(262),
+                        style = typography.labelLarge
+                    )
+                },
+                singleLine = false,
+                modifier = Modifier
+                    .height(350.dp)
+                    .fillMaxWidth(0.9f)
             )
 
             // SUGERENCIA Y CHECKBOX
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(32.dp)
                     .clickable { checkedState.value = !checkedState.value },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ){
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.7f),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(263),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontFamily = FontFamily.SansSerif,
-                    )
-                    Text(
-                        text = myViewModel.languageType().get(264),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontFamily = FontFamily.SansSerif,
-                    )
-                }
+                Text(
+                    text = myViewModel.languageType().get(263) + ". " + myViewModel.languageType().get(264),
+                    style = typography.bodyLarge
+                )
+
                 Checkbox(
                     checked = checkedState.value,
-                    onCheckedChange = { checkedState.value = it },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = MaterialTheme.colorScheme.primary,
-                        checkmarkColor = MaterialTheme.colorScheme.background,
-                        uncheckedColor = MaterialTheme.colorScheme.primary
-                    )
+                    onCheckedChange = { checkedState.value = it }
                 )
             }
 
             // boton y subtitulo
             Button(
                 onClick = {
-
+                    navController.navigate(AppScreens.HelpScreen.route)
                 },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                ),
-                shape = RoundedCornerShape(percent = 40),
-                elevation = ButtonDefaults.buttonElevation(
-                    defaultElevation = 5.dp
-                ),
                 modifier = Modifier
-                    .fillMaxWidth(0.65f)
-                    .padding(16.dp)
+                    .fillMaxWidth(0.85f)
+                    .padding(top = 16.dp)
+                    .height(50.dp)
             ) {
                 Text(
                     text = "Enviar",
-                    fontSize = 24.sp,
-                    color = MaterialTheme.colorScheme.onTertiary
+                    style = typography.bodyLarge
                 )
             }
         }
@@ -171,76 +156,19 @@ private fun TopBarBody(
     myViewModel: MyViewModel,
     navController: NavController
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType().get(261),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
+                text = myViewModel.languageType().get(261)
             )
         },
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                 Icon(
                     painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    contentDescription = "Te enviara al menu de opciones"
                 )
             }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun HelpCommmentsView(){
-
-}
-
-@Composable
-private fun HeaderTextField(
-    placeholder: String,
-    singleLine: Boolean = false,
-    size: Int,
-    variable: String,
-    onValueChange: (String) -> Unit,
-    visualTransformation: VisualTransformation,
-    keyboardOptions: KeyboardOptions
-) {
-    OutlinedTextField(
-        value = variable,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth(0.85f)
-            .heightIn(size.dp),
-        // icono para mostrar la contraseña
-        // trailingIcon =
-        placeholder = {
-            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f))
-        },
-        textStyle = TextStyle(
-            fontSize = 18.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Left,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 2.sp
-        ),
-        keyboardOptions = keyboardOptions,
-        visualTransformation = visualTransformation,
-        shape = RoundedCornerShape(percent = 10),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        singleLine = singleLine
+        }
     )
 }

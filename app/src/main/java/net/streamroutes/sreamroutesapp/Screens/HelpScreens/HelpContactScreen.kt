@@ -5,6 +5,7 @@ package net.streamroutes.sreamroutesapp.Screens.HelpScreens
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,12 +26,15 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -86,8 +90,7 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
     var mensaje by remember { mutableStateOf("") }
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
+        topBar = { TopBarBody(myViewModel,navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -95,100 +98,80 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.size(30.dp))
-
             // nombre
-            HeaderTextField(
-                tittle = "Nomnre",
-                placeholder = "Nombre",
-                size = 70,
-                variable = nombre,
-                onValueChange = {newValue -> nombre = newValue},
-                visualTransformation = VisualTransformation.None,
+            OutlinedTextField(
+                value = nombre,
+                onValueChange = { nombre = it },
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
-                enabled = true
-            )
-
-            Spacer(modifier = Modifier.size(30.dp))
-
-            // destinatario
-            HeaderTextField(
-                tittle = "Nuestro correo",
-                placeholder = "streamroutes2.0@gmail.com",
-                size = 70,
-                variable = "",
-                onValueChange = {},
-                visualTransformation = VisualTransformation.None,
-                keyboardOptions = KeyboardOptions.Default,
-                enabled = false
-            )
-
-            Spacer(modifier = Modifier.size(30.dp))
-
-            // mensaje
-            HeaderTextField(
-                tittle = "Mensaje",
-                placeholder = "Escribe tu inconveniente.",
-                size = 200,
-                variable = mensaje,
-                onValueChange = {newValue -> mensaje = newValue},
-                visualTransformation = VisualTransformation.None,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.None
-                ),
-                enabled = true,
-                singleLine = false,
-                shape = 10
-            )
-
-
-            //boton
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // button enviar
-                Button(
-                    onClick = {
-
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    shape = RoundedCornerShape(percent = 40),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 5.dp
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(0.65f)
-                        .padding(16.dp)
-                ) {
+                placeholder = {
                     Text(
-                        text = "Enviar",
-                        fontSize = 24.sp,
-                        color = MaterialTheme.colorScheme.onTertiary
+                        text = "Nombre",
+                        style = typography.labelLarge
                     )
-                }
+                },
+                singleLine = false,
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+            )
 
-                // ubicacion
-                Row(modifier = Modifier
-                    .fillMaxSize()
-                    .padding(vertical = 15.dp),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    // text ubicacion
-                    CustomText(
-                        firstString = myViewModel.languageType().get(265),
-                        secondString = myViewModel.languageType().get(266),
-                        horizontal = Arrangement.Center
-                    ) {
+            Spacer(modifier = Modifier.size(16.dp))
 
-                    }
-                }
+            // correo
+            OutlinedTextField(
+                value = "streamroutes2.0@gmail.com",
+                onValueChange = {},
+                enabled = false,
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+            )
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            // mensjae
+            OutlinedTextField(
+                value = mensaje,
+                onValueChange = { mensaje = it },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.Done
+                ),
+                placeholder = {
+                    Text(
+                        text = "Escribe tu inconveniente",
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                },
+                singleLine = false,
+                modifier = Modifier
+                    .height(350.dp)
+                    .fillMaxWidth(0.9f)
+            )
+
+            Button(
+                onClick = {
+                    navController.navigate(AppScreens.HelpScreen.route)
+                },
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .padding(top = 16.dp)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = "Enviar",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            TextButton(
+                onClick = { }
+            ){
+                Text(
+                    text = myViewModel.languageType().get(265) + " " + myViewModel.languageType().get(266),
+                    style = typography.titleMedium
+                )
             }
         }
     }
@@ -200,131 +183,19 @@ private fun TopBarBody(
     myViewModel: MyViewModel,
     navController: NavController
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(99),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
+            Text(
+                text = "Contactanos"
             )
         },
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                 Icon(
                     painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    contentDescription = "Te enviara al menu de opciones"
                 )
             }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
+        }
     )
-}
-
-@Composable
-private fun HeaderTextField(
-    tittle: String,
-    placeholder: String,
-    singleLine: Boolean = true,
-    size: Int,
-    variable: String,
-    onValueChange: (String) -> Unit,
-    visualTransformation: VisualTransformation,
-    keyboardOptions: KeyboardOptions,
-    enabled: Boolean,
-    shape: Int = 30
-) {
-    // nombre
-    Row (
-        modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .size(48.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ){
-        // header
-        Text(
-            text = tittle,
-            modifier = Modifier
-                .fillMaxWidth(),
-            color = MaterialTheme.colorScheme.onBackground,
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
-        )
-    }
-
-    OutlinedTextField(
-        value = variable,
-        onValueChange = onValueChange,
-        modifier = Modifier
-            .fillMaxWidth(0.85f)
-            .heightIn(size.dp),
-        // icono para mostrar la contraseña
-        // trailingIcon =
-        placeholder = {
-            Text(text = placeholder, fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant.copy(0.5f))
-        },
-        textStyle = TextStyle(
-            fontSize = 18.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Left,
-            fontWeight = FontWeight.Bold,
-            letterSpacing = 2.sp
-        ),
-        keyboardOptions = keyboardOptions,
-        visualTransformation = visualTransformation,
-        shape = RoundedCornerShape(percent = shape),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-            textColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            focusedBorderColor = MaterialTheme.colorScheme.onSurfaceVariant,
-            unfocusedBorderColor = MaterialTheme.colorScheme.surfaceVariant
-        ),
-        singleLine = singleLine,
-        enabled = enabled
-    )
-}
-
-@Composable
-private fun CustomText(
-    firstString: String,
-    secondString: String,
-    horizontal: Arrangement.Horizontal,
-    onClick: () -> Unit
-) {
-    Row (
-        modifier = Modifier
-            .fillMaxWidth(0.8f)
-            .heightIn(min = 48.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = horizontal
-    ){
-        // forgot
-        Text(
-            text = buildAnnotatedString{
-                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.onBackground,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.SansSerif)) {
-                    append(firstString)
-                }
-                append(" ")
-                withStyle(style = SpanStyle(color = MaterialTheme.colorScheme.tertiary,
-                    textDecoration = TextDecoration.Underline,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.SansSerif)) {
-                    append(secondString)
-                }
-            },
-            modifier = Modifier
-                .wrapContentWidth()
-                .clickable(onClick = onClick),
-            textAlign = TextAlign.Center
-        )
-    }
 }
