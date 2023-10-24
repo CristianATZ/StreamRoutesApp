@@ -388,7 +388,13 @@ private fun TopBarBody(
                     contentDescription = "Cambiar el tipo de mapa"
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = colorScheme.primary,
+            titleContentColor = colorScheme.onPrimary,
+            navigationIconContentColor = colorScheme.onPrimary,
+            actionIconContentColor = colorScheme.onPrimary
+        )
     )
 }
 

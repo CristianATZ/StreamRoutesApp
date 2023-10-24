@@ -1263,7 +1263,7 @@ fun SecuDialogEdit(
                                     }
                                 },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1308,7 +1308,7 @@ fun SecuDialogEdit(
                                         }
                                     },
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                        //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                         unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1353,7 +1353,7 @@ fun SecuDialogEdit(
                                             }
                                         },
                                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1385,7 +1385,7 @@ fun SecuDialogEdit(
                                             }
                                         },
                                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1488,7 +1488,7 @@ fun SecuDialogEdit(
                                     }
                                 },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1533,7 +1533,7 @@ fun SecuDialogEdit(
                                         }
                                     },
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                        //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                         unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1578,7 +1578,7 @@ fun SecuDialogEdit(
                                             }
                                         },
                                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1610,7 +1610,7 @@ fun SecuDialogEdit(
                                             }
                                         },
                                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1694,7 +1694,7 @@ fun SecuDialogEdit(
                                     }
                                 },
                                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                                    textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                    //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                     focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                     unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1739,7 +1739,7 @@ fun SecuDialogEdit(
                                         }
                                     },
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                        //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                         unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -1771,7 +1771,7 @@ fun SecuDialogEdit(
                                         }
                                     },
                                     colors = TextFieldDefaults.outlinedTextFieldColors(
-                                        textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                                        //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                                         focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                                         unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2140,7 +2140,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2173,7 +2173,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2211,7 +2211,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2249,7 +2249,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2282,7 +2282,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2320,7 +2320,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2353,7 +2353,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2391,7 +2391,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2424,7 +2424,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2462,7 +2462,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline
@@ -2530,7 +2530,7 @@ fun UserDialogEdit(
                             }
                         },
                         colors = TextFieldDefaults.outlinedTextFieldColors(
-                            textColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                            //textColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             cursorColor = MaterialTheme.colorScheme.onTertiaryContainer,
                             focusedBorderColor = MaterialTheme.colorScheme.tertiary,
                             unfocusedBorderColor = MaterialTheme.colorScheme.outline

@@ -20,16 +20,11 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ChatScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigurationScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfilePersonalInfoScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.SuscriptionConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
@@ -74,18 +69,6 @@ fun AppNavigation(myViewModel: MyViewModel) {
         // PROFILE
         composable(AppScreens.ProfileScreen.route){
             ProfileScreen(NavController,myViewModel)
-        }
-        composable(AppScreens.ProfileChangePhoneScreen.route){
-            ProfileChangePhoneScreen(NavController)
-        }
-        composable(AppScreens.ProfileChangeEmailScreen.route){
-            ProfileChangeEmailScren(NavController)
-        }
-        composable(AppScreens.ProfileConfigurationScreen.route){
-            ProfileConfigurationScreen(NavController)
-        }
-        composable(AppScreens.ProfilePersonalInfoScreen.route){
-            ProfilePersonalInfoScreen(NavController)
         }
         // HELP
         composable(AppScreens.HelpAboutAppScreen.route){
@@ -156,9 +139,6 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
 
         // SUSCRIPTION CONFIGURATION
-        composable(AppScreens.SuscriptionConfigurationScreen.route){
-            SuscriptionConfigurationScreen()
-        }
 
         composable(AppScreens.TurismScreen.route){
             TurismScreen(myViewModel, NavController)

@@ -24,9 +24,12 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -34,10 +37,15 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.AddLocationAlt
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberBottomSheetState
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -50,6 +58,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -76,6 +85,7 @@ import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberOverlayManagerState
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.AddressInfo
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
@@ -91,7 +101,9 @@ fun view() {
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+    ExperimentalMaterialApi::class
+)
 @Composable
 fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
     var markers by remember { mutableStateOf(listOf<AddressInfo>()) }
@@ -112,219 +124,44 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
         markers = emptyList()
     }
 
+    var openSheet by remember {
+        mutableStateOf(false)
+    }
 
-    Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
-        // cuerpo
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.6f)
-            ){
-                // Mapa
-                val cameraState = rememberCameraState {
-                    geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
-                    zoom = 17.0
-                }
+    val scope = rememberCoroutineScope()
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
-                val context = LocalContext.current
-                val overlayManagerState = rememberOverlayManagerState()
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetPeekHeight = 128.dp,
+        sheetContent = {
 
-                var point by remember {
-                    mutableStateOf(GeoPoint(12,12))
-                }
-
-
-                OpenStreetMap(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    cameraState = cameraState,
-                    properties = DefaultMapProperties.copy(
-                        maxZoomLevel = 18.0,
-                        minZoomLevel = 15.0,
-                        tileSources = TileSourceFactory.MAPNIK,
-                        zoomButtonVisibility = ZoomButtonVisibility.NEVER
-                    ),
-                    overlayManagerState = overlayManagerState,
-                    onFirstLoadListener = {
-                        val copyright = CopyrightOverlay(context)
-                        overlayManagerState.overlayManager.add(copyright)
-
-                    },
-                    onMapClick = {
-                        selectedLocation = LatLng(it.latitude,it.longitude)
-                    }
-                ) {
-                    selectedLocation?.let {
-                        com.utsman.osmandcompose.Marker(
-                            state = com.utsman.osmandcompose.MarkerState(
-                                geoPoint = GeoPoint(selectedLocation!!.latitude, selectedLocation!!.longitude)
-                            )
-                        )
-                    }
-                }
-
-                // barra de busqueda
-                Column(
-                    modifier = Modifier
-                        .padding(5.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        var searchText by remember { mutableStateOf("") }
-
-                        OutlinedTextField(
-                            value = searchText,
-                            onValueChange = {searchText = it},
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Outlined.Search,
-                                    contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.onPrimaryContainer
-                                )
-                            },
-                            trailingIcon = {
-                                if(!searchText.isEmpty()){
-                                    IconButton(
-                                        onClick = { searchText = "" }
-                                    ) {
-                                        Icon(
-                                            imageVector = Icons.Outlined.Clear,
-                                            contentDescription = "Borrar texto de destino",
-                                            tint = MaterialTheme.colorScheme.onPrimaryContainer
-                                        )
-                                    }
-                                }
-                            },
-                            placeholder = {
-                                Text(
-                                    text = myViewModel.languageType().get(205),
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
-                                )
-                            },
-                            shape = RoundedCornerShape(15),
-                            keyboardOptions = KeyboardOptions(
-                                imeAction = ImeAction.Done
-                            ),
-                            colors = TextFieldDefaults.outlinedTextFieldColors(
-                                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                textColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-                                unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
-                                cursorColor = MaterialTheme.colorScheme.onPrimaryContainer
-                            ),
-                            modifier = Modifier
-                                .height(60.dp)
-                                .weight(1f)
-                        )
-                    }
-                }
-
-                Button(
-                    onClick = {
-                        selectedLocation?.let {
-
-                            val ubicacion = getAddressInfoFromCoordinates(context, it.latitude, it.longitude)
-
-                            if (ubicacion != null) {
-                                markers = markers + ubicacion
-                            }
-
-                            selectedLocation = null
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .align(Alignment.BottomEnd)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
-            }
-
-
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize() // Aseguramos que el LazyColumn tenga un tamaño acotado
-                    .weight(1f)
-                    .background(MaterialTheme.colorScheme.background), // Permitimos que el LazyColumn se expanda para ocupar el espacio restante
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                // encabezado
-                item {
-                    Text(
-                        text = myViewModel.languageType().get(206),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                }
-
-                // Elementos principales (la lista de lugares)
-                items(markers.size) { index ->
-                    val location = markers[index]
-                    PlaceOption(
-                        nombreCalle = "${location.streetName}",
-                        colonia = myViewModel.languageType().get(207) + ": ${location.neighborhood} - " + myViewModel.languageType().get(208) + ": ${location.postalCode}",
-                        numero = index + 1,
-                        onRemove = {
-                            removeMarker(index)
-                        }
-                    )
-                }
-            }
-
-
-            // Botón de aceptar
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ) {
-                val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                Button(
-                    onClick = {
-                        Toast.makeText(context, myViewModel.languageType().get(209) + " ${markers.size} " + myViewModel.languageType().get(210), Toast.LENGTH_LONG).show()
-                        removeAll()
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    shape = roundCornerShape,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(16.dp),
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(211),
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
-            }
+        }
+    ) { innerPadding ->
+        Box(Modifier.padding(innerPadding)) {
+            Text("Scaffold Content")
         }
     }
+}
+
+@Composable
+fun FABody(
+    onClick: () -> Unit
+) {
+    ExtendedFloatingActionButton(
+        text = {
+            Text(text = "Agregar")
+        },
+        icon = {
+            Icon(
+                imageVector = Icons.Outlined.AddLocationAlt,
+                contentDescription = null
+            )
+        },
+        onClick = {
+            onClick()
+        }
+    )
 }
 
 @OptIn(ExperimentalComposeUiApi::class)

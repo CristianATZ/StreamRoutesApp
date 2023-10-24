@@ -557,7 +557,7 @@ fun RouteStops(
                     borderWidth = 0.dp
                 ),
                 elevation = AssistChipDefaults.elevatedAssistChipElevation(
-                    defaultElevation = 5.dp
+                    elevation = 5.dp
                 )
             )
         }
