@@ -181,7 +181,7 @@ private fun TopBarBody(navController: NavController) {
                 )
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
+        colors = TopAppBarDefaults.topAppBarColors(
             containerColor = colorScheme.primary,
             titleContentColor = colorScheme.onPrimary,
             navigationIconContentColor = colorScheme.onPrimary
