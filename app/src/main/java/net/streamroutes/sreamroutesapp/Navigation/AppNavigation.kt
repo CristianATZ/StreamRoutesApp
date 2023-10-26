@@ -41,7 +41,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
     val NavController = rememberNavController()
 
 
-    NavHost(navController = NavController, startDestination = AppScreens.SplashScreen.route) {
+    NavHost(navController = NavController, startDestination = AppScreens.RoutesScreen.route) {
         // splash screen
         composable(AppScreens.SplashScreen.route){
             SplashScreen(NavController,myViewModel)
