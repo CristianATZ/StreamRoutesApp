@@ -1,13 +1,10 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
-import android.content.Context
-import android.location.Geocoder
-import android.widget.Toast
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,93 +14,75 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.Icon
-import androidx.compose.material.LocalTextStyle
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Done
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.DeleteOutline
+import androidx.compose.material.icons.outlined.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.RestoreFromTrash
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapType
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.OpenStreetMap
+import com.utsman.osmandcompose.ZoomButtonVisibility
+import com.utsman.osmandcompose.rememberCameraState
+import com.utsman.osmandcompose.rememberOverlayManagerState
 import net.streamroutes.sreamroutesapp.AddressInfo
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_icon
-import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letrain
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
-import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.CopyrightOverlay
 
-@Preview ( showBackground = true )
-@Composable
-fun view() {
+data class PlaceItem(
+    val coordenadas: AddressInfo,
+    val action: () -> Unit
+)
 
-}
-
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class,
+    ExperimentalMaterialApi::class
+)
 @Composable
 fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
-    var markers by remember { mutableStateOf(listOf<AddressInfo>()) }
+    var markers by remember { mutableStateOf(listOf<PlaceItem?>()) }
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
     val context = LocalContext.current
 
@@ -121,262 +100,208 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
         markers = emptyList()
     }
 
+    val scaffoldState = rememberBottomSheetScaffoldState()
 
-    Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
-        // cuerpo
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.6f)
-            ){
-                // Mapa
-                val itsur = LatLng(20.139468718311957, -101.15069924573676)
-                val itsurState = MarkerState(position = itsur)
-                val cameraPositionState = rememberCameraPositionState(){
-                    position = CameraPosition.fromLatLngZoom(itsur,17f)
-                }
+    var destino by remember {
+        mutableStateOf("")
+    }
 
-                GoogleMap(
-                    modifier = Modifier
-                        .fillMaxSize(),
-                    cameraPositionState = cameraPositionState,
-                    uiSettings = MapUiSettings(
-                        compassEnabled = false,
-                        indoorLevelPickerEnabled = false,
-                        mapToolbarEnabled = false,
-                        myLocationButtonEnabled = false,
-                        rotationGesturesEnabled = true,
-                        scrollGesturesEnabled = true,
-                        scrollGesturesEnabledDuringRotateOrZoom = false,
-                        tiltGesturesEnabled = false,
-                        zoomControlsEnabled = false,
-                        zoomGesturesEnabled = true
-                    ),
-                    onMapClick = { latLng ->
-                        selectedLocation = latLng
-                    },
-                    properties = MapProperties(
-                        mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-                        mapType = MapType.NORMAL,
-                        maxZoomPreference = 17f
-                    )
-                ){
-                    selectedLocation?.let {
-                        Marker(
-                            state = MarkerState(position = it),
-                            title = myViewModel.languageType().get(36)
-                        )
-                    }
-                }
-
-                // barra de busqueda
-                Column(
-                    modifier = Modifier
-                        .padding(5.dp)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        var searchText by remember { mutableStateOf("") }
-                        val keyboardController = LocalSoftwareKeyboardController.current
-
-                        val onSearch: (String) -> Unit = { text ->
-                            searchText = text
-                            keyboardController?.hide()
-                        }
-                        SearchBar(
-                            onSearch = onSearch,
-                            placeholder = myViewModel.languageType().get(37),
-                            size = 70
-                        )
-                    }
-                }
-
-                Button(
-                    onClick = {
-                        selectedLocation?.let {
-
-                            val ubicacion = getAddressInfoFromCoordinates(context, it.latitude, it.longitude)
-
-                            if (ubicacion != null) {
-                                markers = markers + ubicacion
-                            }
-
-                            selectedLocation = null
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    shape = CircleShape,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .align(Alignment.BottomEnd)
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Add,
-                        contentDescription = "",
-                        tint = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetContent = {
+            BottomSheet(markers,myViewModel){
+                removeAll()
             }
-
-
-            LazyColumn(
+        },
+        sheetDragHandle = {
+            Icon(
+                imageVector = Icons.Outlined.KeyboardArrowUp,
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize() // Aseguramos que el LazyColumn tenga un tamaño acotado
-                    .weight(1f), // Permitimos que el LazyColumn se expanda para ocupar el espacio restante
-                horizontalAlignment = Alignment.CenterHorizontally,
+                    .padding(PaddingValues(8.dp))
+            )
+        },
+        sheetSwipeEnabled = true,
+        sheetShadowElevation = 8.dp
+    ) { innerPadding ->
+        // cuerpo del scaffold
+
+
+        // Mapa
+        val cameraState = rememberCameraState {
+            geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
+            zoom = 17.0
+        }
+
+        val context = LocalContext.current
+        val overlayManagerState = rememberOverlayManagerState()
+
+        var point by remember {
+            mutableStateOf(GeoPoint(12,12))
+        }
+
+        Box(){
+            OpenStreetMap(
+                modifier = Modifier
+                    .fillMaxSize(),
+                cameraState = cameraState,
+                properties = DefaultMapProperties.copy(
+                    maxZoomLevel = 18.0,
+                    minZoomLevel = 15.0,
+                    tileSources = TileSourceFactory.MAPNIK,
+                    zoomButtonVisibility = ZoomButtonVisibility.NEVER
+                ),
+                overlayManagerState = overlayManagerState,
+                onFirstLoadListener = {
+                    val copyright = CopyrightOverlay(context)
+                    overlayManagerState.overlayManager.add(copyright)
+
+                },
+                onMapClick = {
+                    selectedLocation = LatLng(it.latitude,it.longitude)
+                }
             ) {
-                // encabezado
-                item {
-                    Text(
-                        text = myViewModel.languageType().get(38),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp)
-                    )
-                }
-
-                // Elementos principales (la lista de lugares)
-                items(markers.size) { index ->
-                    val location = markers[index]
-                    PlaceOption(
-                        nombreCalle = "${location.streetName}",
-                        colonia = myViewModel.languageType().get(39) + ": ${location.neighborhood} - " + myViewModel.languageType().get(40) + ": ${location.postalCode}",
-                        numero = index + 1,
-                        onRemove = {
-                            removeMarker(index)
-                        }
+                selectedLocation?.let {
+                    com.utsman.osmandcompose.Marker(
+                        state = com.utsman.osmandcompose.MarkerState(
+                            geoPoint = GeoPoint(selectedLocation!!.latitude, selectedLocation!!.longitude)
+                        )
                     )
                 }
             }
+        }
 
+        TopBarBody(
+            myViewModel = myViewModel,
+            navController = navController,
+            onAdd = {
+                selectedLocation?.let {
 
-            // Botón de aceptar
+                    val ubicacion = getAddressInfoFromCoordinates(context, it.latitude, it.longitude)
+                    val index = markers.size
+
+                    val item = ubicacion?.let { it1 ->
+                        PlaceItem(
+                            coordenadas = it1,
+                            action = { removeMarker(index) }
+                        )
+
+                    }
+
+                    if (ubicacion != null) {
+                        markers = (markers + item)!!
+                    }
+
+                    selectedLocation = null
+                }
+            },
+            onCancel = {
+                selectedLocation = null
+            }
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun BottomSheet(
+    markers: List<PlaceItem?>,
+    myViewModel: MyViewModel,
+    removeAll: () -> Unit
+) {
+    Spacer(modifier = Modifier.size(16.dp))
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxHeight(0.75f)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        // titulo y boton borrar todo
+        item { 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
+                Text(
+                    text = "Destinos",
+                    style = typography.titleLarge
+                )
+                
+                Spacer(modifier = Modifier.weight(1f))
+                
                 Button(
-                    onClick = {
-                        Toast.makeText(context, myViewModel.languageType().get(41) + " ${markers.size} " + myViewModel.languageType().get(42), Toast.LENGTH_LONG).show()
-                        removeAll()
-                    },
+                    onClick = { removeAll() },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.Red,
+                        contentColor = Color.White
+                    ),
+                    elevation = ButtonDefaults.buttonElevation(
+                        defaultElevation = 30.dp
+                    ),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.DeleteOutline,
+                        contentDescription = null,
+                        tint = Color.White
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        text = "Borrar todo",
+                        style = typography.labelLarge
+                    )
+                }
+            }
+        }
+
+        // elementos de la lista
+        items(markers.size) { index ->
+            val item = markers[index]
+            if (item != null) {
+                PlaceOption(
+                    nombreCalle = "${item.coordenadas.streetName}",
+                    colonia = myViewModel.languageType()[207] + ": ${item.coordenadas.neighborhood} - " + myViewModel.languageType()[208] + ": ${item.coordenadas.postalCode}",
+                    numero = index + 1,
+                    onRemove = {
+                        item.action()
+                    }
+                )
+            }
+        }
+
+        item {
+            Column(
+                modifier = Modifier
+                    .padding(PaddingValues(16.dp))
+            ) {
+                Button(
+                    onClick = {  },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = 30.dp
+                    ),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    shape = roundCornerShape,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(16.dp),
+                    )
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(43),
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
+                        text = "Planificar",
                         color = MaterialTheme.colorScheme.onTertiary
                     )
                 }
             }
         }
     }
-}
-
-@OptIn(ExperimentalComposeUiApi::class)
-@Composable
-private fun SearchBar(
-    onSearch: (String) -> Unit,
-    placeholder: String,
-    singleLine: Boolean = true,
-    size: Int,
-    roundedCornerShape: RoundedCornerShape = RoundedCornerShape(percent = 10)
-) {
-    var text by remember { mutableStateOf(TextFieldValue()) }
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val focusManager = LocalFocusManager.current
-    Row(
-        modifier = Modifier
-            .height(size.dp)
-            .fillMaxWidth(0.85f)
-            .background(MaterialTheme.colorScheme.tertiary, roundedCornerShape),
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Spacer(modifier = Modifier.size(10.dp))
-        // icono
-        Icon(
-            imageVector = Icons.Filled.Search,
-            contentDescription = "",
-            modifier = Modifier.size(35.dp),
-            tint = MaterialTheme.colorScheme.onTertiary
-        )
-
-        // caja de texto
-        BasicTextField(
-            value = text,
-            onValueChange = {
-                text = it
-            },
-            singleLine = singleLine,
-            modifier = Modifier
-                .height(size.dp)
-                .padding(4.dp),
-            textStyle = LocalTextStyle.current.copy(
-                fontSize = 18.sp,
-                color = MaterialTheme.colorScheme.onTertiary,
-                textAlign = TextAlign.Left,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            ),
-            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-            keyboardActions = KeyboardActions(onSearch = {
-                onSearch(text.text)
-                // Hide the keyboard after submitting the search
-                keyboardController?.hide()
-                // or hide keyboard
-                focusManager.clearFocus()
-
-            }),
-            decorationBox = { innerTextField ->
-                Row(
-                    Modifier
-                        .background(MaterialTheme.colorScheme.tertiary, roundedCornerShape)
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                ) {
-                    if (text.text.isEmpty()) {
-                        Text(
-                            text = placeholder,
-                            fontSize = 18.sp,
-                            color = MaterialTheme.colorScheme.onTertiary.copy(0.5f),
-                            letterSpacing = 3.sp,
-                            modifier = Modifier
-                                .align(Alignment.CenterVertically)
-
-                        )
-                    }
-                    innerTextField()
-                }
-            }
-        )
-    }
-
 }
 
 @Composable
@@ -386,72 +311,66 @@ private fun PlaceOption(
     numero: Int,
     onRemove: () -> Unit
 ) {
-    Box(
+
+    Card(
         modifier = Modifier
-            .fillMaxWidth(0.85f)
-            .heightIn(70.dp)
-            .background(
-                MaterialTheme.colorScheme.primary,
-                RoundedCornerShape(
-                    topEnd = 10.dp,
-                    bottomStart = 10.dp,
-                    topStart = 10.dp,
-                    bottomEnd = 10.dp
-                )
-            )
-            .padding(vertical = 5.dp),
-        contentAlignment = Alignment.Center
+            .padding(PaddingValues(8.dp))
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .height(75.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Spacer(modifier = Modifier.size(10.dp))
-
-            Text(
-                text = numero.toString(),
-                fontSize = 30.sp,
-                color = MaterialTheme.colorScheme.onPrimary,
-                fontWeight = FontWeight.Bold
-            )
-
             Column(
                 modifier = Modifier
-                    .fillMaxWidth(0.70f)
-            ){
+                    .fillMaxHeight(),
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = numero.toString(),
+                    style = typography.headlineMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                )
+            }
+
+            Column {
                 Text(
                     text = nombreCalle,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onPrimary,
+                    style = typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = colonia,
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    style = typography.bodySmall
                 )
             }
 
-            IconButton(
-                onClick = { onRemove() },
+            Column(
                 modifier = Modifier
-                    .size(50.dp)
+                    .fillMaxHeight()
+                    .background(Color.Red),
+                verticalArrangement = Arrangement.Center
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Close,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
+                IconButton(
+                    onClick = { /*TODO*/ },
                     modifier = Modifier
-                        .fillMaxSize()
-                )
+                        .padding(horizontal = 16.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.Delete,
+                        contentDescription = "Eliminar destino",
+                        tint = Color.White,
+                        modifier = Modifier
+                            .size(32.dp)
+                    )
+                }
             }
-
-            Spacer(modifier = Modifier.size(10.dp))
         }
     }
-    Spacer(modifier = Modifier.size(15.dp))
 }
 
 
@@ -459,30 +378,115 @@ private fun PlaceOption(
 @Composable
 private fun TopBarBody(
     myViewModel: MyViewModel,
-    navController: NavController
+    navController: NavController,
+    onAdd: () -> Unit,
+    onCancel: () -> Unit
 ) {
-    TopAppBar(
-        title = {
-            Text(
-                text = myViewModel.languageType().get(35),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+
+    var destino by remember {
+        mutableStateOf("")
+    }
+
+    Column {
+        OutlinedTextField(
+            value = destino,
+            onValueChange = { destino = it },
+            placeholder = {
+                Text(text = "Busca aqui")
+            },
+            leadingIcon = {
+                IconButton(
+                    onClick = { navController.navigate(AppScreens.MainScreen.route) }
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.KeyboardArrowLeft,
+                        contentDescription = "Regresar al menu principal"
+                    )
+                }
+            },
+            trailingIcon = {
+                IconButton(onClick = { /*TODO*/ }) {
+                    Icon(
+                        imageVector = Icons.Outlined.Mic,
+                        contentDescription = "Buscar por audio"
+                    )
+                }
+            },
+            shape = CircleShape,
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = colorScheme.background,
+                unfocusedContainerColor = colorScheme.background,
+                focusedBorderColor = colorScheme.background,
+                unfocusedBorderColor = colorScheme.background,
+                focusedLeadingIconColor = colorScheme.onBackground,
+                unfocusedLeadingIconColor = colorScheme.onBackground,
+                focusedTrailingIconColor = colorScheme.onBackground,
+                unfocusedTrailingIconColor = colorScheme.onBackground
+            ),
+            singleLine = true,
+            modifier = Modifier
+                .fillMaxWidth()
+                .shadow(30.dp, CircleShape)
+                .padding(8.dp)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(
+                onClick = { onAdd() },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.background,
+                    contentColor = colorScheme.onBackground
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 30.dp
+                )
+            ) {
                 Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = null,
+                    tint = colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "Agregar",
+                    style = typography.labelLarge
                 )
             }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-    )
+            
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Button(
+                onClick = {
+                    onCancel()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.background,
+                    contentColor = colorScheme.onBackground
+                ),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 30.dp
+                )
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.DeleteOutline,
+                    contentDescription = null,
+                    tint = colorScheme.onBackground
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = "Cancelar",
+                    style = typography.labelLarge
+                )
+            }
+        }
+    }
 }

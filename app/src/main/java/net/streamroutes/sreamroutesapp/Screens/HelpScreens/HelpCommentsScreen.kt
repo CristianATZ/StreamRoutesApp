@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+
 package net.streamroutes.sreamroutesapp.Screens.HelpScreens
 
 import androidx.compose.foundation.background
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -23,14 +26,18 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -45,10 +52,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,12 +79,11 @@ import net.streamroutes.sreamroutesapp.R
 @Composable
 fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
 
-    var comment by remember { mutableStateOf(TextFieldValue("")) }
+    var comment by remember { mutableStateOf("") }
     val checkedState = remember { mutableStateOf(true) }
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
+        topBar = { TopBarBody(myViewModel,navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -85,121 +93,58 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
         ) {
             Spacer(modifier = Modifier.size(15.dp))
 
-            // textfield comment
-            BasicTextField(
+            OutlinedTextField(
                 value = comment,
-                onValueChange = {comment = it},
+                onValueChange = { comment = it },
+                keyboardOptions = KeyboardOptions(
+                    imeAction = ImeAction.None
+                ),
+                placeholder = {
+                    Text(
+                        text = myViewModel.languageType().get(262),
+                        style = typography.labelLarge
+                    )
+                },
                 singleLine = false,
                 modifier = Modifier
-                    .height(300.dp)
+                    .height(350.dp)
                     .fillMaxWidth(0.9f)
-                    .padding(4.dp),
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                textStyle = LocalTextStyle.current.copy(
-                    fontSize = 18.sp,
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    textAlign = TextAlign.Left,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
-                ),
-                decorationBox = { innerTextField ->
-                    Row(
-                        Modifier
-                            .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 5))
-                            .padding(16.dp)
-                            .fillMaxWidth(0.8f)
-                    ){
-                        if (comment.text.isEmpty()){
-                            Text(
-                                text = myViewModel.languageType().get(94),
-                                fontSize = 18.sp,
-                                color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f),
-                                letterSpacing = 3.sp
-                            )
-                        }
-                        innerTextField()
-                    }
-                }
             )
 
             // SUGERENCIA Y CHECKBOX
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(10.dp)
+                    .padding(32.dp)
                     .clickable { checkedState.value = !checkedState.value },
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ){
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.7f),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(95),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontFamily = FontFamily.SansSerif,
-                    )
-                    Text(
-                        text = myViewModel.languageType().get(96),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        fontFamily = FontFamily.SansSerif,
-                    )
-                }
+                Text(
+                    text = myViewModel.languageType().get(263) + ". " + myViewModel.languageType().get(264),
+                    style = typography.bodyLarge
+                )
+
                 Checkbox(
                     checked = checkedState.value,
-                    onCheckedChange = { checkedState.value = it },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = MaterialTheme.colorScheme.primary,
-                        checkmarkColor = MaterialTheme.colorScheme.background,
-                        uncheckedColor = MaterialTheme.colorScheme.primary
-                    )
+                    onCheckedChange = { checkedState.value = it }
                 )
             }
 
             // boton y subtitulo
-            Column(
+            Button(
+                onClick = {
+                    navController.navigate(AppScreens.HelpScreen.route)
+                },
                 modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxWidth(0.85f)
+                    .padding(top = 16.dp)
+                    .height(50.dp)
             ) {
-                val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-                Button(
-                    onClick = {
-
-                    },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    shape = roundCornerShape,
-                    modifier = Modifier
-                        .wrapContentSize()
-                        .padding(16.dp)
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(97),
-                        fontSize = 26.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onTertiary
-                    )
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(bottom = 10.dp),
-                    verticalAlignment = Alignment.Bottom
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(98),
-                        color = MaterialTheme.colorScheme.onBackground,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = "Enviar",
+                    style = typography.bodyLarge
+                )
             }
         }
     }
@@ -211,35 +156,19 @@ private fun TopBarBody(
     myViewModel: MyViewModel,
     navController: NavController
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType().get(93),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
+                text = myViewModel.languageType().get(261)
             )
         },
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                 Icon(
                     painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    contentDescription = "Te enviara al menu de opciones"
                 )
             }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
+        }
     )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
-@Composable
-fun HelpCommmentsView(){
-
 }

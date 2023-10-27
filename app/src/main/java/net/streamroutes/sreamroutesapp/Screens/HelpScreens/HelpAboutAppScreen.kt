@@ -4,16 +4,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -43,54 +46,45 @@ import net.streamroutes.sreamroutesapp.R
 @Composable
 fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
     Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
+        topBar = { TopBarBody(myViewModel,navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
+            
+            Spacer(modifier = Modifier.size(32.dp))
+            
+            Image(
+                painter = painterResource(id = R.drawable.logo),
+                contentDescription = "Logo Stream Routes"
+            )
+            Image(
+                painter = if(myViewModel.tema) painterResource(id = R.drawable.letrablanca) else painterResource(id = R.drawable.letranegra),
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxSize()
-                    .weight(0.7f)
-                    .padding(20.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.close),
-                    contentDescription = "Logo Stream Routes",
-                    modifier = Modifier
-                        .size(200.dp),
-                    colorFilter = ColorFilter.tint(color_letraout)
-                )
+                    .fillMaxWidth(0.85f)
+            )
 
-                Text(
-                    text = myViewModel.languageType().get(107) + " 3.0",
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center,
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
-            }
-            Row(
+            Spacer(modifier = Modifier.size(16.dp))
+            
+            Text(
+                text = myViewModel.languageType().get(268) + " 3.0",
+                style = typography.titleMedium
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Text(
+                text = myViewModel.languageType().get(269),
+                style = typography.titleMedium,
+                textAlign = TextAlign.Center,
                 modifier = Modifier
-                    .padding(20.dp)
-                    .weight(0.3f),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.Bottom
-            ) {
-                Text(
-                    text = myViewModel.languageType().get(108),
-                    color = MaterialTheme.colorScheme.onBackground,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
-                )
-            }
+                    .fillMaxWidth(0.8f)
+                    .padding(bottom = 16.dp)
+            )
         }
     }
 }
@@ -101,28 +95,20 @@ private fun TopBarBody(
     myViewModel: MyViewModel,
     navController: NavController
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(106),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
+            Text(
+                text = myViewModel.languageType().get(267)
             )
         },
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.HelpScreen.route) }) {
                 Icon(
                     painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    contentDescription = "Te enviara al menu de opciones"
                 )
             }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
+        }
     )
 }
 

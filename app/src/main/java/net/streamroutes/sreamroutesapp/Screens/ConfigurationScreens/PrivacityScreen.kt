@@ -12,10 +12,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -24,8 +26,10 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,58 +51,68 @@ import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
+data class PrivacyItem(
+    val name: String,
+    val desc: String,
+    val value: Boolean,
+    val action: () -> Unit
+)
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
 
     // variables globales
-    var localizacion = remember { mutableStateOf(true) }
-    var anuncios = remember { mutableStateOf(true) }
-    var rutas = remember { mutableStateOf(true) }
-    var suscripcion = remember { mutableStateOf(true) }
+    var localizacion by remember { mutableStateOf(true) }
+    var anuncios by remember { mutableStateOf(true) }
+    var rutas by remember { mutableStateOf(true) }
+    var suscripcion by remember { mutableStateOf(true) }
 
+    val privacy_items = listOf(
+        PrivacyItem(
+            name = myViewModel.languageType().get(246),
+            desc = myViewModel.languageType().get(247),
+            value = localizacion,
+            action = {
+                localizacion = !localizacion
+            }
+        ),
+        PrivacyItem(
+            name = myViewModel.languageType().get(248),
+            desc = myViewModel.languageType().get(249),
+            value = anuncios,
+            action = {
+                anuncios = !anuncios
+            }
+        ),
+        PrivacyItem(
+            name = myViewModel.languageType().get(250),
+            desc = myViewModel.languageType().get(251),
+            value = rutas,
+            action = {
+                rutas = !rutas
+            }
+        ),
+        PrivacyItem(
+            name = myViewModel.languageType().get(252),
+            desc = myViewModel.languageType().get(253),
+            value = suscripcion,
+            action = {
+                suscripcion = !suscripcion
+            }
+        )
+    )
 
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
     ) { paddingValues ->
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(paddingValues)
         ) {
-
-            // localizacion
-            Options(
-                text = myViewModel.languageType().get(78),
-                sub_text = myViewModel.languageType().get(79),
-                color_letra = MaterialTheme.colorScheme.onBackground,
-                variable = localizacion
-            )
-
-            // anuncios
-            Options(
-                text = myViewModel.languageType().get(80), // texto
-                sub_text = myViewModel.languageType().get(81),
-                color_letra = MaterialTheme.colorScheme.onBackground,
-                variable = anuncios
-            )
-
-            // rutas
-            Options(
-                text = myViewModel.languageType().get(82), // texto
-                sub_text = myViewModel.languageType().get(83),
-                color_letra = MaterialTheme.colorScheme.onBackground,
-                variable = rutas
-            )
-
-            // suscripcion
-            Options(
-                text = myViewModel.languageType().get(84), // texto
-                sub_text = myViewModel.languageType().get(85),
-                color_letra = MaterialTheme.colorScheme.onBackground,
-                variable = suscripcion
-            )
+            privacy_items.forEach(){ item ->
+                Options(item = item)
+            }
         }
     }
 }
@@ -109,13 +123,11 @@ private fun TopBarBody(
     myViewModel: MyViewModel,
     navController: NavController
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(77),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
+            Text(
+                text = myViewModel.languageType().get(245),
+                style = typography.titleLarge
             )
         },
         navigationIcon = {
@@ -123,71 +135,53 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de configuraciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
+        }
     )
 }
 
 @Composable
 private fun Options(
-    text: String,
-    sub_text: String,
-    color_letra: Color,
-    variable: MutableState<Boolean>
+    item: PrivacyItem
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .toggleable(
-                value = variable.value,
-                onValueChange = { variable.value = it }
+                value = item.value,
+                onValueChange = { item.action() }
             ),
-        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
 
-        Spacer(modifier = Modifier.size(25.dp))
+        Spacer(modifier = Modifier.size(16.dp))
+
         // textos
         Column(
             modifier = Modifier
                 .fillMaxWidth(0.75f)
-                .padding(vertical = 10.dp)
+                .padding(vertical = 8.dp)
         ) {
             Text(
-                text = text, // texto
-                color = color_letra,
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 18.sp
+                text = item.name,
+                style = typography.bodyLarge
             )
+
             Text(
-                text = sub_text, // texto
-                color = color_letra,
-                fontFamily = FontFamily.SansSerif,
-                fontSize = 12.sp
+                text = item.desc,
+                style = typography.labelMedium
             )
         }
 
-        Spacer(modifier = Modifier.size(5.dp))
+        Spacer(modifier = Modifier.size(16.dp))
+
         // switch
         Switch(
-            checked = variable.value,
-            onCheckedChange = null,
-            colors = SwitchDefaults.colors(
-                // cuando esta activo
-                checkedThumbColor = MaterialTheme.colorScheme.background,
-                checkedTrackColor = MaterialTheme.colorScheme.primary,
-                checkedBorderColor = MaterialTheme.colorScheme.primary,
-                // cuando esta inactivo
-                uncheckedThumbColor = MaterialTheme.colorScheme.background,
-                uncheckedTrackColor = MaterialTheme.colorScheme.primaryContainer,
-                uncheckedBorderColor = MaterialTheme.colorScheme.primaryContainer
-            )
+            checked = item.value,
+            onCheckedChange = {
+                item.action()
+            }
         )
     }
 }

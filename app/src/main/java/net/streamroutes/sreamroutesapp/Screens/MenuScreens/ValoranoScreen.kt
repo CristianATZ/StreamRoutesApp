@@ -8,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,11 +23,14 @@ import androidx.compose.material.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -70,128 +74,6 @@ fun ValoranoScreen(myViewModel: MyViewModel,navController: NavController){
 @Composable
 fun Valoranos(myViewModel: MyViewModel, navController: NavController) {
 
-    Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-        containerColor = MaterialTheme.colorScheme.background
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-        ) {
-            Down(myViewModel)
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
-) {
-    TopAppBar(
-        title = {
-            Text(text = myViewModel.languageType().get(44),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
-                Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
-    )
-}
-
-
-//Parte envio de calificacion
-@Composable
-fun Down(myViewModel: MyViewModel) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top
-    ){
-        //Primer texto
-        Row {
-            Box(
-                modifier = Modifier
-                    .height(150.dp)
-                    .fillMaxWidth()
-            ){
-                Text(
-                    text = myViewModel.languageType().get(45),
-                    fontSize = 30.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.align(Alignment.Center)
-                )
-            }
-        }
-        //Reaccion
-        Calification()
-        //Segundo Texto
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-        ){
-            Text(
-                text = myViewModel.languageType().get(46),
-                fontSize = 16.sp,
-                color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier
-                    .padding(25.dp)
-            )
-        }
-
-        //Boton ENVIAR
-        Row (
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center
-
-        ){
-            val roundCornerShape = RoundedCornerShape(topEnd = 30.dp, bottomStart = 30.dp, topStart = 10.dp, bottomEnd = 10.dp)
-            Button(
-                onClick = {
-
-                },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
-                ),
-                shape = roundCornerShape,
-                modifier = Modifier
-                    .wrapContentSize()
-                    .padding(16.dp)
-            ) {
-                Text(
-                    text = myViewModel.languageType().get(47),
-                    fontSize = 26.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onTertiary
-                )
-            }
-        }
-    }
-}
-
-
-
-// calificacion por estrellas
-@Composable
-fun Calification(modifier: Modifier = Modifier) {
     val stars = listOf(
         R.drawable.staroff,
         R.drawable.staroff,
@@ -201,41 +83,98 @@ fun Calification(modifier: Modifier = Modifier) {
     )
     var selectedStars by remember { mutableStateOf(stars) }
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(80.dp),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        selectedStars.forEachIndexed { index, star ->
-            IconButton(
-                onClick = {
-                    selectedStars = selectedStars.mapIndexed { i, _ ->
-                        if (i <= index) {
-                            R.drawable.staron
-                        } else {
-                            R.drawable.staroff
-                        }
+    Scaffold(
+        topBar = { TopBar(myViewModel, navController) }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            Row {
+                selectedStars.forEachIndexed { index, star ->
+                    IconButton(
+                        onClick = {
+                            selectedStars = selectedStars.mapIndexed { i, _ ->
+                                if (i <= index) {
+                                    R.drawable.staron
+                                } else {
+                                    R.drawable.staroff
+                                }
+                            }
+                        },
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Image(
+                            painter = painterResource(id = star),
+                            contentDescription = stringResource(id = R.string.staroff),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(Color.Transparent),
+                            contentScale = ContentScale.FillBounds,
+                        )
                     }
-                },
-                modifier = Modifier.size(48.dp)
-            ) {
-                Image(
-                    painter = painterResource(id = star),
-                    contentDescription = stringResource(id = R.string.staroff),
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Transparent),
-                    contentScale = ContentScale.FillBounds,
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onBackground)
-                )
+
+                    if (index < stars.size - 1) {
+                        Spacer(modifier = Modifier.width(10.dp))
+                    }
+                }
             }
 
-            if (index < stars.size - 1) {
-                Spacer(modifier = Modifier.width(10.dp))
+            Spacer(modifier = Modifier.size(32.dp))
+
+            Text(
+                text = myViewModel.languageType().get(214),
+                style = typography.bodyLarge,
+                modifier = Modifier
+                    .padding(PaddingValues(16.dp))
+            )
+
+            Button(
+                onClick = {
+                    navController.navigate(AppScreens.MainScreen.route)
+                },
+                modifier = Modifier
+                    .fillMaxWidth(0.85f)
+                    .padding(16.dp)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = myViewModel.languageType().get(274),
+                    style = typography.bodyLarge
+                )
             }
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun TopBar(
+    myViewModel: MyViewModel,
+    navController: NavController
+) {
+    CenterAlignedTopAppBar(
+        title = {
+            Text(
+                text = myViewModel.languageType().get(212),
+                style = typography.titleLarge
+            )
+        },
+        navigationIcon = {
+            IconButton(
+                onClick = {
+                    navController.navigate(AppScreens.MainScreen.route)
+                }
+            ) {
+                androidx.compose.material3.Icon(
+                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    contentDescription = "regresar al login"
+                )
+            }
+        }
+    )
+}

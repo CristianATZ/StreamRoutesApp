@@ -1,271 +1,254 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
-import android.widget.Toast
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.semantics.Role
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letrain
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
-import net.streamroutes.sreamroutesapp.Colores.cuatro
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
-@Preview (showBackground = true)
-@Composable
-fun suscripcionView() {
-    //suscripcion()
-}
+data class ProfitItem(
+    val name: String,
+    val desc: String,
+    val action: () -> Unit = {}
+)
+
+data class PremiumItem(
+    val name: String,
+    val selected: Boolean,
+    val action: () -> Unit = {}
+)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
     val context = LocalContext.current
 
-    var mensual = remember { mutableStateOf(true) }
-    var anual = remember { mutableStateOf(false) }
+    var mensual by remember {
+        mutableStateOf(false)
+    }
+    var anual by remember {
+        mutableStateOf(false)
+    }
+    var estudiante by remember {
+        mutableStateOf(false)
+    }
 
-    mensual.value = !anual.value
+    val profit_items = listOf(
+        ProfitItem(
+            name = myViewModel.languageType().get(186),
+            desc = myViewModel.languageType().get(187)
+        ),
+        ProfitItem(
+            name = myViewModel.languageType().get(188),
+            desc = myViewModel.languageType().get(189)
+        ),
+        ProfitItem(
+            name = myViewModel.languageType().get(190),
+            desc = myViewModel.languageType().get(191)
+        ),
+        ProfitItem(
+            name = myViewModel.languageType().get(192),
+            desc = myViewModel.languageType().get(193)
+        )
+    )
 
+    val premium_items = listOf(
+        PremiumItem(
+            name = "Estudiante",
+            selected = estudiante,
+            action = {
+                estudiante = !estudiante
+                mensual = false
+                anual = false
+            }
+        ),
+        PremiumItem(
+            name = myViewModel.languageType().get(194),
+            selected = mensual,
+            action = {
+                mensual = !mensual
+                anual = false
+                estudiante = false
+            }
+        ),
+        PremiumItem(
+            name = myViewModel.languageType().get(195),
+            selected = anual,
+            action = {
+                anual = !anual
+                mensual = false
+                estudiante = false
+            }
+        )
+    )
 
     Scaffold(
-        topBar = {
-            TopBarBody(myViewModel,navController)
-        },
-        containerColor = MaterialTheme.colorScheme.background
+        topBar = { TopBar(navController,myViewModel) }
     ) { paddingValues ->
-            // cuerpo de las ventajas de la suscripcion
-            // cambiar a uso de lazyColumn
-            Column(
+        Column(
+            modifier = Modifier
+                .padding(paddingValues)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            LazyColumn(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .verticalScroll(rememberScrollState())
+                    .weight(1f)
             ) {
-                SuscripcionDatos(
-                    myViewModel,
-                    titulo = myViewModel.languageType().get(16),
-                    descripcion = myViewModel.languageType().get(17),
-                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    onClick = { }
-                )
-
-                SuscripcionDatos(
-                    myViewModel,
-                    titulo = myViewModel.languageType().get(18),
-                    descripcion = myViewModel.languageType().get(19),
-                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    onClick = { }
-                )
-
-                SuscripcionDatos(
-                    myViewModel,
-                    titulo = myViewModel.languageType().get(20),
-                    descripcion = myViewModel.languageType().get(21),
-                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    onClick = { }
-                )
-
-                SuscripcionDatos(
-                    myViewModel,
-                    titulo = myViewModel.languageType().get(22),
-                    descripcion = myViewModel.languageType().get(23),
-                    roundedCornerShape = RoundedCornerShape(topEnd = 5.dp,bottomStart = 5.dp,topStart = 5.dp,bottomEnd = 5.dp),
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    onClick = { }
-                )
-
-                // cuerpo para las opciones de suscripcion
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 10.dp, bottom = 20.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Center
-                ){
-                    // caja para la suscripcion mensual
-                    Box(
+                item {
+                    // logo
+                    Image(
+                        painter = if(myViewModel.tema) painterResource(id = R.drawable.logonletrab) else painterResource(id = R.drawable.logonletran),
+                        contentDescription = null,
                         modifier = Modifier
-                            .fillMaxWidth(0.45f)
-                            .height(125.dp)
-                            .padding(3.dp)
-                            .background(
-                                MaterialTheme.colorScheme.tertiary,
-                                RoundedCornerShape(
-                                    topEnd = 10.dp,
-                                    bottomStart = 10.dp,
-                                    topStart = 10.dp,
-                                    bottomEnd = 10.dp
-                                )
-                            )
-                            .toggleable(
-                                value = mensual.value,
-                                onValueChange = { mensual.value = it },
-                                role = Role.RadioButton
-                            )
-                    ){
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                        ) {
-                            TextUser(
-                                text = myViewModel.languageType().get(24),
-                                fontSize = 25,
-                                color = MaterialTheme.colorScheme.onTertiary ,
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.size(5.dp))
-                            TextUser(
-                                text = "$ 15.00",
-                                fontSize = 30,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                textAlign = TextAlign.Center)
-                        }
-                    }
+                            .padding(16.dp)
+                    )
+                }
 
-                    Spacer(modifier = Modifier.size(10.dp))
-
-                    // caja para la suscripcion anual
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth(0.9f)
-                            .height(125.dp)
-                            .padding(3.dp)
-                            .background(
-                                MaterialTheme.colorScheme.tertiary,
-                                RoundedCornerShape(
-                                    topEnd = 10.dp,
-                                    bottomStart = 10.dp,
-                                    topStart = 10.dp,
-                                    bottomEnd = 10.dp
-                                )
-                            )
-                            .toggleable(
-                                value = anual.value,
-                                onValueChange = { anual.value = it },
-                                role = Role.RadioButton,
-                            )
-                    ){
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize(),
-                            verticalArrangement = Arrangement.Center
-                        ) {
-                            TextUser(
-                                text = myViewModel.languageType().get(25),
-                                fontSize = 25,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                textAlign = TextAlign.Center
-                            )
-                            Spacer(modifier = Modifier.size(5.dp))
-                            TextUser(
-                                text = "$ 120.00",
-                                fontSize = 30,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                textAlign = TextAlign.Center
-                            )
-                            TextUser(
-                                text = "$ 10.00/" + myViewModel.languageType().get(26),
-                                fontSize = 15,
-                                color = MaterialTheme.colorScheme.onTertiary,
-                                textAlign = TextAlign.Center)
-
-                        }
-                    }
+                // beneficios del premium
+                items(profit_items.size){ index ->
+                    val item = profit_items[index]
+                    ProfiBody(item)
                 }
             }
 
-            // cuerpo para el tipo de suscripcion
-            /*Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        cuatro,
-                        RoundedCornerShape(
-                            topEnd = 15.dp,
-                            bottomStart = 0.dp,
-                            topStart = 15.dp,
-                            bottomEnd = 0.dp
-                        )
-                    ),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
 
-            }*/
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+                contentPadding = PaddingValues(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                items(premium_items.size){ index ->
+                    val item = premium_items[index]
+                    Option(item)
+                }
+            }
+
+            // boton contratar premium
+            Button(
+                onClick = {
+                    navController.navigate(AppScreens.MainScreen.route)
+                },
+                shape = RoundedCornerShape(16),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.tertiary
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = "Contratar",
+                    style = typography.bodyLarge
+                )
+            }
+
+            TextButton(
+                onClick = { /*TODO*/ },
+                shape = RoundedCornerShape(16),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = "Saber mas",
+                    style = typography.bodyLarge,
+                    textDecoration = TextDecoration.Underline
+                )
+            }
+
+            Spacer(modifier = Modifier.size(16.dp))
         }
     }
+}
 
+@Composable
+fun Option(
+    item: PremiumItem
+) {
+    Card(
+        modifier = Modifier
+            .clickable { item.action() },
+        colors = CardDefaults.cardColors(
+            containerColor = if(item.selected) Color(0xFFFFCC66) else colorScheme.primaryContainer
+        )
+    ) {
+        Column(
+            modifier = Modifier
+                .height(100.dp)
+                .fillMaxWidth(),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = item.name,
+                style = typography.bodyMedium
+            )
+            if(item.selected){
+                Icon(
+                    imageVector = Icons.Outlined.Check,
+                    contentDescription = null
+                )
+            }
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
+private fun TopBar(
+    navController: NavController,
+    myViewModel: MyViewModel
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Text(text = myViewModel.languageType().get(15),
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimary
+            Text(
+                text = myViewModel.languageType().get(185)
             )
         },
         navigationIcon = {
@@ -273,83 +256,53 @@ private fun TopBarBody(
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones",
-                    tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
-        },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            )
+        }
     )
 }
 
 @Composable
-private fun TextUser(
-    text: String,
-    fontSize: Int,
-    fontWeight: FontWeight = FontWeight.Bold,
-    color: Color,
-    textAlign: TextAlign = TextAlign.Start
+fun ProfiBody(
+    item: ProfitItem
 ) {
-    Text(
-        text = text, // texto
+    Card(
         modifier = Modifier
-            .fillMaxWidth(), // esto acapara el tamaño completo del Row=0.8f
-        color = color,
-        fontFamily = androidx.compose.ui.text.font.FontFamily.SansSerif,
-        fontWeight = fontWeight,
-        fontSize = fontSize.sp,
-        textAlign = textAlign
-    )
-}
-
-@Composable
-private fun SuscripcionDatos(
-    myViewModel: MyViewModel,
-    titulo: String,
-    descripcion: String,
-    roundedCornerShape: RoundedCornerShape,
-    painter: Painter,
-    onClick: () -> Unit
-){
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
-            .background(
-                MaterialTheme.colorScheme.primaryContainer,
-                roundedCornerShape
-            ),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ){
-        Spacer(modifier = Modifier.size(15.dp))
-        Icon(
-            painter = painter,
-            contentDescription = null
-        )
-        Column(
+            .padding(PaddingValues(16.dp))
+    ) {
+        Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(15.dp)
-        ){
-            TextUser(text = titulo, fontSize = 25, color = MaterialTheme.colorScheme.onPrimaryContainer)
-            TextUser(text = descripcion, fontSize = 15, color = MaterialTheme.colorScheme.onPrimaryContainer, fontWeight = FontWeight.Normal)
-            Spacer(modifier = Modifier.size(30.dp))
-            ClickableText(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold)
-                    ) {
-                        append(myViewModel.languageType().get(28))
-                    }
-                },
-                modifier = Modifier.fillMaxWidth(),
-                onClick = { onClick }
-            )
+                .padding(PaddingValues(16.dp)),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(0.7f)
+            ) {
+                Text(
+                    text = item.name,
+                    style = typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = item.desc,
+                    style = typography.bodyLarge
+                )
+            }
+
+            Column(
+                modifier = Modifier
+                    .weight(0.3f)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .width(200.dp)
+                )
+            }
+
         }
     }
 }

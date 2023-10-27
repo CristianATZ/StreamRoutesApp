@@ -7,7 +7,6 @@ import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.net.ConnectivityManager
@@ -18,6 +17,9 @@ import android.os.Build
 import android.os.Environment
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,6 +27,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,37 +36,49 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawer
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Face
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.outlined.Call
-import androidx.compose.material.icons.outlined.ExitToApp
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.KeyboardArrowRight
-import androidx.compose.material.icons.outlined.List
-import androidx.compose.material.icons.outlined.LocationOn
-import androidx.compose.material.icons.outlined.Person
-import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.ArrowBackIos
+import androidx.compose.material.icons.outlined.ArrowDropDown
+import androidx.compose.material.icons.outlined.AttachMoney
+import androidx.compose.material.icons.outlined.Chat
+import androidx.compose.material.icons.outlined.DirectionsBus
+import androidx.compose.material.icons.outlined.Download
+import androidx.compose.material.icons.outlined.GTranslate
+import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.MenuOpen
+import androidx.compose.material.icons.outlined.Museum
+import androidx.compose.material.icons.outlined.Route
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material.icons.outlined.ShareLocation
+import androidx.compose.material.icons.outlined.Shortcut
+import androidx.compose.material.icons.outlined.StarRate
+import androidx.compose.material.icons.outlined.SwitchAccessShortcut
 import androidx.compose.material.rememberDrawerState
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -92,47 +107,36 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.PermissionState
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.filament.Material
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
+import com.utsman.osmandcompose.CameraState
+import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.Marker
+import com.utsman.osmandcompose.MarkerState
+import com.utsman.osmandcompose.OpenStreetMap
+import com.utsman.osmandcompose.OverlayManagerState
+import com.utsman.osmandcompose.ZoomButtonVisibility
+import com.utsman.osmandcompose.rememberCameraState
+import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.Colores.colorOscuro1
-import net.streamroutes.sreamroutesapp.Colores.colorOscuro2
-import net.streamroutes.sreamroutesapp.Colores.color_botones
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_perfil
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_textfield
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_icon
 import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
-import net.streamroutes.sreamroutesapp.Dialogs.DialogAvisoDePrivacidad
-import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarContactos
-import net.streamroutes.sreamroutesapp.Dialogs.DialogHabilitarUbicacion
-import net.streamroutes.sreamroutesapp.Dialogs.DialogInternet
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain1
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain2
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain3
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain4
-import net.streamroutes.sreamroutesapp.Dialogs.DialogTutorialMain5
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
+import net.streamroutes.sreamroutesapp.ui.theme.StreamRoutesAppTheme
+import org.osmdroid.tileprovider.tilesource.ITileSource
+import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.overlay.CopyrightOverlay
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -219,10 +223,10 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
             dialogo = tutorial.value[4],
             antDialogo = tutorial.value[3]
         )
-    }
+    }*/
 
 
-    if( ubicacion.value ){
+    /*if( ubicacion.value ){
         DialogHabilitarUbicacion(
             dialogo = ubicacion
         ) {
@@ -244,7 +248,8 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
         ) {
 
         }
-    }
+    }*/
+
     // variable internet
     val internet = remember { mutableStateOf(false) }
 
@@ -252,10 +257,10 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 
 
     // valor del dialog en funcion de la conexion de internet
-    LaunchedEffect(Unit){
+    /*LaunchedEffect(Unit){
         while(true){
             internet.value = !isInternetAvailable(context)
-            delay(1000)
+            delay(100)
         }
     }
 
@@ -282,7 +287,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                 drawerState = drawerState
             )
         },
-        drawerBackgroundColor = MaterialTheme.colorScheme.background,
+        //drawerBackgroundColor = MaterialTheme.colorScheme.background,
         gesturesEnabled = false
     ) {
         Scaffold(
@@ -291,7 +296,27 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                     myViewModel = myViewModel,
                     scope = scope,
                     drawerState = drawerState
-                )
+                ){
+                    when (changeMap) {
+                        1 -> {
+                            currentMapType = MapType.NORMAL
+                        }
+
+                        2 -> {
+                            currentMapType = MapType.SATELLITE
+                        }
+
+                        3 -> {
+                            currentMapType = MapType.TERRAIN
+                        }
+
+                        4 -> {
+                            currentMapType = MapType.HYBRID
+                        }
+                    }
+                    changeMap++
+                    if (changeMap == 5) changeMap = 1
+                }
             },
         ) { paddingValues ->
             Column(
@@ -299,62 +324,14 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                val itsur = LatLng(20.139468718311957, -101.15069924573676)
-                val cameraPositionState = rememberCameraPositionState{
-                    position = CameraPosition.fromLatLngZoom(itsur,17f)
+                val cameraState = rememberCameraState {
+                    geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
+                    zoom = 17.0
                 }
-                Box(modifier = Modifier.fillMaxSize()){
-
-                    MapBody(cameraPositionState, currentMapType)
-
-                    // Botón cambio tipo de mapa en la parte superior derecha
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(75.dp)
-                            .padding(10.dp),
-                        horizontalArrangement = Arrangement.End
-                    ){
-                        BoxOption(
-                            img = painterResource(id = R.drawable.translate),
-                            onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
-                                .clickable {
-
-                                }
-                        )
-
-                        Spacer(modifier = Modifier.size(10.dp))
-
-                        BoxOption(
-                            img = painterResource(id = R.drawable.change),
-                            onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier
-                                .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
-                                .clickable{
-                                    when (changeMap) {
-                                        1 -> {
-                                            currentMapType = MapType.NORMAL
-                                        }
-
-                                        2 -> {
-                                            currentMapType = MapType.SATELLITE
-                                        }
-
-                                        3 -> {
-                                            currentMapType = MapType.TERRAIN
-                                        }
-
-                                        4 -> {
-                                            currentMapType = MapType.HYBRID
-                                        }
-                                    }
-                                    changeMap++
-                                    if (changeMap == 5) changeMap = 1
-                                }
-                        )
-                    }
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ){
+                    MapBody(cameraState)
                 }
             }
         }
@@ -366,16 +343,13 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
 private fun TopBarBody(
     myViewModel: MyViewModel,
     scope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    changeMap: () -> Unit
 ) {
     TopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType()[0],
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                text = myViewModel.languageType()[172]
             )
         },
         navigationIcon = {
@@ -387,16 +361,40 @@ private fun TopBarBody(
                 }
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.menu),
-                    contentDescription = "Te mostrara el menu",
-                    tint = MaterialTheme.colorScheme.onPrimaryContainer
+                    imageVector = Icons.Outlined.MenuOpen,
+                    contentDescription = "Abrir el menu de opciones"
                 )
             }
         },
-        colors = TopAppBarDefaults
-            .smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer
-            )
+        actions = {
+            IconButton(
+                onClick = {
+                    myViewModel.idioma = if (myViewModel.idioma == 1) 0 else 1
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.GTranslate,
+                    contentDescription = "Cambiar el idioma"
+                )
+            }
+
+            IconButton(
+                onClick = {
+                    changeMap()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Map,
+                    contentDescription = "Cambiar el tipo de mapa"
+                )
+            }
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = colorScheme.primary,
+            titleContentColor = colorScheme.onPrimary,
+            navigationIconContentColor = colorScheme.onPrimary,
+            actionIconContentColor = colorScheme.onPrimary
+        )
     )
 }
 
@@ -453,253 +451,291 @@ fun DrawerBody(
 
     Column (
         modifier = Modifier
-            .background(
-                MaterialTheme.colorScheme.primaryContainer
-            ),
+            .background(colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Box(
-            modifier = Modifier
-                .height(180.dp)
-                .fillMaxWidth()
-                // crear la variable para el tema claro
-                // y el tema oscuro por el color a continuaacion
-                .background(
-                    MaterialTheme.colorScheme.primary,
-                    RoundedCornerShape(bottomEnd = 15.dp, bottomStart = 15.dp)
-                )
-                .clickable {
-                    navController.navigate(AppScreens.ProfileScreen.route)
-                }
-        ){
-            // nombre, correo y boton para cerrar el menu
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 15.dp, bottom = 25.dp),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.Start
-            ) {
-                CustomText(
-                    firstString = "Cristian Alexis Torres Zavala",
-                    horizontal = Arrangement.Start,
-                    size = 20,
-                    modifier = Modifier.fillMaxWidth(0.95f),
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
+        // header perfil
+        HeaderProfileMenu(
+            navController = navController,
+            scope = scope,
+            drawerState = drawerState
+        )
 
-                CustomText(
-                    firstString = "s20120154@alumnos.itsur.edu.mx",
-                    horizontal = Arrangement.Start,
-                    fontWeight = FontWeight.Normal,
-                    size = 15,
-                    modifier = Modifier.fillMaxWidth(0.95f),
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-
-            // boton de cerrar menu
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(15.dp),
-                verticalAlignment = Alignment.Top,
-                horizontalArrangement = Arrangement.End
-            ) {
-                BoxOption(
-                    img = painterResource(id = R.drawable.back),
-                    onBackground = MaterialTheme.colorScheme.onPrimaryContainer,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.primaryContainer, RoundedCornerShape(percent = 10))
-                        .clickable {
-                            scope.launch {
-                                drawerState.close()
-                            }
-                        }
-                )
-            }
-
-            // cuadro de informacion de suscripcion
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(15.dp)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.75f)
-                        .height(55.dp)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(percent = 15))
-                        .border(2.dp,MaterialTheme.colorScheme.onPrimary),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    CustomText(
-                        firstString = "P R E M I U M",
-                        horizontal = Arrangement.Center,
-                        size = 20,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
-        }
-
+        // cuerpo opciones del menu
         Column(
             modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            DrawerItem(text = "Version Premium", icon = painterResource(id = R.drawable.premium)) {
+
+            // premium
+
+            Text(
+                text = "Premium",
+                style = typography.titleSmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
+            )
+
+            DrawerItem(
+                text = "Paquetes",
+                icon = Icons.Outlined.AttachMoney
+            ) {
                 navController.navigate(AppScreens.SuscripcionScreen.route)
             }
 
-            Spacer(
+            // transporte
+
+            Text(
+                text = "Transporte",
+                style = typography.titleSmall,
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(1.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.5f)
-                    )
-                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
             )
 
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly
+            DrawerItem(
+                text = "Ruta mas rapida",
+                icon = Icons.Outlined.SwitchAccessShortcut
             ) {
-                DrawerItem(text = "Stream Routes Map", icon = painterResource(id = R.drawable.routes)) {
+                navController.navigate(AppScreens.FastScreen.route)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(167),
+                icon = Icons.Outlined.DirectionsBus
+            ) {
+                navController.navigate(AppScreens.RoutesScreen.route)
+            }
+                DrawerItem(text = "Stream Routes Map", Icons.Outlined.DirectionsBus) {
                     navController.navigate(AppScreens.StreamRoutesMapScreen.route)
                 }
 
-                DrawerItem(text = "Rutas", icon = painterResource(id = R.drawable.routes)) {
+                DrawerItem(text = "Rutas", icon = Icons.Outlined.DirectionsBus) {
                     navController.navigate(AppScreens.RoutesScreen.route)
                 }
 
-                DrawerItem(text = "Planifica tu viaje", icon = painterResource(id = R.drawable.add_location)) {
-                    navController.navigate(AppScreens.TripScreen.route)
-                }
-
-                DrawerItem(text = "Compartir ubicacion", icon = painterResource(id = R.drawable.share_location)) {
-                    if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
-                        locationPermissionState.launchPermissionRequest()
-                        backgroundLocationPermissionState.launchPermissionRequest()
-                    }
-
-                    if (!areLocationServicesEnabled(context)) {
-                        Toast.makeText(context, "Los servicios de ubicación están deshabilitados. Por favor activa la ubicacion del dispositivo.", Toast.LENGTH_LONG).show()
-                        // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
-                        // y proporcionar una opción para abrir la configuración para habilitarlos
-                    } else {
-                        if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
-                            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-                            fusedLocationClient.lastLocation
-                                .addOnSuccessListener { location: Location? ->
-                                    if (location != null) {
-                                        val latitude = location.latitude
-                                        val longitude = location.longitude
-
-                                        // Construir la URL con el marcador en tu ubicación actual
-                                        val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
-                                        val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
-                                        val message = myViewModel.languageType().get(9) + addressInfo?.cityName + " " +
-                                                addressInfo?.streetName +  " " + addressInfo?.postalCode + "\n"
-
-                                        val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
-                                        context.startActivity(shareIntent)
-
-                                    } else {
-                                        Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
-                                    }
-                                }
-                                .addOnFailureListener {
-                                    // Manejar el error al obtener la ubicación actual
-                                    Toast.makeText(context, "Error al obtener la ubicación actual. Intentalo mas tarde.", Toast.LENGTH_SHORT).show()
-                                }
-                        } else {
-                            Toast.makeText(context, "Por favor ve a la configuracion de la aplicacion y habilita los permisos de ubicacion.", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                }
-
-                DrawerItem(text = "Descargar rutas", icon = painterResource(id = R.drawable.download)) {
-                    startDownload(context = context)
-                }
-            }
-
-            Spacer(
-                modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(1.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.5f)
-                    )
-                    .align(Alignment.CenterHorizontally)
-            )
-
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly
+            DrawerItem(
+                text = myViewModel.languageType().get(164),
+                icon = Icons.Outlined.Route
             ) {
-                DrawerItem(text = "Comparte", icon = painterResource(id = R.drawable.share)) {
-                    val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
-                    context.startActivity(shareIntent)
+                navController.navigate(AppScreens.TripScreen.route)
+            }
+
+            DrawerItem(
+                text = "Turismo",
+                icon = Icons.Outlined.Museum
+            ) {
+                navController.navigate(AppScreens.TurismScreen.route)
+            }
+
+            // funciones extra
+            Text(
+                text = "Funciones",
+                style = typography.titleSmall,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
+            )
+
+            DrawerItem(
+                text = "Chat general",
+                icon = Icons.Outlined.Chat,
+            ) {
+                navController.navigate(AppScreens.ChatScreen.route)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(155),
+                icon = Icons.Outlined.ShareLocation
+            ) {
+                if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
+                    locationPermissionState.launchPermissionRequest()
+                    backgroundLocationPermissionState.launchPermissionRequest()
                 }
 
-                DrawerItem(text = "Valoranos", icon = painterResource(id = R.drawable.star)) {
-                    navController.navigate(AppScreens.ValoranoScreen.route)
-                }
+                if (!areLocationServicesEnabled(context)) {
+                    Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
+                    // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
+                    // y proporcionar una opción para abrir la configuración para habilitarlos
+                } else {
+                    if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
+                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+                        fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location: Location? ->
+                                if (location != null) {
+                                    val latitude = location.latitude
+                                    val longitude = location.longitude
 
-                DrawerItem(text = "Configuracion", icon = painterResource(id = R.drawable.settings)) {
-                    navController.navigate(AppScreens.ConfigurationScreen.route)
-                }
+                                    // Construir la URL con el marcador en tu ubicación actual
+                                    val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
+                                    val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
+                                    val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
+                                            addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
 
-                DrawerItem(text = "Ayuda y soporte", icon = painterResource(id = R.drawable.help)) {
-                    navController.navigate(AppScreens.HelpScreen.route)
+                                    val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
+                                    context.startActivity(shareIntent)
+
+                                } else {
+                                    Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
+                                }
+                            }
+                            .addOnFailureListener {
+                                // Manejar el error al obtener la ubicación actual
+                                Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
+                            }
+                    } else {
+                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
+                    }
                 }
             }
 
-            Spacer(
+            DrawerItem(
+                text = myViewModel.languageType().get(159),
+                icon = Icons.Outlined.Download
+            ) {
+                startDownload(context = context, myViewModel = myViewModel)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(154),
+                icon = Icons.Outlined.Share
+            ) {
+                val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
+                context.startActivity(shareIntent)
+            }
+
+            DrawerItem(
+                text = myViewModel.languageType().get(170),
+                icon = Icons.Outlined.StarRate
+            ) {
+                navController.navigate(AppScreens.ValoranoScreen.route)
+            }
+
+            // configuracion y soporte
+
+            Text(
+                text = "Configuracion y soporte",
+                style = typography.titleSmall,
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
-                    .height(1.dp)
-                    .background(
-                        MaterialTheme.colorScheme.primary.copy(0.5f)
-                    )
-                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(PaddingValues(16.dp))
             )
 
-            DrawerItem(text = "Cerrar sesion", icon = painterResource(id = R.drawable.logout)) {
+            DrawerItem(
+                text = myViewModel.languageType().get(156),
+                icon = Icons.Outlined.Settings
+            ) {
+                navController.navigate(AppScreens.ConfigurationScreen.route)
+            }
 
+            DrawerItem(
+                text = myViewModel.languageType().get(152),
+                icon = Icons.Outlined.HelpOutline
+            ) {
+                navController.navigate(AppScreens.HelpScreen.route)
             }
         }
     }
 }
 
 @Composable
-fun MapBody(
-    cameraPositionState: CameraPositionState,
-    currentMapType: MapType
+fun HeaderProfileMenu(
+    navController: NavController,
+    scope: CoroutineScope,
+    drawerState: DrawerState
 ) {
-    GoogleMap(
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                brush = Brush.linearGradient(
+                    colors = listOf(Color(0xFFE8CF41), Color(0xFFE8AA42))
+                ),
+                RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp)
+            )
+            .clickable {
+                navController.navigate(AppScreens.ProfileScreen.route)
+            }
+
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(PaddingValues(16.dp))
+        ) {
+            // imagen y boton de regresar
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_background),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .size(50.dp)
+                        .clip(RoundedCornerShape(100))
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                IconButton(
+                    onClick = {
+                        scope.launch {
+                            drawerState.close()
+                        }
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.ArrowBackIos,
+                        contentDescription = null
+                    )
+                }
+
+            }
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            // nombre de usuario
+            Text(
+                text = "Cristian Alexis Torres Zavala",
+                style = typography.titleMedium,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = "s20120154@alumnos.itsur.edu.mx",
+                style = typography.bodySmall
+            )
+        }
+    }
+}
+
+@Composable
+private fun MapBody(
+    cameraPositionState: CameraState,
+) {
+    val context = LocalContext.current
+    val overlayManagerState = rememberOverlayManagerState()
+
+    OpenStreetMap(
         modifier = Modifier
             .fillMaxSize(),
-        cameraPositionState = cameraPositionState,
-        uiSettings = MapUiSettings(
-            compassEnabled = false,
-            indoorLevelPickerEnabled = false,
-            mapToolbarEnabled = false,
-            myLocationButtonEnabled = false,
-            rotationGesturesEnabled = true,
-            scrollGesturesEnabled = true,
-            scrollGesturesEnabledDuringRotateOrZoom = false,
-            tiltGesturesEnabled = false,
-            zoomControlsEnabled = false,
-            zoomGesturesEnabled = true
+        cameraState = cameraPositionState,
+        properties = DefaultMapProperties.copy(
+            maxZoomLevel = 18.0,
+            minZoomLevel = 15.0,
+            tileSources = TileSourceFactory.MAPNIK,
+            zoomButtonVisibility = ZoomButtonVisibility.NEVER
         ),
-        properties = MapProperties(
-            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.stylejson)),
-            mapType = currentMapType,
-            maxZoomPreference = 17f
-        )
-    ){
+        overlayManagerState = overlayManagerState,
+        onFirstLoadListener = {
+            val copyright = CopyrightOverlay(context)
+            overlayManagerState.overlayManager.add(copyright)
+
+        }
+    ) {
 
     }
 }
@@ -711,33 +747,31 @@ private fun BoxOption(
     onBackground: Color,
     modifier: Modifier
 ) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ){
-        when (img) {
-            is Painter -> {
-                Image(
-                    painter = img,
-                    contentDescription = desc,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(35.dp),
-                    colorFilter = ColorFilter.tint(
-                        onBackground
+    Card {
+        Row(
+            modifier = modifier,
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ){
+            when (img) {
+                is Painter -> {
+                    Image(
+                        painter = img,
+                        contentDescription = desc,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(35.dp)
                     )
-                )
-            }
-            is ImageVector -> {
-                Icon(
-                    imageVector = img,
-                    contentDescription = desc,
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(35.dp),
-                    tint = onBackground
-                )
+                }
+                is ImageVector -> {
+                    Icon(
+                        imageVector = img,
+                        contentDescription = desc,
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(35.dp)
+                    )
+                }
             }
         }
     }
@@ -746,69 +780,27 @@ private fun BoxOption(
 @Composable
 private fun DrawerItem(
     text: String,
-    icon: Painter,
+    icon: ImageVector,
+    selected: Boolean = false,
     onItemClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .padding(start = 15.dp, top = 2.dp, end = 15.dp)
-            .clip(RoundedCornerShape(50))
             .clickable(onClick = onItemClick),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Start
     ){
-        Spacer(modifier = Modifier.width(15.dp))
+        Spacer(modifier = Modifier.width(32.dp))
 
-        Icon(painter = icon, contentDescription = text, tint = MaterialTheme.colorScheme.onPrimaryContainer)
+        Icon(imageVector = icon, contentDescription = text)
         
-        Spacer(modifier = Modifier.width(12.dp))
+        Spacer(modifier = Modifier.width(16.dp))
 
-        TextOption(text = text, color = MaterialTheme.colorScheme.onPrimaryContainer)
-    }
-}
-
-@Composable
-fun TextOption(
-    text: String,
-    color: Color = color_letra_botones
-) {
-    Text(
-        text = text,
-        color = color,
-        fontSize = 18.sp,
-        fontFamily = FontFamily.SansSerif
-    )
-}
-
-@Composable
-private fun CustomText(
-    firstString: String,
-    horizontal: Arrangement.Horizontal,
-    color: Color = color_letra_botones,
-    fontWeight: FontWeight = FontWeight.Bold,
-    size: Int,
-    modifier: Modifier = Modifier
-) {
-    Row (
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = horizontal
-    ){
-        // forgot
         Text(
-            text = buildAnnotatedString{
-                withStyle(style = SpanStyle(color = color,
-                    fontWeight = fontWeight,
-                    fontSize = size.sp,
-                    fontFamily = FontFamily.SansSerif)
-                ) {
-                    append(firstString)
-                }
-            },
-            modifier = Modifier
-                .wrapContentWidth()
+            text = text,
+            style = typography.bodyLarge
         )
     }
 }
@@ -823,7 +815,7 @@ fun getShareApp(
         action = Intent.ACTION_SEND
         putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(34))
         type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, "https://stream_routes_official.com.mx")
+        putExtra(Intent.EXTRA_TEXT, "https://streamroutes.com")
         type = "text/plain"
     }
     return shareApp
@@ -837,7 +829,7 @@ fun getShareUbi(
 ) : Intent{
     val shareUbi: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(33))
+        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(178))
         val manager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
         val level: Int = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
         putExtra(Intent.EXTRA_TEXT, "Bat:$level% $message\n")
@@ -864,16 +856,20 @@ fun isInternetAvailable(
     return false
 }
 
-private fun startDownload(context: Context, pdfUrl: String = "https://drive.google.com/uc?export=download&id=10O0RgVqlyorbydLp4T0QY12mAxUsMn-W") {
+private fun startDownload(
+    context: Context,
+    pdfUrl: String = "https://drive.google.com/uc?export=download&id=1Xt85BpR47S6adKdRlh_ERVfo8TxD1fM4",
+    myViewModel: MyViewModel
+) {
     val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     val request = DownloadManager.Request(Uri.parse(pdfUrl))
-        .setTitle("Descargando rutas")
-        .setDescription("Descargando ruta (nombre)")
+        .setTitle(myViewModel.languageType().get(158))
+        .setDescription(myViewModel.languageType().get(159))
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
         .setDestinationInExternalPublicDir(
             Environment.DIRECTORY_DOWNLOADS,
-            "prueba.pdf"
+            "RutaRoute1.pdf"
         )
 
     downloadManager.enqueue(request)

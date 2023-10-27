@@ -4,7 +4,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -21,16 +20,14 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.Screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
 import net.streamroutes.sreamroutesapp.Screens.Mapas.StreamRoutesMapScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangeEmailScren
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileChangePhoneScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ChatScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
-import net.streamroutes.sreamroutesapp.Screens.MenuScreens.RoutesScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileConfigurationScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfilePersonalInfoScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.SuscriptionConfigurationScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LanguageScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
@@ -45,10 +42,10 @@ fun AppNavigation(myViewModel: MyViewModel) {
     val NavController = rememberNavController()
 
 
-    NavHost(navController = NavController, startDestination = AppScreens.SplashScreen.route) {
+    NavHost(navController = NavController, startDestination = AppScreens.RoutesScreen.route) {
         // splash screen
         composable(AppScreens.SplashScreen.route){
-            SplashScreen(NavController)
+            SplashScreen(NavController,myViewModel)
         }
         // pantalla principal
         composable(AppScreens.MainScreen.route){
@@ -72,19 +69,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
         // PROFILE
         composable(AppScreens.ProfileScreen.route){
-            ProfileScreen(NavController)
-        }
-        composable(AppScreens.ProfileChangePhoneScreen.route){
-            ProfileChangePhoneScreen(NavController)
-        }
-        composable(AppScreens.ProfileChangeEmailScreen.route){
-            ProfileChangeEmailScren(NavController)
-        }
-        composable(AppScreens.ProfileConfigurationScreen.route){
-            ProfileConfigurationScreen(NavController)
-        }
-        composable(AppScreens.ProfilePersonalInfoScreen.route){
-            ProfilePersonalInfoScreen(NavController)
+            ProfileScreen(NavController,myViewModel)
         }
         // HELP
         composable(AppScreens.HelpAboutAppScreen.route){
@@ -155,8 +140,17 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
 
         // SUSCRIPTION CONFIGURATION
-        composable(AppScreens.SuscriptionConfigurationScreen.route){
-            SuscriptionConfigurationScreen()
+
+        composable(AppScreens.TurismScreen.route){
+            TurismScreen(myViewModel, NavController)
+        }
+
+        composable(AppScreens.FastScreen.route){
+            FastScreen(NavController)
+        }
+
+        composable(AppScreens.ChatScreen.route){
+            ChatScreen(NavController)
         }
 
         // MAPA
