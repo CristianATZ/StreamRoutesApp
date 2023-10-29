@@ -9,7 +9,6 @@ import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,8 +29,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Chip
 import androidx.compose.material.ChipDefaults
 import androidx.compose.material.ExperimentalMaterialApi
@@ -49,7 +50,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -66,6 +66,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -150,14 +151,16 @@ fun RoutesScreenView(
                 modifier = Modifier
                     .offset(configuration.screenWidthDp.dp/4)
             ) {
-                SidePanel()
+                SidePanel(drawerState)
             }
         }
     }    
 }
 
 @Composable
-fun SidePanel() {
+fun SidePanel(
+    drawerState: MutableState<DrawerValue>
+) {
     Column(
         Modifier
             .fillMaxWidth(0.75f)
@@ -237,9 +240,27 @@ fun SidePanel() {
         ) {
             items(10) {
                 if(it%3 == 0)
-                    RouteOption(true)
+                    RouteOption(
+                        ubication = true,
+                        onClose = {
+                            if (drawerState.value == DrawerValue.Closed) {
+                                drawerState.value = DrawerValue.Open
+                            } else {
+                                drawerState.value = DrawerValue.Closed
+                            }
+                        }
+                    )
                 else
-                    RouteOption(false)
+                    RouteOption(
+                        ubication = false,
+                        onClose = {
+                            if (drawerState.value == DrawerValue.Closed) {
+                                drawerState.value = DrawerValue.Open
+                            } else {
+                                drawerState.value = DrawerValue.Closed
+                            }
+                        }
+                    )
             }
         }
     }
@@ -253,7 +274,8 @@ data class RoutesOption(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun RouteOption(
-    ubication: Boolean
+    ubication: Boolean,
+    onClose: () -> Unit
 ) {
 
     var openExactUbi by remember {
@@ -357,10 +379,14 @@ fun RouteOption(
             sheetState = sheetState,
             pagerState = pagerState,
             pageCount = pageCount,
-            list = routes_options
-        ) {
-            openSheet = !openSheet
-        }
+            list = routes_options,
+            onDismiss = {
+                openSheet = !openSheet
+            },
+            onCalculate = {
+                onClose()
+            }
+        )
     }
 
     Card (
@@ -521,7 +547,8 @@ fun BottomSheet(
     pagerState: PagerState,
     pageCount: Int,
     list: List<RoutesOption>,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
+    onCalculate: () -> Unit
 ) {
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
@@ -586,9 +613,13 @@ fun BottomSheet(
                             Modifier
                                 .padding(PaddingValues(16.dp))
                                 .fillMaxWidth()
+                                .verticalScroll(rememberScrollState()),
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             // nombre ruta y descripcion
-                            Column {
+                            Column(
+                                Modifier.fillMaxWidth()
+                            ) {
                                 // nombre
                                 Text(
                                     text = "Nombre ruta",
@@ -602,6 +633,8 @@ fun BottomSheet(
                                     style = typography.bodyLarge
                                 )
                             }
+
+                            Spacer(modifier = Modifier.size(8.dp))
 
                             // botons de accion
                             LazyRow(){
@@ -623,6 +656,8 @@ fun BottomSheet(
                                     }
                                 }
                             }
+
+                            Spacer(modifier = Modifier.size(8.dp))
 
                             // duracion y cantidad de paradas
                             Row {
@@ -681,6 +716,30 @@ fun BottomSheet(
                                     )
                                 }
                             }
+
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            // calcular ruta
+                            Button(
+                                onClick = {
+                                    onDismiss()
+                                    onCalculate()
+                                },
+                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 64.dp, bottomEnd = 64.dp),
+                                colors = ButtonDefaults.buttonColors(
+                                    containerColor = colorScheme.tertiary
+                                ),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(50.dp)
+                            ) {
+                                Text(
+                                    text = "Mostrar ruta",
+                                    style = typography.bodyLarge
+                                )
+                            }
+
+                            Spacer(modifier = Modifier.size(8.dp))
                         }
                     }
                 }
