@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 ////////////////////////////////////////////
 // QUEDO MAMALONA
-val md_theme_light_primary = Color(0xFF805600)
+/*val md_theme_light_primary = Color(0xFF805600)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFFFDDAF)
 val md_theme_light_onPrimaryContainer = Color(0xFF281800)
@@ -64,7 +64,7 @@ val md_theme_dark_inversePrimary = Color(0xFF805600)
 val md_theme_dark_shadow = Color(0xFF000000)
 val md_theme_dark_surfaceTint = Color(0xFFFDBA4B)
 val md_theme_dark_outlineVariant = Color(0xFF4F4539)
-val md_theme_dark_scrim = Color(0xFF000000)
+val md_theme_dark_scrim = Color(0xFF000000)*/
 
 /*val md_theme_light_primary = Color(0xFF805600)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
@@ -128,7 +128,6 @@ val md_theme_dark_surfaceTint = Color(0xFFFDBA4B)
 val md_theme_dark_outlineVariant = Color(0xFF4F4539)
 val md_theme_dark_scrim = Color(0xFF000000)*/
 
-/*
 
 val md_theme_light_primary = Color(0xFF001A40)
 val md_theme_light_onPrimary = Color(0xFFFFFFFF)
@@ -191,4 +190,3 @@ val md_theme_dark_surfaceTint = Color(0xFF1D1A16)
 val md_theme_dark_outlineVariant = Color(0xFFFFB509)
 val md_theme_dark_outline = Color(0xFFC78B00)
 val md_theme_dark_scrim = Color(0xFF000000)
-*/

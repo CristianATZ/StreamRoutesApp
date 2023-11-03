@@ -243,18 +243,6 @@ private fun BottomBarBody(navController: NavController) {
                     }
                 },
                 shape = RoundedCornerShape(16.dp),
-                /*colors = TextFieldDefaults.outlinedTextFieldColors(
-                    containerColor = colorScheme.tertiary,
-                    textColor = colorScheme.onTertiary,
-                    cursorColor = colorScheme.onTertiary,
-                    focusedBorderColor = colorScheme.onTertiary,
-                    unfocusedBorderColor = colorScheme.tertiary,
-                    focusedLeadingIconColor = colorScheme.onTertiary,
-                    focusedTrailingIconColor = colorScheme.onTertiary,
-                    unfocusedLeadingIconColor = colorScheme.onTertiary,
-                    unfocusedTrailingIconColor = colorScheme.onTertiary,
-                    unfocusedLabelColor = colorScheme.onTertiary,
-                ),*/
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(8.dp)

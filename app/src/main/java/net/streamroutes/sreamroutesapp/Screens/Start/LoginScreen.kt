@@ -66,14 +66,16 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
     ) {
         // logo
         Image(
-            painter = painterResource(id = R.drawable.logo),
-            contentDescription = null
+            painter = painterResource(id = R.drawable.logo_navbar_2),
+            contentDescription = null,
+            modifier = Modifier
+                .size(200.dp)
         )
 
         Spacer(modifier = Modifier.size(16.dp))
 
         Text(
-            text = "Iniciar sesion",
+            text = "Iniciar sesiòn",
             style = typography.titleLarge
         )
 
@@ -176,7 +178,8 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
             },
             shape = RoundedCornerShape(16),
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorScheme.tertiary
+                containerColor = colorScheme.tertiary,
+                contentColor = colorScheme.onTertiary
             ),
             modifier = Modifier
                 .fillMaxWidth(0.9f)

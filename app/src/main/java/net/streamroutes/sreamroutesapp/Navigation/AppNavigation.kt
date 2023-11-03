@@ -35,13 +35,12 @@ import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 
 @RequiresApi(Build.VERSION_CODES.O)
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppNavigation(myViewModel: MyViewModel) {
     val NavController = rememberNavController()
 
 
-    NavHost(navController = NavController, startDestination = AppScreens.RoutesScreen.route) {
+    NavHost(navController = NavController, startDestination = AppScreens.SplashScreen.route) {
         // splash screen
         composable(AppScreens.SplashScreen.route){
             SplashScreen(NavController,myViewModel)

@@ -30,6 +30,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -129,6 +130,7 @@ fun Valoranos(myViewModel: MyViewModel, navController: NavController) {
             Text(
                 text = myViewModel.languageType().get(214),
                 style = typography.bodyLarge,
+                textAlign = TextAlign.Justify,
                 modifier = Modifier
                     .padding(PaddingValues(16.dp))
             )
@@ -137,13 +139,18 @@ fun Valoranos(myViewModel: MyViewModel, navController: NavController) {
                 onClick = {
                     navController.navigate(AppScreens.MainScreen.route)
                 },
+                shape = RoundedCornerShape(16),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.tertiary,
+                    contentColor = colorScheme.onTertiary
+                ),
                 modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .padding(16.dp)
+                    .fillMaxWidth(0.9f)
+                    .padding(top = 16.dp)
                     .height(50.dp)
             ) {
                 Text(
-                    text = myViewModel.languageType().get(274),
+                    text = myViewModel.languageType().get(50),
                     style = typography.bodyLarge
                 )
             }
@@ -170,11 +177,17 @@ private fun TopBar(
                     navController.navigate(AppScreens.MainScreen.route)
                 }
             ) {
-                androidx.compose.material3.Icon(
+                Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
-                    contentDescription = "regresar al login"
+                    contentDescription = "regresar al login",
+                    tint = colorScheme.onPrimary
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorScheme.primary,
+            titleContentColor = colorScheme.onPrimary,
+            navigationIconContentColor = colorScheme.onPrimary
+        )
     )
 }

@@ -98,6 +98,8 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            Spacer(modifier = Modifier.size(16.dp))
+
             // nombre
             OutlinedTextField(
                 value = nombre,
@@ -150,16 +152,20 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
 
             Button(
                 onClick = {
-                    navController.navigate(AppScreens.HelpScreen.route)
+
                 },
+                shape = RoundedCornerShape(16),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiary
+                ),
                 modifier = Modifier
-                    .fillMaxWidth(0.85f)
+                    .fillMaxWidth(0.9f)
                     .padding(top = 16.dp)
                     .height(50.dp)
             ) {
                 Text(
                     text = "Enviar",
-                    style = MaterialTheme.typography.bodyLarge
+                    style = typography.bodyLarge
                 )
             }
 
@@ -196,6 +202,11 @@ private fun TopBarBody(
                     contentDescription = "Te enviara al menu de opciones"
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }

@@ -58,6 +58,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
@@ -114,6 +115,8 @@ fun Tourism(
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             item {
+                Spacer(modifier = Modifier.size(16.dp))
+
                 Text(
                     text = "\"No hay que llegar primero... pero hay que saber llegar\"",
                     modifier = Modifier.fillMaxWidth(0.9f),
@@ -291,7 +294,12 @@ private fun TopBar(
                     contentDescription = "regresar a MainScreen"
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }
 

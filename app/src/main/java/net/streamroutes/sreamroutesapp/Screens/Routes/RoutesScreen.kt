@@ -174,7 +174,7 @@ fun SidePanel(
                 value = "",
                 onValueChange = {  },
                 placeholder = {
-                    Text(text = "Filtra aqui")
+                    Text(text = "Filtra aquì")
                 },
                 trailingIcon = {
                     IconButton(onClick = { /*TODO*/ }) {
@@ -305,7 +305,7 @@ fun RouteOption(
             },
             text = {
                 Text(
-                    text = "Este autobus tiene localizacion en tiempo real.",
+                    text = "Este autobùs tiene localizacion en tiempo real.",
                     style = typography.bodyLarge
                 )
             }
@@ -365,7 +365,7 @@ fun RouteOption(
             }
         ),
         RoutesOption(
-            name = "Iconicos",
+            name = "Icònicos",
             action = {
                 scope.launch {
                     pagerState.animateScrollToPage(8)
@@ -629,7 +629,7 @@ fun BottomSheet(
 
                                 // descripcion
                                 Text(
-                                    text = "Informacion util necesaria de la ruta.",
+                                    text = "Informaciòn ùtil necesaria de la ruta.",
                                     style = typography.bodyLarge
                                 )
                             }
@@ -662,7 +662,7 @@ fun BottomSheet(
                             // duracion y cantidad de paradas
                             Row {
                                 RouteInfo(
-                                    title = "Duracion",
+                                    title = "Duraciòn",
                                     desc = "2 horas y 34 minutos.",
                                     value = 0.5f
                                 )
@@ -679,13 +679,13 @@ fun BottomSheet(
                             // inicio de la ruta
                             RouteInfo(
                                 title = "Inicio ruta",
-                                desc = "Calle Pipila Uriangato"
+                                desc = "Calle Pipila"
                             )
 
                             // final de la ruta
                             RouteInfo(
                                 title = "Final ruta",
-                                desc = "Calle Obregon Uriangato"
+                                desc = "Calle Obregòn"
                             )
 
                             // parada mas cercana

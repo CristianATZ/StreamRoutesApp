@@ -160,7 +160,12 @@ private fun TopBarBody(
                     contentDescription = "Te enviara al menu de configuraciones"
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }
 

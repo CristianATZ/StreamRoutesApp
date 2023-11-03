@@ -32,6 +32,7 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -258,7 +259,12 @@ private fun TopBar(
                     contentDescription = "Te enviara al menu de opciones",
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorScheme.primary,
+            titleContentColor = colorScheme.onPrimary,
+            navigationIconContentColor = colorScheme.onPrimary
+        )
     )
 }
 

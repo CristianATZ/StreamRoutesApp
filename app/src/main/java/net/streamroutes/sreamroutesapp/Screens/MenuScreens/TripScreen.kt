@@ -392,7 +392,7 @@ private fun TopBarBody(
             value = destino,
             onValueChange = { destino = it },
             placeholder = {
-                Text(text = "Busca aqui")
+                Text(text = "Busca aquì")
             },
             leadingIcon = {
                 IconButton(

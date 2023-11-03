@@ -55,11 +55,13 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             
-            Spacer(modifier = Modifier.size(32.dp))
+            Spacer(modifier = Modifier.weight(1f))
             
             Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "Logo Stream Routes"
+                painter = painterResource(id = R.drawable.logo_navbar_2),
+                contentDescription = "Logo Stream Routes",
+                modifier = Modifier
+                    .size(200.dp)
             )
             Image(
                 painter = if(myViewModel.tema) painterResource(id = R.drawable.letrablanca) else painterResource(id = R.drawable.letranegra),
@@ -71,7 +73,7 @@ fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
             Spacer(modifier = Modifier.size(16.dp))
             
             Text(
-                text = myViewModel.languageType().get(268) + " 3.0",
+                text = myViewModel.languageType().get(268) + " 3.2.1",
                 style = typography.titleMedium
             )
 
@@ -108,7 +110,12 @@ private fun TopBarBody(
                     contentDescription = "Te enviara al menu de opciones"
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }
 

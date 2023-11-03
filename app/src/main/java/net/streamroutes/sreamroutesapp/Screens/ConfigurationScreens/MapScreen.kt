@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -171,11 +172,16 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
                 Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de configuraciones"
+                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    contentDescription = "Te enviara al menu de configuraciones",
                 )
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            titleContentColor = MaterialTheme.colorScheme.onPrimary,
+            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+        )
     )
 }
 

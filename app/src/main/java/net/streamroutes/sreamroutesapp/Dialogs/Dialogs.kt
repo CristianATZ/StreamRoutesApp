@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -79,6 +80,7 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letrain
 import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
@@ -1215,14 +1217,21 @@ fun SecuDialogEdit(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 // telefono actual
+                Text(
+                    text = "Telefono",
+                    style = typography.titleSmall,
+                    modifier = Modifier
+                        .padding(PaddingValues(16.dp))
+                )
+
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth(0.9f)
                 ) {
                     if(!changePhone){
                         OutlinedTextField(
@@ -1399,21 +1408,22 @@ fun SecuDialogEdit(
                                     )
 
                                     Button(
-                                        onClick = { /*TODO*/ },
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .height(50.dp),
-                                        shape = RoundedCornerShape(15.dp),
-                                        elevation = ButtonDefaults.elevatedButtonElevation(
-                                            defaultElevation = 5.dp
-                                        ),
+                                        onClick = {
+
+                                        },
+                                        shape = RoundedCornerShape(16),
                                         colors = ButtonDefaults.buttonColors(
-                                            containerColor = MaterialTheme.colorScheme.tertiary
-                                        )
+                                            containerColor = MaterialTheme.colorScheme.primary,
+                                            contentColor = MaterialTheme.colorScheme.onPrimary
+                                        ),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = 16.dp)
+                                            .height(50.dp)
                                     ) {
                                         Text(
                                             text = myViewModel.languageType().get(92),
-                                            color = MaterialTheme.colorScheme.onTertiary
+                                            style = typography.bodyLarge
                                         )
                                     }
                                 }
@@ -1422,32 +1432,41 @@ fun SecuDialogEdit(
                     }
                 }
 
-                // cambiar telefono
-                Row(
+                // cancelar cambio de telefono
+                Button(
+                    onClick = {
+                        changePhone = !changePhone
+                    },
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ){
-                    TextButton(
-                        onClick = { changePhone = !changePhone },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                    ) {
-                        Text(
-                            text = if(!changePhone) myViewModel.languageType().get(92) else myViewModel.languageType().get(94),
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                        )
-                    }
+                        .fillMaxWidth(0.9f)
+                        .padding(vertical = 16.dp)
+                        .height(50.dp)
+                ) {
+                    Text(
+                        text = if(!changePhone) myViewModel.languageType().get(92) else myViewModel.languageType().get(94),
+                        style = typography.bodyLarge
+                    )
                 }
 
                 Divider(modifier = Modifier.padding(bottom = 16.dp))
 
                 // correo actual
+                Text(
+                    text = "Correo",
+                    style = typography.titleSmall,
+                    modifier = Modifier
+                        .padding(PaddingValues(16.dp))
+                )
+
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth(0.9f),
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     if(!changeEmail){
                         OutlinedTextField(
@@ -1624,21 +1643,22 @@ fun SecuDialogEdit(
                                     )
 
                                     Button(
-                                        onClick = { /*TODO*/ },
-                                        modifier = Modifier
-                                            .fillMaxWidth(1f)
-                                            .height(50.dp),
-                                        shape = RoundedCornerShape(15.dp),
-                                        elevation = ButtonDefaults.elevatedButtonElevation(
-                                            defaultElevation = 5.dp
-                                        ),
+                                        onClick = {
+
+                                        },
+                                        shape = RoundedCornerShape(16),
                                         colors = ButtonDefaults.buttonColors(
-                                            containerColor = MaterialTheme.colorScheme.tertiary
-                                        )
+                                            containerColor = MaterialTheme.colorScheme.primary,
+                                            contentColor = MaterialTheme.colorScheme.onPrimary
+                                        ),
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = 16.dp)
+                                            .height(50.dp)
                                     ) {
                                         Text(
                                             text = myViewModel.languageType().get(91),
-                                            color = MaterialTheme.colorScheme.onTertiary
+                                            style = typography.bodyLarge
                                         )
                                     }
                                 }
@@ -1648,30 +1668,43 @@ fun SecuDialogEdit(
                 }
 
                 // cambiar correo
-                Row(
+                Button(
+                    onClick = {
+                        changeEmail = !changeEmail
+                    },
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ){
-                    TextButton(
-                        onClick = { changeEmail = !changeEmail },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp)
-                    ) {
-                        Text(
-                            text = if(!changeEmail) myViewModel.languageType().get(91) else myViewModel.languageType().get(94),
-                            color = MaterialTheme.colorScheme.onTertiaryContainer
-                        )
-                    }
+                        .fillMaxWidth(0.9f)
+                        .padding(vertical = 16.dp)
+                        .height(50.dp)
+                ) {
+                    Text(
+                        text = if(!changeEmail) myViewModel.languageType().get(91) else myViewModel.languageType().get(94),
+                        style = typography.bodyLarge
+                    )
                 }
 
                 Divider(modifier = Modifier.padding(bottom = 16.dp))
 
+
+
+                // cambiar la contrasenia
+
+                Text(
+                    text = "Contraseña",
+                    style = typography.titleSmall,
+                    modifier = Modifier
+                        .padding(PaddingValues(16.dp))
+                )
+
                 Row(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth(0.9f),
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     if(changePass){
                         Column {
@@ -1784,15 +1817,23 @@ fun SecuDialogEdit(
                                         .padding(vertical = 8.dp)
                                 )
 
-                                TextButton(
-                                    onClick = { /* TODO */ },
+                                Button(
+                                    onClick = {
+
+                                    },
+                                    shape = RoundedCornerShape(16),
+                                    colors = ButtonDefaults.buttonColors(
+                                        containerColor = MaterialTheme.colorScheme.primary,
+                                        contentColor = MaterialTheme.colorScheme.onPrimary
+                                    ),
                                     modifier = Modifier
-                                        .fillMaxWidth(1f)
+                                        .fillMaxWidth()
+                                        .padding(top = 16.dp)
                                         .height(50.dp)
                                 ) {
                                     Text(
                                         text = myViewModel.languageType().get(90),
-                                        color = MaterialTheme.colorScheme.onTertiaryContainer
+                                        style = typography.bodyLarge
                                     )
                                 }
 
@@ -1801,31 +1842,28 @@ fun SecuDialogEdit(
                     }
                 }
 
-                // cambiar correo
-                Row(
+                // cambiar contrasenia
+                Button(
+                    onClick = {
+                        changePass = !changePass
+                    },
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
-                ){
-                    Button(
-                        onClick = { changePass = !changePass },
-                        modifier = Modifier
-                            .fillMaxWidth(1f)
-                            .height(50.dp),
-                        shape = RoundedCornerShape(15.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(
-                            defaultElevation = 5.dp
-                        ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(
-                            text = if(changePass) myViewModel.languageType().get(94) else myViewModel.languageType().get(90),
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
+                        .fillMaxWidth(0.9f)
+                        .padding(top = 16.dp)
+                        .height(50.dp)
+                ) {
+                    Text(
+                        text = if(changePass) myViewModel.languageType().get(94) else myViewModel.languageType().get(90),
+                        style = typography.bodyLarge
+                    )
                 }
+
+                Spacer(modifier = Modifier.size(16.dp))
             }
         }
     }
@@ -1852,7 +1890,8 @@ fun MembDialogEdit(
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 // id de membresia
@@ -2062,29 +2101,24 @@ fun MembDialogEdit(
                 }
 
                 // cancelar suscripcion
-                Row(
+                Button(
+                    onClick = {
+                        onClose()
+                    },
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth(0.9f)
+                        .padding(top = 16.dp)
+                        .height(50.dp)
                 ) {
-                    Button(
-                        onClick = { onClose() },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
-                        shape = RoundedCornerShape(15.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(
-                            defaultElevation = 5.dp
-                        ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(
-                            text = myViewModel.languageType().get(93),
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
+                    Text(
+                        text = myViewModel.languageType().get(93),
+                        style = typography.bodyLarge
+                    )
                 }
             }
         }
@@ -2112,7 +2146,8 @@ fun UserDialogEdit(
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
                 // nombre y apellidos
@@ -2544,29 +2579,24 @@ fun UserDialogEdit(
                 }
 
                 // guardar cambios
-                Row(
+                Button(
+                    onClick = {
+                        onClose()
+                    },
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary,
+                        contentColor = MaterialTheme.colorScheme.onTertiary
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                        .fillMaxWidth(0.9f)
+                        .padding(top = 16.dp)
+                        .height(50.dp)
                 ) {
-                    Button(
-                        onClick = { onClose() },
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(50.dp),
-                        shape = RoundedCornerShape(15.dp),
-                        elevation = ButtonDefaults.elevatedButtonElevation(
-                            defaultElevation = 5.dp
-                        ),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.tertiary
-                        )
-                    ) {
-                        Text(
-                            text = myViewModel.languageType().get(122),
-                            color = MaterialTheme.colorScheme.onTertiary
-                        )
-                    }
+                    Text(
+                        text = myViewModel.languageType().get(122),
+                        style = typography.bodyLarge
+                    )
                 }
             }
         }

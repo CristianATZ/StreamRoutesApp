@@ -23,10 +23,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -194,19 +196,18 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                     onClick = {
                         sendCode()
                     },
-                    /*colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-                    ),*/
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth(0.85f)
+                        .fillMaxWidth(0.9f)
                         .padding(top = 16.dp)
                         .height(50.dp)
                 ) {
                     Text(
                         text = myViewModel.languageType().get(286),
-                        style = typography.bodyLarge,
-                        fontWeight = FontWeight.Bold
+                        style = typography.bodyLarge
                     )
                 }
             }
@@ -252,15 +253,14 @@ fun Verification(myViewModel: MyViewModel,navController: NavController) {
                 // verificar codigo
                 Button(
                     onClick = {
-                        /*if(codigoGenerado != codigo)
-                            Toast.makeText(context, myViewModel.languageType().get(289), Toast.LENGTH_SHORT).show()
-                        else
-                            navController.navigate(route = AppScreens.ChangeScreen.route)*/
-                        navController.navigate(route = AppScreens.ChangeScreen.route)
+                        navController.navigate(AppScreens.ChangeScreen.route)
                     },
-                    enabled = true,
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.tertiary
+                    ),
                     modifier = Modifier
-                        .fillMaxWidth(0.85f)
+                        .fillMaxWidth(0.9f)
                         .padding(top = 16.dp)
                         .height(50.dp)
                 ) {
