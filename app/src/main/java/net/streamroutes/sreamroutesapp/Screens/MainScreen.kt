@@ -54,7 +54,10 @@ import androidx.compose.material.icons.outlined.DirectionsBus
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.GTranslate
 import androidx.compose.material.icons.outlined.HelpOutline
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Map
+import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MenuOpen
 import androidx.compose.material.icons.outlined.Museum
 import androidx.compose.material.icons.outlined.Route
@@ -361,7 +364,7 @@ private fun TopBarBody(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.MenuOpen,
+                    imageVector = Icons.Outlined.Menu,
                     contentDescription = "Abrir el menu de opciones"
                 )
             }
@@ -682,8 +685,9 @@ fun HeaderProfileMenu(
                     }
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.ArrowBackIos,
-                        contentDescription = null
+                        imageVector = Icons.Outlined.KeyboardArrowLeft,
+                        contentDescription = null,
+                        tint = colorScheme.onTertiary
                     )
                 }
 
@@ -695,11 +699,13 @@ fun HeaderProfileMenu(
             Text(
                 text = "Cristian Alexis Torres Zavala",
                 style = typography.titleMedium,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = colorScheme.onTertiary
             )
             Text(
                 text = "s20120154@alumnos.itsur.edu.mx",
-                style = typography.bodySmall
+                style = typography.bodySmall,
+                color = colorScheme.onTertiary
             )
         }
     }

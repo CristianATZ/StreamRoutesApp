@@ -59,28 +59,12 @@ data class PremiumItem(
     val name: String,
     val price: String,
     val time: String,
-    val selected: Boolean,
-    val action: () -> Unit = {}
+    val carac: List<String>
 )
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
-    val context = LocalContext.current
-
-    var mensual by remember {
-        mutableStateOf(false)
-    }
-    var anual by remember {
-        mutableStateOf(false)
-    }
-    var estudiante by remember {
-        mutableStateOf(false)
-    }
-    var turista by remember {
-        mutableStateOf(false)
-    }
-
     val profit_items = listOf(
         ProfitItem(
             name = myViewModel.languageType().get(186),
@@ -104,49 +88,41 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
         PremiumItem(
             name = "Estudiantil",
             price = "15",
-            time = "Mes",
-            selected = estudiante,
-            action = {
-                estudiante = !estudiante
-                mensual = false
-                anual = false
-            }
+            time = "MXN",
+            carac = listOf(
+                "Paquete con duracion de 1 mes.",
+                "Activo a cualquier persona que se encuentre estudiando.",
+                "Contar con alguna documento oficial expedido por el plantel educativo.",
+                "Todas las funciones disponibles en este paquete."
+            )
         ),
         PremiumItem(
             name = "General",
-            selected = mensual,
             price = "20",
-            time = "Mes",
-            action = {
-                mensual = !mensual
-                anual = false
-                estudiante = false
-                turista = false
-            }
+            time = "MXN",
+            carac = listOf(
+                "Paquete con duracion de 1 mes.",
+                "Disponible para cualquier persona.",
+                "Todas las funciones disponibles en este paquete."
+            )
         ),
         PremiumItem(
             name = "Turista",
-            selected = turista,
             price = "15",
-            time = "15 D",
-            action = {
-                turista = !turista
-                anual = false
-                mensual = false
-                estudiante = false
-            }
+            time = "MXN",
+            carac = listOf(
+                "Paquete con duracion de 15 dias.",
+                "Todas las funciones disponibles en este paquete."
+            )
         ),
         PremiumItem(
             name = myViewModel.languageType().get(195),
-            selected = anual,
             price = "180",
-            time = "Anual",
-            action = {
-                anual = !anual
-                mensual = false
-                estudiante = false
-                turista = false
-            }
+            time = "MXN",
+            carac = listOf(
+                "Paquete con duracion de todo el año.",
+                "Todas las funciones disponibles en este paquete."
+            )
         ),
     )
 
@@ -166,9 +142,9 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
-                    // logo
                     Spacer(modifier = Modifier.size(16.dp))
 
+                    // logo
                     Row(
                         Modifier.fillMaxWidth(0.8f),
                         verticalAlignment = Alignment.CenterVertically,
@@ -190,67 +166,60 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     }
                 }
 
-                items(premium_items.size) {index ->
-                   Paquete(
-                       profit_items,
-                       navController,
-                       premium_items[index]
-                   )
+                item {
+
+                    Spacer(modifier = Modifier.size(16.dp))
+                    
+                    Text(
+                        text = "Beneficios",
+                        style = typography.titleLarge,
+                        textAlign = TextAlign.Center
+                    )
+
+                    profit_items.forEach() { item ->
+                        Card(
+                            modifier = Modifier
+                                .fillMaxWidth(0.9f)
+                                .padding(vertical = 8.dp)
+                        ) {
+                            Column(
+                                modifier = Modifier
+                                    .padding(PaddingValues(16.dp))
+                            ) {
+                                Text(
+                                    text = item.name,
+                                    style = typography.headlineSmall,
+                                    fontWeight = FontWeight.ExtraBold
+                                )
+                                Text(
+                                    text = item.desc,
+                                    style = typography.bodyLarge,
+                                    textAlign = TextAlign.Justify
+                                )
+                            }
+                        }
+                    }
+                }
+                
+                item {
+                    Spacer(modifier = Modifier.size(16.dp))
+
+                    Text(
+                        text = "Paquetes premium",
+                        style = typography.titleLarge,
+                        textAlign = TextAlign.Center
+                    )
+
+                    premium_items.forEach(){ item ->
+                        Paquete(
+                            profit_items,
+                            navController,
+                            item
+                        )
+                    }
                 }
 
-                // beneficios del premium
-                /*items(profit_items.size){ index ->
-                    val item = profit_items[index]
-                    ProfiBody(item)
-                }*/
             }
-
-
-            /*LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-                contentPadding = PaddingValues(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp)
-            ) {
-                items(premium_items.size){ index ->
-                    val item = premium_items[index]
-                    Option(item)
-                }
-            }
-
-            // boton contratar premium
-            Button(
-                onClick = {
-                    navController.navigate(AppScreens.MainScreen.route)
-                },
-                shape = RoundedCornerShape(16),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorScheme.tertiary
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = "Contratar",
-                    style = typography.bodyLarge
-                )
-            }
-
-            TextButton(
-                onClick = { *//*TODO*//* },
-                shape = RoundedCornerShape(16),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = "Saber mas",
-                    style = typography.bodyLarge,
-                    textDecoration = TextDecoration.Underline
-                )
-            }*/
-
-            //Spacer(modifier = Modifier.size(16.dp))
         }
     }
 }
@@ -283,7 +252,7 @@ fun Paquete(
                     .padding(PaddingValues(16.dp))
             )
 
-            profit_items.forEach(){ item ->
+            premiumItem.carac.forEach(){ item ->
                 Row(
                     Modifier.fillMaxWidth(0.9f)
                 ) {
@@ -293,7 +262,7 @@ fun Paquete(
                         color = colorScheme.onPrimaryContainer
                     )
                     Text(
-                        text = item.desc,
+                        text = item,
                         textAlign = TextAlign.Justify,
                         color = colorScheme.onPrimaryContainer
                     )
@@ -309,6 +278,8 @@ fun Paquete(
                 .padding(top = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+
+            // boton contratar
             Button(
                 onClick = {
                     navController.navigate(AppScreens.MainScreen.route)
@@ -330,6 +301,8 @@ fun Paquete(
 
             Spacer(modifier = Modifier.size(8.dp))
 
+
+            // precio del paquete
             Column(
                 Modifier
                     .weight(0.2f)
@@ -351,38 +324,6 @@ fun Paquete(
                     text = premiumItem.time,
                     style = typography.bodySmall,
                     color = colorScheme.onSecondary
-                )
-            }
-        }
-    }
-}
-
-@Composable
-fun Option(
-    item: PremiumItem
-) {
-    Card(
-        modifier = Modifier
-            .clickable { item.action() },
-        colors = CardDefaults.cardColors(
-            containerColor = if(item.selected) Color(0xFFFFCC66) else colorScheme.primaryContainer
-        )
-    ) {
-        Column(
-            modifier = Modifier
-                .height(100.dp)
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = item.name,
-                style = typography.bodyMedium
-            )
-            if(item.selected){
-                Icon(
-                    imageVector = Icons.Outlined.Check,
-                    contentDescription = null
                 )
             }
         }
@@ -415,49 +356,4 @@ private fun TopBar(
             navigationIconContentColor = colorScheme.onPrimary
         )
     )
-}
-
-@Composable
-fun ProfiBody(
-    item: ProfitItem
-) {
-    Card(
-        modifier = Modifier
-            .padding(PaddingValues(16.dp))
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(PaddingValues(16.dp)),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Column(
-                modifier = Modifier
-                    .weight(0.7f)
-            ) {
-                Text(
-                    text = item.name,
-                    style = typography.titleLarge,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    text = item.desc,
-                    style = typography.bodyLarge
-                )
-            }
-
-            Column(
-                modifier = Modifier
-                    .weight(0.3f)
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .width(200.dp)
-                )
-            }
-
-        }
-    }
 }

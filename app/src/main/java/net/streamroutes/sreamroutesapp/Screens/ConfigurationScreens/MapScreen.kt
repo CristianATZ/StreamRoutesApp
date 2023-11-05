@@ -127,6 +127,51 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
             
             HeaderMapOptions()
 
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .clickable {
+
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Column {
+                    Text(
+                        text = "Tipo de mapa", // texto
+                        style = typography.bodyLarge
+                    )
+                    Text(
+                        text = "Mapnik, etc.", // texto
+                        style = typography.labelMedium
+                    )
+                }
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(70.dp)
+                    .clickable {
+
+                    },
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Column {
+                    Text(
+                        text = "Tema del mapa", // texto
+                        style = typography.bodyLarge
+                    )
+                    Text(
+                        text = "Claro, oscuro, neon, etc.", // texto
+                        style = typography.labelMedium
+                    )
+                }
+            }
         }
     }
 }

@@ -282,21 +282,22 @@ fun BottomSheet(
                     .padding(PaddingValues(16.dp))
             ) {
                 Button(
-                    onClick = {  },
+                    onClick = {
+                        removeAll()
+                    },
+                    shape = RoundedCornerShape(16),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.tertiary,
+                        contentColor = colorScheme.onTertiary
+                    ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(50.dp),
-                    shape = RoundedCornerShape(16.dp),
-                    elevation = ButtonDefaults.elevatedButtonElevation(
-                        defaultElevation = 30.dp
-                    ),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    )
+                        .padding(top = 16.dp)
+                        .height(50.dp)
                 ) {
                     Text(
                         text = "Planificar",
-                        color = MaterialTheme.colorScheme.onTertiary
+                        style = typography.bodyLarge
                     )
                 }
             }

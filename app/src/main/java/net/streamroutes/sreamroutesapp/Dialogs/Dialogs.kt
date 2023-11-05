@@ -80,7 +80,6 @@ import net.streamroutes.sreamroutesapp.Colores.color_letra_topbar
 import net.streamroutes.sreamroutesapp.Colores.color_letra_textfield
 import net.streamroutes.sreamroutesapp.Colores.color_letrain
 import net.streamroutes.sreamroutesapp.MyViewModel
-import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
@@ -2620,6 +2619,85 @@ fun HeaderDialog(
                     .size(40.dp),
                 //tint =
             )
+        }
+    }
+}
+
+@Composable
+fun DialogPush(onDismiss: () -> Unit) {
+    var siempre by remember {
+        mutableStateOf(false)
+    }
+
+    var nunca by remember {
+        mutableStateOf(false)
+    }
+
+    Dialog(
+        onDismissRequest = { onDismiss() }
+    ) {
+        Card {
+            Column(
+                modifier = Modifier
+                    .padding(PaddingValues(16.dp)),
+            ) {
+                // siempre
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Siempre"
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    RadioButton(
+                        selected = siempre,
+                        onClick = {
+                            siempre = !siempre
+                            nunca = false
+                        }
+                    )
+                }
+
+                // maybe
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Siempre"
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    RadioButton(
+                        selected = siempre,
+                        onClick = {
+                            siempre = !siempre
+                            nunca = false
+                        }
+                    )
+                }
+
+                // nunca
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Nunca"
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    RadioButton(
+                        selected = nunca,
+                        onClick = {
+                            nunca = !nunca
+                            siempre = false
+                        }
+                    )
+                }
+            }
         }
     }
 }
