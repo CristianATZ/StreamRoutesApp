@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -14,8 +15,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
@@ -31,7 +30,6 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -44,7 +42,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.MyViewModel
@@ -59,6 +57,8 @@ data class ProfitItem(
 
 data class PremiumItem(
     val name: String,
+    val price: String,
+    val time: String,
     val selected: Boolean,
     val action: () -> Unit = {}
 )
@@ -75,6 +75,9 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
         mutableStateOf(false)
     }
     var estudiante by remember {
+        mutableStateOf(false)
+    }
+    var turista by remember {
         mutableStateOf(false)
     }
 
@@ -99,7 +102,9 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 
     val premium_items = listOf(
         PremiumItem(
-            name = "Estudiante",
+            name = "Estudiantil",
+            price = "15",
+            time = "Mes",
             selected = estudiante,
             action = {
                 estudiante = !estudiante
@@ -108,23 +113,41 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
             }
         ),
         PremiumItem(
-            name = myViewModel.languageType().get(194),
+            name = "General",
             selected = mensual,
+            price = "20",
+            time = "Mes",
             action = {
                 mensual = !mensual
                 anual = false
+                estudiante = false
+                turista = false
+            }
+        ),
+        PremiumItem(
+            name = "Turista",
+            selected = turista,
+            price = "15",
+            time = "15 D",
+            action = {
+                turista = !turista
+                anual = false
+                mensual = false
                 estudiante = false
             }
         ),
         PremiumItem(
             name = myViewModel.languageType().get(195),
             selected = anual,
+            price = "180",
+            time = "Anual",
             action = {
                 anual = !anual
                 mensual = false
                 estudiante = false
+                turista = false
             }
-        )
+        ),
     )
 
     Scaffold(
@@ -139,27 +162,51 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 
             LazyColumn(
                 modifier = Modifier
-                    .weight(1f)
+                    .weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
                     // logo
-                    Image(
-                        painter = if(myViewModel.tema) painterResource(id = R.drawable.logonletrab) else painterResource(id = R.drawable.logonletran),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(16.dp)
-                    )
+                    Spacer(modifier = Modifier.size(16.dp))
+
+                    Row(
+                        Modifier.fillMaxWidth(0.8f),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.logo_navbar_2),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(100.dp)
+                        )
+
+                        Spacer(modifier = Modifier.size(8.dp))
+                        
+                        Image(
+                            painter = if(myViewModel.tema) painterResource(id = R.drawable.letrablanca) else painterResource(id = R.drawable.letranegra),
+                            contentDescription = null
+                        )
+                    }
+                }
+
+                items(premium_items.size) {index ->
+                   Paquete(
+                       profit_items,
+                       navController,
+                       premium_items[index]
+                   )
                 }
 
                 // beneficios del premium
-                items(profit_items.size){ index ->
+                /*items(profit_items.size){ index ->
                     val item = profit_items[index]
                     ProfiBody(item)
-                }
+                }*/
             }
 
 
-            LazyVerticalGrid(
+            /*LazyVerticalGrid(
                 columns = GridCells.Fixed(3),
                 contentPadding = PaddingValues(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
@@ -190,7 +237,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
             }
 
             TextButton(
-                onClick = { /*TODO*/ },
+                onClick = { *//*TODO*//* },
                 shape = RoundedCornerShape(16),
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
@@ -201,9 +248,111 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     style = typography.bodyLarge,
                     textDecoration = TextDecoration.Underline
                 )
+            }*/
+
+            //Spacer(modifier = Modifier.size(16.dp))
+        }
+    }
+}
+
+@Composable
+fun Paquete(
+    profit_items: List<ProfitItem>,
+    navController: NavController,
+    premiumItem: PremiumItem
+) {
+    Column(
+        Modifier.padding(vertical = 16.dp)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                //.clip(RoundedCornerShape(16.dp))
+                .background(
+                    colorScheme.primaryContainer,
+                    RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp)
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Paquete " + premiumItem.name,
+                style = typography.bodyLarge,
+                fontWeight = FontWeight.ExtraBold,
+                color = colorScheme.onPrimaryContainer,
+                modifier = Modifier
+                    .padding(PaddingValues(16.dp))
+            )
+
+            profit_items.forEach(){ item ->
+                Row(
+                    Modifier.fillMaxWidth(0.9f)
+                ) {
+                    Text(
+                        text = "* ",
+                        fontWeight = FontWeight.Bold,
+                        color = colorScheme.onPrimaryContainer
+                    )
+                    Text(
+                        text = item.desc,
+                        textAlign = TextAlign.Justify,
+                        color = colorScheme.onPrimaryContainer
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.size(16.dp))
+        }
+
+        Row(
+            Modifier
+                .fillMaxWidth(0.9f)
+                .padding(top = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Button(
+                onClick = {
+                    navController.navigate(AppScreens.MainScreen.route)
+                },
+                shape = RoundedCornerShape(bottomStart = 16.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.tertiary,
+                    contentColor = colorScheme.onTertiary
+                ),
+                modifier = Modifier
+                    .weight(1f)
+                    .height(60.dp)
+            ) {
+                Text(
+                    text = "Contratar",
+                    style = typography.bodyLarge
+                )
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Column(
+                Modifier
+                    .weight(0.2f)
+                    .height(60.dp)
+                    .background(
+                        colorScheme.secondary,
+                        RoundedCornerShape(bottomEnd = 16.dp)
+                    ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = premiumItem.price,
+                    style = typography.headlineSmall,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = colorScheme.onSecondary
+                )
+                Text(
+                    text = premiumItem.time,
+                    style = typography.bodySmall,
+                    color = colorScheme.onSecondary
+                )
+            }
         }
     }
 }
@@ -249,7 +398,7 @@ private fun TopBar(
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType().get(185)
+                text = "Paquetes"
             )
         },
         navigationIcon = {
