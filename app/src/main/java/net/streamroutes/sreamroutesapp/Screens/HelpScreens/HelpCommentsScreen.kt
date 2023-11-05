@@ -136,8 +136,13 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                 onClick = {
                     navController.navigate(AppScreens.HelpScreen.route)
                 },
+                shape = RoundedCornerShape(16),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
+                ),
                 modifier = Modifier
-                    .fillMaxWidth(0.85f)
+                    .fillMaxWidth(0.9f)
                     .padding(top = 16.dp)
                     .height(50.dp)
             ) {
