@@ -49,23 +49,29 @@ import androidx.navigation.NavHostController
 import com.utsman.osmandcompose.DefaultMapProperties
 import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.ZoomButtonVisibility
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FastScreen(navController: NavHostController) {
+fun FastScreen(
+    navController: NavHostController,
+    myViewModel: MyViewModel
+) {
     var dialogo by remember {
         mutableStateOf(true)
     }
 
     if(dialogo){
-        DialogStart(){
+        DialogStart(
+            myViewModel
+        ){
             dialogo = !dialogo
         }
     }
 
     Scaffold(
-        topBar = { TopBarBody(navController) }
+        topBar = { TopBarBody(navController,myViewModel) }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -105,7 +111,7 @@ fun FastScreen(navController: NavHostController) {
                         .height(50.dp)
                 ) {
                     Text(
-                        text = "Calcular destino",
+                        text = myViewModel.languageType()[325],
                         style = typography.bodyLarge,
                         color = colorScheme.onTertiary
                     )
@@ -119,6 +125,7 @@ fun FastScreen(navController: NavHostController) {
 
 @Composable
 fun DialogStart(
+    myViewModel: MyViewModel,
     onClick: () -> Unit
 ) {
     AlertDialog(
@@ -127,17 +134,17 @@ fun DialogStart(
             TextButton(
                 onClick = { onClick() }
             ) {
-                Text(text = "Aceptar")
+                Text(text = myViewModel.languageType()[323])
             }
         },
         title = {
             Text(
-                text = "Elige un destino"
+                text = myViewModel.languageType()[321]
             )
         },
         text = {
             Text(
-                text = "Toca el mapa para elegir un destino y calcula la ruta optima para llegar."
+                text = myViewModel.languageType()[322]
             )
         }
     )
@@ -146,7 +153,8 @@ fun DialogStart(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBarBody(
-    navController: NavHostController
+    navController: NavHostController,
+    myViewModel: MyViewModel
 ) {
     Column(
         modifier = Modifier
@@ -184,8 +192,8 @@ private fun TopBarBody(
                 },
                 placeholder = {
                     Text(
-                        text = "Destino",
-                        color = MaterialTheme.colorScheme.onPrimaryContainer.copy(0.5f)
+                        text = myViewModel.languageType()[324],
+                        color = colorScheme.onPrimaryContainer.copy(0.5f)
                     )
                 },
                 shape = RoundedCornerShape(15),

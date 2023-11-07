@@ -146,7 +146,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
 
         composable(AppScreens.FastScreen.route){
-            FastScreen(NavController)
+            FastScreen(NavController,myViewModel)
         }
 
         composable(AppScreens.ChatScreen.route){

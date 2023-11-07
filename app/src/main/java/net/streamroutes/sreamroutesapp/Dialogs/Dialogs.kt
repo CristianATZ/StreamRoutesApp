@@ -2660,25 +2660,6 @@ fun DialogPush(onDismiss: () -> Unit) {
                     )
                 }
 
-                // maybe
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        text = "Siempre"
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    RadioButton(
-                        selected = siempre,
-                        onClick = {
-                            siempre = !siempre
-                            nunca = false
-                        }
-                    )
-                }
-
                 // nunca
                 Row(
                     verticalAlignment = Alignment.CenterVertically

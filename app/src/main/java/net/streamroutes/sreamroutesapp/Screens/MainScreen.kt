@@ -483,7 +483,7 @@ fun DrawerBody(
             )
 
             DrawerItem(
-                text = "Paquetes",
+                text = myViewModel.languageType()[303],
                 icon = Icons.Outlined.AttachMoney
             ) {
                 navController.navigate(AppScreens.SuscripcionScreen.route)
@@ -500,7 +500,7 @@ fun DrawerBody(
             )
 
             DrawerItem(
-                text = "Ruta mas rapida",
+                text = myViewModel.languageType()[304],
                 icon = Icons.Outlined.SwitchAccessShortcut
             ) {
                 navController.navigate(AppScreens.FastScreen.route)
@@ -521,7 +521,7 @@ fun DrawerBody(
             }
 
             DrawerItem(
-                text = "Turismo",
+                text = myViewModel.languageType()[305],
                 icon = Icons.Outlined.Museum
             ) {
                 navController.navigate(AppScreens.TurismScreen.route)
@@ -537,7 +537,7 @@ fun DrawerBody(
             )
 
             DrawerItem(
-                text = "Chat general",
+                text = myViewModel.languageType()[306],
                 icon = Icons.Outlined.Chat,
             ) {
                 navController.navigate(AppScreens.ChatScreen.route)

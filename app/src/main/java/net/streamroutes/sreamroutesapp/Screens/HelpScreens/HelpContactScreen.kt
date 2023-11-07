@@ -152,11 +152,12 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
 
             Button(
                 onClick = {
-
+                    navController.navigate(AppScreens.MainScreen.route)
                 },
                 shape = RoundedCornerShape(16),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
                 ),
                 modifier = Modifier
                     .fillMaxWidth(0.9f)

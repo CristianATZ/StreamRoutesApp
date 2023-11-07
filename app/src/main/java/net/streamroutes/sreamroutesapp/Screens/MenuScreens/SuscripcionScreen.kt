@@ -86,33 +86,33 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 
     val premium_items = listOf(
         PremiumItem(
-            name = "Estudiantil",
+            name = myViewModel.languageType()[309],
             price = "15",
             time = "MXN",
             carac = listOf(
-                "Paquete con duracion de 1 mes.",
-                "Activo a cualquier persona que se encuentre estudiando.",
-                "Contar con alguna documento oficial expedido por el plantel educativo.",
-                "Todas las funciones disponibles en este paquete."
+                myViewModel.languageType()[310],
+                myViewModel.languageType()[311],
+                myViewModel.languageType()[312],
+                myViewModel.languageType()[313]
             )
         ),
         PremiumItem(
-            name = "General",
+            name = myViewModel.languageType()[314],
             price = "20",
             time = "MXN",
             carac = listOf(
-                "Paquete con duracion de 1 mes.",
-                "Disponible para cualquier persona.",
-                "Todas las funciones disponibles en este paquete."
+                myViewModel.languageType()[310],
+                myViewModel.languageType()[315],
+                myViewModel.languageType()[313]
             )
         ),
         PremiumItem(
-            name = "Turista",
+            name = myViewModel.languageType()[316],
             price = "15",
             time = "MXN",
             carac = listOf(
-                "Paquete con duracion de 15 dias.",
-                "Todas las funciones disponibles en este paquete."
+                myViewModel.languageType()[317],
+                myViewModel.languageType()[313]
             )
         ),
         PremiumItem(
@@ -120,8 +120,8 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
             price = "180",
             time = "MXN",
             carac = listOf(
-                "Paquete con duracion de todo el año.",
-                "Todas las funciones disponibles en este paquete."
+                myViewModel.languageType()[319],
+                myViewModel.languageType()[313]
             )
         ),
     )
@@ -171,7 +171,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     Spacer(modifier = Modifier.size(16.dp))
                     
                     Text(
-                        text = "Beneficios",
+                        text = myViewModel.languageType()[307],
                         style = typography.titleLarge,
                         textAlign = TextAlign.Center
                     )
@@ -205,7 +205,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     Spacer(modifier = Modifier.size(16.dp))
 
                     Text(
-                        text = "Paquetes premium",
+                        text = myViewModel.languageType()[308],
                         style = typography.titleLarge,
                         textAlign = TextAlign.Center
                     )
@@ -214,7 +214,8 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                         Paquete(
                             profit_items,
                             navController,
-                            item
+                            item,
+                            myViewModel
                         )
                     }
                 }
@@ -228,7 +229,8 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 fun Paquete(
     profit_items: List<ProfitItem>,
     navController: NavController,
-    premiumItem: PremiumItem
+    premiumItem: PremiumItem,
+    myViewModel: MyViewModel
 ) {
     Column(
         Modifier.padding(vertical = 16.dp)
@@ -244,7 +246,7 @@ fun Paquete(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Paquete " + premiumItem.name,
+                text = premiumItem.name,
                 style = typography.bodyLarge,
                 fontWeight = FontWeight.ExtraBold,
                 color = colorScheme.onPrimaryContainer,
@@ -294,7 +296,7 @@ fun Paquete(
                     .height(60.dp)
             ) {
                 Text(
-                    text = "Contratar",
+                    text = myViewModel.languageType()[320],
                     style = typography.bodyLarge
                 )
             }

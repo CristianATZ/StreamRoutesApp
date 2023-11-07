@@ -24,6 +24,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -74,8 +75,9 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
 
             // logo
             Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "logo"
+                painter = painterResource(id = R.drawable.logo_navbar_2),
+                contentDescription = "logo",
+                Modifier.size(200.dp)
             )
 
             Spacer(modifier = Modifier.size(64.dp))
@@ -194,7 +196,8 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
                 },
                 shape = RoundedCornerShape(16),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.tertiary
+                    containerColor = colorScheme.tertiary,
+                    contentColor = colorScheme.onTertiary
                 ),
                 modifier = Modifier
                     .fillMaxWidth(0.9f)
@@ -217,7 +220,7 @@ fun Registration (myViewModel: MyViewModel,navController: NavController) {
                     .height(50.dp)
             ) {
                 Text(
-                    text = "Cancelar",
+                    text = myViewModel.languageType()[302],
                     style = MaterialTheme.typography.titleSmall
                 )
             }

@@ -75,7 +75,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
         Spacer(modifier = Modifier.size(16.dp))
 
         Text(
-            text = "Iniciar sesiòn",
+            text = myViewModel.languageType()[300],
             style = typography.titleLarge
         )
 

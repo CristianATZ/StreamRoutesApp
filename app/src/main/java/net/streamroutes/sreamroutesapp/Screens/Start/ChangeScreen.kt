@@ -196,7 +196,7 @@ fun Change( myViewModel: MyViewModel,navController: NavController ){
                     .height(50.dp)
             ) {
                 Text(
-                    text = "Cancelar",
+                    text = myViewModel.languageType()[301],
                     style = MaterialTheme.typography.titleSmall
                 )
             }

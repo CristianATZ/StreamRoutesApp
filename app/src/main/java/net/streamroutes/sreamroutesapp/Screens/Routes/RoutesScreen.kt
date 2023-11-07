@@ -151,7 +151,7 @@ fun RoutesScreenView(
                 modifier = Modifier
                     .offset(configuration.screenWidthDp.dp/4)
             ) {
-                SidePanel(drawerState)
+                SidePanel(drawerState,myViewModel)
             }
         }
     }    
@@ -159,7 +159,8 @@ fun RoutesScreenView(
 
 @Composable
 fun SidePanel(
-    drawerState: MutableState<DrawerValue>
+    drawerState: MutableState<DrawerValue>,
+    myViewModel: MyViewModel
 ) {
     Column(
         Modifier
@@ -174,7 +175,7 @@ fun SidePanel(
                 value = "",
                 onValueChange = {  },
                 placeholder = {
-                    Text(text = "Filtra aquì")
+                    Text(text = myViewModel.languageType()[328])
                 },
                 trailingIcon = {
                     IconButton(onClick = { /*TODO*/ }) {
@@ -227,7 +228,7 @@ fun SidePanel(
                     Spacer(modifier = Modifier.size(8.dp))
 
                     Text(
-                        text = "Filtrar",
+                        text = myViewModel.languageType()[329],
                         style = MaterialTheme.typography.labelLarge
                     )
                 }
@@ -242,6 +243,7 @@ fun SidePanel(
                 if(it%3 == 0)
                     RouteOption(
                         ubication = true,
+                        myViewModel = myViewModel,
                         onClose = {
                             if (drawerState.value == DrawerValue.Closed) {
                                 drawerState.value = DrawerValue.Open
@@ -253,6 +255,7 @@ fun SidePanel(
                 else
                     RouteOption(
                         ubication = false,
+                        myViewModel = myViewModel,
                         onClose = {
                             if (drawerState.value == DrawerValue.Closed) {
                                 drawerState.value = DrawerValue.Open
@@ -275,6 +278,7 @@ data class RoutesOption(
 @Composable
 fun RouteOption(
     ubication: Boolean,
+    myViewModel: MyViewModel,
     onClose: () -> Unit
 ) {
 
@@ -300,12 +304,12 @@ fun RouteOption(
             onDismissRequest = { openExactUbi = !openExactUbi },
             confirmButton = {
                 TextButton(onClick = { openExactUbi = !openExactUbi }) {
-                    Text(text = "Aceptar")
+                    Text(text = myViewModel.languageType()[331])
                 }
             },
             text = {
                 Text(
-                    text = "Este autobùs tiene localizacion en tiempo real.",
+                    text = myViewModel.languageType()[330],
                     style = typography.bodyLarge
                 )
             }
@@ -317,12 +321,12 @@ fun RouteOption(
             onDismissRequest = { openUnexactUbi = !openUnexactUbi },
             confirmButton = {
                 TextButton(onClick = { openUnexactUbi = !openUnexactUbi }) {
-                    Text(text = "Aceptar")
+                    Text(text = myViewModel.languageType()[331])
                 }
             },
             text = {
                 Text(
-                    text = "Este autobus NO tiene localizacion en tiempo real.",
+                    text = myViewModel.languageType()[332],
                     style = typography.bodyLarge
                 )
             }
@@ -341,7 +345,7 @@ fun RouteOption(
 
     val routes_options = listOf(
         RoutesOption(
-            name = "Autobus",
+            name = myViewModel.languageType()[333],
             action = {
                 scope.launch {
                     pagerState.animateScrollToPage(0)
@@ -349,7 +353,7 @@ fun RouteOption(
             }
         ),
         RoutesOption(
-            name = "Mapa",
+            name = myViewModel.languageType()[334],
             action = {
                 scope.launch {
                     pagerState.animateScrollToPage(1)
@@ -357,7 +361,7 @@ fun RouteOption(
             }
         ),
         RoutesOption(
-            name = "Paradas",
+            name = myViewModel.languageType()[335],
             action = {
                 scope.launch {
                     pagerState.animateScrollToPage(2)
@@ -365,7 +369,7 @@ fun RouteOption(
             }
         ),
         RoutesOption(
-            name = "Icònicos",
+            name = myViewModel.languageType()[336],
             action = {
                 scope.launch {
                     pagerState.animateScrollToPage(8)
@@ -378,6 +382,7 @@ fun RouteOption(
         BottomSheet(
             sheetState = sheetState,
             pagerState = pagerState,
+            myViewModel = myViewModel,
             pageCount = pageCount,
             list = routes_options,
             onDismiss = {
@@ -545,6 +550,7 @@ fun RouteOption(
 fun BottomSheet(
     sheetState: SheetState,
     pagerState: PagerState,
+    myViewModel: MyViewModel,
     pageCount: Int,
     list: List<RoutesOption>,
     onDismiss: () -> Unit,
@@ -662,7 +668,7 @@ fun BottomSheet(
                             // duracion y cantidad de paradas
                             Row {
                                 RouteInfo(
-                                    title = "Duraciòn",
+                                    title = myViewModel.languageType()[337],
                                     desc = "2 horas y 34 minutos.",
                                     value = 0.5f
                                 )
@@ -670,7 +676,7 @@ fun BottomSheet(
                                 Spacer(modifier = Modifier.size(16.dp))
 
                                 RouteInfo(
-                                    title = "Paradas totales",
+                                    title = myViewModel.languageType()[338],
                                     desc = "6",
                                     value = 1f
                                 )
@@ -678,13 +684,13 @@ fun BottomSheet(
 
                             // inicio de la ruta
                             RouteInfo(
-                                title = "Inicio ruta",
+                                title = myViewModel.languageType()[339],
                                 desc = "Calle Pipila"
                             )
 
                             // final de la ruta
                             RouteInfo(
-                                title = "Final ruta",
+                                title = myViewModel.languageType()[340],
                                 desc = "Calle Obregòn"
                             )
 
@@ -693,7 +699,7 @@ fun BottomSheet(
                                 verticalAlignment = Alignment.Bottom
                             ) {
                                 RouteInfo(
-                                    title = "Parada cercana",
+                                    title = myViewModel.languageType()[341],
                                     desc = "Calle 5 de Mayo",
                                     value = 0.7f
                                 )
@@ -727,14 +733,15 @@ fun BottomSheet(
                                 },
                                 shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 64.dp, bottomEnd = 64.dp),
                                 colors = ButtonDefaults.buttonColors(
-                                    containerColor = colorScheme.tertiary
+                                    containerColor = colorScheme.tertiary,
+                                    contentColor = colorScheme.onTertiary
                                 ),
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(50.dp)
                             ) {
                                 Text(
-                                    text = "Mostrar ruta",
+                                    text = myViewModel.languageType()[342],
                                     style = typography.bodyLarge
                                 )
                             }
@@ -873,7 +880,7 @@ private fun TopBarBody(
     TopAppBar(
         title = {
             Text(
-                text = "Transporte"
+                text = myViewModel.languageType()[326]
             )
         },
         navigationIcon = {
@@ -895,7 +902,7 @@ private fun TopBarBody(
                 }
             ) {
                 Text(
-                    text = "Rutas"
+                    text = myViewModel.languageType()[327]
                 )
             }
         },

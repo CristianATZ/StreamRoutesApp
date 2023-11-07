@@ -408,7 +408,111 @@ class MyViewModel : ViewModel() {
         // TurismScreen
         "Turismo",                      // 296
         "Chat de apoyo",                // 297
-        "Atención al turista"           // 298
+        "Atención al turista",         // 298
+
+        // extra login screen
+        "Iniciar sesiòn",  // 300
+
+        // extra change screen
+        "Cancelar",     // 301
+
+        // extra register screen
+        "Cancelar",     // 302
+
+        // extra main screen menu lateral
+        "Paquetes",    // 303
+        "Ruta mas rapida",  // 304
+        "Turismo",    // 305
+        "Chat general",   //306
+
+        // extra suscription screen
+        "Beneficios",       // 307
+        "Paquetes premium", // 308
+        "Paquete estudiantil",      // 309
+        "Paquete con duracion de 1 mes.",   // 310
+        "Activo a cualquier persona que se encuentre estudiando.",      // 311
+        "Contar con algun documento oficial expedido por el plantel educativo.",    // 312
+        "Todas las funciones disponibles en este paquete",      // 313
+        "Paquete general",      // 314
+        "Disponible para cualquier persona.",   // 315
+        "Paquete turista",      // 316
+        "Paquete con duracion de 15 dias.",     // 317
+        "Paquete anual",        // 318
+        "Paquete con duracion de todo el año.", // 319
+        "Contratar",            // 320
+
+        // fast screen
+        "Elige un destino",     // 321
+        "Toca el mapa para elegir nu destino y calcula la ruta optima para llegar.",    // 322
+        "Aceptar",              // 323
+        "Destino",              // 324
+        "Calcular destino",     // 325
+
+        // extra routes screen
+        "Transporte",           // 326
+        "Rutas",                // 327
+        "Filtra aqui",          // 328
+        "Filtrar",              // 329
+        "Este autobus tiene localizacion en tiempo real.",      // 330
+        "Aceptar",              // 331
+        "Este autobus NO tiene localizacino en tiempo real.",   // 332
+        "Autobus",              // 333
+        "Mapa",                 // 334
+        "Paradas",              // 335
+        "Iconicos",             // 336
+        "Duracion",             // 337
+        "Paradas totales",      // 338
+        "Inicio ruta",          // 339
+        "Final ruta",           // 340
+        "Parada cercana",       // 341
+        "Mostrar ruta",         // 342
+
+        // extra trip screen
+        "Busca aqui",           // 343
+        "Agregar",              // 344
+        "Cancelar",             // 345
+        "Destinos",             // 346
+        "Borrar todo",          // 347
+        "Planificar",           // 348
+
+        // extra tourism screen
+        "Ver ruta",             // 349
+        "Ver mas",              // 350
+        "Duracion",             // 351
+        "Paradas totales",      // 352
+        "Inicio ruta",          // 353
+        "Final ruta",           // 354
+        "Mostrar ruta",         // 355
+
+        // chat screen
+        "Chat general",         // 356
+        "Mensaje",              // 357
+
+        // extra settings screen
+        "Idioma",               // 358
+        "Tema oscuro",          // 359
+        "Tema claro",           // 360
+
+        // extra notificacions screen
+        "Siempre",              // 361
+        "Nunca",                // 362
+
+        // extra map screen
+        "Marcadores",           // 363
+        "Mapa",                 // 364
+        "Tipo de mapa",         // 365
+        "Mapnik, etc.",         // 366
+        "Tema del mapa",        // 367
+        "Claro, oscuro, neon, etc.",    // 368
+
+        // extra feedback screen
+        "Enviar",               // 369
+
+        // extra contact screen
+        "Contactanos",          // 370
+        "Nombre",               // 371
+        "Escribe tu inconveniente",   // 372
+        "Enviar",               // 373
     )
 
 
@@ -793,7 +897,112 @@ class MyViewModel : ViewModel() {
         // TurismScreen
         "Tourism",                  // 296
         "ChatBot",                  // 297
-        "Tourist Support"           // 298
+        "Tourist Support",           // 298
+
+        // extra login screen
+        "Log in",  // 300
+
+        // extra change screen
+        "Cancel",     // 301
+
+        // extra register screen
+        "Cancel",     // 302
+
+        // extra main screen menu lateral
+        "Packages",    // 303
+        "Fastest Route",  // 304
+        "Tourism",    // 305
+        "General Chat",   //306
+
+        // extra supscription screen
+        "Benefits",       // 307
+        "Premium Packages", // 308
+        "Student Package",      // 309
+        "Package with 1-month duration.",   // 310
+        "Available to anyone currently studying.",      // 311
+        "Must have an official document issued by the educational institution.",    // 312
+        "All functions available in this package",      // 313
+        "General Package",      // 314
+        "Available for anyone.",   // 315
+        "Tourist Package",      // 316
+        "Package with 15-day duration.",     // 317
+        "Annual Package",        // 318
+        "Package with year-round duration.", // 319
+        "Hire",            // 320
+
+        // fast screen
+        "Choose a destination",     // 321
+        "Tap the map to select your destination and calculate the optimal route to get there.",    // 322
+        "Accept",              // 323
+        "Destination",              // 324
+        "Calculate Destination",     // 325
+
+        // extra routes screen
+        "Transport",           // 326
+        "Routes",                // 327
+        "Filter here",          // 328
+        "Filter",              // 329
+        "This bus has real-time location.",      // 330
+        "Accept",              // 331
+        "This bus DOES NOT have real-time location.",   // 332
+        "Bus",              // 333
+        "Map",                 // 334
+        "Stops",              // 335
+        "Iconic",             // 336
+        "Duration",             // 337
+        "Total Stops",      // 338
+        "Start Route",          // 339
+        "End Route",           // 340
+        "Nearby Stop",       // 341
+        "Show Route",         // 342
+
+        // extra trip screen
+        "Search here",           // 343
+        "Add",              // 344
+        "Cancel",             // 345
+        "Destinations",             // 346
+        "Clear All",          // 347
+        "Plan",           // 348
+
+        // extra tourism screen
+        "View Route",             // 349
+        "View More",              // 350
+        "Duration",             // 351
+        "Total Stops",      // 352
+        "Start Route",          // 353
+        "End Route",           // 354
+        "Show Route",         // 355
+
+        // chat screen
+        "General Chat",         // 356
+        "Message",              // 357
+
+        // extra settings screen
+        "Language",               // 358
+        "Dark Theme",          // 359
+        "Light Theme",           // 360
+
+        // extra notifications screen
+        "Always",              // 361
+        "Never",                // 362
+
+        // extra map screen
+        "Markers",           // 363
+        "Map",                 // 364
+        "Map Type",         // 365
+        "Mapnik, etc.",         // 366
+        "Map Theme",        // 367
+        "Light, Dark, Neon, etc.",    // 368
+
+        // extra feedback screen
+        "Send",               // 369
+
+        // extra contact screen
+        "Contact Us",          // 370
+        "Name",               // 371
+        "Write down your issue",   // 372
+        "Send",               // 373
+
     )
 
     fun languageType(): List<String> {
