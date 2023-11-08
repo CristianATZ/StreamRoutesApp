@@ -83,7 +83,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.google.maps.android.compose.Marker
+import com.utsman.osmandcompose.CameraProperty
+import com.utsman.osmandcompose.CameraState
 import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.MapProperties
 import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.Polyline
 import com.utsman.osmandcompose.ZoomButtonVisibility
@@ -413,7 +416,7 @@ fun Tarjeta(
                     Text(
                         text = titulo,
                         style = MaterialTheme.typography.headlineSmall,
-                        color = MaterialTheme.colorScheme.onPrimary,
+                        color = Color.White,
                         modifier = Modifier
                             .padding(8.dp)
                             .graphicsLayer {
@@ -535,6 +538,7 @@ private fun BottomSheetTourism(
     onCalculate: () -> Unit,
     rutas: List<Ruta>
 ) {
+    val ruta = rutas[pagerState.currentPage]
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
         sheetState = sheetState,
@@ -544,7 +548,6 @@ private fun BottomSheetTourism(
                 .fillMaxHeight(0.80f)
         ) {
             // carrusel
-            val ruta = rutas[pagerState.currentPage]
             Box(
                 Modifier
                     .fillMaxHeight(0.4f)
@@ -563,7 +566,7 @@ private fun BottomSheetTourism(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp),
+                        .padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -571,7 +574,7 @@ private fun BottomSheetTourism(
                         val color = if(pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onTertiary
                         val size = if(pagerState.currentPage == index) 15.dp else 10.dp
                         Box(modifier = Modifier
-                            .padding(8.dp)
+                            .padding(horizontal = 8.dp)
                             .background(color, CircleShape)
                             .size(size)
                         )
@@ -787,13 +790,26 @@ private fun MapaRuta(
 ) {
     val context = LocalContext.current
 
+    /*
     val cameraState = rememberCameraState {
         geoPoint = GeoPoint(ruta.pov)
         zoom = ruta.zoom
     }
+     */
+
+    val cameraState = CameraState(
+        CameraProperty(
+            geoPoint = GeoPoint(ruta.pov),
+            zoom = ruta.zoom
+        )
+    )
 
     var mapProperties by remember {
-        mutableStateOf(DefaultMapProperties)
+        mutableStateOf(
+            MapProperties(
+                zoomButtonVisibility = ZoomButtonVisibility.NEVER
+            )
+        )
     }
 
     val overlayManagerState = rememberOverlayManagerState()
@@ -829,22 +845,50 @@ val alhondiga_rutas = listOf<Ruta>(
         lugar_fin = "Alhondiga",
         parada_cercana = "Escarola",
         map_ruta = listOf(
-            Pair(21.017082788844267, -101.25332005134952),
-            Pair(21.01710384296411, -101.25379369789864),
-            Pair(21.017158583661782, -101.25399217835732),
-            Pair(21.0175038706763, -101.25438011743566),
-            Pair(21.017857578496347, -101.25461919617),
-            Pair(21.01810601563027, -101.25495751513367),
-            Pair(21.01820707468496, -101.25537703064862),
-            Pair(21.01831655525027, -101.2557785024855),
-            Pair(21.018388138653336, -101.25624763811511),
-            Pair(21.01874605515329, -101.25683405765214),
-            Pair(21.018939750783243, -101.25724906224758),
-            Pair(21.01899449080697, -101.2574520536258),
-            Pair(21.01924713680996, -101.25813771339216)
+            Pair(21.01895889398486, -101.25741027410066),
+            Pair(21.019343866463387, -101.25839897585983),
+            Pair(21.0195886166583, -101.25847271880534),
+            Pair(21.020044972729547, -101.2582378338326),
+            Pair(21.020429942419895, -101.2582269089696),
+            Pair(21.02078941651196, -101.25850276221017),
+            Pair(21.021263615061653, -101.25899711308432),
+            Pair(21.021505812666327, -101.25911182434285),
+            Pair(21.022097283039926, -101.25888786428618),
+            Pair(21.02250264285332, -101.2586693666471),
+            Pair(21.02257402685597, -101.25857104271977),
+            Pair(21.022650509678023, -101.25856558027937),
+            Pair(21.022625015408362, -101.25841809438838),
+            Pair(21.02248989570638, -101.25814497236803),
+            Pair(21.022364973608802, -101.25786638790727),
+            Pair(21.02234202872236, -101.25776260153954),
+            Pair(21.022398116216316, -101.25765335273141),
+            Pair(21.02243125881646, -101.25760692198794),
+            Pair(21.022757585562992, -101.25745124243632),
+            Pair(21.02280602462854, -101.25737203705043),
+            Pair(21.022877408485932, -101.2571999701776),
+            Pair(21.022821321172298, -101.25703336574519),
+            Pair(21.022721893609877, -101.25684218033095),
+            Pair(21.022540884287555, -101.25679028714708),
+            Pair(21.022451654259054, -101.25674931884402),
+            Pair(21.022298688371666, -101.25647346560346),
+            Pair(21.02227829290816, -101.2563450982539),
+            Pair(21.02229613893888, -101.25628501140943),
+            Pair(21.022301237804403, -101.25619761236293),
+            Pair(21.02231454689693, -101.25616802994156),
+            Pair(21.022202371825028, -101.25606424357383),
+            Pair(21.018560098905372, -101.25490011777121),
+            Pair(21.01830514901267, -101.25493289241186),
+            Pair(21.01811393631142, -101.25495201095328),
+            Pair(21.01815727787852, -101.25512954026651),
+            Pair(21.018213366949087, -101.25542178087423),
+            Pair(21.01832299552137, -101.25591886295126),
+            Pair(21.018353589527162, -101.25613736056756),
+            Pair(21.018937423940432, -101.25724896725013),
+            Pair(21.01896291884064, -101.25742376534315),
+            Pair(21.019335143894015, -101.25837696124582)
         ),
-        zoom = 16.5,
-        pov = GeoPoint(21.01770177872662, -101.25530936685587)
+        zoom = 17.25,
+        pov = GeoPoint(21.01988165255976, -101.25709714019662)
     ),
     Ruta(
         duracion = "5 minutos",
@@ -853,14 +897,46 @@ val alhondiga_rutas = listOf<Ruta>(
         lugar_fin = "Alhondiga",
         parada_cercana = "Plaza del Musico",
         map_ruta = listOf(
-            Pair(21.018990280070337, -101.26007740898893),
-            Pair(21.018725001299014, -101.2596894699106),
-            Pair(21.019129235428874, -101.25903989750033),
-            Pair(21.01951662544166, -101.25867451301959),
-            Pair(21.019120813895668, -101.2577813509555)
+            Pair(21.018954022576814, -101.25741785215),
+            Pair(21.019215446144983, -101.25801410541705),
+            Pair(21.0194304877688, -101.2586871488776),
+            Pair(21.019139549027255, -101.25903948035358),
+            Pair(21.01885704274949, -101.25945053374222),
+            Pair(21.018688382030003, -101.25970348967371),
+            Pair(21.018152882981237, -101.25867359766697),
+            Pair(21.017887241007266, -101.25807282732973),
+            Pair(21.017672197157925, -101.25753981304553),
+            Pair(21.01735595563968, -101.25707907188463),
+            Pair(21.016900566675226, -101.25618017491385),
+            Pair(21.017263191333768, -101.25581880929745),
+            Pair(21.01733908940654, -101.25564264355945),
+            Pair(21.017347522523337, -101.25556585336597),
+            Pair(21.017343305965003, -101.25534903399613),
+            Pair(21.017309573493932, -101.25517738532834),
+            Pair(21.017166210406828, -101.25486119041399),
+            Pair(21.01695959865647, -101.2544004492531),
+            Pair(21.016896350104247, -101.25410683968977),
+            Pair(21.016782502642613, -101.25390808860075),
+            Pair(21.016744553469433, -101.25372288872236),
+            Pair(21.016744553469433, -101.25345186451005),
+            Pair(21.016807802086042, -101.25308146475325),
+            Pair(21.016951165517725, -101.25258910410089),
+            Pair(21.01705236315122, -101.2528601283132),
+            Pair(21.01707344598288, -101.25307243061285),
+            Pair(21.017119828202063, -101.2537635423542),
+            Pair(21.017128261331276, -101.25393067395179),
+            Pair(21.017326439730425, -101.2542242835151),
+            Pair(21.017558350288613, -101.25440496632329),
+            Pair(21.01787037483421, -101.25464437104417),
+            Pair(21.0181149341568, -101.2549560488883),
+            Pair(21.01832154430642, -101.25591818484196),
+            Pair(21.018366055140632, -101.25620519794667),
+            Pair(21.018660958897172, -101.25669247034753),
+            Pair(21.01894086700793, -101.25722793452431),
+            Pair(21.018965858777975, -101.25743141091148)
         ),
-        zoom = 16.5,
-        pov = GeoPoint(21.019082916990417, -101.25894967911002)
+        zoom = 17.25,
+        pov = GeoPoint(21.016617732773053, -101.25604199092531)
     ),
     Ruta(
         duracion = "7 minutos",
