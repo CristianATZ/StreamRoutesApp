@@ -411,7 +411,7 @@ class MyViewModel : ViewModel() {
         "Atención al turista",         // 298
 
         // extra login screen
-        "Iniciar sesiòn",  // 300
+        "Iniciar sesión",  // 300
 
         // extra change screen
         "Cancelar",     // 301
@@ -421,7 +421,7 @@ class MyViewModel : ViewModel() {
 
         // extra main screen menu lateral
         "Paquetes",    // 303
-        "Ruta mas rapida",  // 304
+        "Ruta mas rápida",  // 304
         "Turismo",    // 305
         "Chat general",   //306
 
@@ -429,21 +429,21 @@ class MyViewModel : ViewModel() {
         "Beneficios",       // 307
         "Paquetes premium", // 308
         "Paquete estudiantil",      // 309
-        "Paquete con duracion de 1 mes.",   // 310
+        "Paquete con duración de 1 mes.",   // 310
         "Activo a cualquier persona que se encuentre estudiando.",      // 311
-        "Contar con algun documento oficial expedido por el plantel educativo.",    // 312
+        "Contar con algún documento oficial expedido por el plantel educativo.",    // 312
         "Todas las funciones disponibles en este paquete",      // 313
         "Paquete general",      // 314
         "Disponible para cualquier persona.",   // 315
         "Paquete turista",      // 316
-        "Paquete con duracion de 15 dias.",     // 317
+        "Paquete con duración de 15 días.",     // 317
         "Paquete anual",        // 318
-        "Paquete con duracion de todo el año.", // 319
+        "Paquete con duración para todo el año.", // 319
         "Contratar",            // 320
 
         // fast screen
         "Elige un destino",     // 321
-        "Toca el mapa para elegir nu destino y calcula la ruta optima para llegar.",    // 322
+        "Toca el mapa para elegir un destino y calcular la ruta óptima para llegar.",    // 322
         "Aceptar",              // 323
         "Destino",              // 324
         "Calcular destino",     // 325
@@ -451,16 +451,16 @@ class MyViewModel : ViewModel() {
         // extra routes screen
         "Transporte",           // 326
         "Rutas",                // 327
-        "Filtra aqui",          // 328
+        "Filtra aquí",          // 328
         "Filtrar",              // 329
-        "Este autobus tiene localizacion en tiempo real.",      // 330
+        "Este autobús tiene localización en tiempo real.",      // 330
         "Aceptar",              // 331
-        "Este autobus NO tiene localizacino en tiempo real.",   // 332
-        "Autobus",              // 333
+        "Este autobús NO tiene localización en tiempo real.",   // 332
+        "Autobús",              // 333
         "Mapa",                 // 334
         "Paradas",              // 335
-        "Iconicos",             // 336
-        "Duracion",             // 337
+        "Icónicos",             // 336
+        "Duración",             // 337
         "Paradas totales",      // 338
         "Inicio ruta",          // 339
         "Final ruta",           // 340
@@ -468,7 +468,7 @@ class MyViewModel : ViewModel() {
         "Mostrar ruta",         // 342
 
         // extra trip screen
-        "Busca aqui",           // 343
+        "Busca aquí",           // 343
         "Agregar",              // 344
         "Cancelar",             // 345
         "Destinos",             // 346
@@ -477,8 +477,8 @@ class MyViewModel : ViewModel() {
 
         // extra tourism screen
         "Ver ruta",             // 349
-        "Ver mas",              // 350
-        "Duracion",             // 351
+        "Ver más",              // 350
+        "Duración",             // 351
         "Paradas totales",      // 352
         "Inicio ruta",          // 353
         "Final ruta",           // 354
@@ -503,13 +503,13 @@ class MyViewModel : ViewModel() {
         "Tipo de mapa",         // 365
         "Mapnik, etc.",         // 366
         "Tema del mapa",        // 367
-        "Claro, oscuro, neon, etc.",    // 368
+        "Claro, oscuro, neón, etc.",    // 368
 
         // extra feedback screen
         "Enviar",               // 369
 
         // extra contact screen
-        "Contactanos",          // 370
+        "Contáctanos",          // 370
         "Nombre",               // 371
         "Escribe tu inconveniente",   // 372
         "Enviar",               // 373
