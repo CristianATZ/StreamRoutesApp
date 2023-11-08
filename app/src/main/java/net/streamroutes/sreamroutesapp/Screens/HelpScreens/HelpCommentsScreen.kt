@@ -147,7 +147,7 @@ fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
                     .height(50.dp)
             ) {
                 Text(
-                    text = "Enviar",
+                    text = myViewModel.languageType()[369],
                     style = typography.bodyLarge
                 )
             }

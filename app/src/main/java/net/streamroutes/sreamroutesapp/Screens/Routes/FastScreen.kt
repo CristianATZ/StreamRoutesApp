@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBack
+import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.AlertDialog
@@ -29,6 +30,7 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -156,9 +158,13 @@ private fun TopBarBody(
     navController: NavHostController,
     myViewModel: MyViewModel
 ) {
+    var destino by remember {
+        mutableStateOf("")
+    }
+
     Column(
         modifier = Modifier
-            .background(colorScheme.background)
+            .background(colorScheme.primary)
     ) {
         Row(
             modifier = Modifier
@@ -173,13 +179,14 @@ private fun TopBarBody(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = "Regresar al menu principal",
                     modifier = Modifier
-                        .size(24.dp)
+                        .size(24.dp),
+                    tint = colorScheme.onPrimary
                 )
             }
 
             OutlinedTextField(
-                value = "",
-                onValueChange = {},
+                value = destino,
+                onValueChange = { destino = it },
                 leadingIcon = {
                     Icon(
                         imageVector = Icons.Outlined.Search,
@@ -188,7 +195,15 @@ private fun TopBarBody(
                     )
                 },
                 trailingIcon = {
-
+                    if(destino.isNotEmpty()){
+                        IconButton(onClick = { destino = "" }) {
+                            Icon(
+                                imageVector = Icons.Outlined.Close,
+                                contentDescription = null,
+                                tint = colorScheme.onPrimaryContainer
+                            )
+                        }
+                    }
                 },
                 placeholder = {
                     Text(
@@ -200,6 +215,13 @@ private fun TopBarBody(
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedContainerColor = colorScheme.primaryContainer,
+                    unfocusedBorderColor = colorScheme.primaryContainer,
+                    focusedContainerColor = colorScheme.primaryContainer,
+                    focusedTextColor = colorScheme.onPrimaryContainer
+
+                ) ,
                 modifier = Modifier
                     .weight(1f)
             )

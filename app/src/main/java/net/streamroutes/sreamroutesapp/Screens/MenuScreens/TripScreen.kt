@@ -228,7 +228,7 @@ fun BottomSheet(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Destinos",
+                    text = myViewModel.languageType()[346],
                     style = typography.titleLarge
                 )
                 
@@ -254,7 +254,7 @@ fun BottomSheet(
                     Spacer(modifier = Modifier.size(8.dp))
 
                     Text(
-                        text = "Borrar todo",
+                        text = myViewModel.languageType()[347],
                         style = typography.labelLarge
                     )
                 }
@@ -296,7 +296,7 @@ fun BottomSheet(
                         .height(50.dp)
                 ) {
                     Text(
-                        text = "Planificar",
+                        text = myViewModel.languageType()[348],
                         style = typography.bodyLarge
                     )
                 }
@@ -393,7 +393,7 @@ private fun TopBarBody(
             value = destino,
             onValueChange = { destino = it },
             placeholder = {
-                Text(text = "Busca aquì")
+                Text(text = myViewModel.languageType()[343])
             },
             leadingIcon = {
                 IconButton(
@@ -456,7 +456,7 @@ private fun TopBarBody(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "Agregar",
+                    text = myViewModel.languageType()[344],
                     style = typography.labelLarge
                 )
             }
@@ -484,7 +484,7 @@ private fun TopBarBody(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = "Cancelar",
+                    text = myViewModel.languageType()[345],
                     style = typography.labelLarge
                 )
             }

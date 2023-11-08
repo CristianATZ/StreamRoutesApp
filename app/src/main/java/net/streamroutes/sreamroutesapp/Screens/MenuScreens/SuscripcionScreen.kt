@@ -341,7 +341,7 @@ private fun TopBar(
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = "Paquetes"
+                text = myViewModel.languageType()[303]
             )
         },
         navigationIcon = {

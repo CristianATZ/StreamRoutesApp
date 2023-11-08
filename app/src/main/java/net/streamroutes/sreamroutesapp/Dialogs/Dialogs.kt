@@ -2624,7 +2624,10 @@ fun HeaderDialog(
 }
 
 @Composable
-fun DialogPush(onDismiss: () -> Unit) {
+fun DialogPush(
+    myViewModel: MyViewModel,
+    onDismiss: () -> Unit
+) {
     var siempre by remember {
         mutableStateOf(false)
     }
@@ -2646,7 +2649,7 @@ fun DialogPush(onDismiss: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Siempre"
+                        text = myViewModel.languageType()[361]
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
@@ -2665,7 +2668,7 @@ fun DialogPush(onDismiss: () -> Unit) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Nunca"
+                        text = myViewModel.languageType()[362]
                     )
 
                     Spacer(modifier = Modifier.weight(1f))

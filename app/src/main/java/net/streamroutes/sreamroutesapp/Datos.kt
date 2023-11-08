@@ -489,7 +489,7 @@ class MyViewModel : ViewModel() {
         "Mensaje",              // 357
 
         // extra settings screen
-        "Idioma",               // 358
+        "Idioma EN/ES",               // 358
         "Tema oscuro",          // 359
         "Tema claro",           // 360
 
@@ -978,7 +978,7 @@ class MyViewModel : ViewModel() {
         "Message",              // 357
 
         // extra settings screen
-        "Language",               // 358
+        "Language ES/EN",               // 358
         "Dark Theme",          // 359
         "Light Theme",           // 360
 

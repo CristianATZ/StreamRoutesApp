@@ -109,7 +109,7 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                 ),
                 placeholder = {
                     Text(
-                        text = "Nombre",
+                        text = myViewModel.languageType()[371],
                         style = typography.labelLarge
                     )
                 },
@@ -140,7 +140,7 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                 ),
                 placeholder = {
                     Text(
-                        text = "Escribe tu inconveniente",
+                        text = myViewModel.languageType()[372],
                         style = MaterialTheme.typography.labelLarge
                     )
                 },
@@ -165,7 +165,7 @@ fun HelpContactScreen(myViewModel: MyViewModel, navController: NavController){
                     .height(50.dp)
             ) {
                 Text(
-                    text = "Enviar",
+                    text = myViewModel.languageType()[373],
                     style = typography.bodyLarge
                 )
             }
@@ -193,7 +193,7 @@ private fun TopBarBody(
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = "Contactanos"
+                text = myViewModel.languageType()[370]
             )
         },
         navigationIcon = {

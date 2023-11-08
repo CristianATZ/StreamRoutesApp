@@ -78,13 +78,13 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
             }
         ),
         ConfItem(
-            name = "Idioma de la aplicacion",
+            name = myViewModel.languageType()[358],
             action = {
                 myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
             }
         ),
         ConfItem(
-            name = if(!myViewModel.tema) "Modo oscuro" else "Modo claro",
+            name = if(!myViewModel.tema) myViewModel.languageType()[359] else myViewModel.languageType()[360],
             action = {
                 myViewModel.tema = !myViewModel.tema
             }

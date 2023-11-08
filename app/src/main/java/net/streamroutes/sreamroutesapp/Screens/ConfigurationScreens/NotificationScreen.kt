@@ -79,7 +79,9 @@ fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
 
     // presentacion del dialog
     if (dialogo) {
-        DialogPush {
+        DialogPush(
+            myViewModel
+        ) {
             dialogo = !dialogo
         }
     }

@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,16 +10,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CameraAlt
@@ -29,22 +23,16 @@ import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.AttachFile
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -54,24 +42,22 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.android.filament.Box
+import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ChatScreen(
-    navController: NavController
+    navController: NavController,
+    myViewModel: MyViewModel
 ) {
     Scaffold(
         topBar = {
-            TopBarBody(navController)
+            TopBarBody(navController, myViewModel)
         },
     ) { paddingValues ->
         Box {
@@ -94,7 +80,7 @@ fun ChatScreen(
                 }
             }
 
-            BottomBarBody(navController = navController)
+            BottomBarBody(navController = navController, myViewModel)
         }
     }
 }
@@ -166,11 +152,13 @@ fun MessageIn(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(navController: NavController) {
+private fun TopBarBody(
+    navController: NavController,
+    myViewModel: MyViewModel) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = "Chat general"
+                text = myViewModel.languageType()[356]
             )
         },
         navigationIcon = {
@@ -191,7 +179,10 @@ private fun TopBarBody(navController: NavController) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BottomBarBody(navController: NavController) {
+private fun BottomBarBody(
+    navController: NavController,
+    myViewModel: MyViewModel
+) {
     var mensaje by remember {
         mutableStateOf("")
     }
@@ -206,7 +197,7 @@ private fun BottomBarBody(navController: NavController) {
                 value = mensaje,
                 onValueChange = {mensaje = it},
                 placeholder = {
-                    Text(text = "Mensaje")
+                    Text(text = myViewModel.languageType()[357])
                 },
                 leadingIcon = {
                     IconButton(onClick = { /*TODO*/ }) {

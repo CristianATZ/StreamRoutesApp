@@ -115,7 +115,7 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            HeaderMarcadores()
+            HeaderMarcadores(myViewModel)
 
             map_items.forEach(){ item ->
                 OptionSwitch(
@@ -125,7 +125,7 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
 
             Spacer(modifier = Modifier.size(32.dp))
             
-            HeaderMapOptions()
+            HeaderMapOptions(myViewModel)
 
             Row(
                 modifier = Modifier
@@ -140,11 +140,11 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
 
                 Column {
                     Text(
-                        text = "Tipo de mapa", // texto
+                        text = myViewModel.languageType()[365], // texto
                         style = typography.bodyLarge
                     )
                     Text(
-                        text = "Mapnik, etc.", // texto
+                        text = myViewModel.languageType()[366], // texto
                         style = typography.labelMedium
                     )
                 }
@@ -163,11 +163,11 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
 
                 Column {
                     Text(
-                        text = "Tema del mapa", // texto
+                        text = myViewModel.languageType()[367], // texto
                         style = typography.bodyLarge
                     )
                     Text(
-                        text = "Claro, oscuro, neon, etc.", // texto
+                        text = myViewModel.languageType()[368], // texto
                         style = typography.labelMedium
                     )
                 }
@@ -177,9 +177,11 @@ fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
 }
 
 @Composable
-fun HeaderMapOptions() {
+fun HeaderMapOptions(
+    myViewModel: MyViewModel
+) {
     Text(
-        text = "Mapa",
+        text = myViewModel.languageType()[364],
         style = typography.titleSmall,
         modifier = Modifier
             .padding(PaddingValues(16.dp))
@@ -189,9 +191,11 @@ fun HeaderMapOptions() {
 }
 
 @Composable
-fun HeaderMarcadores() {
+fun HeaderMarcadores(
+    myViewModel: MyViewModel
+) {
     Text(
-        text = "Marcadores",
+        text = myViewModel.languageType()[363],
         style = typography.titleSmall,
         modifier = Modifier
             .padding(PaddingValues(16.dp))
