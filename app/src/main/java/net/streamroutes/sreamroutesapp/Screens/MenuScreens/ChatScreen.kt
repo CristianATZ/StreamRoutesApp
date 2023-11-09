@@ -1,5 +1,7 @@
 package net.streamroutes.sreamroutesapp.Screens.MenuScreens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +33,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
@@ -43,18 +46,72 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import java.time.DateTimeException
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
-@OptIn(ExperimentalMaterial3Api::class)
+data class Messages(
+    val autor: Int,
+    val name: String,
+    val mensaje: String
+)
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChatScreen(
     navController: NavController,
     myViewModel: MyViewModel
 ) {
+    val mensajes = listOf(
+        Messages(
+            autor = 2,
+            name = "Nayeli",
+            mensaje = "Hola, ¿Alguien puede ayudarme?"
+        ),
+        Messages(
+            autor = 1,
+            name = "Alan",
+            mensaje = "Holaa amiga, ¿En que necesitas ayuda?"
+        ),
+        Messages(
+            autor = 1,
+            name = "Anaid",
+            mensaje = "¡Claro que si! ¿Que necesitas?"
+        ),
+        Messages(
+            autor = 2,
+            name = "Nayeli",
+            mensaje = "Necesito llegar al callejon del beso pero, no soy de aqui :("
+        ),
+        Messages(
+            autor = 1,
+            name = "Alan",
+            mensaje = "¿Que ves cerca?"
+        ),
+        Messages(
+            autor = 2,
+            name = "Nayeli",
+            mensaje = "Estoy en la universidad de Guanajuato"
+        ),
+        Messages(
+            autor = 1,
+            name = "Anaid",
+            mensaje = "Dirigete una cuadra abajo, para esperar la ruta 5, el autobus tiene franjas azules y tiene en letras grandes RUTA 5"
+        ),
+        Messages(
+            autor = 2,
+            name = "Nayeli",
+            mensaje = "Muchas gracias Anaid, tambien a ti Alan."
+        )
+    )
+
     Scaffold(
         topBar = {
             TopBarBody(navController, myViewModel)
@@ -71,11 +128,9 @@ fun ChatScreen(
                     modifier = Modifier
                         .verticalScroll(rememberScrollState())
                 ) {
-                    for (i in 1..5){
-                        MessageIn(1)
-                        MessageIn(autor = 0)
+                    mensajes.forEach { item ->
+                        MessageIn(item)
                     }
-
                     Spacer(modifier = Modifier.size(75.dp))
                 }
             }
@@ -85,17 +140,21 @@ fun ChatScreen(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MessageIn(
-    autor: Int
+    item: Messages
 ) {
+
+
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(PaddingValues(8.dp)),
-        horizontalArrangement = if (autor == 1) Arrangement.Start else Arrangement.End
+        horizontalArrangement = if (item.autor == 1) Arrangement.Start else Arrangement.End
     ) {
-        if (autor == 1){
+        if (item.autor == 1){
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_background),
                 contentDescription = "Avatar del usuario",
@@ -111,15 +170,16 @@ fun MessageIn(
                 .fillMaxWidth(0.6f)
         ) {
             Text(
-                text = "Ernesto",
-                style = typography.labelSmall,
+                text = item.name,
+                style = typography.labelMedium,
+                fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier
                     .padding(PaddingValues(8.dp))
             )
 
             Row {
                 Text(
-                    text = "Hola, como estas, necesitas ayuda?",
+                    text = item.mensaje,
                     style = typography.bodyLarge,
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
@@ -129,7 +189,8 @@ fun MessageIn(
             Row {
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = "12:34 p. m.",
+                    text = DateTimeFormatter.ofPattern("hh:mm a").format(LocalDateTime.now().atZone(
+                        ZoneId.of("America/Mazatlan"))),
                     style = typography.labelSmall,
                     modifier = Modifier
                         .padding(PaddingValues(8.dp))
@@ -137,7 +198,7 @@ fun MessageIn(
             }
         }
 
-        if (autor == 0){
+        if (item.autor == 0){
             Spacer(modifier = Modifier.size(8.dp))
             Image(
                 painter = painterResource(id = R.drawable.ic_launcher_background),
@@ -197,13 +258,17 @@ private fun BottomBarBody(
                 value = mensaje,
                 onValueChange = {mensaje = it},
                 placeholder = {
-                    Text(text = myViewModel.languageType()[357])
+                    Text(
+                        text = myViewModel.languageType()[357],
+                        color = colorScheme.onPrimary
+                    )
                 },
                 leadingIcon = {
                     IconButton(onClick = { /*TODO*/ }) {
                         Icon(
                             imageVector = Icons.Filled.EmojiEmotions,
-                            contentDescription = "Emojis del chat"
+                            contentDescription = "Emojis del chat",
+                            tint = colorScheme.onPrimary
                         )
                     }
                 },
@@ -212,14 +277,16 @@ private fun BottomBarBody(
                         IconButton(onClick = { /*TODO*/ }) {
                             Icon(
                                 imageVector = Icons.Outlined.AttachFile,
-                                contentDescription = "Agregar archivos"
+                                contentDescription = "Agregar archivos",
+                                tint = colorScheme.onPrimary
                             )
                         }
 
                         IconButton(onClick = { /*TODO*/ }) {
                             Icon(
                                 imageVector = Icons.Filled.CameraAlt,
-                                contentDescription = "Tomar foto"
+                                contentDescription = "Tomar foto",
+                                tint = colorScheme.onPrimary
                             )
                         }
 
@@ -228,11 +295,18 @@ private fun BottomBarBody(
                         }) {
                             Icon(
                                 imageVector = if(mensaje.isEmpty()) Icons.Filled.Mic else Icons.Filled.Send,
-                                contentDescription = "Grabar audio"
+                                contentDescription = "Grabar audio",
+                                tint = colorScheme.onPrimary
                             )
                         }
                     }
                 },
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedContainerColor = colorScheme.primary,
+                    unfocusedContainerColor = colorScheme.primary,
+                    focusedTextColor = colorScheme.onPrimary,
+                    unfocusedTextColor = colorScheme.onPrimary
+                ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()

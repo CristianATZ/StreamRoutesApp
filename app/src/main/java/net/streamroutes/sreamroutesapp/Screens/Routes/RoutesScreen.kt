@@ -575,7 +575,7 @@ fun BottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
-                        .background(Color.Green)
+                        .background(if (pagerState.currentPage % 2 == 0) Color.LightGray else Color.DarkGray)
                 ) {
 
                 }
