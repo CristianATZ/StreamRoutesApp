@@ -563,7 +563,9 @@ private fun BottomSheetTourism(
                         .fillMaxHeight()
                         .background(Color.Blue)
                 ) {
-                    MapaRuta(ruta)
+                    if(ruta!=null){
+                        MapaRuta(ruta)
+                    }
                 }
 
                 Row(
@@ -839,7 +841,10 @@ private fun MapaRuta(
         com.utsman.osmandcompose.Marker(
             state = inicio, title = "inicio", visible = true
         )
-        Polyline(geoPoints = rutaGeoPoint)
+        if(rutaGeoPoint!=null){
+            Polyline(geoPoints = rutaGeoPoint)
+        }
+
     }
 }
 
@@ -983,7 +988,7 @@ val alhondiga_rutas = listOf<Ruta>(
         ),
         zoom = 17.25,
         pov = GeoPoint(21.01771225466381, -101.25785425986423),
-        inicio = Pair(21.018150229524146, -101.25512289819623)
+        inicio = Pair(21.018322290707335, -101.25588812646622)
     )
 )
 
