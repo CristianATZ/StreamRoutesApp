@@ -328,7 +328,7 @@ fun Main( myViewModel: MyViewModel, navController: NavController ){
                     .padding(paddingValues)
             ) {
                 val cameraState = rememberCameraState {
-                    geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
+                    geoPoint = GeoPoint(19.057988677624586, -98.180047630148)
                     zoom = 17.0
                 }
                 Box(

@@ -138,11 +138,6 @@ fun FastScreen(
 
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
 
-    /*val cameraState = rememberCameraState {
-        geoPoint = GeoPoint(19.035229199074546, -98.23207582752717)
-        zoom = 17.0
-    }*/
-
 
     Scaffold(
         topBar = { TopBarBody(navController,myViewModel) }
@@ -167,19 +162,13 @@ fun FastScreen(
                 Marker(
                     state = MarkerState(
                         geoPoint = cameraState.geoPoint))
-                /*selectedLocation?.let {
+                selectedLocation?.let {
                     Marker(
                         state = com.utsman.osmandcompose.MarkerState(
                             geoPoint = GeoPoint(selectedLocation!!.latitude, selectedLocation!!.longitude)
                         )
                     )
                 }
-
-                Marker(
-                    state = MarkerState(GeoPoint(19.035229199074546, -98.23207582752717)),
-                ) {
-
-                }*/
             }
 
             Column(

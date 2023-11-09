@@ -244,7 +244,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
             IconButton(onClick = { /*TODO*/ }) {
                 Image(
                     painter = painterResource(id = R.drawable.facebook),
-                    contentDescription = "gmail"
+                    contentDescription = "facebook"
                 )
             }
 
@@ -252,7 +252,7 @@ fun Login(myViewModel: MyViewModel,navController: NavController){
             IconButton(onClick = { /*TODO*/ }) {
                 Image(
                     painter = painterResource(id = R.drawable.twitter),
-                    contentDescription = "gmail"
+                    contentDescription = "equis"
                 )
             }
         }
