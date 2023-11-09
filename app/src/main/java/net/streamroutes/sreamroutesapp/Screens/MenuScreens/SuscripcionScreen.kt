@@ -18,6 +18,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Check
+import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -347,7 +348,7 @@ private fun TopBar(
         navigationIcon = {
             IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
                 Icon(
-                    painterResource(id = R.drawable.back),
+                    imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = "Te enviara al menu de opciones",
                 )
             }

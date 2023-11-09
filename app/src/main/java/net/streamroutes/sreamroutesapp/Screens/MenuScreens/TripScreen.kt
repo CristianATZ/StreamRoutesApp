@@ -129,7 +129,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
 
         // Mapa
         val cameraState = rememberCameraState {
-            geoPoint = GeoPoint(20.139468718311957, -101.15069924573676)
+            geoPoint = GeoPoint(19.035229199074546, -98.23207582752717)
             zoom = 17.0
         }
 

@@ -157,11 +157,72 @@ fun RoutesScreenView(
     }    
 }
 
+data class RutaView(
+    val name: String,
+    val time: String,
+    val time1: String,
+    val aprox: String,
+    val aprox1: String = "",
+    val ubi: Boolean
+)
+
 @Composable
 fun SidePanel(
     drawerState: MutableState<DrawerValue>,
     myViewModel: MyViewModel
 ) {
+
+    val list = listOf(
+        RutaView(
+            name = "Ruta 1 - Pipila",
+            time = "2.30",
+            time1 = "HRS",
+            aprox = "6 min",
+            aprox1 = "",
+            ubi = true
+        ),
+        RutaView(
+            name = "Ruta 2 - Tlaxcala",
+            time = "2.00",
+            time1 = "HRS",
+            aprox = "6 min",
+            aprox1 = "5, 10 min",
+            ubi = false
+        ),
+        RutaView(
+            name = "Ruta 3 - Oaxaca",
+            time = "3.45",
+            time1 = "HRS",
+            aprox = "6 min",
+            aprox1 = "10, 15 min",
+            ubi = false
+        ),
+        RutaView(
+            name = "Ruta 4 - Ocampo",
+            time = "1.30",
+            time1 = "HRS",
+            aprox = "6 min",
+            aprox1 = "8, 10 min",
+            ubi = false
+        ),
+        RutaView(
+            name = "Ruta 5 - Defensores",
+            time = "2.30",
+            time1 = "HRS",
+            aprox = "6 min",
+            aprox1 = "",
+            ubi = true
+        ),
+        RutaView(
+            name = "Ruta 6 - Padre Zavala",
+            time = "3.30",
+            time1 = "HRS",
+            aprox = "6 min",
+            aprox1 = "",
+            ubi = true
+        ),
+    )
+
     Column(
         Modifier
             .fillMaxWidth(0.75f)
@@ -234,36 +295,25 @@ fun SidePanel(
                 }
             }
         }
+
+        // lista de rutas de transporte publico
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(10) {
-                if(it%3 == 0)
-                    RouteOption(
-                        ubication = true,
-                        myViewModel = myViewModel,
-                        onClose = {
-                            if (drawerState.value == DrawerValue.Closed) {
-                                drawerState.value = DrawerValue.Open
-                            } else {
-                                drawerState.value = DrawerValue.Closed
-                            }
-                        }
-                    )
-                else
-                    RouteOption(
-                        ubication = false,
-                        myViewModel = myViewModel,
-                        onClose = {
-                            if (drawerState.value == DrawerValue.Closed) {
-                                drawerState.value = DrawerValue.Open
-                            } else {
-                                drawerState.value = DrawerValue.Closed
-                            }
-                        }
-                    )
+            items(list.size) { index ->
+                RouteOption(
+                    list[index],
+                    myViewModel
+                ) {
+                    if(drawerState.value == DrawerValue.Closed){
+                        drawerState.value = DrawerValue.Open
+                    }
+                    else {
+                        drawerState.value = DrawerValue.Closed
+                    }
+                }
             }
         }
     }
@@ -277,7 +327,7 @@ data class RoutesOption(
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun RouteOption(
-    ubication: Boolean,
+    ubication: RutaView,
     myViewModel: MyViewModel,
     onClose: () -> Unit
 ) {
@@ -419,7 +469,7 @@ fun RouteOption(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "2.30 Hrs",
+                    text = ubication.time + " " + ubication.time1,
                     style = typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     textAlign = TextAlign.Center,
@@ -435,7 +485,7 @@ fun RouteOption(
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "Ruta 1 - Pipila",
+                    text = ubication.name,
                     style = typography.titleMedium,
                     fontWeight = FontWeight.Bold,
                 )
@@ -449,7 +499,7 @@ fun RouteOption(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.End
                 ) {
-                    if (!ubication){
+                    if (!ubication.ubi){
                         Row(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -464,11 +514,11 @@ fun RouteOption(
                             // tiempo aprox
                             Column {
                                 Text(
-                                    text = "3 min",
+                                    text = ubication.aprox,
                                     style = typography.labelMedium
                                 )
                                 Text(
-                                    text = "6, 9 min",
+                                    text = ubication.aprox1,
                                     style = typography.labelMedium
                                 )
                             }
@@ -511,7 +561,7 @@ fun RouteOption(
                                 Spacer(modifier = Modifier.size(8.dp))
 
                                 Text(
-                                    text = "5 min",
+                                    text = ubication.aprox,
                                     style = typography.labelMedium
                                 )
                             }
@@ -575,7 +625,7 @@ fun BottomSheet(
                     modifier = Modifier
                         .fillMaxWidth()
                         .fillMaxHeight()
-                        .background(Color.Green)
+                        .background(if (pagerState.currentPage % 2 == 0) Color.LightGray else Color.DarkGray)
                 ) {
 
                 }
@@ -628,14 +678,14 @@ fun BottomSheet(
                             ) {
                                 // nombre
                                 Text(
-                                    text = "Nombre ruta",
+                                    text = "Pipila - Obregon",
                                     style = typography.headlineSmall,
                                     fontWeight = FontWeight.Bold
                                 )
 
                                 // descripcion
                                 Text(
-                                    text = "Informaciòn ùtil necesaria de la ruta.",
+                                    text = "Contiene restaurantes dentro de la ruta.",
                                     style = typography.bodyLarge
                                 )
                             }
@@ -677,7 +727,7 @@ fun BottomSheet(
 
                                 RouteInfo(
                                     title = myViewModel.languageType()[338],
-                                    desc = "6",
+                                    desc = "12",
                                     value = 1f
                                 )
                             }

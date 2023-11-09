@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Screens.Routes
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -60,6 +61,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -93,6 +95,7 @@ import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberMarkerState
 import com.utsman.osmandcompose.rememberOverlayManagerState
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
@@ -560,13 +563,14 @@ private fun BottomSheetTourism(
                         .fillMaxHeight()
                         .background(Color.Blue)
                 ) {
-                    MapaRuta(ruta)
+                    if(ruta!=null){
+                        MapaRuta(ruta)
+                    }
                 }
 
                 Row(
                     Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 2.dp),
+                        .fillMaxWidth(),
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -584,7 +588,9 @@ private fun BottomSheetTourism(
 
             // caja de informacino de la ruta
             Box(
-                Modifier.fillMaxSize(),
+                Modifier
+                    .fillMaxSize()
+                    .padding(top = 80.dp),
                 contentAlignment = Alignment.BottomEnd
             ) {
                 Column(
@@ -780,8 +786,10 @@ data class Ruta(
     val parada_cercana: String,
     val map_ruta: List<Pair<Double, Double>>,
     val zoom: Double,
+    val inicio: Pair<Double, Double>,
     val pov: GeoPoint
 )
+
 
 
 @Composable
@@ -816,8 +824,9 @@ private fun MapaRuta(
     val ruta = ruta.map_ruta
     val rutaGeoPoint = ruta.map { GeoPoint(it.first, it.second) }
     val inicio = rememberMarkerState(
-        geoPoint = rutaGeoPoint.first()
+        geoPoint = GeoPoint(rutaGeoPoint.first())
     )
+
 
     OpenStreetMap(
         modifier = Modifier.fillMaxSize(),
@@ -832,14 +841,17 @@ private fun MapaRuta(
         com.utsman.osmandcompose.Marker(
             state = inicio, title = "inicio", visible = true
         )
-        Polyline(geoPoints = rutaGeoPoint)
+        if(rutaGeoPoint!=null){
+            Polyline(geoPoints = rutaGeoPoint)
+        }
+
     }
 }
 
 
 val alhondiga_rutas = listOf<Ruta>(
     Ruta(
-        duracion = "20 minutos",
+        duracion = "10 minutos",
         paradas = "4",
         lugar_inicio = "Universidad de Guanajuato",
         lugar_fin = "Alhondiga",
@@ -888,7 +900,8 @@ val alhondiga_rutas = listOf<Ruta>(
             Pair(21.019335143894015, -101.25837696124582)
         ),
         zoom = 17.25,
-        pov = GeoPoint(21.01988165255976, -101.25709714019662)
+        pov = GeoPoint(21.020660510916677, -101.25704553348501),
+        inicio = Pair(21.018150229524146, -101.25512289819623)
     ),
     Ruta(
         duracion = "5 minutos",
@@ -936,7 +949,8 @@ val alhondiga_rutas = listOf<Ruta>(
             Pair(21.018965858777975, -101.25743141091148)
         ),
         zoom = 17.25,
-        pov = GeoPoint(21.016617732773053, -101.25604199092531)
+        pov = GeoPoint(21.018429947144696, -101.25623121695456),
+        inicio = Pair(21.018150229524146, -101.25512289819623)
     ),
     Ruta(
         duracion = "7 minutos",
@@ -945,14 +959,36 @@ val alhondiga_rutas = listOf<Ruta>(
         lugar_fin = "Alhondiga",
         parada_cercana = "Mercado Hidalgo",
         map_ruta = listOf(
-            Pair(21.016855404156008, -101.25616644163438),
-            Pair(21.017369124614827, -101.25710922381315),
-            Pair(21.017693357108218, -101.25757835944276),
-            Pair(21.01789547570844, -101.25809711518707),
-            Pair(21.01843866808907, -101.25777232898194),
-            Pair(21.018569202397288, -101.25757835944276)
+            Pair(21.01899278181935, -101.25744862091926),
+            Pair(21.01941771927471, -101.25863346143544),
+            Pair(21.019301298174494, -101.2588143055142),
+            Pair(21.018713370229875, -101.25975594192444),
+            Pair(21.01948757189121, -101.26071628634283),
+            Pair(21.01955160342758, -101.26095949044877),
+            Pair(21.019132487417746, -101.26109668250854),
+            Pair(21.018754117785953, -101.2611153905167),
+            Pair(21.018497990105658, -101.26108421050311),
+            Pair(21.01796252615815, -101.2609095865125),
+            Pair(21.017816534501303, -101.26044598119422),
+            Pair(21.01770182667066, -101.26027841300689),
+            Pair(21.01613240612579, -101.25708344623511),
+            Pair(21.01677894682255, -101.25664218334181),
+            Pair(21.016799802932308, -101.25645227269689),
+            Pair(21.016930153521486, -101.25632938935952),
+            Pair(21.01763925873075, -101.25567028782268),
+            Pair(21.017858246422755, -101.255608846154),
+            Pair(21.017920814275683, -101.25549713402911),
+            Pair(21.018040735920433, -101.25563118857899),
+            Pair(21.018264936997575, -101.25568145903519),
+            Pair(21.018322290707335, -101.25588812646622),
+            Pair(21.01835357453974, -101.25619533480966),
+            Pair(21.01892711030387, -101.25722308635862),
+            Pair(21.01895839400937, -101.25741299697093),
+            Pair(21.01907310087343, -101.25763642122071)
         ),
-        zoom = 16.5,
-        pov = GeoPoint(21.017870210898398, -101.25688367783737)
+        zoom = 17.25,
+        pov = GeoPoint(21.01771225466381, -101.25785425986423),
+        inicio = Pair(21.018322290707335, -101.25588812646622)
     )
 )
+
