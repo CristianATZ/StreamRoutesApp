@@ -824,7 +824,7 @@ private fun MapaRuta(
     val ruta = ruta.map_ruta
     val rutaGeoPoint = ruta.map { GeoPoint(it.first, it.second) }
     val inicio = rememberMarkerState(
-        geoPoint = GeoPoint(21.018150229524146, -101.25512289819623)
+        geoPoint = GeoPoint(rutaGeoPoint.first())
     )
 
 
