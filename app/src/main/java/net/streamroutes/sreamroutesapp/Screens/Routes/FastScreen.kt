@@ -1,6 +1,11 @@
 package net.streamroutes.sreamroutesapp.Screens.Routes
 
+import android.Manifest
+import android.util.Log
+import androidx.annotation.RequiresPermission
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,25 +46,58 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationTokenSource
 import com.utsman.osmandcompose.DefaultMapProperties
+import com.utsman.osmandcompose.Marker
+import com.utsman.osmandcompose.MarkerState
 import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.ZoomButtonVisibility
+import com.utsman.osmandcompose.rememberCameraState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.MyViewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import org.osmdroid.util.GeoPoint
 
+
+@RequiresPermission(
+    anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION],
+)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FastScreen(
     navController: NavHostController,
     myViewModel: MyViewModel
 ) {
+    //Camara
+    var cameraState = rememberCameraState {
+
+    }
+
+
+    //Elementos para ubicación actual
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val locationClient = remember {
+        LocationServices.getFusedLocationProviderClient(context)
+    }
+    var locationInfo by remember {
+        mutableStateOf("")
+    }
+    //////////////////////////////////////////////
+
     var dialogo by remember {
         mutableStateOf(true)
     }
@@ -68,6 +106,26 @@ fun FastScreen(
         DialogStart(
             myViewModel
         ){
+            scope.launch(Dispatchers.IO) {
+                val priority = if (true) {
+                    Priority.PRIORITY_HIGH_ACCURACY
+                } else {
+                    Priority.PRIORITY_BALANCED_POWER_ACCURACY
+                }
+                val result = locationClient.getCurrentLocation(
+                    priority,
+                    CancellationTokenSource().token,
+                ).await()
+                result?.let { fetchedLocation ->
+                    locationInfo =
+                        "Current location is \n" + "lat : ${fetchedLocation.latitude}\n" +
+                                "long : ${fetchedLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}"
+                    Log.d("GIVOX", locationInfo)
+                    cameraState.geoPoint = GeoPoint(fetchedLocation.latitude, fetchedLocation.longitude)
+                    cameraState.zoom = 19.0
+
+                }
+            }
             dialogo = !dialogo
         }
     }
@@ -83,11 +141,17 @@ fun FastScreen(
             OpenStreetMap(
                 modifier = Modifier
                     .fillMaxSize(),
+                cameraState = cameraState,
                 properties = DefaultMapProperties.copy(
                     zoomButtonVisibility = ZoomButtonVisibility.NEVER
                 )
             ) {
+                Marker(
+                    state = MarkerState(
+                        geoPoint = cameraState.geoPoint
 
+                    )
+                )
             }
 
             Column(
@@ -195,7 +259,7 @@ private fun TopBarBody(
                     )
                 },
                 trailingIcon = {
-                    if(destino.isNotEmpty()){
+                    if (destino.isNotEmpty()) {
                         IconButton(onClick = { destino = "" }) {
                             Icon(
                                 imageVector = Icons.Outlined.Close,
@@ -221,11 +285,11 @@ private fun TopBarBody(
                     focusedContainerColor = colorScheme.primaryContainer,
                     focusedTextColor = colorScheme.onPrimaryContainer
 
-                ) ,
+                ),
                 modifier = Modifier
                     .weight(1f)
             )
-            
+
             Spacer(modifier = Modifier.size(8.dp))
         }
     }
