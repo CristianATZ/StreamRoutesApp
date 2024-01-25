@@ -129,7 +129,7 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
 
         // Mapa
         val cameraState = rememberCameraState {
-            geoPoint = GeoPoint(19.057447069570465, -98.18007465853877)
+            geoPoint = GeoPoint(19.035229199074546, -98.23207582752717)
             zoom = 17.0
         }
 
@@ -219,7 +219,7 @@ fun BottomSheet(
     ) {
 
         // titulo y boton borrar todo
-        item { 
+        item {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -231,9 +231,9 @@ fun BottomSheet(
                     text = myViewModel.languageType()[346],
                     style = typography.titleLarge
                 )
-                
+
                 Spacer(modifier = Modifier.weight(1f))
-                
+
                 Button(
                     onClick = { removeAll() },
                     colors = ButtonDefaults.buttonColors(
@@ -460,7 +460,7 @@ private fun TopBarBody(
                     style = typography.labelLarge
                 )
             }
-            
+
             Spacer(modifier = Modifier.size(8.dp))
 
             Button(

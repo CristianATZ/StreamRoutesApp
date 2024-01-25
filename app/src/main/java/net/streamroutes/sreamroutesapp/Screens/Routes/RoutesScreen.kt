@@ -837,8 +837,8 @@ fun RouteInfo(
 @Composable
 fun MainContent() {
     val cameraState = rememberCameraState {
-        geoPoint = GeoPoint(20.128658, -101.191782)
-        zoom = 16.0
+        geoPoint = GeoPoint(20.139539228288044, -101.15073143400946)
+        zoom = 17.03
     }
 
     val ruta1I = listOf(

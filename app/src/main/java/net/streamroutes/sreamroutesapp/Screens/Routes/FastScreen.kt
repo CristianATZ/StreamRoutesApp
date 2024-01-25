@@ -127,7 +127,7 @@ fun FastScreen(
                                 "long : ${fetchedLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}"
                     Log.d("GIVOX", locationInfo)
                     cameraState.geoPoint = GeoPoint(fetchedLocation.latitude, fetchedLocation.longitude)
-                    cameraState.zoom = 19.0
+                    cameraState.zoom = 17.0
 
                 }
             }
