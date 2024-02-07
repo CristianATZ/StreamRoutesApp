@@ -8,11 +8,9 @@ import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.viewmodel.compose.viewModel
 import net.streamroutes.sreamroutesapp.Navigation.AppNavigation
-import net.streamroutes.sreamroutesapp.Screens.Start.Splash
-import net.streamroutes.sreamroutesapp.ui.theme.StreamRoutesAppTheme
+import net.streamroutes.sreamroutesapp.ui.Theme.StreamRoutesAppTheme
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)

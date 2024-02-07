@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.ui.theme
+package net.streamroutes.sreamroutesapp.ui.Theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

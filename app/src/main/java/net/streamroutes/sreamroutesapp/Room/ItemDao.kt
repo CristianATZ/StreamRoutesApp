@@ -1,0 +1,25 @@
+package net.streamroutes.sreamroutesapp.Room
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface ItemDao {
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun insert(item: Item)
+
+    @Update
+    suspend fun update(item: Item)
+
+    @Query("SELECT * FROM Items WHERE id=:id")
+    fun getItem(id: Int): Flow<Item>
+
+    @Query("SELECT * FROM Items")
+    fun getItem(id: Int): Flow<List<Item>>
+
+}
