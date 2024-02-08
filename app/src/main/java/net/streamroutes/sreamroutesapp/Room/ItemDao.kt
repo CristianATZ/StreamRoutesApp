@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.Room
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -16,10 +17,13 @@ interface ItemDao {
     @Update
     suspend fun update(item: Item)
 
+    @Delete
+    suspend fun delete(item: Item)
+
     @Query("SELECT * FROM Items WHERE id=:id")
     fun getItem(id: Int): Flow<Item>
 
     @Query("SELECT * FROM Items")
-    fun getItem(id: Int): Flow<List<Item>>
+    fun getAllItems(): Flow<List<Item>>
 
 }

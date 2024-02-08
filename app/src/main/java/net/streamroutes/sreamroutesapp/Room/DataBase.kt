@@ -1,15 +1,14 @@
 package net.streamroutes.sreamroutesapp.Room
 
-import androidx.compose.ui.platform.LocalContext
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import io.grpc.Context
 
 @Database(entities = [Item::class], version = 1, exportSchema = false)
 abstract class InventoryDatabase : RoomDatabase() {
 
-    abstract fun itemDao(): ItemDao
+    abstract fun itemDao(): ItemDao // nombre del dao
 
     companion object {
         @Volatile
