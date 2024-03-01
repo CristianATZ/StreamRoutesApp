@@ -22,7 +22,7 @@ import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ChatScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
-import net.streamroutes.sreamroutesapp.Screens.MenuScreens.TripScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen

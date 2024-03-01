@@ -73,7 +73,6 @@ dependencies {
     implementation 'org.osmdroid:osmdroid-android:6.1.16'
     implementation "tech.utsmankece:osm-android-compose:0.0.5"
 
-    //
     implementation("com.google.android.gms:play-services-location:21.1.0")
     implementation("com.google.accompanist:accompanist-permissions:0.33.2-alpha")
 
@@ -84,6 +83,9 @@ dependencies {
     implementation("androidx.room:room-runtime:2.6.1")
     ksp("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+
+    // work-manager
+    implementation("androidx.work:work-runtime-ktx:2.9.0")
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
