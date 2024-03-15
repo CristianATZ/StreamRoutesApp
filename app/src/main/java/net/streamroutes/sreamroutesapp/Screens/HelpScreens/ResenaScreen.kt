@@ -41,11 +41,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
-import net.streamroutes.sreamroutesapp.Colores.color_fondo
-import net.streamroutes.sreamroutesapp.Colores.color_fondo_topbar
-import net.streamroutes.sreamroutesapp.Colores.color_icon
-import net.streamroutes.sreamroutesapp.Colores.color_letra_botones
-import net.streamroutes.sreamroutesapp.Colores.color_letraout
 import net.streamroutes.sreamroutesapp.R
 
 
@@ -60,7 +55,6 @@ fun Desing(){
 
     Scaffold(
         topBar = { },
-        containerColor = color_fondo
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -82,7 +76,6 @@ fun DesingTop(){
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(0.08f)
-            .background(color_fondo_topbar)
     ){
         Row(){
             Column{
@@ -90,14 +83,12 @@ fun DesingTop(){
                     Icon(
                         Icons.Filled.ArrowBack,
                         contentDescription = "Te enviara al menu de opciones",
-                        tint = color_icon
                     )
                 }
             }
             Column {
                 Text(
                     text = "Reseñas",//myViewModel.languageType().get(29),
-                    color = color_letra_botones,
                     fontSize = 35.sp,
                     modifier = Modifier.padding(start = 2.dp)
                 )
@@ -126,7 +117,6 @@ fun DesingAddPost() {
             .fillMaxWidth()
             .fillMaxHeight(0.44f)
             .border(1.dp, Color.Black, shape = RoundedCornerShape(15.dp))
-            .background(color_fondo)
     ) {
         Column(
             modifier = Modifier
@@ -137,7 +127,6 @@ fun DesingAddPost() {
         ) {
             Text(
                 text = "Comparte tu opinión",
-                color = color_letraout,
                 fontSize = 19.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
@@ -174,7 +163,6 @@ fun DesingAddPost() {
 
             Text(
                 text = "Comenta tu viaje",
-                color = color_letraout,
                 fontSize = 19.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier

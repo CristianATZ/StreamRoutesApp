@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.Navigation
+package net.streamroutes.sreamroutesapp.navigation
 
 sealed class AppScreens (val route: String) {
     object SplashScreen: AppScreens("splash_screen")

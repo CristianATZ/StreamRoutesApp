@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import net.streamroutes.sreamroutesapp.Navigation.AppNavigation
-import net.streamroutes.sreamroutesapp.ui.Theme.StreamRoutesAppTheme
+import net.streamroutes.sreamroutesapp.navigation.AppNavigation
+import net.streamroutes.sreamroutesapp.ui.Theme.RumaAppTheme
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val myViewModel : MyViewModel = viewModel()
-            StreamRoutesAppTheme (myViewModel.tema){
+            RumaAppTheme (myViewModel.tema){
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize()

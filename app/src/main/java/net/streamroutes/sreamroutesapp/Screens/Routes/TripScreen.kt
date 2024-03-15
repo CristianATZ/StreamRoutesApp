@@ -59,7 +59,7 @@ import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberOverlayManagerState
 import net.streamroutes.sreamroutesapp.AddressInfo
 import net.streamroutes.sreamroutesapp.MyViewModel
-import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint

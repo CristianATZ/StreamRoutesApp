@@ -100,7 +100,7 @@ import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.MyViewModel
-import net.streamroutes.sreamroutesapp.Navigation.AppScreens
+import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory

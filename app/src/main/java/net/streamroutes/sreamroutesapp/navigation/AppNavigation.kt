@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.Navigation
+package net.streamroutes.sreamroutesapp.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -7,7 +7,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.MyViewModel
-import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ChangeCityScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.MapOptionsScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.NotificationsScreen
@@ -100,7 +99,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
 
         // CAMBIAR CIUDAD
         composable(AppScreens.ChangeCityScreen.route){
-            ChangeCityScreen(myViewModel,NavController)
+            //ChangeCityScreen(myViewModel,NavController)
         }
 
         // NOTIFICACIONES

@@ -82,7 +82,7 @@ private val DarkColorScheme = darkColorScheme(
 
 
 @Composable
-fun StreamRoutesAppTheme(
+fun RumaAppTheme(
         darkTheme: Boolean = isSystemInDarkTheme(),
         // Dynamic color is available on Android 12+
         dynamicColor: Boolean = true,
