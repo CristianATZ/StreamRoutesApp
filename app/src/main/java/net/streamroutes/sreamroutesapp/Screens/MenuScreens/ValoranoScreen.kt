@@ -41,12 +41,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun ValoranoScreen(myViewModel: MyViewModel,navController: NavController){
+fun ValoranoScreen(myViewModel: MyViewModel, navController: NavController){
     Valoranos(myViewModel,navController)
 }
 

@@ -61,7 +61,7 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Dialogs.MembDialogEdit
 import net.streamroutes.sreamroutesapp.Dialogs.SecuDialogEdit
 import net.streamroutes.sreamroutesapp.Dialogs.UserDialogEdit
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 

@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.MapOptionsScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.NotificationsScreen
@@ -15,7 +15,7 @@ import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpAboutAppScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
-import net.streamroutes.sreamroutesapp.Screens.MainScreen
+import net.streamroutes.sreamroutesapp.ui.screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ChatScreen
 import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen

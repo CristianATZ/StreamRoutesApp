@@ -57,10 +57,10 @@ import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberOverlayManagerState
-import net.streamroutes.sreamroutesapp.AddressInfo
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.data.AddressInfo
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
-import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
+import net.streamroutes.sreamroutesapp.data.getAddressInfoFromCoordinates
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.CopyrightOverlay

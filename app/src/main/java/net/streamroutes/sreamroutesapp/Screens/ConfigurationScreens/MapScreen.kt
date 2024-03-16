@@ -32,7 +32,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 
 data class MapItem(
@@ -44,7 +44,7 @@ data class MapItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapOptionsScreen(myViewModel: MyViewModel,navController: NavController){
+fun MapOptionsScreen(myViewModel: MyViewModel, navController: NavController){
     var paradas by remember { mutableStateOf(true) }
     var terminales by remember { mutableStateOf(true) }
     var ubicacion by remember { mutableStateOf(true) }

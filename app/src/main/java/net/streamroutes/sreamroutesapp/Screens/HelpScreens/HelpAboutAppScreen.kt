@@ -24,13 +24,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpAboutAppScreen(myViewModel: MyViewModel,navController: NavController){
+fun HelpAboutAppScreen(myViewModel: MyViewModel, navController: NavController){
     Scaffold(
         topBar = { TopBarBody(myViewModel,navController) }
     ) { paddingValues ->

@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package net.streamroutes.sreamroutesapp.Screens
+package net.streamroutes.sreamroutesapp.ui.screens
 
 import android.Manifest
 import android.app.DownloadManager
@@ -99,10 +99,10 @@ import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.getAddressInfoFromCoordinates
+import net.streamroutes.sreamroutesapp.data.getAddressInfoFromCoordinates
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.CopyrightOverlay
@@ -138,7 +138,7 @@ val listaCoordenadas = mutableListOf<Coordenadas>()
 @RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
-fun Main( myViewModel: MyViewModel, navController: NavController ){
+fun Main(myViewModel: MyViewModel, navController: NavController ){
     val context = LocalContext.current
     // variable con todos los valores
 

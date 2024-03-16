@@ -38,13 +38,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpCommentsScreen(myViewModel: MyViewModel,navController: NavController){
+fun HelpCommentsScreen(myViewModel: MyViewModel, navController: NavController){
 
     var comment by remember { mutableStateOf("") }
     val checkedState = remember { mutableStateOf(true) }

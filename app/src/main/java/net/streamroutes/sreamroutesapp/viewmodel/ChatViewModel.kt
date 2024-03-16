@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.Screens.MenuScreens
+package net.streamroutes.sreamroutesapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 

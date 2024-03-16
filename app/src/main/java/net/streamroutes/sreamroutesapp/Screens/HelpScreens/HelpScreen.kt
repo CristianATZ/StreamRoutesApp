@@ -26,7 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -46,7 +46,7 @@ data class HelpItem(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpScreen(myViewModel: MyViewModel,navController: NavController) {
+fun HelpScreen(myViewModel: MyViewModel, navController: NavController) {
     val help_items = listOf(
         HelpItem(
             name = myViewModel.languageType().get(255),

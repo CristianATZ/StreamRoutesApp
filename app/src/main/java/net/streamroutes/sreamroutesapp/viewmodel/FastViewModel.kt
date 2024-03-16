@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.Screens.Routes
+package net.streamroutes.sreamroutesapp.viewmodel
 
 import androidx.lifecycle.ViewModel
 import com.google.maps.model.LatLng

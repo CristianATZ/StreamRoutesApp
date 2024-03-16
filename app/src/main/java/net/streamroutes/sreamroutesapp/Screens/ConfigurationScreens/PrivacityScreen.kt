@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -41,7 +41,7 @@ data class PrivacyItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrivacityScreen(myViewModel: MyViewModel,navController: NavController){
+fun PrivacityScreen(myViewModel: MyViewModel, navController: NavController){
 
     // variables globales
     var localizacion by remember { mutableStateOf(true) }

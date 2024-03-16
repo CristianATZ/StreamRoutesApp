@@ -31,7 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Dialogs.DialogPush
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
@@ -50,7 +50,7 @@ data class NotificationItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationsScreen(myViewModel: MyViewModel,navController: NavController){
+fun NotificationsScreen(myViewModel: MyViewModel, navController: NavController){
     var noticias by remember { mutableStateOf(true) }
     var alertas by remember { mutableStateOf(true) }
     var suscripcion by remember { mutableStateOf(true) }

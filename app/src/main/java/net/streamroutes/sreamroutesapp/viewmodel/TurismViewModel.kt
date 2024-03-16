@@ -1,6 +1,7 @@
-package net.streamroutes.sreamroutesapp.Screens.Routes
+package net.streamroutes.sreamroutesapp.viewmodel
 
 import androidx.lifecycle.ViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.Route
 
 class TurismViewModel() : ViewModel() {
 

@@ -43,18 +43,18 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun ChangeScreen(myViewModel: MyViewModel,navController: NavController){
+fun ChangeScreen(myViewModel: MyViewModel, navController: NavController){
     Change(myViewModel,navController)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun Change( myViewModel: MyViewModel,navController: NavController ){
+fun Change(myViewModel: MyViewModel, navController: NavController ){
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(true) }
     var confirmPass by remember { mutableStateOf("") }

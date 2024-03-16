@@ -6,12 +6,12 @@ import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import net.streamroutes.sreamroutesapp.CHANNEL_ID
-import net.streamroutes.sreamroutesapp.NOTIFICATION_ID
-import net.streamroutes.sreamroutesapp.NOTIFICATION_TITLE
+import net.streamroutes.sreamroutesapp.data.CHANNEL_ID
+import net.streamroutes.sreamroutesapp.data.NOTIFICATION_ID
+import net.streamroutes.sreamroutesapp.data.NOTIFICATION_TITLE
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION
-import net.streamroutes.sreamroutesapp.VERBOSE_NOTIFICATION_CHANNEL_NAME
+import net.streamroutes.sreamroutesapp.data.VERBOSE_NOTIFICATION_CHANNEL_DESCRIPTION
+import net.streamroutes.sreamroutesapp.data.VERBOSE_NOTIFICATION_CHANNEL_NAME
 
 private const val TAG = "WorkerUtils"
 

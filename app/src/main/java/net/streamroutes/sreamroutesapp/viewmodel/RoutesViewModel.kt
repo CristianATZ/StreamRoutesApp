@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.Screens.Routes
+package net.streamroutes.sreamroutesapp.viewmodel
 
 import android.media.Image
 import androidx.lifecycle.ViewModel

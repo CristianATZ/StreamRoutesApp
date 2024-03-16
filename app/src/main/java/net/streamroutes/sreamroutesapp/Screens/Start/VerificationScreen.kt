@@ -53,13 +53,13 @@ import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import java.util.Random
 
 @Composable
-fun VerificationScreen (myViewModel: MyViewModel,navController: NavController) {
+fun VerificationScreen (myViewModel: MyViewModel, navController: NavController) {
     Verification(myViewModel,navController)
 }
 
@@ -67,7 +67,7 @@ fun VerificationScreen (myViewModel: MyViewModel,navController: NavController) {
     ExperimentalComposeUiApi::class
 )
 @Composable
-fun Verification(myViewModel: MyViewModel,navController: NavController) {
+fun Verification(myViewModel: MyViewModel, navController: NavController) {
     var telefono by remember { mutableStateOf("") }
     var codigo by remember { mutableStateOf("") }
     var codigoGenerado by remember { mutableStateOf("") }

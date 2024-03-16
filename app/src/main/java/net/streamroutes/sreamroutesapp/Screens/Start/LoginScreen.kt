@@ -42,18 +42,18 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun LoginScreen(myViewModel: MyViewModel,navController: NavController){
+fun LoginScreen(myViewModel: MyViewModel, navController: NavController){
     Login(myViewModel,navController)
 }
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun Login(myViewModel: MyViewModel,navController: NavController){
+fun Login(myViewModel: MyViewModel, navController: NavController){
     var telefono by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(true) }

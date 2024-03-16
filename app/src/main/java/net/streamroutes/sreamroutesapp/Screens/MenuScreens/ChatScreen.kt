@@ -49,7 +49,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import java.time.LocalDateTime
@@ -214,7 +214,8 @@ fun MessageIn(
 @Composable
 private fun TopBarBody(
     navController: NavController,
-    myViewModel: MyViewModel) {
+    myViewModel: MyViewModel
+) {
     CenterAlignedTopAppBar(
         title = {
             Text(
