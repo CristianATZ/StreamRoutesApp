@@ -1,0 +1,31 @@
+package net.streamroutes.sreamroutesapp.navigation
+
+sealed class AppScreens (val route: String) {
+    object SplashScreen: AppScreens("splash_screen")
+    object LoginScreen: AppScreens("login_screen")
+    object RegistrationScreen: AppScreens("registration_screen")
+    object VerificationScreen: AppScreens("verification_screen")
+    object ChangeScreen: AppScreens("change_screen")
+    object MainScreen: AppScreens("main_screen")
+    object ProfileScreen: AppScreens("profile_screen")
+    object HelpScreen: AppScreens("help_screen")
+    object HelpCommentsScreen: AppScreens("help_comments_screen")
+    object HelpContactScreen: AppScreens("help_contact_screen")
+    object HelpAboutAppScreen: AppScreens("help_about_screen")
+    object RoutesScreen: AppScreens("routes_screen")
+    object MenuScreen: AppScreens("menu_screen")
+    object ConfigurationScreen: AppScreens("configuracion_screen")
+    object MapOptionsScreen: AppScreens("mapa_options_screen")
+    object ChangeCityScreen: AppScreens("change_city_screen")
+    object NotificationsScreen: AppScreens("notifications_screen")
+    object PrivacityScreen: AppScreens("privacity_screen")
+    object TripScreen: AppScreens("trip_screen")
+    object SuscripcionScreen: AppScreens("premium_screen")
+    object ValoranoScreen: AppScreens("valoranos_screen")
+    object LanguageScreen: AppScreens("language_screen")
+    object ResenaScreen: AppScreens("resena_screen")
+    object TurismScreen: AppScreens("turism_screen")
+    object FastScreen: AppScreens("fast_screen")
+    object ChatScreen: AppScreens("chat_screen")
+}
+
