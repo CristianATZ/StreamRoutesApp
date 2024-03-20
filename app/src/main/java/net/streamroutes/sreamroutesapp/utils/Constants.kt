@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data
+package net.streamroutes.sreamroutesapp.utils
 
 // Name of Notification Channel for verbose notifications of background work
 val VERBOSE_NOTIFICATION_CHANNEL_NAME: CharSequence =

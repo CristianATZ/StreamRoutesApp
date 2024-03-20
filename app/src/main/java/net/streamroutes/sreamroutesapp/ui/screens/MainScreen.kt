@@ -102,7 +102,7 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.data.getAddressInfoFromCoordinates
+import net.streamroutes.sreamroutesapp.viewmodel.getAddressInfoFromCoordinates
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.CopyrightOverlay

@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data
+package net.streamroutes.sreamroutesapp.viewmodel
 
 import android.content.Context
 import android.location.Geocoder
