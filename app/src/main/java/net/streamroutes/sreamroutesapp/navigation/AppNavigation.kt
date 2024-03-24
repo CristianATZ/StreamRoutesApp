@@ -31,6 +31,7 @@ import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
+import net.streamroutes.sreamroutesapp.ui.screens.MainParking
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -105,6 +106,10 @@ fun AppNavigation(myViewModel: MyViewModel) {
         // RESENA
         composable(AppScreens.ResenaScreen.route){
             ResenaScreen()
+        }
+
+        composable(AppScreens.MainParking.route){
+            MainParking()
         }
     }
 }
