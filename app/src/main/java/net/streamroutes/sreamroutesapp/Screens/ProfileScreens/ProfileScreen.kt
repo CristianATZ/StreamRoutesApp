@@ -69,8 +69,7 @@ data class DataInfoItem(val title: String, val inf: String)
 
 @Composable
 fun ProfileScreen(
-    navController: NavController,
-    myViewModel: MyViewModel
+    myViewModel: MyViewModel = MyViewModel()
 ) {
     Column(
         modifier = Modifier
@@ -83,7 +82,7 @@ fun ProfileScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderProfile(navController,myViewModel)
+            HeaderProfile()
 
             FeaturedProfile(myViewModel)
 
@@ -471,7 +470,7 @@ fun InfoItem(
 }
 
 @Composable
-fun HeaderProfile(navController: NavController, myViewModel: MyViewModel) {
+fun HeaderProfile() {
     Column(
         modifier = Modifier
             .background(
@@ -485,7 +484,7 @@ fun HeaderProfile(navController: NavController, myViewModel: MyViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        TopBarBody(navController)
+        TopBarBody()
 
         Box(
 
@@ -530,7 +529,7 @@ fun HeaderProfile(navController: NavController, myViewModel: MyViewModel) {
 }
 
 @Composable
-private fun TopBarBody(navController: NavController) {
+private fun TopBarBody() {
     Row(
         modifier = Modifier
             .height(64.dp)
@@ -539,7 +538,7 @@ private fun TopBarBody(navController: NavController) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = { navController.navigate(AppScreens.MainScreen.route) }
+            onClick = {  }
         ) {
             Icon(
                 imageVector = Icons.Outlined.KeyboardArrowLeft,

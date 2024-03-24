@@ -74,7 +74,7 @@ data class PlaceItem(
     ExperimentalMaterialApi::class
 )
 @Composable
-fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
+fun TripScreen(myViewModel: MyViewModel = MyViewModel()) {
     var markers by remember { mutableStateOf(listOf<PlaceItem?>()) }
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
     val context = LocalContext.current
@@ -166,7 +166,6 @@ fun TripScreen(myViewModel: MyViewModel, navController: NavController) {
 
         TopBarBody(
             myViewModel = myViewModel,
-            navController = navController,
             onAdd = {
                 selectedLocation?.let {
 
@@ -372,7 +371,6 @@ private fun PlaceOption(
 @Composable
 private fun TopBarBody(
     myViewModel: MyViewModel,
-    navController: NavController,
     onAdd: () -> Unit,
     onCancel: () -> Unit
 ) {
@@ -390,7 +388,7 @@ private fun TopBarBody(
             },
             leadingIcon = {
                 IconButton(
-                    onClick = { navController.navigate(AppScreens.MainScreen.route) }
+                    onClick = {  }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,

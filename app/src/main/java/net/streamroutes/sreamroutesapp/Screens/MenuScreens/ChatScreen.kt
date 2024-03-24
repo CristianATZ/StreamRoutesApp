@@ -65,8 +65,7 @@ data class Messages(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChatScreen(
-    navController: NavController,
-    myViewModel: MyViewModel
+    myViewModel: MyViewModel = MyViewModel()
 ) {
     val mensajes = listOf(
         Messages(
@@ -113,7 +112,7 @@ fun ChatScreen(
 
     Scaffold(
         topBar = {
-            TopBarBody(navController, myViewModel)
+            TopBarBody(myViewModel)
         },
     ) { paddingValues ->
         Box {
@@ -134,7 +133,7 @@ fun ChatScreen(
                 }
             }
 
-            BottomBarBody(navController = navController, myViewModel)
+            BottomBarBody(myViewModel)
         }
     }
 }
@@ -213,7 +212,6 @@ fun MessageIn(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBarBody(
-    navController: NavController,
     myViewModel: MyViewModel
 ) {
     CenterAlignedTopAppBar(
@@ -223,7 +221,7 @@ private fun TopBarBody(
             )
         },
         navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+            IconButton(onClick = { } ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = "Te enviara al menu de opciones",
@@ -241,7 +239,6 @@ private fun TopBarBody(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BottomBarBody(
-    navController: NavController,
     myViewModel: MyViewModel
 ) {
     var mensaje by remember {

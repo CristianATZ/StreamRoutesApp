@@ -46,33 +46,33 @@ data class HelpItem(
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpScreen(myViewModel: MyViewModel, navController: NavController) {
+fun HelpScreen(myViewModel: MyViewModel = MyViewModel()) {
     val help_items = listOf(
         HelpItem(
             name = myViewModel.languageType().get(255),
             desc = myViewModel.languageType().get(256),
             action =  {
-                navController.navigate(AppScreens.HelpCommentsScreen.route)
+
             }
         ),
         HelpItem(
             name = myViewModel.languageType().get(257),
             desc = myViewModel.languageType().get(258),
             action =  {
-                navController.navigate(AppScreens.HelpContactScreen.route)
+
             }
         ),
         HelpItem(
             name = myViewModel.languageType().get(259),
             desc = myViewModel.languageType().get(260),
             action =  {
-                navController.navigate(AppScreens.HelpAboutAppScreen.route)
+
             }
         )
     )
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
+        topBar = { TopBarBody(myViewModel) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -90,7 +90,6 @@ fun HelpScreen(myViewModel: MyViewModel, navController: NavController) {
 @Composable
 private fun TopBarBody(
     myViewModel: MyViewModel,
-    navController: NavController
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -100,7 +99,7 @@ private fun TopBarBody(
             )
         },
         navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+            IconButton(onClick = {  }) {
                 Icon(
                     painterResource(id = R.drawable.back),
                     contentDescription = "Te enviara al menu de opciones"

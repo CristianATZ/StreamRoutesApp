@@ -65,10 +65,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
         composable(AppScreens.LoginScreen.route){
             LoginScreen(myViewModel,NavController)
         }
-        // PROFILE
-        composable(AppScreens.ProfileScreen.route){
-            ProfileScreen(NavController,myViewModel)
-        }
+
         // HELP
         composable(AppScreens.HelpAboutAppScreen.route){
             HelpAboutAppScreen(myViewModel,NavController)
@@ -79,27 +76,10 @@ fun AppNavigation(myViewModel: MyViewModel) {
         composable(AppScreens.HelpContactScreen.route){
             HelpContactScreen(myViewModel,NavController)
         }
-        composable(AppScreens.HelpScreen.route){
-            HelpScreen(myViewModel,NavController)
-        }
-        // ROUTES
-        composable(AppScreens.RoutesScreen.route){
-            RoutesScreen(myViewModel,NavController)
-        }
-
-        // CONFIGURACION SCREEN
-        composable(AppScreens.ConfigurationScreen.route){
-            ConfigurationScreen(myViewModel,NavController)
-        }
 
         // MAPA OPCIONES
         composable(AppScreens.MapOptionsScreen.route){
             MapOptionsScreen(myViewModel,NavController)
-        }
-
-        // CAMBIAR CIUDAD
-        composable(AppScreens.ChangeCityScreen.route){
-            //ChangeCityScreen(myViewModel,NavController)
         }
 
         // NOTIFICACIONES
@@ -110,16 +90,6 @@ fun AppNavigation(myViewModel: MyViewModel) {
         // PRIVACIDAD
         composable(AppScreens.PrivacityScreen.route){
             PrivacityScreen(myViewModel,NavController)
-        }
-
-        // PLANIFICA TU VIAJE
-        composable(AppScreens.TripScreen.route){
-            TripScreen(myViewModel,NavController)
-        }
-
-        // VERSION PREMIUM
-        composable(AppScreens.SuscripcionScreen.route){
-            SuscripcionScreen(myViewModel,NavController)
         }
 
         // VALORANOS SCREEN
@@ -135,20 +105,6 @@ fun AppNavigation(myViewModel: MyViewModel) {
         // RESENA
         composable(AppScreens.ResenaScreen.route){
             ResenaScreen()
-        }
-
-        // SUSCRIPTION CONFIGURATION
-
-        composable(AppScreens.TurismScreen.route){
-            TurismScreen(myViewModel, NavController)
-        }
-
-        composable(AppScreens.FastScreen.route){
-            FastScreen(NavController,myViewModel)
-        }
-
-        composable(AppScreens.ChatScreen.route){
-            ChatScreen(NavController,myViewModel)
         }
     }
 }

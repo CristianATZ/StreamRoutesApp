@@ -98,8 +98,8 @@ import org.osmdroid.util.GeoPoint
 
 
 @Composable
-fun RoutesScreen(myViewModel: MyViewModel, navController: NavController){
-    RoutesScreenView(myViewModel,navController)
+fun RoutesScreen(myViewModel: MyViewModel = MyViewModel()){
+    RoutesScreenView(myViewModel)
 }
 
 enum class DrawerValue {
@@ -109,8 +109,7 @@ enum class DrawerValue {
 
 @Composable
 fun RoutesScreenView(
-    myViewModel: MyViewModel,
-    navController: NavController
+    myViewModel: MyViewModel
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
 
@@ -118,7 +117,6 @@ fun RoutesScreenView(
         topBar = {
             TopBarBody(
                 myViewModel = myViewModel,
-                navController = navController,
                 openPanel = {
                     if (drawerState.value == DrawerValue.Closed) {
                         drawerState.value = DrawerValue.Open
@@ -924,7 +922,6 @@ fun MainContent() {
 @Composable
 private fun TopBarBody(
     myViewModel: MyViewModel,
-    navController: NavController,
     openPanel: () -> Unit
 ) {
     TopAppBar(
@@ -936,7 +933,6 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.navigate(AppScreens.MainScreen.route)
                 }
             ) {
                 Icon(

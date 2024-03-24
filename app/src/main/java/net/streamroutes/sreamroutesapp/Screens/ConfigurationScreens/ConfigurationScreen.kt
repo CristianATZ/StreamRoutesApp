@@ -40,7 +40,7 @@ data class ConfItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
+fun ConfigurationScreen(myViewModel: MyViewModel = MyViewModel()){
 
     var dialog by remember {
         mutableStateOf(false)
@@ -62,19 +62,19 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
         ConfItem(
             name = myViewModel.languageType().get(218),
             action = {
-                navController.navigate(route = AppScreens.NotificationsScreen.route)
+
             }
         ),
         ConfItem(
             name = myViewModel.languageType().get(219),
             action = {
-                navController.navigate(route = AppScreens.MapOptionsScreen.route)
+
             }
         ),
         ConfItem(
             name = myViewModel.languageType().get(220),
             action = {
-                navController.navigate(route = AppScreens.PrivacityScreen.route)
+
             }
         ),
         ConfItem(
@@ -93,7 +93,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
 
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
+        topBar = { TopBarBody(myViewModel) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -113,8 +113,7 @@ fun ConfigurationScreen(myViewModel: MyViewModel, navController: NavController){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
+    myViewModel: MyViewModel
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -125,7 +124,7 @@ private fun TopBarBody(
         },
         navigationIcon = {
             IconButton(
-                onClick = { navController.navigate(AppScreens.MainScreen.route) }
+                onClick = {  }
             ) {
                 Icon(
                     painterResource(id = R.drawable.back),

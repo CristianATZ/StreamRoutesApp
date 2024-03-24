@@ -69,7 +69,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.utsman.osmandcompose.CameraProperty
 import com.utsman.osmandcompose.CameraState
 import com.utsman.osmandcompose.MapProperties
@@ -79,30 +78,27 @@ import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberMarkerState
 import com.utsman.osmandcompose.rememberOverlayManagerState
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
-import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.CopyrightOverlay
 
 @Composable
 fun TurismScreen(
-    myViewModel: MyViewModel,
-    navController: NavController
+    myViewModel: MyViewModel = MyViewModel()
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
-    Tourism(myViewModel, navController, drawerState)
+    Turism(myViewModel, drawerState)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Tourism(
+fun Turism(
     myViewModel: MyViewModel,
-    navController: NavController,
     drawerState: MutableState<DrawerValue>
 ){
     Scaffold (
-        topBar = { TopBar(myViewModel, navController) },
-        bottomBar = { BottomBar(myViewModel, navController) }
+        topBar = { TopBar(myViewModel) },
+        bottomBar = { BottomBar(myViewModel) }
     ){ paddingValues ->
         LazyColumn(
             modifier = Modifier
@@ -270,8 +266,7 @@ fun Tourism(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    myViewModel: MyViewModel,
-    navController: NavController
+    myViewModel: MyViewModel
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -283,7 +278,6 @@ private fun TopBar(
         navigationIcon = {
             IconButton(
                 onClick = {
-                    navController.navigate(AppScreens.MainScreen.route)
                 }
             ) {
                 Icon(
@@ -302,8 +296,7 @@ private fun TopBar(
 
 @Composable
 private fun BottomBar(
-    myViewModel: MyViewModel,
-    navController: NavController
+    myViewModel: MyViewModel
 ){
     BottomAppBar (
         containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -320,7 +313,7 @@ private fun BottomBar(
             )
             ExtendedFloatingActionButton(
                 onClick = {
-                    navController.navigate(AppScreens.ChatScreen.route)
+
                 },
                 icon = { Icon(Icons.Filled.Chat, contentDescription = "Invocar Chatbot") },
                 text = { Text(text = myViewModel.languageType().get(298)) },

@@ -55,7 +55,7 @@ data class PremiumItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
+fun SuscripcionScreen(myViewModel: MyViewModel = MyViewModel()) {
     val profit_items = listOf(
         ProfitItem(
             name = myViewModel.languageType().get(186),
@@ -118,7 +118,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
     )
 
     Scaffold(
-        topBar = { TopBar(navController,myViewModel) }
+        topBar = { TopBar(myViewModel) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -204,7 +204,6 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
                     premium_items.forEach(){ item ->
                         Paquete(
                             profit_items,
-                            navController,
                             item,
                             myViewModel
                         )
@@ -219,7 +218,6 @@ fun SuscripcionScreen(myViewModel: MyViewModel, navController: NavController) {
 @Composable
 fun Paquete(
     profit_items: List<ProfitItem>,
-    navController: NavController,
     premiumItem: PremiumItem,
     myViewModel: MyViewModel
 ) {
@@ -275,7 +273,7 @@ fun Paquete(
             // boton contratar
             Button(
                 onClick = {
-                    navController.navigate(AppScreens.MainScreen.route)
+                    //navController.navigate(AppScreens.MainScreen.route)
                 },
                 shape = RoundedCornerShape(bottomStart = 16.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -326,7 +324,6 @@ fun Paquete(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    navController: NavController,
     myViewModel: MyViewModel
 ) {
     CenterAlignedTopAppBar(
@@ -336,7 +333,7 @@ private fun TopBar(
             )
         },
         navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.MainScreen.route) }) {
+            IconButton(onClick = { }) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = "Te enviara al menu de opciones",

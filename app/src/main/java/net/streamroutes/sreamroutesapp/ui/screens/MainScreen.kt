@@ -3,6 +3,7 @@
 package net.streamroutes.sreamroutesapp.ui.screens
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
@@ -21,7 +22,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -46,14 +46,12 @@ import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.GTranslate
 import androidx.compose.material.icons.outlined.HelpOutline
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
-import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Museum
 import androidx.compose.material.icons.outlined.Route
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material.icons.outlined.Share
 import androidx.compose.material.icons.outlined.ShareLocation
-import androidx.compose.material.icons.outlined.StarRate
 import androidx.compose.material.icons.outlined.SwitchAccessShortcut
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.material3.Card
@@ -102,10 +100,35 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
+import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ChatScreen
+import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
+import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
+import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
 import net.streamroutes.sreamroutesapp.viewmodel.getAddressInfoFromCoordinates
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.CopyrightOverlay
+
+enum class NavigationOptions{
+    MAIN_SCREEN,
+    PAQUETES_SCREEN,
+    FAST_SCREEN,
+    ROUTES_SCREEN,
+    TRIP_SCREEN,
+    TURISM_SCREEN,
+    CHAT_SCREEN,
+    UBI_OPTION,
+    DOWNLOAD_OPTION,
+    SHARE_OPTION,
+    CONF_SCREEN,
+    HELP_SCREEN,
+    PROFILE_SCREEN
+}
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -113,34 +136,17 @@ fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
     Main(myViewModel,navController)
 }
 
-
-/*
-variable para las coordenadas del mapa principal
-
-0. Paradas
-1. Terminales
-2. Hospitales
-3. Resturantes
-4. Entretenimiento
-*/
-
-// te retorna el tipo de marcador
-fun generaTipo(Tipo: Int): String{
-    val tipos = mutableListOf<String>("Paradas","Terminales","Hospitales","Resturantes","Entretenimiento")
-    return tipos[Tipo]
-}
-
-// esto es para generar las coordenadas de todos los marcadores
-data class Coordenadas(val latitud: Double, val longitud: Double, val tipo: Int)
-
-val listaCoordenadas = mutableListOf<Coordenadas>()
-
+@SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Main(myViewModel: MyViewModel, navController: NavController ){
     val context = LocalContext.current
     // variable con todos los valores
+
+    var screen by remember {
+        mutableStateOf(NavigationOptions.MAIN_SCREEN)
+    }
 
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val scope = rememberCoroutineScope()
@@ -150,102 +156,6 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
     var currentMapType by remember { mutableStateOf(defaultMapType) }
     var changeMap by remember { mutableStateOf(1) }
 
-    // Descomentar los dialogos de permiso al finalizar el proyecto
-    // DIALOGOS PARA LOS PERMISOS
-    val ubicacion = remember { mutableStateOf(true) }
-    val contactos = remember { mutableStateOf(true) }
-    val aviso = remember { mutableStateOf(true) }
-
-    val tutorial = remember { mutableStateOf(listOf(
-        mutableStateOf(true),
-        mutableStateOf(false),
-        mutableStateOf(false),
-        mutableStateOf(false),
-        mutableStateOf(false)
-    )) }
-
-    /*if( tutorial.value[0].value ){
-        DialogTutorialMain1(
-            dialogo = tutorial.value[0],
-            sigDialogo = tutorial.value[1]
-        )
-    } else if( tutorial.value[1].value ){
-        DialogTutorialMain2(
-            dialogo = tutorial.value[1],
-            sigDialogo = tutorial.value[2],
-            antDialogo = tutorial.value[0]
-        )
-    } else if( tutorial.value[2].value ){
-        DialogTutorialMain3(
-            dialogo = tutorial.value[2],
-            sigDialogo = tutorial.value[3],
-            antDialogo = tutorial.value[1]
-        )
-    } else if( tutorial.value[3].value ){
-        DialogTutorialMain4(
-            dialogo = tutorial.value[3],
-            sigDialogo = tutorial.value[4],
-            antDialogo = tutorial.value[2]
-        )
-    } else if( tutorial.value[4].value ){
-        DialogTutorialMain5(
-            dialogo = tutorial.value[4],
-            antDialogo = tutorial.value[3]
-        )
-    }*/
-
-
-    /*if( ubicacion.value ){
-        DialogHabilitarUbicacion(
-            dialogo = ubicacion
-        ) {
-
-        }
-    }
-
-    if( contactos.value ){
-        DialogHabilitarContactos(
-            dialogo = contactos
-        ) {
-
-        }
-    }
-
-    if( aviso.value ){
-        DialogAvisoDePrivacidad(
-            dialogo = aviso
-        ) {
-
-        }
-    }*/
-
-    // variable internet
-    val internet = remember { mutableStateOf(false) }
-
-    // funcion para saber si estas conectado a internet al iniciar la app
-
-
-    // valor del dialog en funcion de la conexion de internet
-    /*LaunchedEffect(Unit){
-        while(true){
-            internet.value = !isInternetAvailable(context)
-            delay(100)
-        }
-    }
-
-    // dialogo para la conexion a internet
-    if(internet.value){
-        DialogInternet(
-            dialogo = internet
-        ) {
-            // con estas dos lineas puedes estar en la app
-            // aun sin internet pero no podras usarlo
-            // al momento de conectarte a internet se cambiara el estado y se cerrara el dialog
-            internet.value = false
-            internet.value = !isInternetAvailable(context)
-        }
-    }*/
-
     ModalDrawer(
         drawerState = drawerState,
         drawerContent = {
@@ -254,7 +164,9 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
                 myViewModel = myViewModel,
                 scope = scope,
                 drawerState = drawerState
-            )
+            ){ item ->
+                screen = item
+            }
         },
         //drawerBackgroundColor = MaterialTheme.colorScheme.background,
         gesturesEnabled = false
@@ -265,27 +177,7 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
                     myViewModel = myViewModel,
                     scope = scope,
                     drawerState = drawerState
-                ){
-                    when (changeMap) {
-                        1 -> {
-                            currentMapType = MapType.NORMAL
-                        }
-
-                        2 -> {
-                            currentMapType = MapType.SATELLITE
-                        }
-
-                        3 -> {
-                            currentMapType = MapType.TERRAIN
-                        }
-
-                        4 -> {
-                            currentMapType = MapType.HYBRID
-                        }
-                    }
-                    changeMap++
-                    if (changeMap == 5) changeMap = 1
-                }
+                )
             },
         ) { paddingValues ->
             Column(
@@ -297,10 +189,21 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
                     geoPoint = GeoPoint(19.057988677624586, -98.180047630148)
                     zoom = 17.0
                 }
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ){
-                    MapBody(cameraState)
+
+                when(screen){
+                    NavigationOptions.PAQUETES_SCREEN -> SuscripcionScreen()
+                    NavigationOptions.FAST_SCREEN -> FastScreen()
+                    NavigationOptions.ROUTES_SCREEN -> RoutesScreen()
+                    NavigationOptions.TRIP_SCREEN -> TripScreen()
+                    NavigationOptions.TURISM_SCREEN -> TurismScreen()
+                    NavigationOptions.CHAT_SCREEN -> ChatScreen()
+                    //NavigationOptions.UBI_OPTION ->
+                    //NavigationOptions.DOWNLOAD_OPTION ->
+                    //NavigationOptions.SHARE_OPTION ->
+                    NavigationOptions.CONF_SCREEN -> ConfigurationScreen()
+                    NavigationOptions.HELP_SCREEN -> HelpScreen()
+                    NavigationOptions.PROFILE_SCREEN -> ProfileScreen()
+                    else -> MapBody(cameraPositionState = cameraState)
                 }
             }
         }
@@ -312,8 +215,7 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
 private fun TopBarBody(
     myViewModel: MyViewModel,
     scope: CoroutineScope,
-    drawerState: DrawerState,
-    changeMap: () -> Unit
+    drawerState: DrawerState
 ) {
     TopAppBar(
         title = {
@@ -346,17 +248,6 @@ private fun TopBarBody(
                     contentDescription = "Cambiar el idioma"
                 )
             }
-
-            IconButton(
-                onClick = {
-                    changeMap()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Map,
-                    contentDescription = "Cambiar el tipo de mapa"
-                )
-            }
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
             containerColor = colorScheme.primary,
@@ -374,7 +265,8 @@ fun DrawerBody(
     navController: NavController,
     myViewModel: MyViewModel,
     scope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    changeScreen: (NavigationOptions) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -427,7 +319,8 @@ fun DrawerBody(
         HeaderProfileMenu(
             navController = navController,
             scope = scope,
-            drawerState = drawerState
+            drawerState = drawerState,
+            changeScreen = changeScreen
         )
 
         // cuerpo opciones del menu
@@ -452,7 +345,7 @@ fun DrawerBody(
                 text = myViewModel.languageType()[303],
                 icon = Icons.Outlined.AttachMoney
             ) {
-                navController.navigate(AppScreens.SuscripcionScreen.route)
+                changeScreen(NavigationOptions.PAQUETES_SCREEN)
             }
 
             // transporte
@@ -469,28 +362,28 @@ fun DrawerBody(
                 text = myViewModel.languageType()[304],
                 icon = Icons.Outlined.SwitchAccessShortcut
             ) {
-                navController.navigate(AppScreens.FastScreen.route)
+                changeScreen(NavigationOptions.FAST_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType().get(167),
                 icon = Icons.Outlined.DirectionsBus
             ) {
-                navController.navigate(AppScreens.RoutesScreen.route)
+                changeScreen(NavigationOptions.ROUTES_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType().get(164),
                 icon = Icons.Outlined.Route
             ) {
-                navController.navigate(AppScreens.TripScreen.route)
+                changeScreen(NavigationOptions.TRIP_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType()[305],
                 icon = Icons.Outlined.Museum
             ) {
-                navController.navigate(AppScreens.TurismScreen.route)
+                changeScreen(NavigationOptions.TURISM_SCREEN)
             }
 
             // funciones extra
@@ -506,7 +399,7 @@ fun DrawerBody(
                 text = myViewModel.languageType()[306],
                 icon = Icons.Outlined.Chat,
             ) {
-                navController.navigate(AppScreens.ChatScreen.route)
+                changeScreen(NavigationOptions.CHAT_SCREEN)
             }
 
             DrawerItem(
@@ -569,12 +462,12 @@ fun DrawerBody(
                 context.startActivity(shareIntent)
             }
 
-            DrawerItem(
+            /*DrawerItem(
                 text = myViewModel.languageType().get(170),
                 icon = Icons.Outlined.StarRate
             ) {
                 navController.navigate(AppScreens.ValoranoScreen.route)
-            }
+            }*/
 
             // configuracion y soporte
 
@@ -590,14 +483,14 @@ fun DrawerBody(
                 text = myViewModel.languageType().get(156),
                 icon = Icons.Outlined.Settings
             ) {
-                navController.navigate(AppScreens.ConfigurationScreen.route)
+                changeScreen(NavigationOptions.CONF_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType().get(152),
                 icon = Icons.Outlined.HelpOutline
             ) {
-                navController.navigate(AppScreens.HelpScreen.route)
+                changeScreen(NavigationOptions.HELP_SCREEN)
             }
         }
     }
@@ -607,7 +500,8 @@ fun DrawerBody(
 fun HeaderProfileMenu(
     navController: NavController,
     scope: CoroutineScope,
-    drawerState: DrawerState
+    drawerState: DrawerState,
+    changeScreen: (NavigationOptions) -> Unit
 ) {
 
     Column(
@@ -620,7 +514,7 @@ fun HeaderProfileMenu(
                 RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp)
             )
             .clickable {
-                navController.navigate(AppScreens.ProfileScreen.route)
+                changeScreen(NavigationOptions.PROFILE_SCREEN)
             }
 
     ) {
@@ -760,7 +654,7 @@ private fun DrawerItem(
         Spacer(modifier = Modifier.width(32.dp))
 
         Icon(imageVector = icon, contentDescription = text)
-        
+
         Spacer(modifier = Modifier.width(16.dp))
 
         Text(

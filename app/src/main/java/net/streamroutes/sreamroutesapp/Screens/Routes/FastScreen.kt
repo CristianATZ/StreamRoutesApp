@@ -68,8 +68,7 @@ import org.osmdroid.util.GeoPoint
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FastScreen(
-    navController: NavHostController,
-    myViewModel: MyViewModel
+    myViewModel: MyViewModel = MyViewModel()
 ) {
     //Camara
     var cameraState = rememberCameraState {
@@ -125,7 +124,7 @@ fun FastScreen(
 
 
     Scaffold(
-        topBar = { TopBarBody(navController,myViewModel) }
+        topBar = { TopBarBody(myViewModel) }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -221,7 +220,6 @@ fun DialogStart(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBarBody(
-    navController: NavHostController,
     myViewModel: MyViewModel
 ) {
     var destino by remember {
@@ -239,7 +237,7 @@ private fun TopBarBody(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = { navController.navigate(AppScreens.MainScreen.route) }
+                onClick = { }
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
