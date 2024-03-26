@@ -98,7 +98,6 @@ import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
-import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
@@ -109,6 +108,7 @@ import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
+import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.viewmodel.getAddressInfoFromCoordinates
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -144,7 +144,7 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
     val context = LocalContext.current
     // variable con todos los valores
 
-    var screen by remember {
+    var routeScreen by remember {
         mutableStateOf(NavigationOptions.MAIN_SCREEN)
     }
 
@@ -165,10 +165,9 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
                 scope = scope,
                 drawerState = drawerState
             ){ item ->
-                screen = item
+                routeScreen = item
             }
         },
-        //drawerBackgroundColor = MaterialTheme.colorScheme.background,
         gesturesEnabled = false
     ) {
         Scaffold(
@@ -190,7 +189,7 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
                     zoom = 17.0
                 }
 
-                when(screen){
+                when(routeScreen){
                     NavigationOptions.PAQUETES_SCREEN -> SuscripcionScreen()
                     NavigationOptions.FAST_SCREEN -> FastScreen()
                     NavigationOptions.ROUTES_SCREEN -> RoutesScreen()
@@ -345,7 +344,8 @@ fun DrawerBody(
                 text = myViewModel.languageType()[303],
                 icon = Icons.Outlined.AttachMoney
             ) {
-                changeScreen(NavigationOptions.PAQUETES_SCREEN)
+                //changeScreen(NavigationOptions.PAQUETES_SCREEN)
+                navController.navigate(AppScreens.MainParking.route)
             }
 
             // transporte
