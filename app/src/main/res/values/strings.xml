@@ -67,6 +67,8 @@
     <string name="forgot_text_part2">contraseña</string>
     <string name="register_text_part1">¿No tienes cuenta?</string>
     <string name="register_text_part2">Registrate</string>
+    <string name="log_in">Iniciar Sesion</string>
+    <string name="sign_in">Ingresar</string>
 
     //////////////////////////////////////////////////////////
         HELP SCREEN TEXTS

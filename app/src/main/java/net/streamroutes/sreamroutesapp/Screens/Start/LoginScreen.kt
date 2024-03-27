@@ -36,27 +36,35 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
 
 @Composable
-fun LoginScreen(myViewModel: MyViewModel, navController: NavController){
-    Login(myViewModel,navController)
+fun LoginScreen(loginViewModel: LoginViewModel, navController: NavController){
+    Login(loginViewModel, navController)
 }
 
 @SuppressLint("UnrememberedMutableState")
 @Composable
-fun Login(myViewModel: MyViewModel, navController: NavController){
+fun Login(
+    loginViewModel: LoginViewModel,
+    navController: NavController
+){
+    /*
     var telefono by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(true) }
+     */
 
     Column(
         modifier = Modifier
@@ -75,7 +83,7 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
         Spacer(modifier = Modifier.size(16.dp))
 
         Text(
-            text = myViewModel.languageType()[300],
+            text = stringResource(id = R.string.log_in),
             style = typography.titleLarge
         )
 
@@ -83,20 +91,20 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
 
         // telefono
         OutlinedTextField(
-            value = telefono,
-            onValueChange = { telefono = it },
+            value = loginViewModel.telefono,
+            onValueChange = { loginViewModel.updateTelefono(it) },
             label = {
                 Text(
-                    text = myViewModel.languageType().get(270),
+                    text = stringResource(id = R.string.phone),
                     style = typography.titleMedium
                 )
             },
             shape = RoundedCornerShape(16.dp),
             trailingIcon = {
-                if( telefono.isNotEmpty() ){
+                if( loginViewModel.telefono.isNotEmpty() ){
                     IconButton(
                         onClick = {
-                            telefono = ""
+                            loginViewModel.updateTelefono("")
                         }
                     ) {
                         Icon(
@@ -120,11 +128,11 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
 
         // contrasenia
         OutlinedTextField(
-            value = password,
-            onValueChange = { password = it },
+            value = loginViewModel.password,
+            onValueChange = { loginViewModel.updatePassword(it) },
             label = {
                 Text(
-                    text = myViewModel.languageType().get(271),
+                    text = stringResource(id = R.string.password_profile),
                     style = typography.titleMedium
                 )
             },
@@ -132,11 +140,11 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
             trailingIcon = {
                 IconButton(
                     onClick = {
-                        passwordVisibility = !passwordVisibility
+                        loginViewModel.updatePasswordVisibility( !loginViewModel.passwordVisibility )
                     }
                 ) {
                     Icon(
-                        painter = if (!passwordVisibility)
+                        painter = if (!loginViewModel.passwordVisibility)
                             painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
@@ -144,7 +152,7 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
                     )
                 }
             },
-            visualTransformation = if (passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+            visualTransformation = if (loginViewModel.passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             ),
@@ -164,7 +172,7 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
                 }
             ) {
                 Text(
-                    text = myViewModel.languageType().get(272) + " " + myViewModel.languageType().get(273),
+                    text = stringResource(id = R.string.forgot_text_part1) + " " + stringResource(id = R.string.forgot_text_part2),
                     style = typography.titleSmall
                 )
             }
@@ -187,7 +195,7 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
                 .height(50.dp)
         ) {
             Text(
-                text = myViewModel.languageType().get(274),
+                text = stringResource(id = R.string.sign_in),
                 style = typography.bodyLarge
             )
         }
@@ -199,7 +207,7 @@ fun Login(myViewModel: MyViewModel, navController: NavController){
             }
         ) {
             Text(
-                text = myViewModel.languageType().get(275) + " " + myViewModel.languageType().get(276),
+                text = stringResource(id = R.string.register_text_part1) + " " + stringResource(id = R.string.register_text_part2),
                 style = typography.titleSmall
             )
         }

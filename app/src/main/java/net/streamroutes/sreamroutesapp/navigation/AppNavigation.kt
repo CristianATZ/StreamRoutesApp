@@ -3,6 +3,7 @@ package net.streamroutes.sreamroutesapp.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -32,11 +33,15 @@ import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 import net.streamroutes.sreamroutesapp.ui.screens.MainParking
+import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun AppNavigation(myViewModel: MyViewModel) {
+fun AppNavigation(
+    myViewModel: MyViewModel,
+    loginViewModel: LoginViewModel = viewModel()
+) {
     val NavController = rememberNavController()
 
 
@@ -64,7 +69,7 @@ fun AppNavigation(myViewModel: MyViewModel) {
         }
         // inicio de sesion pantalla
         composable(AppScreens.LoginScreen.route){
-            LoginScreen(myViewModel,NavController)
+            LoginScreen(loginViewModel, NavController)
         }
 
         // HELP
