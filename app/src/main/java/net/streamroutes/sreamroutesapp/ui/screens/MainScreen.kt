@@ -2,68 +2,63 @@
 
 package net.streamroutes.sreamroutesapp.ui.screens
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
-import android.location.LocationManager
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.DrawerState
-import androidx.compose.material.DrawerValue
-import androidx.compose.material.ModalDrawer
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AttachMoney
-import androidx.compose.material.icons.outlined.Chat
+import androidx.compose.material.icons.filled.Bookmark
+import androidx.compose.material.icons.filled.ChatBubble
+import androidx.compose.material.icons.filled.DirectionsBus
+import androidx.compose.material.icons.filled.DownloadForOffline
+import androidx.compose.material.icons.filled.EmergencyShare
+import androidx.compose.material.icons.filled.FlashOn
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MonetizationOn
+import androidx.compose.material.icons.filled.Museum
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.Bookmark
+import androidx.compose.material.icons.outlined.ChatBubble
 import androidx.compose.material.icons.outlined.DirectionsBus
-import androidx.compose.material.icons.outlined.Download
-import androidx.compose.material.icons.outlined.GTranslate
-import androidx.compose.material.icons.outlined.HelpOutline
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.DownloadForOffline
+import androidx.compose.material.icons.outlined.EmergencyShare
+import androidx.compose.material.icons.outlined.FlashOn
+import androidx.compose.material.icons.outlined.Help
+import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
+import androidx.compose.material.icons.outlined.MonetizationOn
 import androidx.compose.material.icons.outlined.Museum
-import androidx.compose.material.icons.outlined.Route
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.Share
-import androidx.compose.material.icons.outlined.ShareLocation
-import androidx.compose.material.icons.outlined.SwitchAccessShortcut
-import androidx.compose.material.rememberDrawerState
-import androidx.compose.material3.Card
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.ModalDrawerSheet
+import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,21 +68,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberPermissionState
-import com.google.android.gms.location.LocationServices
 import com.google.maps.android.compose.MapType
 import com.utsman.osmandcompose.CameraState
 import com.utsman.osmandcompose.DefaultMapProperties
@@ -95,9 +83,9 @@ import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberOverlayManagerState
-import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
@@ -108,15 +96,14 @@ import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
-import net.streamroutes.sreamroutesapp.navigation.AppScreens
-import net.streamroutes.sreamroutesapp.viewmodel.getAddressInfoFromCoordinates
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.CopyrightOverlay
 
-enum class NavigationOptions{
-    MAIN_SCREEN,
-    PAQUETES_SCREEN,
+enum class RoutesNavigationOptions{
+    HOME_SCREEN,
+    PREMIUM_SCREEN,
     FAST_SCREEN,
     ROUTES_SCREEN,
     TRIP_SCREEN,
@@ -124,11 +111,18 @@ enum class NavigationOptions{
     CHAT_SCREEN,
     UBI_OPTION,
     DOWNLOAD_OPTION,
-    SHARE_OPTION,
+    //SHARE_OPTION,
     CONF_SCREEN,
     HELP_SCREEN,
     PROFILE_SCREEN
 }
+
+data class RoutesNavigationItem(
+    val option: RoutesNavigationOptions,
+    val iconSelected: ImageVector,
+    val iconUnselected: ImageVector,
+    val label: String
+)
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -138,17 +132,16 @@ fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
 
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun Main(myViewModel: MyViewModel, navController: NavController ){
     val context = LocalContext.current
     // variable con todos los valores
 
     var routeScreen by remember {
-        mutableStateOf(NavigationOptions.MAIN_SCREEN)
+        mutableStateOf(RoutesNavigationOptions.HOME_SCREEN)
     }
 
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
     // Variable para almacenar el tipo de mapa actual y su estado
@@ -156,52 +149,62 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
     var currentMapType by remember { mutableStateOf(defaultMapType) }
     var changeMap by remember { mutableStateOf(1) }
 
-    ModalDrawer(
-        drawerState = drawerState,
+    // lista para el menu de opciones
+    val routesNavigationList = listOf(
+        RoutesNavigationItem(RoutesNavigationOptions.HOME_SCREEN, Icons.Filled.Home, Icons.Outlined.Home, "Inicio"),
+        RoutesNavigationItem(RoutesNavigationOptions.PREMIUM_SCREEN, Icons.Filled.MonetizationOn, Icons.Outlined.MonetizationOn, "Paquetes"),
+        RoutesNavigationItem(RoutesNavigationOptions.FAST_SCREEN, Icons.Filled.FlashOn, Icons.Outlined.FlashOn, "Ruta mas rapida"),
+        RoutesNavigationItem(RoutesNavigationOptions.ROUTES_SCREEN, Icons.Filled.DirectionsBus, Icons.Outlined.DirectionsBus, "Rutas de transporte"),
+        RoutesNavigationItem(RoutesNavigationOptions.TRIP_SCREEN, Icons.Filled.Bookmark, Icons.Outlined.Bookmark, "Planifica tu viaje"),
+        RoutesNavigationItem(RoutesNavigationOptions.TURISM_SCREEN, Icons.Filled.Museum, Icons.Outlined.Museum, "Turismo"),
+        RoutesNavigationItem(RoutesNavigationOptions.CHAT_SCREEN, Icons.Filled.ChatBubble, Icons.Outlined.ChatBubble, "Chat general"),
+        RoutesNavigationItem(RoutesNavigationOptions.UBI_OPTION, Icons.Filled.EmergencyShare, Icons.Outlined.EmergencyShare, "Compartir ubicacion"),
+        RoutesNavigationItem(RoutesNavigationOptions.DOWNLOAD_OPTION, Icons.Filled.DownloadForOffline, Icons.Outlined.DownloadForOffline, "Descargar rutas"),
+        RoutesNavigationItem(RoutesNavigationOptions.CONF_SCREEN, Icons.Filled.Settings, Icons.Outlined.Settings, "Configuracion"),
+        RoutesNavigationItem(RoutesNavigationOptions.HELP_SCREEN, Icons.Filled.Help, Icons.Outlined.Help, "Ayuda y soporte"),
+    )
+
+    ModalNavigationDrawer(
         drawerContent = {
-            DrawerBody(
-                navController = navController,
-                myViewModel = myViewModel,
-                scope = scope,
-                drawerState = drawerState
-            ){ item ->
+            AppDrawer(selectedScreen = routeScreen, items = routesNavigationList){ item ->
                 routeScreen = item
+                scope.launch(Dispatchers.IO) {
+                    drawerState.close()
+                }
             }
         },
-        gesturesEnabled = false
+        drawerState = drawerState,
+        //gesturesEnabled = false
     ) {
+        // cuerpo de la navegacion
         Scaffold(
             topBar = {
-                TopBarBody(
-                    myViewModel = myViewModel,
-                    scope = scope,
-                    drawerState = drawerState
-                )
-            },
+                TopBarBody(){
+                    scope.launch(Dispatchers.IO) {
+                        drawerState.open()
+                    }
+                }
+            }
         ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-            ) {
+            Column(modifier = Modifier.padding(paddingValues)) {
                 val cameraState = rememberCameraState {
                     geoPoint = GeoPoint(19.057988677624586, -98.180047630148)
                     zoom = 17.0
                 }
 
                 when(routeScreen){
-                    NavigationOptions.PAQUETES_SCREEN -> SuscripcionScreen()
-                    NavigationOptions.FAST_SCREEN -> FastScreen()
-                    NavigationOptions.ROUTES_SCREEN -> RoutesScreen()
-                    NavigationOptions.TRIP_SCREEN -> TripScreen()
-                    NavigationOptions.TURISM_SCREEN -> TurismScreen()
-                    NavigationOptions.CHAT_SCREEN -> ChatScreen()
+                    RoutesNavigationOptions.PREMIUM_SCREEN -> SuscripcionScreen()
+                    RoutesNavigationOptions.FAST_SCREEN -> FastScreen()
+                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen()
+                    RoutesNavigationOptions.TRIP_SCREEN -> TripScreen()
+                    RoutesNavigationOptions.TURISM_SCREEN -> TurismScreen()
+                    RoutesNavigationOptions.CHAT_SCREEN -> ChatScreen()
                     //NavigationOptions.UBI_OPTION ->
                     //NavigationOptions.DOWNLOAD_OPTION ->
                     //NavigationOptions.SHARE_OPTION ->
-                    NavigationOptions.CONF_SCREEN -> ConfigurationScreen()
-                    NavigationOptions.HELP_SCREEN -> HelpScreen()
-                    NavigationOptions.PROFILE_SCREEN -> ProfileScreen()
+                    RoutesNavigationOptions.CONF_SCREEN -> ConfigurationScreen()
+                    RoutesNavigationOptions.HELP_SCREEN -> HelpScreen()
+                    RoutesNavigationOptions.PROFILE_SCREEN -> ProfileScreen()
                     else -> MapBody(cameraPositionState = cameraState)
                 }
             }
@@ -209,55 +212,85 @@ fun Main(myViewModel: MyViewModel, navController: NavController ){
     }
 }
 
+@Composable
+fun AppDrawer(
+    selectedScreen: RoutesNavigationOptions,
+    items: List<RoutesNavigationItem>,
+    onChangeScreen: (RoutesNavigationOptions) -> Unit
+) {
+    ModalDrawerSheet {
+        DrawerHeader(modifier = Modifier){
+            onChangeScreen(RoutesNavigationOptions.PROFILE_SCREEN)
+        }
+        
+        Spacer(modifier = Modifier.size(16.dp))
+        
+        items.forEach { item ->
+            NavigationDrawerItem(
+                label = { Text(text = item.label) },
+                selected = selectedScreen == item.option,
+                icon = {
+                    Icon(
+                        imageVector = if (selectedScreen == item.option) item.iconSelected else item.iconUnselected,
+                        contentDescription = "icono de ${item.label}"
+                    )
+                },
+                onClick = { onChangeScreen(item.option) }
+            )
+        }
+    }
+}
+
+@Composable
+fun DrawerHeader(
+    modifier: Modifier,
+    onClick: () -> Unit
+) {
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.Start,
+        modifier = modifier
+            .background(colorScheme.secondary)
+            .padding(15.dp)
+            .fillMaxWidth()
+            .clickable { onClick() }
+    ) {
+
+        Image(
+            painterResource(id = R.drawable.ic_launcher_background),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = modifier
+                .size(70.dp)
+                .clip(CircleShape)
+        )
+        Spacer(modifier = Modifier.padding(5.dp))
+
+        Text(
+            text = "Cristian Torres",
+            textAlign = TextAlign.Center,
+            style = typography.bodyLarge,
+            color = colorScheme.onPrimary,
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    scope: CoroutineScope,
-    drawerState: DrawerState
-) {
+private fun TopBarBody(openDrawer: () -> Unit) {
     TopAppBar(
         title = {
-            Text(
-                text = myViewModel.languageType()[172]
-            )
+            Text(text = "Ciudad")
         },
         navigationIcon = {
-            IconButton(
-                onClick = {
-                    scope.launch {
-                        drawerState.open()
-                    }
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Menu,
-                    contentDescription = "Abrir el menu de opciones"
-                )
+            IconButton(onClick = { openDrawer() }) {
+                Icon(imageVector = Icons.Outlined.Menu, contentDescription = "Icono de menu")
             }
-        },
-        actions = {
-            IconButton(
-                onClick = {
-                    myViewModel.idioma = if (myViewModel.idioma == 1) 0 else 1
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.GTranslate,
-                    contentDescription = "Cambiar el idioma"
-                )
-            }
-        },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = colorScheme.primary,
-            titleContentColor = colorScheme.onPrimary,
-            navigationIconContentColor = colorScheme.onPrimary,
-            actionIconContentColor = colorScheme.onPrimary
-        )
+        }
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.Q)
+/*@RequiresApi(Build.VERSION_CODES.Q)
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun DrawerBody(
@@ -265,7 +298,7 @@ fun DrawerBody(
     myViewModel: MyViewModel,
     scope: CoroutineScope,
     drawerState: DrawerState,
-    changeScreen: (NavigationOptions) -> Unit
+    changeScreen: (RoutesNavigationOptions) -> Unit
 ) {
     val context = LocalContext.current
 
@@ -315,12 +348,12 @@ fun DrawerBody(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         // header perfil
-        HeaderProfileMenu(
+        *//*HeaderProfileMenu(
             navController = navController,
             scope = scope,
             drawerState = drawerState,
             changeScreen = changeScreen
-        )
+        )*//*
 
         // cuerpo opciones del menu
         Column(
@@ -362,28 +395,28 @@ fun DrawerBody(
                 text = myViewModel.languageType()[304],
                 icon = Icons.Outlined.SwitchAccessShortcut
             ) {
-                changeScreen(NavigationOptions.FAST_SCREEN)
+                changeScreen(RoutesNavigationOptions.FAST_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType().get(167),
                 icon = Icons.Outlined.DirectionsBus
             ) {
-                changeScreen(NavigationOptions.ROUTES_SCREEN)
+                changeScreen(RoutesNavigationOptions.ROUTES_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType().get(164),
                 icon = Icons.Outlined.Route
             ) {
-                changeScreen(NavigationOptions.TRIP_SCREEN)
+                changeScreen(RoutesNavigationOptions.TRIP_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType()[305],
                 icon = Icons.Outlined.Museum
             ) {
-                changeScreen(NavigationOptions.TURISM_SCREEN)
+                changeScreen(RoutesNavigationOptions.TURISM_SCREEN)
             }
 
             // funciones extra
@@ -399,7 +432,7 @@ fun DrawerBody(
                 text = myViewModel.languageType()[306],
                 icon = Icons.Outlined.Chat,
             ) {
-                changeScreen(NavigationOptions.CHAT_SCREEN)
+                changeScreen(RoutesNavigationOptions.CHAT_SCREEN)
             }
 
             DrawerItem(
@@ -462,12 +495,12 @@ fun DrawerBody(
                 context.startActivity(shareIntent)
             }
 
-            /*DrawerItem(
+            *//*DrawerItem(
                 text = myViewModel.languageType().get(170),
                 icon = Icons.Outlined.StarRate
             ) {
                 navController.navigate(AppScreens.ValoranoScreen.route)
-            }*/
+            }*//*
 
             // configuracion y soporte
 
@@ -483,93 +516,18 @@ fun DrawerBody(
                 text = myViewModel.languageType().get(156),
                 icon = Icons.Outlined.Settings
             ) {
-                changeScreen(NavigationOptions.CONF_SCREEN)
+                changeScreen(RoutesNavigationOptions.CONF_SCREEN)
             }
 
             DrawerItem(
                 text = myViewModel.languageType().get(152),
                 icon = Icons.Outlined.HelpOutline
             ) {
-                changeScreen(NavigationOptions.HELP_SCREEN)
+                changeScreen(RoutesNavigationOptions.HELP_SCREEN)
             }
         }
     }
-}
-
-@Composable
-fun HeaderProfileMenu(
-    navController: NavController,
-    scope: CoroutineScope,
-    drawerState: DrawerState,
-    changeScreen: (NavigationOptions) -> Unit
-) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(Color(0xFFE8CF41), Color(0xFFE8AA42))
-                ),
-                RoundedCornerShape(bottomEnd = 8.dp, bottomStart = 8.dp)
-            )
-            .clickable {
-                changeScreen(NavigationOptions.PROFILE_SCREEN)
-            }
-
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(PaddingValues(16.dp))
-        ) {
-            // imagen y boton de regresar
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_launcher_background),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .clip(RoundedCornerShape(100))
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                IconButton(
-                    onClick = {
-                        scope.launch {
-                            drawerState.close()
-                        }
-                    }
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.KeyboardArrowLeft,
-                        contentDescription = null,
-                        tint = colorScheme.onTertiary
-                    )
-                }
-
-            }
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            // nombre de usuario
-            Text(
-                text = "Cristian Alexis Torres Zavala",
-                style = typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = colorScheme.onTertiary
-            )
-            Text(
-                text = "s20120154@alumnos.itsur.edu.mx",
-                style = typography.bodySmall,
-                color = colorScheme.onTertiary
-            )
-        }
-    }
-}
+}*/
 
 @Composable
 private fun MapBody(
@@ -599,86 +557,7 @@ private fun MapBody(
     }
 }
 
-@Composable
-private fun BoxOption(
-    img: Any,
-    desc: String? = null,
-    onBackground: Color,
-    modifier: Modifier
-) {
-    Card {
-        Row(
-            modifier = modifier,
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ){
-            when (img) {
-                is Painter -> {
-                    Image(
-                        painter = img,
-                        contentDescription = desc,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(35.dp)
-                    )
-                }
-                is ImageVector -> {
-                    Icon(
-                        imageVector = img,
-                        contentDescription = desc,
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(35.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun DrawerItem(
-    text: String,
-    icon: ImageVector,
-    selected: Boolean = false,
-    onItemClick: () -> Unit
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(60.dp)
-            .clickable(onClick = onItemClick),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Start
-    ){
-        Spacer(modifier = Modifier.width(32.dp))
-
-        Icon(imageVector = icon, contentDescription = text)
-
-        Spacer(modifier = Modifier.width(16.dp))
-
-        Text(
-            text = text,
-            style = typography.bodyLarge
-        )
-    }
-}
-
 ///////// SHARE SHEET ////////
-
-// hoja para compartir la aplicacion (pagina)
-fun getShareApp(
-    myViewModel: MyViewModel
-) : Intent{
-    val shareApp: Intent = Intent().apply {
-        action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(34))
-        type = "text/plain"
-        putExtra(Intent.EXTRA_TEXT, "https://streamroutes.com")
-        type = "text/plain"
-    }
-    return shareApp
-}
 
 // hoja para compartir la ubicacion
 fun getShareUbi(
@@ -698,22 +577,6 @@ fun getShareUbi(
 }
 
 ///////// FUNCIONES ////////
-
-// funcion para saber si estas contetado a internet
-fun isInternetAvailable(
-    context: Context
-): Boolean {
-    val connectivityManager =
-        context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager?
-    connectivityManager?.let {
-        val networkCapabilities = it.activeNetwork ?: return false
-        val activeNetwork =
-            it.getNetworkCapabilities(networkCapabilities) ?: return false
-
-        return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-    }
-    return false
-}
 
 private fun startDownload(
     context: Context,

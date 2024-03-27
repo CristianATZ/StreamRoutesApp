@@ -34,8 +34,8 @@ enum class ParkingNavigationOptions {
 
 data class NavigationItem(
     val option: ParkingNavigationOptions,
-    val iconSelected: ImageVector,
     val iconUnselected: ImageVector,
+    val iconSelected: ImageVector,
     val label: String
 )
 
@@ -87,7 +87,7 @@ fun ParkingBottomBar(
                 onClick = { onChangeScreen(item.option) },
                 icon = {
                     Icon(
-                        imageVector = if (selectedScreen != item.option) item.iconSelected else item.iconUnselected,
+                        imageVector = if (selectedScreen == item.option) item.iconSelected else item.iconUnselected,
                         contentDescription = "icono de ${item.label}"
                     )
                 },
