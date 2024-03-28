@@ -64,12 +64,14 @@ import net.streamroutes.sreamroutesapp.Dialogs.UserDialogEdit
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.ProfileViewModel
 
 data class DataInfoItem(val title: String, val inf: String)
 
 @Composable
 fun ProfileScreen(
-    myViewModel: MyViewModel = MyViewModel()
+    profileViewModel: ProfileViewModel,
+    myViewModel: MyViewModel
 ) {
     Column(
         modifier = Modifier
@@ -83,18 +85,15 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeaderProfile()
-
             FeaturedProfile(myViewModel)
-
             FooterProfile(myViewModel)
         }
     }
 }
 
 @Composable
-fun FooterProfile(
- myViewModel: MyViewModel
-) {
+fun FooterProfile(myViewModel: MyViewModel) {
+
     var user by remember {
         mutableStateOf(false)
     }
@@ -106,6 +105,8 @@ fun FooterProfile(
     var seguridad by remember {
         mutableStateOf(false)
     }
+
+
 
     var userInfo by remember {
         mutableStateOf(
@@ -121,7 +122,7 @@ fun FooterProfile(
     var secInfo by remember {
         mutableStateOf(
             listOf(
-                DataInfoItem(myViewModel.languageType().get(103),myViewModel.languageType().get(151)),
+                DataInfoItem(myViewModel.languageType().get(103), myViewModel.languageType().get(151)),
                 DataInfoItem(myViewModel.languageType().get(148), myViewModel.languageType().get(86)),
                 DataInfoItem(myViewModel.languageType().get(106), myViewModel.languageType().get(89)),
                 DataInfoItem(myViewModel.languageType().get(143), myViewModel.languageType().get(89))

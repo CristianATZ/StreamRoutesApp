@@ -23,9 +23,7 @@ enum class Notification {
 
 data class ConfigurationUiState (
     // conf
-    val city: String = "",
-    val language: Int,
-    val theme: Boolean,
+    val city: String = "Uriangato",
 
     // map
     val stops: Boolean,

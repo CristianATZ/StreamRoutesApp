@@ -180,11 +180,13 @@ fun Main(mainViewModel: MainViewModel, navController: NavController ){
         // cuerpo de la navegacion
         Scaffold(
             topBar = {
-                TopBarBody(){
-                    scope.launch(Dispatchers.IO) {
-                        drawerState.open()
+                //if(routeScreen.equals(RoutesNavigationOptions.HOME_SCREEN)){
+                    TopBarBody(){
+                        scope.launch(Dispatchers.IO) {
+                            drawerState.open()
+                        }
                     }
-                }
+                //}
             }
         ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
