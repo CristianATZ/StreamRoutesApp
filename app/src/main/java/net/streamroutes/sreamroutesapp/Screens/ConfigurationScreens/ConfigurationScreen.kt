@@ -111,27 +111,27 @@ private fun Options(
 
 @Composable
 private fun CityOptions() {
-    // Composable for City Options
+    Text(text = "Elegir la ciudad")
 }
 
 @Composable
 private fun NotificationOptions() {
-    // Composable for Notification Options
+    Text(text = "Elegir los ajustes de las notificaciones")
 }
 
 @Composable
 private fun MapOptions() {
-    // Composable for Map Options
+    Text(text = "Elegir los ajustes del mapa")
 }
 
 @Composable
 private fun PrivacyOptions() {
-    // Composable for Privacy Options
+    Text(text = "Elegir los ajustes de privacidad")
 }
 
 @Composable
 private fun LanguageOptions() {
-    // Composable for Language Options
+    Text(text = "Elegir el idioma de la aplicacion")
 }
 
 @Composable
