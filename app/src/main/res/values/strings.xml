@@ -143,6 +143,19 @@
     <string name="staroff">.</string>
     <string name="staron">.</string>
 
+
+    <string name="lblTransporteTitle">Transporte</string>
+    <string name="lblEstacionamientoTitle">Estacionamiento</string>
+
+    // configuration strings
+    <string name="lblCiudad">Ciudad</string>
+    <string name="lblNoti">Notificaciones</string>
+    <string name="lblMapa">Mapa</string>
+    <string name="lblPrivacidad">Privacidad</string>
+    <string name="lblIdioma">Idioma</string>
+    <string name="lblTema">Tema</string>
+
+
     //////////////////////////////////////////////////////////
     MAPA
     //////////////////////////////////////////////////////////

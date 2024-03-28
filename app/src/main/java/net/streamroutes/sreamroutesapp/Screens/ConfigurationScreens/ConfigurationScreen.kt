@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -11,13 +12,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -25,75 +22,44 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.Dialogs.ChangeCityDialog
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
-import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 
 data class ConfItem(
-    val name: String,
-    val action: () -> Unit
+    @StringRes val name: Int,
+    val configuration: ConfigurationSelection,
+    val composable: @Composable () -> Unit
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
+enum class ConfigurationSelection{
+    NONE,
+    CITY,
+    NOTIFICATIONS,
+    MAP,
+    PRIVACY,
+    LANGUAGE,
+    THEME
+}
+
 @Composable
-fun ConfigurationScreen(myViewModel: MyViewModel = MyViewModel()){
-
-    var dialog by remember {
-        mutableStateOf(false)
+fun ConfigurationScreen(){
+    var selection by remember {
+        mutableStateOf(ConfigurationSelection.NONE)
     }
 
-    if(dialog) {
-        ChangeCityDialog(){
-            dialog = !dialog
-        }
-    }
-
-    val conf_items = listOf(
-        ConfItem(
-            name = myViewModel.languageType().get(217),
-            action = {
-                dialog = !dialog
-            }
-        ),
-        ConfItem(
-            name = myViewModel.languageType().get(218),
-            action = {
-
-            }
-        ),
-        ConfItem(
-            name = myViewModel.languageType().get(219),
-            action = {
-
-            }
-        ),
-        ConfItem(
-            name = myViewModel.languageType().get(220),
-            action = {
-
-            }
-        ),
-        ConfItem(
-            name = myViewModel.languageType()[358],
-            action = {
-                myViewModel.idioma = if (myViewModel.idioma == 0) 1 else 0
-            }
-        ),
-        ConfItem(
-            name = if(!myViewModel.tema) myViewModel.languageType()[359] else myViewModel.languageType()[360],
-            action = {
-                myViewModel.tema = !myViewModel.tema
-            }
-        ),
+    val confItems = listOf(
+        ConfItem(name = R.string.lblCiudad, configuration = ConfigurationSelection.CITY) { CityOptions() },
+        ConfItem(name = R.string.lblNoti, configuration = ConfigurationSelection.NOTIFICATIONS) { NotificationOptions() },
+        ConfItem(name = R.string.lblMapa, configuration = ConfigurationSelection.MAP) { MapOptions() },
+        ConfItem(name = R.string.lblPrivacidad, configuration = ConfigurationSelection.PRIVACY) { PrivacyOptions() },
+        ConfItem(name = R.string.lblIdioma, configuration = ConfigurationSelection.LANGUAGE) { LanguageOptions() },
+        ConfItem(name = R.string.lblTema, configuration = ConfigurationSelection.THEME) { ThemeOptions() }
     )
 
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel) },
+        topBar = { TopBarConfiguration() },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -101,9 +67,16 @@ fun ConfigurationScreen(myViewModel: MyViewModel = MyViewModel()){
                 .padding(paddingValues),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            conf_items.forEach(){ item ->
-                Options(text = item.name) {
-                    item.action()
+            confItems.forEach { item ->
+                Options(name = item.name) {
+                    selection = if(selection == item.configuration)
+                        ConfigurationSelection.NONE
+                    else
+                        item.configuration
+                }
+
+                if(selection == item.configuration){
+                    item.composable()
                 }
             }
         }
@@ -112,37 +85,13 @@ fun ConfigurationScreen(myViewModel: MyViewModel = MyViewModel()){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel
-) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = myViewModel.languageType().get(216),
-                style = typography.titleLarge
-            )
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = {  }
-            ) {
-                Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones"
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
+fun TopBarConfiguration() {
+    CenterAlignedTopAppBar(title = { Text(text = "Configuracion") })
 }
 
 @Composable
 private fun Options(
-    text: String,
+    @StringRes name: Int,
     onClick: () -> Unit
 ) {
     Row(
@@ -154,8 +103,38 @@ private fun Options(
     ) {
         Spacer(modifier = Modifier.size(16.dp))
         Text(
-            text = text, // texto
+            text = stringResource(id = name), // texto
             style = typography.bodyLarge
         )
     }
+}
+
+@Composable
+private fun CityOptions() {
+    // Composable for City Options
+}
+
+@Composable
+private fun NotificationOptions() {
+    // Composable for Notification Options
+}
+
+@Composable
+private fun MapOptions() {
+    // Composable for Map Options
+}
+
+@Composable
+private fun PrivacyOptions() {
+    // Composable for Privacy Options
+}
+
+@Composable
+private fun LanguageOptions() {
+    // Composable for Language Options
+}
+
+@Composable
+fun ThemeOptions() {
+    Text(text = "Elegir tema claro u oscuro")
 }

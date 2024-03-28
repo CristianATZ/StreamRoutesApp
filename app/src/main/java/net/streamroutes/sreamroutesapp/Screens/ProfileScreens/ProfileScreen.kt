@@ -1,5 +1,7 @@
 package net.streamroutes.sreamroutesapp.Screens.ProfileScreens
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.spring
@@ -68,10 +70,11 @@ import net.streamroutes.sreamroutesapp.viewmodel.ProfileViewModel
 
 data class DataInfoItem(val title: String, val inf: String)
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel,
-    myViewModel: MyViewModel
+    profileViewModel: ProfileViewModel = ProfileViewModel(),
+    myViewModel: MyViewModel = MyViewModel()
 ) {
     Column(
         modifier = Modifier

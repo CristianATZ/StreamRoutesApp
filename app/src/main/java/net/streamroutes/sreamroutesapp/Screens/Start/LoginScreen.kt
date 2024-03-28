@@ -177,7 +177,7 @@ fun Login(
         // boton ingresar
         Button(
             onClick = {
-                navController.navigate(AppScreens.MainScreen.route)
+                navController.navigate(AppScreens.SelectOptionScreen.route)
             },
             shape = RoundedCornerShape(16),
             colors = ButtonDefaults.buttonColors(

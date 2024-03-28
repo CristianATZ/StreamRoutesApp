@@ -8,24 +8,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
-import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.MapOptionsScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.NotificationsScreen
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.PrivacityScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpAboutAppScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
-import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpScreen
 import net.streamroutes.sreamroutesapp.ui.screens.MainScreen
 import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
-import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ChatScreen
-import net.streamroutes.sreamroutesapp.Screens.ProfileScreens.ProfileScreen
-import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
-import net.streamroutes.sreamroutesapp.Screens.MenuScreens.SuscripcionScreen
-import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
-import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
-import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LanguageScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
@@ -33,6 +24,7 @@ import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 import net.streamroutes.sreamroutesapp.ui.screens.MainParking
+import net.streamroutes.sreamroutesapp.ui.screens.SelectOptionScreen
 import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
@@ -119,6 +111,10 @@ fun AppNavigation(
 
         composable(AppScreens.MainParking.route){
             MainParking()
+        }
+
+        composable(AppScreens.SelectOptionScreen.route){
+            SelectOptionScreen(NavController)
         }
     }
 }

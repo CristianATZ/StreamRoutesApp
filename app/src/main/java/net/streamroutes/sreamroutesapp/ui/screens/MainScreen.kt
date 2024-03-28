@@ -283,7 +283,7 @@ fun DrawerHeader(
 private fun TopBarBody(openDrawer: () -> Unit) {
     TopAppBar(
         title = {
-            Text(text = "Ciudad")
+            //Text(text = "Ciudad")
         },
         navigationIcon = {
             IconButton(onClick = { openDrawer() }) {
