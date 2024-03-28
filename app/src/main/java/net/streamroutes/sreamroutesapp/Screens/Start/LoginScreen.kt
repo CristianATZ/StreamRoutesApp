@@ -60,11 +60,6 @@ fun Login(
     loginViewModel: LoginViewModel,
     navController: NavController
 ){
-    /*
-    var telefono by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var passwordVisibility by remember { mutableStateOf(true) }
-     */
 
     Column(
         modifier = Modifier

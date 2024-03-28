@@ -6,6 +6,6 @@ class ChatViewModel() : ViewModel() {
 
 }
 
-data class ChatState(
+data class ChatUiState(
     val Messages : List<String>
 )

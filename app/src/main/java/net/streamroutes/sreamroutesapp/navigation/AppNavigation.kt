@@ -33,13 +33,17 @@ import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
 import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 import net.streamroutes.sreamroutesapp.ui.screens.MainParking
+import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun AppNavigation(
     myViewModel: MyViewModel,
+    mainViewModel: MainViewModel = viewModel(),
+    changeViewModel: ChangeViewModel = viewModel(),
     loginViewModel: LoginViewModel = viewModel()
 ) {
     val NavController = rememberNavController()
@@ -53,7 +57,7 @@ fun AppNavigation(
         }
         // pantalla principal
         composable(AppScreens.MainScreen.route){
-            MainScreen(myViewModel,NavController)
+            MainScreen(mainViewModel, NavController)
         }
         // registrar pantalla
         composable(AppScreens.RegistrationScreen.route){
@@ -65,7 +69,7 @@ fun AppNavigation(
         }
         // cambiar contraseña pantalla
         composable(AppScreens.ChangeScreen.route){
-            ChangeScreen(myViewModel,NavController)
+            ChangeScreen(changeViewModel, NavController)
         }
         // inicio de sesion pantalla
         composable(AppScreens.LoginScreen.route){

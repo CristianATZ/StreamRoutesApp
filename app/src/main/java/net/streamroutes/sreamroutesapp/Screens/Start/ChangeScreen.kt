@@ -39,6 +39,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -46,26 +47,30 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
 
 @Composable
-fun ChangeScreen(myViewModel: MyViewModel, navController: NavController){
-    Change(myViewModel,navController)
+fun ChangeScreen(changeViewModel: ChangeViewModel, navController: NavController){
+    Change(changeViewModel, navController)
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun Change(myViewModel: MyViewModel, navController: NavController ){
+fun Change(changeViewModel: ChangeViewModel, navController: NavController ){
+    /*
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(true) }
     var confirmPass by remember { mutableStateOf("") }
     var confirmPassVisibility by remember { mutableStateOf(true) }
+    */
+
 
     val focusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
 
 
     Scaffold(
-        topBar = { TopBar(navController,myViewModel) }
+        topBar = { TopBar(navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -85,11 +90,11 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
 
             // contrasenia
             OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
+                value = changeViewModel.password,
+                onValueChange = { changeViewModel.updatePassword(it) },
                 label = {
                     Text(
-                        text = myViewModel.languageType().get(292),
+                        text = stringResource(id = R.string.password_profile),
                         style = MaterialTheme.typography.titleMedium
                     )
                 },
@@ -97,11 +102,11 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            passwordVisibility = !passwordVisibility
+                            changeViewModel.updatePasswordVisibility(!changeViewModel.passwordVisibility)
                         }
                     ) {
                         Icon(
-                            painter = if (!passwordVisibility)
+                            painter = if (!changeViewModel.passwordVisibility)
                                 painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                             contentDescription = "visibilidad contraseña",
                             modifier = Modifier
@@ -109,13 +114,13 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
                         )
                     }
                 },
-                visualTransformation = if (passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+                visualTransformation = if (changeViewModel.passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Next
                 ),
                 keyboardActions = KeyboardActions(
                     onNext = {
-                        passwordVisibility = true
+                        changeViewModel.updatePasswordVisibility(true)
                         focusManager.moveFocus(FocusDirection.Down)
                     }
                 ),
@@ -127,11 +132,11 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
 
             // confimar contrasenia
             OutlinedTextField(
-                value = confirmPass,
-                onValueChange = { confirmPass = it },
+                value = changeViewModel.confirmPass,
+                onValueChange = { changeViewModel.updateConfirmPass(it) },
                 label = {
                     Text(
-                        text = myViewModel.languageType().get(293),
+                        text = stringResource(id = R.string.confirm_password),
                         style = MaterialTheme.typography.titleMedium
                     )
                 },
@@ -139,11 +144,11 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
                 trailingIcon = {
                     IconButton(
                         onClick = {
-                            confirmPassVisibility = !confirmPassVisibility
+                            changeViewModel.updateConfirmPassVisibility(!changeViewModel.confirmPassVisibility)
                         }
                     ) {
                         Icon(
-                            painter = if (!confirmPassVisibility)
+                            painter = if (!changeViewModel.confirmPassVisibility)
                                 painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                             contentDescription = "visibilidad contraseña",
                             modifier = Modifier
@@ -151,13 +156,13 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
                         )
                     }
                 },
-                visualTransformation = if (confirmPassVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+                visualTransformation = if (changeViewModel.confirmPassVisibility) PasswordVisualTransformation() else VisualTransformation.None,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        confirmPassVisibility = true
+                        changeViewModel.updateConfirmPassVisibility(true)
                         keyboardController?.hide()
                         navController.navigate(AppScreens.LoginScreen.route)
                     }
@@ -181,7 +186,7 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
                     .height(50.dp)
             ) {
                 Text(
-                    text = myViewModel.languageType().get(295),
+                    text = stringResource(id = R.string.change),
                     style = MaterialTheme.typography.bodyLarge
                 )
             }
@@ -196,7 +201,7 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
                     .height(50.dp)
             ) {
                 Text(
-                    text = myViewModel.languageType()[301],
+                    text = stringResource(id = R.string.cancel),
                     style = MaterialTheme.typography.titleSmall
                 )
             }
@@ -207,13 +212,12 @@ fun Change(myViewModel: MyViewModel, navController: NavController ){
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    navController: NavController,
-    myViewModel: MyViewModel
+    navController: NavController
 ) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType().get(291),
+                text = stringResource(id = R.string.change_password),
                 style = MaterialTheme.typography.titleLarge
             )
         },

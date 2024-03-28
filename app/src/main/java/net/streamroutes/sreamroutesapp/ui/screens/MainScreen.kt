@@ -96,6 +96,7 @@ import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
+import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -126,14 +127,14 @@ data class RoutesNavigationItem(
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun MainScreen(myViewModel: MyViewModel, navController: NavController) {
-    Main(myViewModel,navController)
+fun MainScreen(mainViewModel: MainViewModel, navController: NavController) {
+    Main(mainViewModel, navController)
 }
 
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun Main(myViewModel: MyViewModel, navController: NavController ){
+fun Main(mainViewModel: MainViewModel, navController: NavController ){
     val context = LocalContext.current
     // variable con todos los valores
 
@@ -222,9 +223,9 @@ fun AppDrawer(
         DrawerHeader(modifier = Modifier){
             onChangeScreen(RoutesNavigationOptions.PROFILE_SCREEN)
         }
-        
+
         Spacer(modifier = Modifier.size(16.dp))
-        
+
         items.forEach { item ->
             NavigationDrawerItem(
                 label = { Text(text = item.label) },

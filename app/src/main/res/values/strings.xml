@@ -116,6 +116,14 @@
 
 
     //////////////////////////////////////////////////////////
+    CHANGE PASSWORD SCREEN
+    //////////////////////////////////////////////////////////
+    <string name="change_password">Cambiar contraseña</string>
+    <string name="confirm_password">Confirmar contraseña</string>
+    <string name="change">Cambiar</string>
+    <string name="cancel">Cancelar</string>
+
+    //////////////////////////////////////////////////////////
         ´CHANGE CITY SCREEN
     //////////////////////////////////////////////////////////
     <string name="back">.</string>
