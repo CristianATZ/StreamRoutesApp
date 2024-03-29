@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -50,7 +52,7 @@ data class NotificationItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationsScreen(myViewModel: MyViewModel, navController: NavController){
+fun NotificationsScreen(myViewModel: MyViewModel = MyViewModel()){
     var noticias by remember { mutableStateOf(true) }
     var alertas by remember { mutableStateOf(true) }
     var suscripcion by remember { mutableStateOf(true) }
@@ -86,80 +88,46 @@ fun NotificationsScreen(myViewModel: MyViewModel, navController: NavController){
         }
     }
 
-    Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) }
-    ) { paddingValues ->
-        // cuerpo
-        Column(
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+
+        // notificaciones push
+        Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+                .fillMaxWidth()
+                .height(70.dp)
+                .clickable {
+                    dialogo = !dialogo
+                },
+            verticalAlignment = Alignment.CenterVertically
         ) {
-
-            // notificaciones push
-            Row(
+            Spacer(modifier = Modifier.size(16.dp))
+            // textos
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .clickable {
-                        dialogo = !dialogo
-                    },
-                verticalAlignment = Alignment.CenterVertically
+                    .fillMaxWidth(0.75f)
             ) {
-                Spacer(modifier = Modifier.size(16.dp))
-                // textos
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.75f)
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(222), // texto
-                        style = typography.bodyLarge
-                    )
-                    Text(
-                        text = myViewModel.languageType().get(223), // texto
-                        style = typography.labelMedium
-                    )
-                }
+                Text(
+                    text = myViewModel.languageType().get(222), // texto
+                    style = typography.bodyLarge
+                )
+                Text(
+                    text = myViewModel.languageType().get(223), // texto
+                    style = typography.labelMedium
+                )
             }
+        }
 
-            notification_items.forEach(){ item ->
-                OptionSwitch(item = item, value = item.value) {
-                    item.action()
-                }
+        notification_items.forEach(){ item ->
+            OptionSwitch(item = item, value = item.value) {
+                item.action()
             }
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
-) {
-    // top app bar
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = myViewModel.languageType().get(222),
-                style = typography.titleLarge
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
-                Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de configuraciones"
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
 }
 
 @Composable

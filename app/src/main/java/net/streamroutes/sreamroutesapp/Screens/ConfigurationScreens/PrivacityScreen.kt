@@ -4,9 +4,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -41,7 +44,7 @@ data class PrivacyItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrivacityScreen(myViewModel: MyViewModel, navController: NavController){
+fun PrivacityScreen(myViewModel: MyViewModel = MyViewModel()){
 
     // variables globales
     var localizacion by remember { mutableStateOf(true) }
@@ -84,47 +87,16 @@ fun PrivacityScreen(myViewModel: MyViewModel, navController: NavController){
         )
     )
 
-    Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) },
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-        ) {
-            privacy_items.forEach(){ item ->
-                Options(item = item)
-            }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        privacy_items.forEach(){ item ->
+            Options(item = item)
         }
     }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
-) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = myViewModel.languageType().get(245),
-                style = typography.titleLarge
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
-                Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de configuraciones",
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
 }
 
 @Composable

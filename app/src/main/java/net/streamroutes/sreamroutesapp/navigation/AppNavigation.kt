@@ -81,17 +81,17 @@ fun AppNavigation(
 
         // MAPA OPCIONES
         composable(AppScreens.MapOptionsScreen.route){
-            MapOptionsScreen(myViewModel,NavController)
+            MapOptionsScreen()
         }
 
         // NOTIFICACIONES
         composable(AppScreens.NotificationsScreen.route){
-            NotificationsScreen(myViewModel,NavController)
+            NotificationsScreen(myViewModel)
         }
 
         // PRIVACIDAD
         composable(AppScreens.PrivacityScreen.route){
-            PrivacityScreen(myViewModel,NavController)
+            PrivacityScreen(myViewModel)
         }
 
         // VALORANOS SCREEN

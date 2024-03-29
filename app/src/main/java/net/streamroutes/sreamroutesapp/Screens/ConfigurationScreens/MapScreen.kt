@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -44,7 +46,7 @@ data class MapItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapOptionsScreen(myViewModel: MyViewModel, navController: NavController){
+fun MapOptionsScreen(myViewModel: MyViewModel = MyViewModel()){
     var paradas by remember { mutableStateOf(true) }
     var terminales by remember { mutableStateOf(true) }
     var ubicacion by remember { mutableStateOf(true) }
@@ -84,71 +86,67 @@ fun MapOptionsScreen(myViewModel: MyViewModel, navController: NavController){
         ),
     )
 
-    Scaffold(
-        topBar = { TopBarBody(myViewModel,navController) }
-    ) { paddingValues ->
-        // cuerpo
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-        ) {
-            HeaderMarcadores(myViewModel)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(300.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        HeaderMarcadores(myViewModel)
 
-            map_items.forEach(){ item ->
-                OptionSwitch(
-                    item = item
+        map_items.forEach(){ item ->
+            OptionSwitch(
+                item = item
+            )
+        }
+
+        Spacer(modifier = Modifier.size(32.dp))
+
+        HeaderMapOptions(myViewModel)
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(70.dp)
+                .clickable {
+
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Column {
+                Text(
+                    text = myViewModel.languageType()[365], // texto
+                    style = typography.bodyLarge
+                )
+                Text(
+                    text = myViewModel.languageType()[366], // texto
+                    style = typography.labelMedium
                 )
             }
+        }
 
-            Spacer(modifier = Modifier.size(32.dp))
-            
-            HeaderMapOptions(myViewModel)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(70.dp)
+                .clickable {
 
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .clickable {
+                },
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.size(16.dp))
 
-                    },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.size(16.dp))
-
-                Column {
-                    Text(
-                        text = myViewModel.languageType()[365], // texto
-                        style = typography.bodyLarge
-                    )
-                    Text(
-                        text = myViewModel.languageType()[366], // texto
-                        style = typography.labelMedium
-                    )
-                }
-            }
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(70.dp)
-                    .clickable {
-
-                    },
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.size(16.dp))
-
-                Column {
-                    Text(
-                        text = myViewModel.languageType()[367], // texto
-                        style = typography.bodyLarge
-                    )
-                    Text(
-                        text = myViewModel.languageType()[368], // texto
-                        style = typography.labelMedium
-                    )
-                }
+            Column {
+                Text(
+                    text = myViewModel.languageType()[367], // texto
+                    style = typography.bodyLarge
+                )
+                Text(
+                    text = myViewModel.languageType()[368], // texto
+                    style = typography.labelMedium
+                )
             }
         }
     }
@@ -180,36 +178,6 @@ fun HeaderMarcadores(
     )
 
     Divider()
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-    navController: NavController
-) {
-    // top app bar
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = myViewModel.languageType().get(234),
-                style = typography.titleLarge
-            )
-        },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate(AppScreens.ConfigurationScreen.route) }) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft,
-                    contentDescription = "Te enviara al menu de configuraciones",
-                )
-            }
-        },
-        colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    )
 }
 
 @Composable

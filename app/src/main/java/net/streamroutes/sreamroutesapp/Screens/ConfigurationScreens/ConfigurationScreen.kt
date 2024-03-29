@@ -116,17 +116,20 @@ private fun CityOptions() {
 
 @Composable
 private fun NotificationOptions() {
-    Text(text = "Elegir los ajustes de las notificaciones")
+    //Text(text = "Elegir los ajustes de las notificaciones")
+    NotificationsScreen()
 }
 
 @Composable
 private fun MapOptions() {
-    Text(text = "Elegir los ajustes del mapa")
+    //Text(text = "Elegir los ajustes del mapa")
+    MapOptionsScreen()
 }
 
 @Composable
 private fun PrivacyOptions() {
-    Text(text = "Elegir los ajustes de privacidad")
+    //Text(text = "Elegir los ajustes de privacidad")
+    PrivacityScreen()
 }
 
 @Composable
