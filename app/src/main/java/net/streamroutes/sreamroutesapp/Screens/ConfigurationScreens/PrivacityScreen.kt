@@ -28,12 +28,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 
 data class PrivacyItem(
     val name: String,
@@ -44,45 +46,48 @@ data class PrivacyItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PrivacityScreen(myViewModel: MyViewModel = MyViewModel()){
+fun PrivacityScreen(configurationViewModel: ConfigurationViewModel){
 
+    /*
     // variables globales
     var localizacion by remember { mutableStateOf(true) }
     var anuncios by remember { mutableStateOf(true) }
     var rutas by remember { mutableStateOf(true) }
     var suscripcion by remember { mutableStateOf(true) }
 
+     */
+
     val privacy_items = listOf(
         PrivacyItem(
-            name = myViewModel.languageType().get(246),
-            desc = myViewModel.languageType().get(247),
-            value = localizacion,
+            name = stringResource(id = R.string.lblLocaliz),
+            desc = stringResource(id = R.string.lblLocalizDescription),
+            value = configurationViewModel.current,
             action = {
-                localizacion = !localizacion
+                configurationViewModel.updateCurrent(!configurationViewModel.current)
             }
         ),
         PrivacyItem(
-            name = myViewModel.languageType().get(248),
-            desc = myViewModel.languageType().get(249),
-            value = anuncios,
+            name = stringResource(id = R.string.lblAnuncios),
+            desc = stringResource(id = R.string.lblAnunciosDescription),
+            value = configurationViewModel.ads,
             action = {
-                anuncios = !anuncios
+                configurationViewModel.updateAds(!configurationViewModel.ads)
             }
         ),
         PrivacyItem(
-            name = myViewModel.languageType().get(250),
-            desc = myViewModel.languageType().get(251),
-            value = rutas,
+            name = stringResource(id = R.string.lblRutas),
+            desc = stringResource(id = R.string.lblRutasDescription),
+            value = configurationViewModel.routes,
             action = {
-                rutas = !rutas
+                configurationViewModel.updateRoutes(!configurationViewModel.routes)
             }
         ),
         PrivacyItem(
-            name = myViewModel.languageType().get(252),
-            desc = myViewModel.languageType().get(253),
-            value = suscripcion,
+            name = stringResource(id = R.string.lblPagoSuscrip),
+            desc = stringResource(id = R.string.lblPagoSuscripDescription),
+            value = configurationViewModel.paymet,
             action = {
-                suscripcion = !suscripcion
+                configurationViewModel.updatePayment(!configurationViewModel.paymet)
             }
         )
     )

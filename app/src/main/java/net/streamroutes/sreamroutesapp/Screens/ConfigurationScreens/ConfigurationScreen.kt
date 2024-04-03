@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 
 data class ConfItem(
     @StringRes val name: Int,
@@ -43,16 +44,16 @@ enum class ConfigurationSelection{
 }
 
 @Composable
-fun ConfigurationScreen(){
+fun ConfigurationScreen(configurationViewModel: ConfigurationViewModel){
     var selection by remember {
         mutableStateOf(ConfigurationSelection.NONE)
     }
 
     val confItems = listOf(
         ConfItem(name = R.string.lblCiudad, configuration = ConfigurationSelection.CITY) { CityOptions() },
-        ConfItem(name = R.string.lblNoti, configuration = ConfigurationSelection.NOTIFICATIONS) { NotificationOptions() },
-        ConfItem(name = R.string.lblMapa, configuration = ConfigurationSelection.MAP) { MapOptions() },
-        ConfItem(name = R.string.lblPrivacidad, configuration = ConfigurationSelection.PRIVACY) { PrivacyOptions() },
+        ConfItem(name = R.string.lblNoti, configuration = ConfigurationSelection.NOTIFICATIONS) { NotificationOptions(configurationViewModel) },
+        ConfItem(name = R.string.lblMapa, configuration = ConfigurationSelection.MAP) { MapOptions(configurationViewModel) },
+        ConfItem(name = R.string.lblPrivacidad, configuration = ConfigurationSelection.PRIVACY) { PrivacyOptions(configurationViewModel) },
         ConfItem(name = R.string.lblIdioma, configuration = ConfigurationSelection.LANGUAGE) { LanguageOptions() },
         ConfItem(name = R.string.lblTema, configuration = ConfigurationSelection.THEME) { ThemeOptions() }
     )
@@ -115,21 +116,21 @@ private fun CityOptions() {
 }
 
 @Composable
-private fun NotificationOptions() {
+private fun NotificationOptions(configurationViewModel: ConfigurationViewModel) {
     //Text(text = "Elegir los ajustes de las notificaciones")
-    NotificationsScreen()
+    NotificationsScreen(configurationViewModel)
 }
 
 @Composable
-private fun MapOptions() {
+private fun MapOptions(configurationViewModel: ConfigurationViewModel) {
     //Text(text = "Elegir los ajustes del mapa")
-    MapOptionsScreen()
+    MapOptionsScreen(configurationViewModel)
 }
 
 @Composable
-private fun PrivacyOptions() {
+private fun PrivacyOptions(configurationViewModel: ConfigurationViewModel) {
     //Text(text = "Elegir los ajustes de privacidad")
-    PrivacityScreen()
+    PrivacityScreen(configurationViewModel)
 }
 
 @Composable

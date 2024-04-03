@@ -29,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -36,6 +37,7 @@ import net.streamroutes.sreamroutesapp.Dialogs.DialogPush
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 
 
 @Preview (showBackground = true)
@@ -52,37 +54,34 @@ data class NotificationItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationsScreen(myViewModel: MyViewModel = MyViewModel()){
-    var noticias by remember { mutableStateOf(true) }
-    var alertas by remember { mutableStateOf(true) }
-    var suscripcion by remember { mutableStateOf(true) }
+fun NotificationsScreen(configurationViewModel: ConfigurationViewModel){
     var dialogo by remember { mutableStateOf(false) }
 
     val notification_items = listOf(
         NotificationItem(
-            name = myViewModel.languageType().get(230),
-            desc = myViewModel.languageType().get(231),
-            value = noticias,
-            action = { noticias = !noticias }
+            name = stringResource(id = R.string.lblAlerts),
+            desc = stringResource(id = R.string.lblAlertsDescription),
+            value = configurationViewModel.alerts,
+            action = { configurationViewModel.updateAlerts(!configurationViewModel.alerts) }
         ),
         NotificationItem(
-            name = myViewModel.languageType().get(232),
-            desc = myViewModel.languageType().get(233),
-            value = alertas,
-            action = { alertas = !alertas }
+            name = stringResource(id = R.string.lblSuscription),
+            desc = stringResource(id = R.string.lblSuscriptionDescription),
+            value = configurationViewModel.suscription,
+            action = { configurationViewModel.updateSuscription(!configurationViewModel.suscription) }
         ),
         NotificationItem(
-            name = myViewModel.languageType().get(234),
-            desc = myViewModel.languageType().get(235),
-            value = suscripcion,
-            action = { suscripcion = !suscripcion }
+            name = stringResource(id = R.string.lblMap),
+            desc = stringResource(id = R.string.lblMapDescription),
+            value = configurationViewModel.map,
+            action = { configurationViewModel.updateMap(!configurationViewModel.map) }
         ),
     )
 
     // presentacion del dialog
     if (dialogo) {
         DialogPush(
-            myViewModel
+            configurationViewModel
         ) {
             dialogo = !dialogo
         }
@@ -112,11 +111,11 @@ fun NotificationsScreen(myViewModel: MyViewModel = MyViewModel()){
                     .fillMaxWidth(0.75f)
             ) {
                 Text(
-                    text = myViewModel.languageType().get(222), // texto
+                    text = stringResource(id = R.string.lblNoti), // texto
                     style = typography.bodyLarge
                 )
                 Text(
-                    text = myViewModel.languageType().get(223), // texto
+                    text = stringResource(id = R.string.lblNotiDescription), // texto
                     style = typography.labelMedium
                 )
             }

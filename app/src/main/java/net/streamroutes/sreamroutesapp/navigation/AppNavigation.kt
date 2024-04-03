@@ -26,6 +26,7 @@ import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
 import net.streamroutes.sreamroutesapp.ui.screens.MainParking
 import net.streamroutes.sreamroutesapp.ui.screens.SelectOptionScreen
 import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
 
@@ -36,7 +37,8 @@ fun AppNavigation(
     myViewModel: MyViewModel,
     mainViewModel: MainViewModel = viewModel(),
     changeViewModel: ChangeViewModel = viewModel(),
-    loginViewModel: LoginViewModel = viewModel()
+    loginViewModel: LoginViewModel = viewModel(),
+    configurationViewModel: ConfigurationViewModel = viewModel()
 ) {
     val NavController = rememberNavController()
 
@@ -49,7 +51,7 @@ fun AppNavigation(
         }
         // pantalla principal
         composable(AppScreens.MainScreen.route){
-            MainScreen(mainViewModel, NavController)
+            MainScreen(mainViewModel, configurationViewModel, NavController)
         }
         // registrar pantalla
         composable(AppScreens.RegistrationScreen.route){
@@ -81,17 +83,17 @@ fun AppNavigation(
 
         // MAPA OPCIONES
         composable(AppScreens.MapOptionsScreen.route){
-            MapOptionsScreen()
+            MapOptionsScreen(configurationViewModel)
         }
 
         // NOTIFICACIONES
         composable(AppScreens.NotificationsScreen.route){
-            NotificationsScreen(myViewModel)
+            NotificationsScreen(configurationViewModel)
         }
 
         // PRIVACIDAD
         composable(AppScreens.PrivacityScreen.route){
-            PrivacityScreen(myViewModel)
+            PrivacityScreen(configurationViewModel)
         }
 
         // VALORANOS SCREEN

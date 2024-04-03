@@ -45,6 +45,7 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MonetizationOn
 import androidx.compose.material.icons.outlined.Museum
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -96,6 +97,7 @@ import net.streamroutes.sreamroutesapp.Screens.Routes.FastScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
+import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -127,14 +129,14 @@ data class RoutesNavigationItem(
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun MainScreen(mainViewModel: MainViewModel, navController: NavController) {
-    Main(mainViewModel, navController)
+fun MainScreen(mainViewModel: MainViewModel, configurationViewModel: ConfigurationViewModel, navController: NavController) {
+    Main(mainViewModel, configurationViewModel, navController)
 }
 
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun Main(mainViewModel: MainViewModel, navController: NavController ){
+fun Main(mainViewModel: MainViewModel, configurationViewModel: ConfigurationViewModel, navController: NavController ){
     val context = LocalContext.current
     // variable con todos los valores
 
@@ -205,7 +207,7 @@ fun Main(mainViewModel: MainViewModel, navController: NavController ){
                     //NavigationOptions.UBI_OPTION ->
                     //NavigationOptions.DOWNLOAD_OPTION ->
                     //NavigationOptions.SHARE_OPTION ->
-                    RoutesNavigationOptions.CONF_SCREEN -> ConfigurationScreen()
+                    RoutesNavigationOptions.CONF_SCREEN -> ConfigurationScreen(configurationViewModel)
                     RoutesNavigationOptions.HELP_SCREEN -> HelpScreen()
                     RoutesNavigationOptions.PROFILE_SCREEN -> ProfileScreen()
                     else -> MapBody(cameraPositionState = cameraState)
@@ -260,7 +262,7 @@ fun DrawerHeader(
     ) {
 
         Image(
-            painterResource(id = R.drawable.ic_launcher_background),
+            painterResource(id = R.drawable.usuario),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = modifier

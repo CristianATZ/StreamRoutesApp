@@ -150,10 +150,42 @@
     // configuration strings
     <string name="lblCiudad">Ciudad</string>
     <string name="lblNoti">Notificaciones</string>
+    <string name="lblNotiDescription">Notificaciones push</string>
     <string name="lblMapa">Mapa</string>
     <string name="lblPrivacidad">Privacidad</string>
     <string name="lblIdioma">Idioma</string>
     <string name="lblTema">Tema</string>
+    <string name="lblAlerts">Alertas</string>
+    <string name="lblAlertsDescription">Cambios de horarios, rutas, etc.</string>
+    <string name="lblSuscription">Suscripcion</string>
+    <string name="lblSuscriptionDescription">Expiracion de la suscripcion, etc.</string>
+    <string name="lblMap">Mapa</string>
+    <string name="lblMapDescription">Paradas</string>
+    <string name="lblSiempre">Siempre</string>
+    <string name="lblNunca">Nunca</string>
+    <string name="lblParadas">Paradas</string>
+    <string name="lblParadasDescription">Indica donde son las paradas</string>
+    <string name="lblTerminales">Terminales</string>
+    <string name="lblTerminalesDescription">Indica estaciones de autobuses</string>
+    <string name="lblUbiActual">Ubicacion Actual</string>
+    <string name="lblUbiActualDescription">Mira tu ubicacion actuak</string>
+    <string name="lblComida">Comida</string>
+    <string name="lblComidaDescription">Restaurantes, puestos de comida, etc.</string>
+    <string name="lblSalud">Salud</string>
+    <string name="lblSaludDescription">Hospitales, farmacias, consultorios, etc.</string>
+    <string name="lblMarcadores">Marcadores</string>
+    <string name="lblTipoMapa">Tipo del mapa</string>
+    <string name="lblTipoMapaDescription">Mapnik, etc.</string>
+    <string name="lblTemaMapa">Tema del mapa</string>
+    <string name="lblTemaMapaDescription">Claro, oscuro, neon, etc.</string>
+    <string name="lblLocaliz">Localizacion</string>
+    <string name="lblLocalizDescription">Podremos sugerirte mejores rutas en base a tu ubicación. Permite este servicio incluso cuando la app no esté en uso.</string>
+    <string name="lblAnuncios">Anuncios personalizados</string>
+    <string name="lblAnunciosDescription">Podremos usar tus datos para mostrarte anuncios que podrían ser relevantes para ti. Si esta opción no esta marcada se mostrarán anuncios genéricos.</string>
+    <string name="lblRutas">Rutas personalizadas</string>
+    <string name="lblRutasDescription">Usar tus rutas frecuentes para generarte un plan de viaje personalizado para ti. Si esta opción no esta marcada no se mostrarán estrategias de viajes personaliszadas.</string>
+    <string name="lblPagoSuscrip">Pago de suscripcion</string>
+    <string name="lblPagoSuscripDescription">Si esta opción está marcada se permitirá el cobro automatico de la suscripción cada mes.</string>
 
 
     //////////////////////////////////////////////////////////

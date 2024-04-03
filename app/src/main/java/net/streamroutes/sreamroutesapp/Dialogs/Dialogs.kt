@@ -45,13 +45,17 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
+import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.Notification
 
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
@@ -1626,11 +1630,13 @@ fun HeaderDialog(
     }
 }
 
+
 @Composable
 fun DialogPush(
-    myViewModel: MyViewModel,
+    configurationViewModel: ConfigurationViewModel,
     onDismiss: () -> Unit
 ) {
+
     var siempre by remember {
         mutableStateOf(false)
     }
@@ -1638,6 +1644,7 @@ fun DialogPush(
     var nunca by remember {
         mutableStateOf(false)
     }
+
 
     Dialog(
         onDismissRequest = { onDismiss() }
@@ -1652,35 +1659,34 @@ fun DialogPush(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = myViewModel.languageType()[361]
+                        text = stringResource(id = R.string.lblSiempre)
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     RadioButton(
-                        selected = siempre,
+                        selected = configurationViewModel.notificationType.equals(Notification.SIEMPRE),
                         onClick = {
-                            siempre = !siempre
-                            nunca = false
+                            configurationViewModel.updateNotificationType(Notification.SIEMPRE)
                         }
                     )
                 }
+                // configurationViewModel.notificationType.equals(Notification.SIEMPRE)
 
                 // nunca
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = myViewModel.languageType()[362]
+                        text = stringResource(id = R.string.lblNunca)
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     RadioButton(
-                        selected = nunca,
+                        selected = configurationViewModel.notificationType.equals(Notification.NUNCA),
                         onClick = {
-                            nunca = !nunca
-                            siempre = false
+                            configurationViewModel.updateNotificationType(Notification.NUNCA)
                         }
                     )
                 }

@@ -32,10 +32,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
+import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.R
 
 data class MapItem(
     val name: String,
@@ -46,43 +49,45 @@ data class MapItem(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MapOptionsScreen(myViewModel: MyViewModel = MyViewModel()){
+fun MapOptionsScreen(configurationViewModel: ConfigurationViewModel){
+    /*
     var paradas by remember { mutableStateOf(true) }
     var terminales by remember { mutableStateOf(true) }
     var ubicacion by remember { mutableStateOf(true) }
     var comida by remember { mutableStateOf(true) }
     var salud by remember { mutableStateOf(true) }
+     */
 
     val map_items = listOf(
         MapItem(
-            name = myViewModel.languageType().get(235),
-            desc = myViewModel.languageType().get(236),
-            value = paradas,
-            action = { paradas = !paradas }
+            name = stringResource(id = R.string.lblParadas),
+            desc = stringResource(id = R.string.lblParadasDescription),
+            value = configurationViewModel.stops,
+            action = { configurationViewModel.updateStops(!configurationViewModel.stops) }
         ),
         MapItem(
-            name = myViewModel.languageType().get(237),
-            desc = myViewModel.languageType().get(238),
-            value = terminales,
-            action = { terminales = !terminales }
+            name = stringResource(id = R.string.lblTerminales),
+            desc = stringResource(id = R.string.lblTerminalesDescription),
+            value = configurationViewModel.stations,
+            action = { configurationViewModel.updateStations(!configurationViewModel.stations) }
         ),
         MapItem(
-            name = myViewModel.languageType().get(239),
-            desc = myViewModel.languageType().get(240),
-            value = ubicacion,
-            action = { ubicacion = !ubicacion }
+            name = stringResource(id = R.string.lblUbiActual),
+            desc = stringResource(id = R.string.lblUbiActualDescription),
+            value = configurationViewModel.currentLocation,
+            action = { configurationViewModel.updateCurrentLocation(!configurationViewModel.currentLocation) }
         ),
         MapItem(
-            name = myViewModel.languageType().get(241),
-            desc = myViewModel.languageType().get(242),
-            value = comida,
-            action = { comida = !comida }
+            name = stringResource(id = R.string.lblComida),
+            desc = stringResource(id = R.string.lblComidaDescription),
+            value = configurationViewModel.food,
+            action = { configurationViewModel.updateFood(!configurationViewModel.food) }
         ),
         MapItem(
-            name = myViewModel.languageType().get(243),
-            desc = myViewModel.languageType().get(244),
-            value = salud,
-            action = { salud = !salud }
+            name = stringResource(id = R.string.lblSalud),
+            desc = stringResource(id = R.string.lblSaludDescription),
+            value = configurationViewModel.health,
+            action = { configurationViewModel.updateHealth(!configurationViewModel.health) }
         ),
     )
 
@@ -92,7 +97,7 @@ fun MapOptionsScreen(myViewModel: MyViewModel = MyViewModel()){
             .height(300.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        HeaderMarcadores(myViewModel)
+        HeaderMarcadores()
 
         map_items.forEach(){ item ->
             OptionSwitch(
@@ -102,7 +107,7 @@ fun MapOptionsScreen(myViewModel: MyViewModel = MyViewModel()){
 
         Spacer(modifier = Modifier.size(32.dp))
 
-        HeaderMapOptions(myViewModel)
+        HeaderMapOptions()
 
         Row(
             modifier = Modifier
@@ -117,11 +122,11 @@ fun MapOptionsScreen(myViewModel: MyViewModel = MyViewModel()){
 
             Column {
                 Text(
-                    text = myViewModel.languageType()[365], // texto
+                    text = stringResource(id = R.string.lblTipoMapa), // texto
                     style = typography.bodyLarge
                 )
                 Text(
-                    text = myViewModel.languageType()[366], // texto
+                    text = stringResource(id = R.string.lblTipoMapaDescription), // texto
                     style = typography.labelMedium
                 )
             }
@@ -140,11 +145,11 @@ fun MapOptionsScreen(myViewModel: MyViewModel = MyViewModel()){
 
             Column {
                 Text(
-                    text = myViewModel.languageType()[367], // texto
+                    text = stringResource(id = R.string.lblTemaMapa), // texto
                     style = typography.bodyLarge
                 )
                 Text(
-                    text = myViewModel.languageType()[368], // texto
+                    text = stringResource(id = R.string.lblTemaMapaDescription), // texto
                     style = typography.labelMedium
                 )
             }
@@ -153,11 +158,9 @@ fun MapOptionsScreen(myViewModel: MyViewModel = MyViewModel()){
 }
 
 @Composable
-fun HeaderMapOptions(
-    myViewModel: MyViewModel
-) {
+fun HeaderMapOptions() {
     Text(
-        text = myViewModel.languageType()[364],
+        text = stringResource(id = R.string.lblMapa),
         style = typography.titleSmall,
         modifier = Modifier
             .padding(PaddingValues(16.dp))
@@ -167,11 +170,9 @@ fun HeaderMapOptions(
 }
 
 @Composable
-fun HeaderMarcadores(
-    myViewModel: MyViewModel
-) {
+fun HeaderMarcadores() {
     Text(
-        text = myViewModel.languageType()[363],
+        text = stringResource(id = R.string.lblMarcadores),
         style = typography.titleSmall,
         modifier = Modifier
             .padding(PaddingValues(16.dp))
