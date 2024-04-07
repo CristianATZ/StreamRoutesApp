@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens
 
 import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -23,6 +25,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
@@ -50,12 +53,12 @@ fun ConfigurationScreen(configurationViewModel: ConfigurationViewModel){
     }
 
     val confItems = listOf(
-        ConfItem(name = R.string.lblCiudad, configuration = ConfigurationSelection.CITY) { CityOptions() },
+        ConfItem(name = R.string.lblCiudad, configuration = ConfigurationSelection.CITY) { CityOptions(configurationViewModel) },
         ConfItem(name = R.string.lblNoti, configuration = ConfigurationSelection.NOTIFICATIONS) { NotificationOptions(configurationViewModel) },
         ConfItem(name = R.string.lblMapa, configuration = ConfigurationSelection.MAP) { MapOptions(configurationViewModel) },
         ConfItem(name = R.string.lblPrivacidad, configuration = ConfigurationSelection.PRIVACY) { PrivacyOptions(configurationViewModel) },
-        ConfItem(name = R.string.lblIdioma, configuration = ConfigurationSelection.LANGUAGE) { LanguageOptions() },
-        ConfItem(name = R.string.lblTema, configuration = ConfigurationSelection.THEME) { ThemeOptions() }
+        ConfItem(name = R.string.lblIdioma, configuration = ConfigurationSelection.LANGUAGE) { LanguageOptions(configurationViewModel) },
+        ConfItem(name = R.string.lblTema, configuration = ConfigurationSelection.THEME) { ThemeOptions(configurationViewModel) }
     )
 
 
@@ -69,7 +72,7 @@ fun ConfigurationScreen(configurationViewModel: ConfigurationViewModel){
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             confItems.forEach { item ->
-                Options(name = item.name) {
+                Options(name = item.name, isSelected = selection == item.configuration) {
                     selection = if(selection == item.configuration)
                         ConfigurationSelection.NONE
                     else
@@ -93,26 +96,50 @@ fun TopBarConfiguration() {
 @Composable
 private fun Options(
     @StringRes name: Int,
+    isSelected: Boolean,
     onClick: () -> Unit
 ) {
+
+
+    val background = if(isSelected){
+        MaterialTheme.colorScheme.surfaceVariant
+    } else {
+        MaterialTheme.colorScheme.background
+    }
+
+    val textColor = if(isSelected){
+        MaterialTheme.colorScheme.onSurfaceVariant
+    } else {
+        MaterialTheme.colorScheme.onBackground
+    }
+
+    val fontWeight = if(isSelected){
+        FontWeight.Bold
+    } else {
+        FontWeight.Normal
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
+            .background( background )
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.size(16.dp))
         Text(
             text = stringResource(id = name), // texto
-            style = typography.bodyLarge
+            style = typography.bodyLarge,
+            color = textColor,
+            fontWeight = fontWeight
         )
     }
 }
 
 @Composable
-private fun CityOptions() {
-    Text(text = "Elegir la ciudad")
+private fun CityOptions(configurationViewModel: ConfigurationViewModel) {
+    CityScreen(configurationViewModel)
 }
 
 @Composable
@@ -134,11 +161,11 @@ private fun PrivacyOptions(configurationViewModel: ConfigurationViewModel) {
 }
 
 @Composable
-private fun LanguageOptions() {
-    Text(text = "Elegir el idioma de la aplicacion")
+private fun LanguageOptions(configurationViewModel: ConfigurationViewModel) {
+    LanguageScreen(configurationViewModel)
 }
 
 @Composable
-fun ThemeOptions() {
-    Text(text = "Elegir tema claro u oscuro")
+fun ThemeOptions(configurationViewModel: ConfigurationViewModel) {
+    ThemeScreen(configurationViewModel)
 }
