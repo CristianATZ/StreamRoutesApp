@@ -27,6 +27,7 @@ import net.streamroutes.sreamroutesapp.ui.screens.MainParking
 import net.streamroutes.sreamroutesapp.ui.screens.SelectOptionScreen
 import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.FastViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
 
@@ -38,7 +39,8 @@ fun AppNavigation(
     mainViewModel: MainViewModel = viewModel(),
     changeViewModel: ChangeViewModel = viewModel(),
     loginViewModel: LoginViewModel = viewModel(),
-    configurationViewModel: ConfigurationViewModel = viewModel()
+    configurationViewModel: ConfigurationViewModel = viewModel(),
+    fastViewModel: FastViewModel = viewModel()
 ) {
     val NavController = rememberNavController()
 
@@ -51,7 +53,7 @@ fun AppNavigation(
         }
         // pantalla principal
         composable(AppScreens.MainScreen.route){
-            MainScreen(mainViewModel, configurationViewModel, NavController)
+            MainScreen(mainViewModel, configurationViewModel, fastViewModel, NavController)
         }
         // registrar pantalla
         composable(AppScreens.RegistrationScreen.route){

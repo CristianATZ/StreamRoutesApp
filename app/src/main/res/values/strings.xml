@@ -8,7 +8,6 @@
     //////////////////////////////////////////////////////////
     <string name="user_name">Cristian Alexis Torres Zavala</string>
     <string name="phone">Telefono</string>
-    <string name="birthday">Fecha Nac.</string>
     <string name="email">E-Mail</string>
     <string name="configuration">Configuración</string>
     <string name="title_profile_screen">Perfil</string>
@@ -18,7 +17,21 @@
     <string name="interestings">Intereses</string>
     <string name="log_out">Cerrar sesion</string>
     <string name="personal_information">Informacion personal</string>
-
+    <string name="personal_information_desc">Fecha nac, pais, telefono, etc.</string>
+    <string name="security">Seguridad</string>
+    <string name="birthday">Cumpleaños</string>
+    <string name="country">Pais</string>
+    <string name="city">Ciudad</string>
+    <string name="name">Nombre</string>
+    <string name="lastname">Apellidos</string>
+    <string name="state">Estado</string>
+    <string name="address">Direccion</string>
+    <string name="colonia">Colonia</string>
+    <string name="postal_code">CP</string>
+    <string name="gender">Genero</string>
+    <string name="save_information">Guardar informacion</string>
+    <string name="more_information">Mas informacion</string>
+    <string name="edit">Editar</string>
 
 
     //////////////////////////////////////////////////////////
@@ -143,6 +156,14 @@
     <string name="staroff">.</string>
     <string name="staron">.</string>
 
+    //////////////////////////////////////////////////////////
+    FAST SCREEN
+    //////////////////////////////////////////////////////////
+    <string name="lblCalcularDestino">Calcular Destino</string>
+    <string name="lblAceptar">Aceptar</string>
+    <string name="lblElegirDestino">Elige un destino</string>
+    <string name="lblElegirDestinoDesc">Toca el mapa para elegir un destino y calcular la ruta óptima para llegar.</string>
+    <string name="lblDestino">Destino</string>
 
     <string name="lblTransporteTitle">Transporte</string>
     <string name="lblEstacionamientoTitle">Estacionamiento</string>

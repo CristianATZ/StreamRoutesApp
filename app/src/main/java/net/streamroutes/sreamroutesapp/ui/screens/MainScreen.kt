@@ -98,6 +98,7 @@ import net.streamroutes.sreamroutesapp.Screens.Routes.RoutesScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TripScreen
 import net.streamroutes.sreamroutesapp.Screens.Routes.TurismScreen
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.FastViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
@@ -129,14 +130,24 @@ data class RoutesNavigationItem(
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun MainScreen(mainViewModel: MainViewModel, configurationViewModel: ConfigurationViewModel, navController: NavController) {
-    Main(mainViewModel, configurationViewModel, navController)
+fun MainScreen(
+    mainViewModel: MainViewModel,
+    configurationViewModel: ConfigurationViewModel,
+    fastViewModel: FastViewModel,
+    navController: NavController
+) {
+    Main(mainViewModel, configurationViewModel, fastViewModel, navController)
 }
 
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
-fun Main(mainViewModel: MainViewModel, configurationViewModel: ConfigurationViewModel, navController: NavController ){
+fun Main(
+    mainViewModel: MainViewModel,
+    configurationViewModel: ConfigurationViewModel,
+    fastViewModel: FastViewModel,
+    navController: NavController
+){
     val context = LocalContext.current
     // variable con todos los valores
 
@@ -199,7 +210,7 @@ fun Main(mainViewModel: MainViewModel, configurationViewModel: ConfigurationView
 
                 when(routeScreen){
                     RoutesNavigationOptions.PREMIUM_SCREEN -> SuscripcionScreen()
-                    RoutesNavigationOptions.FAST_SCREEN -> FastScreen()
+                    RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel)
                     RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen()
                     RoutesNavigationOptions.TRIP_SCREEN -> TripScreen()
                     RoutesNavigationOptions.TURISM_SCREEN -> TurismScreen()

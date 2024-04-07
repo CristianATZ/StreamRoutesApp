@@ -56,6 +56,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.viewmodel.Notification
+import net.streamroutes.sreamroutesapp.viewmodel.ProfileViewModel
 
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
@@ -1134,8 +1135,7 @@ fun MembDialogEdit(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDialogEdit(
-    onClose: () -> Unit,
-    myViewModel: MyViewModel
+    onClose: () -> Unit
 ) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
@@ -1167,7 +1167,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(136),
+                                text = stringResource(id = R.string.name),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1200,7 +1200,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(88),
+                                text = stringResource(id = R.string.lastname),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1238,7 +1238,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(105),
+                                text = stringResource(id = R.string.email),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1276,7 +1276,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(140),
+                                text = stringResource(id = R.string.country),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1309,7 +1309,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(116),
+                                text = stringResource(id = R.string.state),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1347,7 +1347,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(111),
+                                text = stringResource(id = R.string.address),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1418,7 +1418,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(97),
+                                text = stringResource(id = R.string.colonia),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1451,7 +1451,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(108),
+                                text = stringResource(id = R.string.postal_code),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1489,7 +1489,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(109),
+                                text = stringResource(id = R.string.birthday),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1522,7 +1522,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(123),
+                                text = stringResource(id = R.string.gender),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1557,7 +1557,7 @@ fun UserDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(139),
+                                text = stringResource(id = R.string.ocupation),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1600,7 +1600,7 @@ fun UserDialogEdit(
                         .height(50.dp)
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(122),
+                        text = stringResource(id = R.string.save_information),
                         style = typography.bodyLarge
                     )
                 }

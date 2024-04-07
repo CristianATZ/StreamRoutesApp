@@ -41,6 +41,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -59,7 +60,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
+import net.streamroutes.sreamroutesapp.viewmodel.FastViewModel
 import org.osmdroid.util.GeoPoint
+import net.streamroutes.sreamroutesapp.R
 
 
 @RequiresPermission(
@@ -68,7 +71,7 @@ import org.osmdroid.util.GeoPoint
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FastScreen(
-    myViewModel: MyViewModel = MyViewModel()
+    fastViewModel: FastViewModel
 ) {
     //Camara
     var cameraState = rememberCameraState {
@@ -92,9 +95,7 @@ fun FastScreen(
     }
 
     if(dialogo){
-        DialogStart(
-            myViewModel
-        ){
+        DialogStart{
             scope.launch(Dispatchers.IO) {
                 val priority = if (true) {
                     Priority.PRIORITY_HIGH_ACCURACY
@@ -124,7 +125,7 @@ fun FastScreen(
 
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel) }
+        topBar = { TopBarBody() }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -178,7 +179,7 @@ fun FastScreen(
                         .height(50.dp)
                 ) {
                     Text(
-                        text = myViewModel.languageType()[325],
+                        text = stringResource(id = R.string.lblCalcularDestino),
                         style = typography.bodyLarge,
                         color = colorScheme.onTertiary
                     )
@@ -192,7 +193,6 @@ fun FastScreen(
 
 @Composable
 fun DialogStart(
-    myViewModel: MyViewModel,
     onClick: () -> Unit
 ) {
     AlertDialog(
@@ -201,17 +201,17 @@ fun DialogStart(
             TextButton(
                 onClick = { onClick() }
             ) {
-                Text(text = myViewModel.languageType()[323])
+                Text(text = stringResource(id = R.string.lblAceptar))
             }
         },
         title = {
             Text(
-                text = myViewModel.languageType()[321]
+                text = stringResource(id = R.string.lblElegirDestino)
             )
         },
         text = {
             Text(
-                text = myViewModel.languageType()[322]
+                text = stringResource(id = R.string.lblElegirDestinoDesc)
             )
         }
     )
@@ -219,9 +219,7 @@ fun DialogStart(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel
-) {
+private fun TopBarBody() {
     var destino by remember {
         mutableStateOf("")
     }
@@ -271,7 +269,7 @@ private fun TopBarBody(
                 },
                 placeholder = {
                     Text(
-                        text = myViewModel.languageType()[324],
+                        text = stringResource(id = R.string.lblDestino),
                         color = colorScheme.onPrimaryContainer.copy(0.5f)
                     )
                 },

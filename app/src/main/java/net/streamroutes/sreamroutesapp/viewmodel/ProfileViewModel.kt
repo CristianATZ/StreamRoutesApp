@@ -11,77 +11,77 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 
+/*
+fav = 0,
+payment = SuscriptionType.Estudiante,
+verification = false,
+intereses = listOf(
+    "Entretenemiento", "Comida", "Ropa"
+),
+name = "Cristian Alexis",
+lastName = "Torres Zavala",
+email = "cris@gmail.com",
+country = "México",
+state = "Guanajuato",
+number = "132",
+suburb = "niideaalv",
+address = "",
+postal = "",
+birthday = LocalDate.now(),
+gender = Gender.Masculino,
+ocupation = "Estudiante y Cinepolito",
+id = "cy",
+user = "criseschido12345",
+start = LocalDate.now(),
+end = LocalDate.now(),
+type = SuscriptionType.Estudiante,
+badge = "cy",
+phone = "445 141 1834",
+pass = "lavidaesroja"
+ */
+
 @RequiresApi(Build.VERSION_CODES.O)
 class ProfileViewModel(): ViewModel() {
-    private val _uiState = MutableStateFlow(
-        ProfileUiState(
-            fav = 0,
-            payment = SuscriptionType.Estudiante,
-            verification = false,
-            intereses = listOf(
-                "Entretenemiento", "Comida", "Ropa"
-            ),
-            name = "Cristian Alexis",
-            lastName = "Torres Zavala",
-            email = "cris@gmail.com",
-            country = "México",
-            state = "Guanajuato",
-            number = "132",
-            suburb = "niideaalv",
-            address = "",
-            postal = "",
-            birthday = LocalDate.now(),
-            gender = Gender.Masculino,
-            ocupation = "Estudiante y Cinepolito",
-            id = "cy",
-            user = "criseschido12345",
-            start = LocalDate.now(),
-            end = LocalDate.now(),
-            type = SuscriptionType.Estudiante,
-            badge = "cy",
-            phone = "445 141 1834",
-            pass = "lavidaesroja"
-        )
-    )
+    private val _uiState = MutableStateFlow(ProfileUiState())
     val uiState: StateFlow<ProfileUiState> = _uiState.asStateFlow()
 
-    var fav by mutableStateOf(0)
+    var fav by mutableStateOf(4)
         private set
 
-    var payment by mutableStateOf(SuscriptionType.Ninguna)
+    var payment by mutableStateOf(SuscriptionType.Estudiante)
         private set
 
-    var verification by mutableStateOf(false)
+    var verification by mutableStateOf(true)
         private set
 
-    var intereses by mutableStateOf(listOf(""))
+    var intereses by mutableStateOf(listOf("Entretenimiento", "Comida", "Ropa"))
         private set
 
-    var name by mutableStateOf("")
+    var name by mutableStateOf("Cristian Alexis")
         private set
 
-    var lastName by mutableStateOf("")
+    var lastName by mutableStateOf("Torres Zavala")
         private set
 
-    var email by mutableStateOf("")
+    var email by mutableStateOf("esteroidito@gmail.com")
         private set
 
-    var country by mutableStateOf("")
+    var country by mutableStateOf("Los Mexicos")
         private set
 
-    var state by mutableStateOf("")
+    var state by mutableStateOf("casado xd")
         private set
 
-    var address by mutableStateOf("")
+    var address by mutableStateOf("Moroleon, Gto.")
         private set
 
-    var number by mutableStateOf("")
+    var number by mutableStateOf("234")
         private set
 
-    var suburb by mutableStateOf("")
+    var suburb by mutableStateOf("sepalabola")
         private set
 
-    var postal by mutableStateOf("")
+    var postal by mutableStateOf("58533")
         private set
 
     var birthday by mutableStateOf(LocalDate.now())
@@ -90,13 +90,13 @@ class ProfileViewModel(): ViewModel() {
     var gender by mutableStateOf(Gender.Masculino)
         private set
 
-    var ocupation by mutableStateOf("")
+    var ocupation by mutableStateOf("Estudiante y cinepolito")
         private set
 
-    var id by mutableStateOf("")
+    var id by mutableStateOf("cy")
         private set
 
-    var user by mutableStateOf("")
+    var user by mutableStateOf("crsieschido123")
         private set
 
     var start by mutableStateOf(LocalDate.now())
@@ -105,16 +105,16 @@ class ProfileViewModel(): ViewModel() {
     var end by mutableStateOf(LocalDate.now())
         private set
 
-    var type by mutableStateOf(SuscriptionType.Ninguna)
+    var type by mutableStateOf(SuscriptionType.Estudiante)
         private set
 
-    var badge by mutableStateOf("")
+    var badge by mutableStateOf("cy")
         private set
 
-    var phone by mutableStateOf("")
+    var phone by mutableStateOf("445 141 1834")
         private set
 
-    var pass by mutableStateOf("")
+    var pass by mutableStateOf("lavidaesroja12345")
         private set
 
     init {

@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.Screens.ProfileScreens
 
+import android.annotation.SuppressLint
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
@@ -53,12 +54,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.getString
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.Dialogs.MembDialogEdit
 import net.streamroutes.sreamroutesapp.Dialogs.SecuDialogEdit
@@ -73,8 +77,7 @@ data class DataInfoItem(val title: String, val inf: String)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel = ProfileViewModel(),
-    myViewModel: MyViewModel = MyViewModel()
+    profileViewModel: ProfileViewModel = ProfileViewModel()
 ) {
     Column(
         modifier = Modifier
@@ -88,14 +91,17 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             HeaderProfile()
-            FeaturedProfile(myViewModel)
-            FooterProfile(myViewModel)
+            FeaturedProfile(profileViewModel)
+            FooterProfile(profileViewModel)
         }
     }
 }
 
+
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FooterProfile(myViewModel: MyViewModel) {
+fun FooterProfile(profileViewModel: ProfileViewModel) {
+    val context = LocalContext.current
 
     var user by remember {
         mutableStateOf(false)
@@ -109,19 +115,17 @@ fun FooterProfile(myViewModel: MyViewModel) {
         mutableStateOf(false)
     }
 
-
-
     var userInfo by remember {
         mutableStateOf(
             listOf(
-                DataInfoItem(myViewModel.languageType().get(109),"Mie, 27 Nov 2002"),
-                DataInfoItem(myViewModel.languageType().get(143),"445 141 1834"),
-                DataInfoItem(myViewModel.languageType().get(140),"Mexico"),
-                DataInfoItem(myViewModel.languageType().get(96),"Moroleon, Gto")
+                DataInfoItem(getString(context, R.string.birthday),profileViewModel.birthday.toString()),
+                DataInfoItem(getString(context, R.string.phone),profileViewModel.phone),
+                DataInfoItem(getString(context, R.string.country),profileViewModel.country),
+                DataInfoItem(getString(context, R.string.city),profileViewModel.address)
             )
         )
     }
-
+/*
     var secInfo by remember {
         mutableStateOf(
             listOf(
@@ -143,6 +147,8 @@ fun FooterProfile(myViewModel: MyViewModel) {
         )
     }
 
+ */
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -153,6 +159,7 @@ fun FooterProfile(myViewModel: MyViewModel) {
             mutableStateOf(false)
         }
 
+        /*
         var openMem by remember {
             mutableStateOf(false)
         }
@@ -161,13 +168,15 @@ fun FooterProfile(myViewModel: MyViewModel) {
             mutableStateOf(false)
         }
 
+         */
+
         if(openUse){
             UserDialogEdit(
-                onClose = { openUse = !openUse },
-                myViewModel = myViewModel
+                onClose = { openUse = !openUse }
             )
         }
 
+        /*
         if(openMem){
             MembDialogEdit(
                 onClose = { openMem = !openMem },
@@ -182,20 +191,21 @@ fun FooterProfile(myViewModel: MyViewModel) {
             )
         }
 
+         */
+
         ProfileItems(
-            title = myViewModel.languageType().get(125),
-            description = myViewModel.languageType().get(121),
+            title = stringResource(id = R.string.personal_info),
+            description = stringResource(id = R.string.personal_information_desc),
             open = user,
             items = userInfo,
             onClick = {
                 user = !user
             },
-            onEdit = { openUse = !openUse },
-            myViewModel = myViewModel
+            onEdit = { openUse = !openUse }
         )
 
         Spacer(modifier = Modifier.size(8.dp))
-
+/*
         ProfileItems(
             title = myViewModel.languageType().get(129),
             description = myViewModel.languageType().get(126),
@@ -218,6 +228,8 @@ fun FooterProfile(myViewModel: MyViewModel) {
             myViewModel = myViewModel
         )
 
+
+ */
         Spacer(modifier = Modifier.size(16.dp))
     }
 }
@@ -227,27 +239,29 @@ data class FeaturedItem(
     val value: String
 )
 
+@SuppressLint("StateFlowValueCalledInComposition")
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun FeaturedProfile(myViewModel: MyViewModel) {
+fun FeaturedProfile(profileViewModel: ProfileViewModel) {
     val featured_items = listOf(
         FeaturedItem(
-            name = myViewModel.languageType().get(141),
-            value = "0"
+            name = stringResource(id = R.string.favorite_routes),
+            value = profileViewModel.uiState.value.fav.toString()
         ),
         FeaturedItem(
-            name = myViewModel.languageType().get(128),
-            value = myViewModel.languageType().get(118)
+            name = stringResource(id = R.string.suscription),
+            value = profileViewModel.uiState.value.payment.name
         ),
         FeaturedItem(
-            name = myViewModel.languageType().get(148),
+            name = stringResource(id = R.string.verification),
             value = "Icono"
         ),
         FeaturedItem(
-            name = myViewModel.languageType().get(127),
-            value = myViewModel.languageType().get(114)
+            name = stringResource(id = R.string.interestings),
+            value = profileViewModel.uiState.value.intereses.toString()
         ),
         FeaturedItem(
-            name = myViewModel.languageType().get(95),
+            name = stringResource(id = R.string.log_out),
             value = "Icono"
         ),
     )
@@ -266,14 +280,18 @@ fun FeaturedProfile(myViewModel: MyViewModel) {
                 .fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
-            FeaturedInformation(inf = "0", title = myViewModel.languageType().get(141))
-
             FeaturedInformation(
-                inf = myViewModel.languageType().get(118),
-                title = myViewModel.languageType().get(128)
+                inf = profileViewModel.fav.toString(),
+                title = stringResource(id = R.string.favorite_routes)
             )
-
-            FeaturedInformation(icon = Icons.Outlined.Check,title = myViewModel.languageType().get(148))
+            FeaturedInformation(
+                inf = profileViewModel.payment.name,
+                title = stringResource(id = R.string.suscription)
+            )
+            FeaturedInformation(
+                icon = Icons.Outlined.Check,
+                title = stringResource(id = R.string.verification)
+            )
         }
         Row(
             modifier = Modifier
@@ -281,10 +299,14 @@ fun FeaturedProfile(myViewModel: MyViewModel) {
             horizontalArrangement = Arrangement.Center
         ) {
             FeaturedInformation(
-                inf = myViewModel.languageType().get(114),
-                title = myViewModel.languageType().get(127), large = true)
-
-            FeaturedInformation(icon = Icons.Outlined.ExitToApp,title = myViewModel.languageType().get(95))
+                inf = profileViewModel.intereses.toString(),
+                title = stringResource(id = R.string.interestings),
+                large = true
+            )
+            FeaturedInformation(
+                icon = Icons.Outlined.ExitToApp,
+                title = stringResource(id = R.string.log_out)
+            )
         }
 
     }
@@ -348,8 +370,7 @@ fun ProfileItems(
     open: Boolean,
     items: List<DataInfoItem>,
     onClick: () -> Unit,
-    onEdit: () -> Unit = {},
-    myViewModel: MyViewModel
+    onEdit: () -> Unit = {}
 ) {
     Card(
         modifier = Modifier
@@ -399,14 +420,13 @@ fun ProfileItems(
                 ) {
                     Icon(
                         imageVector = if (open) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown,
-                        contentDescription = myViewModel.languageType().get(134),
+                        contentDescription = stringResource(id = R.string.more_information),
                     )
                 }
             }
             if(open){
                 ProfileInfo(
                     list = items,
-                    myViewModel = myViewModel,
                     onClick = { onEdit() }
                 )
             }
@@ -418,8 +438,7 @@ fun ProfileItems(
 @Composable
 fun ProfileInfo(
     list: List<DataInfoItem>,
-    onClick: () -> Unit,
-    myViewModel: MyViewModel
+    onClick: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -440,7 +459,7 @@ fun ProfileInfo(
                 .padding(16.dp)
         ) {
             Text(
-                text = myViewModel.languageType().get(113),
+                text = stringResource(id = R.string.edit),
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
         }
