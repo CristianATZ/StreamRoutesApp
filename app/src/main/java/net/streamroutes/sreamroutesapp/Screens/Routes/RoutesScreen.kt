@@ -164,6 +164,8 @@ data class RutaView(
     val ubi: Boolean
 )
 
+
+
 @Composable
 fun SidePanel(
     drawerState: MutableState<DrawerValue>,
