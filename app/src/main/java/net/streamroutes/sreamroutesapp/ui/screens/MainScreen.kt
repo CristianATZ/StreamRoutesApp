@@ -45,7 +45,6 @@ import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MonetizationOn
 import androidx.compose.material.icons.outlined.Museum
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -76,8 +75,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.CameraPositionState
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapType
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.utsman.osmandcompose.CameraState
 import com.utsman.osmandcompose.DefaultMapProperties
 import com.utsman.osmandcompose.OpenStreetMap
@@ -85,7 +90,6 @@ import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberOverlayManagerState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.ConfigurationScreen
@@ -136,17 +140,15 @@ fun MainScreen(
     fastViewModel: FastViewModel,
     navController: NavController
 ) {
-    Main(mainViewModel, configurationViewModel, fastViewModel, navController)
+    Main(configurationViewModel, fastViewModel)
 }
 
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun Main(
-    mainViewModel: MainViewModel,
     configurationViewModel: ConfigurationViewModel,
-    fastViewModel: FastViewModel,
-    navController: NavController
+    fastViewModel: FastViewModel
 ){
     val context = LocalContext.current
     // variable con todos los valores
@@ -203,9 +205,9 @@ fun Main(
             }
         ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                val cameraState = rememberCameraState {
-                    geoPoint = GeoPoint(19.057988677624586, -98.180047630148)
-                    zoom = 17.0
+                val itsur = LatLng(19.057988677624586, -98.180047630148)
+                val cameraState = rememberCameraPositionState {
+                    position = CameraPosition.fromLatLngZoom(itsur, 17f)
                 }
 
                 when(routeScreen){
@@ -547,27 +549,22 @@ fun DrawerBody(
 
 @Composable
 private fun MapBody(
-    cameraPositionState: CameraState,
+    cameraPositionState: CameraPositionState,
 ) {
     val context = LocalContext.current
-    val overlayManagerState = rememberOverlayManagerState()
-
-    OpenStreetMap(
+    GoogleMap(
         modifier = Modifier
             .fillMaxSize(),
-        cameraState = cameraPositionState,
-        properties = DefaultMapProperties.copy(
-            maxZoomLevel = 18.0,
-            minZoomLevel = 15.0,
-            tileSources = TileSourceFactory.MAPNIK,
-            zoomButtonVisibility = ZoomButtonVisibility.NEVER
+        cameraPositionState = cameraPositionState,
+        properties = MapProperties(
+            maxZoomPreference = 18f,
+            minZoomPreference = 15f,
+            isMyLocationEnabled = false,
+            isBuildingEnabled = false
         ),
-        overlayManagerState = overlayManagerState,
-        onFirstLoadListener = {
-            val copyright = CopyrightOverlay(context)
-            overlayManagerState.overlayManager.add(copyright)
-
-        }
+        uiSettings = MapUiSettings(
+            zoomControlsEnabled = false
+        )
     ) {
 
     }

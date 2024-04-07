@@ -83,6 +83,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.utsman.osmandcompose.DefaultMapProperties
 import com.utsman.osmandcompose.Marker
 import com.utsman.osmandcompose.MarkerState
@@ -836,9 +842,9 @@ fun RouteInfo(
 
 @Composable
 fun MainContent() {
-    val cameraState = rememberCameraState {
-        geoPoint = GeoPoint(20.139539228288044, -101.15073143400946)
-        zoom = 17.03
+    val itsur = LatLng(20.139539228288044, -101.15073143400946)
+    val cameraState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(itsur, 17f)
     }
 
     val ruta1I = listOf(
@@ -895,28 +901,22 @@ fun MainContent() {
     Column(
         Modifier.fillMaxSize()
     ) {
-        OpenStreetMap(
+
+        GoogleMap(
             modifier = Modifier
                 .fillMaxSize(),
-            cameraState = cameraState,
-            properties = DefaultMapProperties.copy(
-                maxZoomLevel = 18.0,
-                minZoomLevel = 15.0,
-                tileSources = TileSourceFactory.MAPNIK,
-                zoomButtonVisibility = ZoomButtonVisibility.NEVER
+            cameraPositionState = cameraState,
+            properties = MapProperties(
+                maxZoomPreference = 18f,
+                minZoomPreference = 15f,
+                isMyLocationEnabled = false,
+                isBuildingEnabled = false
+            ),
+            uiSettings = MapUiSettings(
+                zoomControlsEnabled = false
             )
         ) {
-            Polyline(
-                geoPoints = ruta1I
-            )
 
-            paradaRuta1I.forEach(){
-                Marker(
-                    state = MarkerState(
-                        geoPoint = it
-                    )
-                )
-            }
         }
     }
 }
