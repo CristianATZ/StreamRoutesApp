@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import net.streamroutes.sreamroutesapp.viewmodel.Ciudad
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 
 
@@ -28,29 +29,11 @@ fun CityScreen(configurationViewModel: ConfigurationViewModel) {
 @Composable
 fun CityBody(configurationViewModel: ConfigurationViewModel) {
     val options = listOf(
-        "Leon",
-        "Irapuato",
-        "Celaya",
-        "Salamanca",
-        "Guanajuato",
-        "Silao",
-        "Acambaro",
-        "San francisco del rincon",
-        "Moroleon",
-        "Salvatierra",
-        "Uriangato"
+        Ciudad.Leon,
+        Ciudad.Irapuato,
+        Ciudad.Celaya,
+        Ciudad.Salamanca
     )
-
-    // Variable
-    val selectedOption = remember { mutableStateOf("") }
-
-    fun onOptionSelected(option: String) {
-        selectedOption.value = option
-    }
-
-    fun isOptionSelected(option: String): Boolean {
-        return selectedOption.value == option
-    }
 
     Column {
         LazyColumn(
@@ -60,26 +43,22 @@ fun CityBody(configurationViewModel: ConfigurationViewModel) {
             item {
                 options.forEach { option ->
                     Row(
-                        modifier = Modifier
-                            .clickable {
-                                onOptionSelected(option)
-                            },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
                         Spacer(modifier = Modifier.size(16.dp))
 
                         Text(
-                            text = option,
+                            text = option.name,
                             style = MaterialTheme.typography.bodyMedium
                         )
 
                         Spacer(modifier = Modifier.weight(1f))
 
                         RadioButton(
-                            selected = isOptionSelected(option),
+                            selected = option.name.equals(configurationViewModel.ciudad.name),
                             onClick = {
-                                onOptionSelected(option)
+                                configurationViewModel.updateCiudad(option)
                             }
                         )
                     }

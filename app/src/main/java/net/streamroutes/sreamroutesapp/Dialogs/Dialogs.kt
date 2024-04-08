@@ -55,6 +55,7 @@ import androidx.compose.ui.window.DialogProperties
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.ui.screens.getShareUbi
 import net.streamroutes.sreamroutesapp.viewmodel.Notification
 import net.streamroutes.sreamroutesapp.viewmodel.ProfileViewModel
 
@@ -882,8 +883,7 @@ fun SecuDialogEdit(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MembDialogEdit(
-    onClose: () -> Unit,
-    myViewModel: MyViewModel
+    onClose: () -> Unit
 ) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
@@ -915,7 +915,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(124),
+                                text = stringResource(id = R.string.idMembership),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -938,7 +938,7 @@ fun MembDialogEdit(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(117),
+                        text = stringResource(id = R.string.status),
                         color = MaterialTheme.colorScheme.onTertiaryContainer
                     )
 
@@ -948,7 +948,7 @@ fun MembDialogEdit(
                         onClick = { },
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(87),
+                                text = stringResource(id = R.string.active),
                                 color = MaterialTheme.colorScheme.onTertiary
                             )
                         },
@@ -969,7 +969,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(147),
+                                text = stringResource(id = R.string.user),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -995,7 +995,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(126),
+                                text = stringResource(id = R.string.home),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1021,7 +1021,7 @@ fun MembDialogEdit(
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(120),
+                                text = stringResource(id = R.string.expiration),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1043,11 +1043,11 @@ fun MembDialogEdit(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     OutlinedTextField(
-                        value = myViewModel.languageType().get(130),
+                        value = stringResource(id = R.string.mensual),
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(144),
+                                text = stringResource(id = R.string.type),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1069,11 +1069,11 @@ fun MembDialogEdit(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     OutlinedTextField(
-                        value = myViewModel.languageType().get(133),
+                        value = stringResource(id = R.string.mxn),
                         onValueChange = {},
                         label = {
                             Text(
-                                text = myViewModel.languageType().get(132),
+                                text = stringResource(id = R.string.payment_currency),
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
                         },
@@ -1101,7 +1101,7 @@ fun MembDialogEdit(
                             .height(50.dp)
                     ) {
                         Text(
-                            text = myViewModel.languageType().get(128),
+                            text = stringResource(id = R.string.suscription),
                             color = MaterialTheme.colorScheme.onTertiaryContainer
                         )
                     }
@@ -1123,7 +1123,7 @@ fun MembDialogEdit(
                         .height(50.dp)
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(93),
+                        text = stringResource(id = R.string.cancel_suscription),
                         style = typography.bodyLarge
                     )
                 }
@@ -1135,7 +1135,8 @@ fun MembDialogEdit(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun UserDialogEdit(
-    onClose: () -> Unit
+    onClose: () -> Unit,
+    profileViewModel: ProfileViewModel
 ) {
     Dialog(
         onDismissRequest = { /*TODO*/ },
@@ -1163,8 +1164,10 @@ fun UserDialogEdit(
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
                     OutlinedTextField(
-                        value = "",
-                        onValueChange = {},
+                        value = profileViewModel.name,
+                        onValueChange = {
+                            profileViewModel
+                        },
                         label = {
                             Text(
                                 text = stringResource(id = R.string.name),
@@ -1636,15 +1639,6 @@ fun DialogPush(
     configurationViewModel: ConfigurationViewModel,
     onDismiss: () -> Unit
 ) {
-
-    var siempre by remember {
-        mutableStateOf(false)
-    }
-
-    var nunca by remember {
-        mutableStateOf(false)
-    }
-
 
     Dialog(
         onDismissRequest = { onDismiss() }

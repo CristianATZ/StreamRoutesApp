@@ -17,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.Tema
 
 @Composable
 fun ThemeScreen(configurationViewModel: ConfigurationViewModel) {
@@ -26,46 +27,31 @@ fun ThemeScreen(configurationViewModel: ConfigurationViewModel) {
 @Composable
 fun ThemeBody(configurationViewModel: ConfigurationViewModel) {
     val options = listOf(
-        "Claro",
-        "Oscuro"
+        Tema.Claro,
+        Tema.Oscuro
     )
-
-    // Variable
-    val selectedOption = remember { mutableStateOf("") }
-
-    fun onOptionSelected(option: String) {
-        selectedOption.value = option
-    }
-
-    fun isOptionSelected(option: String): Boolean {
-        return selectedOption.value == option
-    }
 
     Column {
         LazyColumn {
             item {
                 options.forEach { option ->
                     Row(
-                        modifier = Modifier
-                            .clickable {
-                                onOptionSelected(option)
-                            },
                         verticalAlignment = Alignment.CenterVertically
                     ) {
 
                         Spacer(modifier = Modifier.size(16.dp))
 
                         Text(
-                            text = option,
+                            text = option.name,
                             style = MaterialTheme.typography.bodyMedium
                         )
 
                         Spacer(modifier = Modifier.weight(1f))
 
                         RadioButton(
-                            selected = isOptionSelected(option),
+                            selected = option.name.equals(configurationViewModel.tema.name),
                             onClick = {
-                                onOptionSelected(option)
+                                configurationViewModel.updateTema(option)
                             }
                         )
                     }

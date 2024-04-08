@@ -108,13 +108,13 @@ class ProfileViewModel(): ViewModel() {
     var type by mutableStateOf(SuscriptionType.Estudiante)
         private set
 
-    var badge by mutableStateOf("cy")
+    var badge by mutableStateOf("Mensual")
         private set
 
     var phone by mutableStateOf("445 141 1834")
         private set
 
-    var pass by mutableStateOf("lavidaesroja12345")
+    var pass by mutableStateOf("Vigente")
         private set
 
     init {
@@ -145,6 +145,23 @@ class ProfileViewModel(): ViewModel() {
             pass
         )
     }
+
+    fun updateFav(_fav: Int) {
+        fav = _fav
+    }
+
+    fun updatePayment(_payment: SuscriptionType) {
+        payment = _payment
+    }
+
+    fun updateVerification(_verification: Boolean) {
+        verification = _verification
+    }
+
+    fun updateIntereses(_intereses: List<String>) {
+        intereses = _intereses
+    }
+
 }
 
 enum class SuscriptionType {

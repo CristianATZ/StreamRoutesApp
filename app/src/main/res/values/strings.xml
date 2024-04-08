@@ -19,6 +19,7 @@
     <string name="personal_information">Informacion personal</string>
     <string name="personal_information_desc">Fecha nac, pais, telefono, etc.</string>
     <string name="security">Seguridad</string>
+    <string name="security_desc">Contraseña, verificación en dos pasos.</string>
     <string name="birthday">Cumpleaños</string>
     <string name="country">Pais</string>
     <string name="city">Ciudad</string>
@@ -32,6 +33,21 @@
     <string name="save_information">Guardar informacion</string>
     <string name="more_information">Mas informacion</string>
     <string name="edit">Editar</string>
+    <string name="type">Tipo membresia</string>
+    <string name="duration">Duracion</string>
+    <string name="expiration_date">Corte</string>
+    <string name="idMembership">Id. Membresia</string>
+    <string name="status">Estatus</string>
+    <string name="active">Activo</string>
+    <string name="user">Usuario</string>
+    <string name="home">Inicio</string>
+    <string name="expiration">Expiracion</string>
+    <string name="mxn">MXN</string>
+    <string name="usd">USD</string>
+    <string name="mensual">Mensual</string>
+    <string name="payment_currency">Moneda de pago</string>
+    <string name="cancel_suscription">Cancelar suscripcion</string>
+    <string name="membership">Membresia</string>
 
 
     //////////////////////////////////////////////////////////

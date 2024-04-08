@@ -12,6 +12,10 @@ class ConfigurationViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(ConfigurationUiState())
     val uiState: StateFlow<ConfigurationUiState> = _uiState.asStateFlow()
 
+    // Ciudad
+    var ciudad by mutableStateOf(Ciudad.Leon)
+        private set
+
     // Notification
     var notificationType by mutableStateOf(Notification.SIEMPRE)
         private set
@@ -62,8 +66,18 @@ class ConfigurationViewModel(): ViewModel() {
     var paymet by mutableStateOf(true)
         private set
 
+
+    // Idioma
+    var idioma by mutableStateOf(Idioma.Español)
+        private set
+
+    var tema by mutableStateOf(Tema.Claro)
+        private set
+
+
     init {
         _uiState.value = ConfigurationUiState(
+            ciudad,
             notificationType,
             alerts,
             suscription,
@@ -78,12 +92,18 @@ class ConfigurationViewModel(): ViewModel() {
             current,
             ads,
             routes,
-            paymet
+            paymet,
+            idioma,
+            tema
         )
     }
 
 
     // Actualizar campos
+    fun updateCiudad(_ciudad: Ciudad) {
+        ciudad = _ciudad
+    }
+
     fun updateNotificationType(_notificationType: Notification){
         notificationType = _notificationType
     }
@@ -144,6 +164,13 @@ class ConfigurationViewModel(): ViewModel() {
         paymet = _payment
     }
 
+    fun updateIdioma(_idioma: Idioma) {
+        idioma = _idioma
+    }
+
+    fun updateTema(_tema: Tema) {
+        tema = _tema
+    }
 }
 
 enum class MapType {
@@ -158,7 +185,22 @@ enum class Notification {
     SIEMPRE, NUNCA
 }
 
+enum class Idioma {
+    Ingles, Español
+}
+
+enum class Ciudad {
+    Leon, Irapuato, Celaya, Salamanca
+}
+
+enum class Tema {
+    Claro, Oscuro
+}
+
 data class ConfigurationUiState (
+    // ciudad
+    val ciudad: Ciudad = Ciudad.Leon,
+
     // notification
     val notificationType: Notification = Notification.SIEMPRE,
     val alerts: Boolean = true,
@@ -178,5 +220,11 @@ data class ConfigurationUiState (
     val current: Boolean = true,
     val ads: Boolean = true,
     val routes: Boolean = true,
-    val payment: Boolean = true
+    val payment: Boolean = true,
+
+    // idioma
+    val idioma: Idioma = Idioma.Español,
+
+    // tema
+    val tema: Tema = Tema.Claro
 )

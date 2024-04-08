@@ -125,14 +125,14 @@ fun FooterProfile(profileViewModel: ProfileViewModel) {
             )
         )
     }
-/*
+
     var secInfo by remember {
         mutableStateOf(
             listOf(
-                DataInfoItem(myViewModel.languageType().get(103), myViewModel.languageType().get(151)),
-                DataInfoItem(myViewModel.languageType().get(148), myViewModel.languageType().get(86)),
-                DataInfoItem(myViewModel.languageType().get(106), myViewModel.languageType().get(89)),
-                DataInfoItem(myViewModel.languageType().get(143), myViewModel.languageType().get(89))
+                DataInfoItem(getString(context, R.string.password_profile), profileViewModel.pass),
+                DataInfoItem(getString(context, R.string.verification), if(profileViewModel.verification) "Activada" else "Desactivada"),
+                DataInfoItem(getString(context, R.string.email), profileViewModel.email),
+                DataInfoItem(getString(context, R.string.phone), profileViewModel.phone)
             )
         )
     }
@@ -140,14 +140,14 @@ fun FooterProfile(profileViewModel: ProfileViewModel) {
     var memberInfo by remember {
         mutableStateOf(
             listOf(
-                DataInfoItem(myViewModel.languageType().get(145),myViewModel.languageType().get(119)),
-                DataInfoItem(myViewModel.languageType().get(112),myViewModel.languageType().get(131)),
-                DataInfoItem(myViewModel.languageType().get(107),"Vie, 29 Sep 2023"),
+                DataInfoItem(getString(context, R.string.type), profileViewModel.type.name),
+                DataInfoItem(getString(context, R.string.duration), profileViewModel.badge),
+                DataInfoItem(getString(context, R.string.expiration_date), profileViewModel.end.toString()),
             )
         )
     }
 
- */
+
 
     Column(
         modifier = Modifier
@@ -159,7 +159,7 @@ fun FooterProfile(profileViewModel: ProfileViewModel) {
             mutableStateOf(false)
         }
 
-        /*
+
         var openMem by remember {
             mutableStateOf(false)
         }
@@ -168,30 +168,27 @@ fun FooterProfile(profileViewModel: ProfileViewModel) {
             mutableStateOf(false)
         }
 
-         */
-
         if(openUse){
             UserDialogEdit(
-                onClose = { openUse = !openUse }
+                onClose = { openUse = !openUse },
+                profileViewModel = profileViewModel
+            )
+        }
+
+
+        if(openMem){
+            MembDialogEdit(
+                onClose = { openMem = !openMem }
             )
         }
 
         /*
-        if(openMem){
-            MembDialogEdit(
-                onClose = { openMem = !openMem },
-                myViewModel = myViewModel
-            )
-        }
-
         if(openSec){
             SecuDialogEdit(
-                onClose = { openSec = !openSec },
-                myViewModel = myViewModel
+                onClose = { openSec = !openSec }
             )
-        }
+        }*/
 
-         */
 
         ProfileItems(
             title = stringResource(id = R.string.personal_info),
@@ -205,31 +202,27 @@ fun FooterProfile(profileViewModel: ProfileViewModel) {
         )
 
         Spacer(modifier = Modifier.size(8.dp))
-/*
+
         ProfileItems(
-            title = myViewModel.languageType().get(129),
-            description = myViewModel.languageType().get(126),
+            title = stringResource(id = R.string.membership),
+            description = stringResource(id = R.string.home),
             open = member,
             items = memberInfo,
             onClick = { member = !member },
-            onEdit = { openMem = !openMem },
-            myViewModel = myViewModel
+            onEdit = { openMem = !openMem }
         )
 
         Spacer(modifier = Modifier.size(8.dp))
 
         ProfileItems(
-            title = myViewModel.languageType().get(142),
-            description = myViewModel.languageType().get(104),
+            title = stringResource(id = R.string.security),
+            description = stringResource(id = R.string.security_desc),
             open = seguridad,
             items = secInfo,
             onClick = { seguridad = !seguridad },
-            onEdit = { openSec = !openSec },
-            myViewModel = myViewModel
+            onEdit = { openSec = !openSec }
         )
 
-
- */
         Spacer(modifier = Modifier.size(16.dp))
     }
 }
