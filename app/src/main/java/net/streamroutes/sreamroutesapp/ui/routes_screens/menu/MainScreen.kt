@@ -180,13 +180,13 @@ fun Main(
         // cuerpo de la navegacion
         Scaffold(
             topBar = {
-                //if(routeScreen.equals(RoutesNavigationOptions.HOME_SCREEN)){
+                if(routeScreen == RoutesNavigationOptions.HOME_SCREEN){
                     TopBarBody(){
                         scope.launch(Dispatchers.IO) {
                             drawerState.open()
                         }
                     }
-                //}
+                }
             }
         ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
@@ -206,7 +206,10 @@ fun Main(
                     //NavigationOptions.DOWNLOAD_OPTION ->
                     //NavigationOptions.SHARE_OPTION ->
                     RoutesNavigationOptions.CONF_SCREEN -> ConfigurationScreen(configurationViewModel)
-                    RoutesNavigationOptions.HELP_SCREEN -> HelpScreen()
+                    RoutesNavigationOptions.HELP_SCREEN -> HelpScreen {
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+
                     RoutesNavigationOptions.PROFILE_SCREEN -> ProfileScreen()
                     else -> MapBody(cameraPositionState = cameraState)
                 }

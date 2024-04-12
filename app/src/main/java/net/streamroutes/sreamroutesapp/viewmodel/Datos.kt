@@ -84,12 +84,12 @@ class MyViewModel : ViewModel() {
         "Logo Stream Routes",                               // 46
         "Te enviará al menú de opciones",                   // 47
 
-        // HelpScreens > HelpCommentsScreen.kt
+        // HelpScreens > CommentScreen.kt
         "Cuentanos cómo podemos ayudarte.",                 // 48
         "Te enviará al menú de opciones",                   // 49
         "Enviar",
 
-        // HelpScreens > HelpContactScreen.kt
+        // HelpScreens > ContactScreen.kt
         "Nombre",                                           // 50
         "Nuestro correo",                                   // 51
         "Mensaje",                                          // 52
@@ -585,12 +585,12 @@ class MyViewModel : ViewModel() {
         "Stream Routes logo",                               // 46
         "It will send you to the options menu",             // 47
 
-        // HelpScreens > HelpCommentsScreen.kt
+        // HelpScreens > CommentScreen.kt
         "Tell us how we can help you.",                     // 48
         "It will send you to the options menu",             // 49
         "Send",
 
-        // HelpScreens > HelpContactScreen.kt
+        // HelpScreens > ContactScreen.kt
         "Name",                                             // 50
         "Our email",                                        // 51
         "Message",                                          // 52

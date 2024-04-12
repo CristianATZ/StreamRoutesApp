@@ -11,9 +11,9 @@ import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.MapOptionsScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.NotificationsScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.PrivacityScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpAboutAppScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpCommentsScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpContactScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.AboutScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.CommentScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.ContactScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.MainScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.ChangeScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.LanguageScreen
@@ -69,33 +69,6 @@ fun AppNavigation(
         composable(AppScreens.LoginScreen.route){
             LoginScreen(loginViewModel, NavController)
         }
-
-        // HELP
-        composable(AppScreens.HelpAboutAppScreen.route){
-            HelpAboutAppScreen(myViewModel,NavController)
-        }
-        composable(AppScreens.HelpCommentsScreen.route){
-            HelpCommentsScreen(myViewModel,NavController)
-        }
-        composable(AppScreens.HelpContactScreen.route){
-            HelpContactScreen(myViewModel,NavController)
-        }
-
-        // MAPA OPCIONES
-        composable(AppScreens.MapOptionsScreen.route){
-            MapOptionsScreen(configurationViewModel)
-        }
-
-        // NOTIFICACIONES
-        composable(AppScreens.NotificationsScreen.route){
-            NotificationsScreen(configurationViewModel)
-        }
-
-        // PRIVACIDAD
-        composable(AppScreens.PrivacityScreen.route){
-            PrivacityScreen(configurationViewModel)
-        }
-
 
         // LANGUAGE SCREEN
         composable(AppScreens.LanguageScreen.route){

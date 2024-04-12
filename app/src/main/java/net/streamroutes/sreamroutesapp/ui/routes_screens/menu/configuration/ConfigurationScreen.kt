@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Divider
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -81,6 +82,7 @@ fun ConfigurationScreen(configurationViewModel: ConfigurationViewModel){
 
                 if(selection == item.configuration){
                     item.composable()
+                    Divider()
                 }
             }
         }
@@ -99,8 +101,6 @@ private fun Options(
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
-
-
     val background = if(isSelected){
         MaterialTheme.colorScheme.surfaceVariant
     } else {
@@ -123,7 +123,7 @@ private fun Options(
         modifier = Modifier
             .fillMaxWidth()
             .height(60.dp)
-            .background( background )
+            .background(background)
             .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -1,15 +1,20 @@
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help
 
 import android.annotation.SuppressLint
+import androidx.annotation.StringRes
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Divider
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -20,65 +25,69 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.R
-
-@Preview(showBackground = true)
-@Composable
-fun HelpView(){
-
-}
+import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 
 
 data class HelpItem(
-    val name: String,
-    val desc: String,
-    val action: () -> Unit
+    @StringRes val name: Int,
+    @StringRes val desc: Int,
+    val configuration: HelpSelection,
+    val composable: @Composable () -> Unit
 )
 
+enum class HelpSelection{
+    NONE,
+    COMMENTS,
+    CONTACT,
+    ABOUT
+}
+
+
+
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HelpScreen(myViewModel: MyViewModel = MyViewModel()) {
-    val help_items = listOf(
-        HelpItem(
-            name = myViewModel.languageType().get(255),
-            desc = myViewModel.languageType().get(256),
-            action =  {
+fun HelpScreen(myViewModel: MyViewModel = MyViewModel(), onBack: () -> Unit) {
 
-            }
-        ),
-        HelpItem(
-            name = myViewModel.languageType().get(257),
-            desc = myViewModel.languageType().get(258),
-            action =  {
+    var selection by remember {
+        mutableStateOf(HelpSelection.NONE)
+    }
 
-            }
-        ),
-        HelpItem(
-            name = myViewModel.languageType().get(259),
-            desc = myViewModel.languageType().get(260),
-            action =  {
-
-            }
-        )
+    val helpItems = listOf(
+        HelpItem(name = R.string.lblCommentTitle, desc = R.string.lblCommentSubtitle,configuration = HelpSelection.COMMENTS, composable = { CommentOptions() }),
+        HelpItem(name = R.string.lblContactTitle, desc = R.string.lblContactSubtitle,configuration = HelpSelection.CONTACT, composable = { ContactOptions() }),
+        HelpItem(name = R.string.lblAboutTitle, desc = R.string.lblAboutSubtitle,configuration = HelpSelection.ABOUT, composable = { AboutOptions() })
     )
 
     Scaffold(
-        topBar = { TopBarBody(myViewModel) },
+        topBar = { HelpTopBar(onBack = onBack) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
                 .padding(paddingValues)
                 .fillMaxSize()
         ) {
-            help_items.forEach(){ item ->
-                Options(item)
+            helpItems.forEach { item ->
+                Options(name = item.name, desc = item.desc, isSelected = selection == item.configuration) {
+                    selection = if(selection == item.configuration)
+                        HelpSelection.NONE
+                    else
+                        item.configuration
+                }
+
+                if(selection == item.configuration){
+                    item.composable()
+                    Divider()
+                }
             }
         }
     }
@@ -86,21 +95,18 @@ fun HelpScreen(myViewModel: MyViewModel = MyViewModel()) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel,
-) {
+fun HelpTopBar(onBack: () -> Unit) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = "Ayuda y soporte",
-                style = typography.titleLarge
+                text = stringResource(id = R.string.lblHelpTopbar)
             )
         },
         navigationIcon = {
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { onBack() }) {
                 Icon(
-                    painterResource(id = R.drawable.back),
-                    contentDescription = "Te enviara al menu de opciones"
+                    imageVector = Icons.Outlined.ArrowBackIosNew,
+                    contentDescription = null
                 )
             }
         },
@@ -114,29 +120,67 @@ private fun TopBarBody(
 
 @Composable
 private fun Options(
-    item: HelpItem
+    @StringRes name: Int,
+    @StringRes desc: Int,
+    isSelected: Boolean,
+    onClick: () -> Unit,
 ) {
+    val background = if(isSelected){
+        MaterialTheme.colorScheme.surfaceVariant
+    } else {
+        MaterialTheme.colorScheme.background
+    }
+
+    val textColor = if(isSelected){
+        MaterialTheme.colorScheme.onSurfaceVariant
+    } else {
+        MaterialTheme.colorScheme.onBackground
+    }
+
+    val fontWeight = if(isSelected){
+        FontWeight.Bold
+    } else {
+        FontWeight.Normal
+    }
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(70.dp)
-            .clickable {
-                item.action()
-            },
+            .height(60.dp)
+            .background(background)
+            .clickable(onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.size(16.dp))
-
-        // textos
         Column {
             Text(
-                text = item.name, // texto
-                style = typography.bodyLarge
+                text = stringResource(id = name), // texto
+                style = typography.bodyLarge,
+                color = textColor,
+                fontWeight = fontWeight
             )
+
             Text(
-                text = item.desc, // texto
-                style = typography.labelMedium
+                text = stringResource(id = desc), // texto
+                style = typography.bodySmall,
+                color = textColor,
+                fontWeight = fontWeight
             )
         }
     }
+}
+
+@Composable
+private fun CommentOptions() {
+    CommentScreen()
+}
+
+@Composable
+private fun ContactOptions() {
+    ContactScreen()
+}
+
+@Composable
+private fun AboutOptions() {
+    AboutScreen()
 }

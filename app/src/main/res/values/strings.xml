@@ -110,13 +110,13 @@
     //////////////////////////////////////////////////////////
         HELP SCREEN TEXTS
     //////////////////////////////////////////////////////////
-    <string name="tittle_help_screen">Ayuda</string>
-    <string name="help_comment_tittle">Comentarios</string>
-    <string name="help_comment_subtittle">¿Sugerencias?</string>
-    <string name="help_information_tittle">Info. de aplicación</string>
-    <string name="help_information_subtittle">Versión.</string>
-    <string name="help_contact_tittle">Contactanos</string>
-    <string name="help_contact_subtittle">Cuentanos tu opinión</string>
+    <string name="lblHelpTopbar">Ayuda</string>
+    <string name="lblCommentTitle">Comentarios</string>
+    <string name="lblCommentSubtitle">¿Sugerencias?</string>
+    <string name="lblAboutTitle">Info. de aplicación</string>
+    <string name="lblAboutSubtitle">Versión.</string>
+    <string name="lblContactTitle">Contactanos</string>
+    <string name="lblContactSubtitle">Cuentanos tu opinión</string>
 
     //////////////////////////////////////////////////////////
         COMMENTS SCREEN TEXTS
