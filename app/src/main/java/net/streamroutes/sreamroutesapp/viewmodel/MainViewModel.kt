@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import net.streamroutes.sreamroutesapp.ui.screens.RoutesNavigationOptions
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesNavigationOptions
 
 class MainViewModel: ViewModel() {
     // Main UI State

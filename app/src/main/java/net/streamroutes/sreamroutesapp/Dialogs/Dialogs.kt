@@ -55,7 +55,6 @@ import androidx.compose.ui.window.DialogProperties
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.ui.screens.getShareUbi
 import net.streamroutes.sreamroutesapp.viewmodel.Notification
 import net.streamroutes.sreamroutesapp.viewmodel.ProfileViewModel
 

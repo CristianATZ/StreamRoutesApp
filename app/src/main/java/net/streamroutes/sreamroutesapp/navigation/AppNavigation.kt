@@ -8,23 +8,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
-import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.MapOptionsScreen
-import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.NotificationsScreen
-import net.streamroutes.sreamroutesapp.Screens.ConfigurationScreens.PrivacityScreen
-import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpAboutAppScreen
-import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpCommentsScreen
-import net.streamroutes.sreamroutesapp.Screens.HelpScreens.HelpContactScreen
-import net.streamroutes.sreamroutesapp.ui.screens.MainScreen
-import net.streamroutes.sreamroutesapp.Screens.HelpScreens.ResenaScreen
-import net.streamroutes.sreamroutesapp.Screens.MenuScreens.ValoranoScreen
-import net.streamroutes.sreamroutesapp.Screens.Start.ChangeScreen
-import net.streamroutes.sreamroutesapp.Screens.Start.LanguageScreen
-import net.streamroutes.sreamroutesapp.Screens.Start.LoginScreen
-import net.streamroutes.sreamroutesapp.Screens.Start.RegistrationScreen
-import net.streamroutes.sreamroutesapp.Screens.Start.SplashScreen
-import net.streamroutes.sreamroutesapp.Screens.Start.VerificationScreen
-import net.streamroutes.sreamroutesapp.ui.screens.MainParking
-import net.streamroutes.sreamroutesapp.ui.screens.SelectOptionScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.MapOptionsScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.NotificationsScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.PrivacityScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpAboutAppScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpCommentsScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpContactScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.MainScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.start.ChangeScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.start.LanguageScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.start.LoginScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.start.RegistrationScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.start.SplashScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.start.VerificationScreen
+import net.streamroutes.sreamroutesapp.ui.parkin_screens.MainParking
+import net.streamroutes.sreamroutesapp.ui.parkin_screens.SelectOptionScreen
 import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.FastViewModel
@@ -98,19 +96,10 @@ fun AppNavigation(
             PrivacityScreen(configurationViewModel)
         }
 
-        // VALORANOS SCREEN
-        composable(AppScreens.ValoranoScreen.route){
-            ValoranoScreen(myViewModel,NavController)
-        }
 
         // LANGUAGE SCREEN
         composable(AppScreens.LanguageScreen.route){
             LanguageScreen(myViewModel, NavController)
-        }
-
-        // RESENA
-        composable(AppScreens.ResenaScreen.route){
-            ResenaScreen()
         }
 
         composable(AppScreens.MainParking.route){
