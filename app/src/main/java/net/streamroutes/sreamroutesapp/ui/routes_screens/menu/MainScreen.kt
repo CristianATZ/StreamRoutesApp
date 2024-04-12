@@ -11,6 +11,7 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
 import androidx.annotation.RequiresApi
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Bookmark
 import androidx.compose.material.icons.filled.ChatBubble
 import androidx.compose.material.icons.filled.DirectionsBus
@@ -34,6 +36,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Museum
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Bookmark
 import androidx.compose.material.icons.outlined.ChatBubble
 import androidx.compose.material.icons.outlined.DirectionsBus
@@ -72,6 +75,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -114,7 +118,7 @@ data class RoutesNavigationItem(
     val option: RoutesNavigationOptions,
     val iconSelected: ImageVector,
     val iconUnselected: ImageVector,
-    val label: String
+    @StringRes val label: Int
 )
 
 @RequiresApi(Build.VERSION_CODES.Q)
@@ -152,17 +156,18 @@ fun Main(
 
     // lista para el menu de opciones
     val routesNavigationList = listOf(
-        RoutesNavigationItem(RoutesNavigationOptions.HOME_SCREEN, Icons.Filled.Home, Icons.Outlined.Home, "Inicio"),
-        RoutesNavigationItem(RoutesNavigationOptions.PREMIUM_SCREEN, Icons.Filled.MonetizationOn, Icons.Outlined.MonetizationOn, "Paquetes"),
-        RoutesNavigationItem(RoutesNavigationOptions.FAST_SCREEN, Icons.Filled.FlashOn, Icons.Outlined.FlashOn, "Ruta mas rapida"),
-        RoutesNavigationItem(RoutesNavigationOptions.ROUTES_SCREEN, Icons.Filled.DirectionsBus, Icons.Outlined.DirectionsBus, "Rutas de transporte"),
-        RoutesNavigationItem(RoutesNavigationOptions.TRIP_SCREEN, Icons.Filled.Bookmark, Icons.Outlined.Bookmark, "Planifica tu viaje"),
-        RoutesNavigationItem(RoutesNavigationOptions.TURISM_SCREEN, Icons.Filled.Museum, Icons.Outlined.Museum, "Turismo"),
-        RoutesNavigationItem(RoutesNavigationOptions.CHAT_SCREEN, Icons.Filled.ChatBubble, Icons.Outlined.ChatBubble, "Chat general"),
-        RoutesNavigationItem(RoutesNavigationOptions.UBI_OPTION, Icons.Filled.EmergencyShare, Icons.Outlined.EmergencyShare, "Compartir ubicacion"),
-        RoutesNavigationItem(RoutesNavigationOptions.DOWNLOAD_OPTION, Icons.Filled.DownloadForOffline, Icons.Outlined.DownloadForOffline, "Descargar rutas"),
-        RoutesNavigationItem(RoutesNavigationOptions.CONF_SCREEN, Icons.Filled.Settings, Icons.Outlined.Settings, "Configuracion"),
-        RoutesNavigationItem(RoutesNavigationOptions.HELP_SCREEN, Icons.Filled.Help, Icons.Outlined.Help, "Ayuda y soporte"),
+        RoutesNavigationItem(RoutesNavigationOptions.PROFILE_SCREEN, Icons.Filled.AccountCircle, Icons.Outlined.AccountCircle, R.string.lblProfile),
+        RoutesNavigationItem(RoutesNavigationOptions.HOME_SCREEN, Icons.Filled.Home, Icons.Outlined.Home, R.string.lblHome),
+        RoutesNavigationItem(RoutesNavigationOptions.PREMIUM_SCREEN, Icons.Filled.MonetizationOn, Icons.Outlined.MonetizationOn, R.string.lblSuscription),
+        RoutesNavigationItem(RoutesNavigationOptions.FAST_SCREEN, Icons.Filled.FlashOn, Icons.Outlined.FlashOn, R.string.lblFast),
+        RoutesNavigationItem(RoutesNavigationOptions.ROUTES_SCREEN, Icons.Filled.DirectionsBus, Icons.Outlined.DirectionsBus, R.string.lblRoutes),
+        RoutesNavigationItem(RoutesNavigationOptions.TRIP_SCREEN, Icons.Filled.Bookmark, Icons.Outlined.Bookmark, R.string.lblTrip),
+        RoutesNavigationItem(RoutesNavigationOptions.TURISM_SCREEN, Icons.Filled.Museum, Icons.Outlined.Museum, R.string.lblTurism),
+        RoutesNavigationItem(RoutesNavigationOptions.CHAT_SCREEN, Icons.Filled.ChatBubble, Icons.Outlined.ChatBubble, R.string.lblChat),
+        RoutesNavigationItem(RoutesNavigationOptions.UBI_OPTION, Icons.Filled.EmergencyShare, Icons.Outlined.EmergencyShare, R.string.lblShare),
+        RoutesNavigationItem(RoutesNavigationOptions.DOWNLOAD_OPTION, Icons.Filled.DownloadForOffline, Icons.Outlined.DownloadForOffline, R.string.lblDownload),
+        RoutesNavigationItem(RoutesNavigationOptions.CONF_SCREEN, Icons.Filled.Settings, Icons.Outlined.Settings, R.string.lblConfiguration),
+        RoutesNavigationItem(RoutesNavigationOptions.HELP_SCREEN, Icons.Filled.Help, Icons.Outlined.Help, R.string.lblHelp),
     )
 
     ModalNavigationDrawer(
@@ -225,20 +230,18 @@ fun AppDrawer(
     onChangeScreen: (RoutesNavigationOptions) -> Unit
 ) {
     ModalDrawerSheet {
-        DrawerHeader(modifier = Modifier){
-            onChangeScreen(RoutesNavigationOptions.PROFILE_SCREEN)
-        }
+        DrawerHeader(modifier = Modifier)
 
         Spacer(modifier = Modifier.size(16.dp))
 
         items.forEach { item ->
             NavigationDrawerItem(
-                label = { Text(text = item.label) },
+                label = { Text(text = stringResource(id = item.label)) },
                 selected = selectedScreen == item.option,
                 icon = {
                     Icon(
                         imageVector = if (selectedScreen == item.option) item.iconSelected else item.iconUnselected,
-                        contentDescription = "icono de ${item.label}"
+                        contentDescription = "icono de ${stringResource(id = item.label)}"
                     )
                 },
                 onClick = { onChangeScreen(item.option) }
@@ -249,8 +252,7 @@ fun AppDrawer(
 
 @Composable
 fun DrawerHeader(
-    modifier: Modifier,
-    onClick: () -> Unit
+    modifier: Modifier = Modifier
 ) {
     Column(
         verticalArrangement = Arrangement.Center,
@@ -259,7 +261,6 @@ fun DrawerHeader(
             .background(colorScheme.secondary)
             .padding(15.dp)
             .fillMaxWidth()
-            .clickable { onClick() }
     ) {
 
         Image(

@@ -194,7 +194,6 @@
     <string name="lblTema">Tema</string>
     <string name="lblAlerts">Alertas</string>
     <string name="lblAlertsDescription">Cambios de horarios, rutas, etc.</string>
-    <string name="lblSuscription">Suscripcion</string>
     <string name="lblSuscriptionDescription">Expiracion de la suscripcion, etc.</string>
     <string name="lblMap">Mapa</string>
     <string name="lblMapDescription">Paradas</string>
@@ -224,6 +223,19 @@
     <string name="lblPagoSuscrip">Pago de suscripcion</string>
     <string name="lblPagoSuscripDescription">Si esta opción está marcada se permitirá el cobro automatico de la suscripción cada mes.</string>
 
+    // menu strings
+    <string name="lblProfile">Perfil</string>
+    <string name="lblHome">Inicio</string>
+    <string name="lblSuscription">Paquetes</string>
+    <string name="lblFast">Ruta mas rapida</string>
+    <string name="lblRoutes">Rutas de transporte</string>
+    <string name="lblTrip">Planifica tu viaje</string>
+    <string name="lblTurism">Turismo</string>
+    <string name="lblChat">Chat general</string>
+    <string name="lblShare">Compartir ubicacion</string>
+    <string name="lblDownload">Descargar rutas</string>
+    <string name="lblConfiguration">Configuracion</string>
+    <string name="lblHelp">Ayuda y soporte</string>
 
     //////////////////////////////////////////////////////////
     MAPA
