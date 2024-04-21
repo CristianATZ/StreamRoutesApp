@@ -366,7 +366,7 @@ class MyViewModel : ViewModel() {
         // HelpAboutScreen
         "Acerca de",                    // 266
         "Versión",                      // 267
-        "Rumapp. ® Todos los derechos reservados 2023-2024.",    // 268
+        "Rumapp. ® Todos los derechos reservados 2024-2025.",    // 268
 
         // login screen
         "Teléfono",                 // 269

@@ -190,7 +190,7 @@ fun SidePanel(
             time = "3.45",
             time1 = "HRS",
             aprox = "6 min",
-            aprox1 = "10, 15 min",
+            aprox1 = "9, 15 min",
             ubi = false
         ),
         RutaView(
@@ -210,7 +210,7 @@ fun SidePanel(
             ubi = true
         ),
         RutaView(
-            name = "Ruta 6 - Padre Zavala",
+            name = "Ruta 6 - Hidalgo",
             time = "3.30",
             time1 = "HRS",
             aprox = "6 min",

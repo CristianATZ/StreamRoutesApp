@@ -30,7 +30,7 @@ fun AboutScreen(myViewModel: MyViewModel = MyViewModel()){
 
         Image(
             painter = painterResource(id = R.drawable.logo_navbar_2),
-            contentDescription = "Logo Stream Routes",
+            contentDescription = "Logo Rumapp",
             modifier = Modifier
                 .size(200.dp)
         )

@@ -50,7 +50,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.rememberCameraPositionState
 import com.utsman.osmandcompose.DefaultMapProperties
 import com.utsman.osmandcompose.OpenStreetMap
 import com.utsman.osmandcompose.ZoomButtonVisibility
@@ -132,6 +137,7 @@ fun TripScreen(myViewModel: MyViewModel = MyViewModel()) {
         }
 
         Box(){
+            /*
             OpenStreetMap(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -159,6 +165,27 @@ fun TripScreen(myViewModel: MyViewModel = MyViewModel()) {
                         )
                     )
                 }
+            }
+             */
+            val itsur = LatLng(20.139539228288044, -101.15073143400946)
+            val cameraState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(itsur, 17f)
+            }
+            GoogleMap(
+                modifier = Modifier
+                    .fillMaxSize(),
+                cameraPositionState = cameraState,
+                properties = MapProperties(
+                    maxZoomPreference = 18f,
+                    minZoomPreference = 15f,
+                    isMyLocationEnabled = false,
+                    isBuildingEnabled = false
+                ),
+                uiSettings = MapUiSettings(
+                    zoomControlsEnabled = false
+                )
+            ) {
+
             }
         }
 

@@ -193,11 +193,13 @@ fun SuscripcionScreen(myViewModel: MyViewModel = MyViewModel()) {
                 item {
                     Spacer(modifier = Modifier.size(16.dp))
 
+                    /*
                     Text(
                         text = myViewModel.languageType()[308],
                         style = typography.titleLarge,
                         textAlign = TextAlign.Center
                     )
+                     */
 
                     premium_items.forEach(){ item ->
                         Paquete(
