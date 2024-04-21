@@ -140,7 +140,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel = MyViewModel()) {
                         horizontalArrangement = Arrangement.Center
                     ) {
                         Image(
-                            painter = painterResource(id = R.drawable.logo_navbar_2),
+                            painter = painterResource(id = R.drawable.logo),
                             contentDescription = null,
                             modifier = Modifier
                                 .size(100.dp)

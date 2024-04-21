@@ -29,7 +29,7 @@ fun AboutScreen(myViewModel: MyViewModel = MyViewModel()){
         Spacer(modifier = Modifier.weight(1f))
 
         Image(
-            painter = painterResource(id = R.drawable.logo_navbar_2),
+            painter = painterResource(id = R.drawable.logo),
             contentDescription = "Logo Rumapp",
             modifier = Modifier
                 .size(200.dp)
