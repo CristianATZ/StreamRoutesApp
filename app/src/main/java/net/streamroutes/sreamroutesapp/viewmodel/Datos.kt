@@ -51,8 +51,8 @@ class MyViewModel : ViewModel() {
         "Puedes cambiar el idioma en el botón de la parte superior derecha, de igual forma en configuración.",      // 29
         "Regresar",                                                                                                 // 30
         "Siguiente",                                                                                                // 31
-        "Stream Routes necesita acceder a tu ubicación para ofrecerte una experiencia más personalizada, mostrarte rutas y lugares de interés cercanos.",       // 32
-        "Stream Routes necesita acceder a tus contactos para propocionar una experiencia personalizada, facilitar la conexión con tus amigos y contactos.",     // 33
+        "Rumapp necesita acceder a tu ubicación para ofrecerte una experiencia más personalizada, mostrarte rutas y lugares de interés cercanos.",       // 32
+        "Rumapp necesita acceder a tus contactos para propocionar una experiencia personalizada, facilitar la conexión con tus amigos y contactos.",     // 33
         "Tipo de mapa",                                                                                             // 34
         "Toca los marcadores del mapa para obtener mas información sobre el.",                                      // 35
         "Tu ",                                                                                                      // 36
@@ -81,7 +81,7 @@ class MyViewModel : ViewModel() {
 
 
         // HelpScreens > HelAboutAppScreen.kt
-        "Logo Stream Routes",                               // 46
+        "Logo Rumapp Routes",                               // 46
         "Te enviará al menú de opciones",                   // 47
 
         // HelpScreens > CommentScreen.kt
@@ -366,7 +366,7 @@ class MyViewModel : ViewModel() {
         // HelpAboutScreen
         "Acerca de",                    // 266
         "Versión",                      // 267
-        "Stream Routes. ® Todos los derechos reservados 2023-2024.",    // 268
+        "Rumapp. ® Todos los derechos reservados 2023-2024.",    // 268
 
         // login screen
         "Teléfono",                 // 269
@@ -556,8 +556,8 @@ class MyViewModel : ViewModel() {
         "You can change the language in the button at the top right, similarly in settings.",           // 29
         "Back",                                                                                         // 30
         "Next",                                                                                         // 31
-        "Stream Routes needs access to your location to offer you a more personalized experience, show you routes, and nearby points of interest.",     // 32
-        "Stream Routes needs access to your contacts to provide a personalized experience, facilitate connecting with your friends and contacts.",      // 33
+        "Rumapp needs access to your location to offer you a more personalized experience, show you routes, and nearby points of interest.",     // 32
+        "Rumapp needs access to your contacts to provide a personalized experience, facilitate connecting with your friends and contacts.",      // 33
         "Map type",                                                                                     // 34
         "Tap the map markers to get more information about them.",                                      // 35
         "Your ",                                                                                        // 36
@@ -582,7 +582,7 @@ class MyViewModel : ViewModel() {
         "It will send you to the settings menu",            // 45
 
         // HelpScreens > HelAboutAppScreen.kt
-        "Stream Routes logo",                               // 46
+        "Rumapp logo",                               // 46
         "It will send you to the options menu",             // 47
 
         // HelpScreens > CommentScreen.kt
@@ -855,7 +855,7 @@ class MyViewModel : ViewModel() {
         // HelpAboutScreen
         "About",                                                // 266
         "Version",                                              // 267
-        "Stream Routes. ® All rights reserved 2023-2024.",      // 268
+        "Rumapp. ® All rights reserved 2023-2024.",      // 268
 
         // login screen
         "Phone Number",             // 269
