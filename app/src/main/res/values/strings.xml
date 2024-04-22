@@ -237,6 +237,13 @@
     <string name="lblConfiguration">Configuracion</string>
     <string name="lblHelp">Ayuda y soporte</string>
 
+    <string name="lblHeader1">Busquemos Un</string>
+    <string name="lblHeader2">Espacio</string>
+    <string name="lblHeader3">Para</string>
+    <string name="lblHeader4">Ti.</string>
+    <string name="lblBarraBusquedaInicio">Buscar lugar</string>
+
+
     //////////////////////////////////////////////////////////
     MAPA
     //////////////////////////////////////////////////////////
