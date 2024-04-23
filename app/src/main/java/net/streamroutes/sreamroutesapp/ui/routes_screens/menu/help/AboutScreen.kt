@@ -16,7 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
 
 @Composable
 fun AboutScreen(myViewModel: MyViewModel = MyViewModel()){

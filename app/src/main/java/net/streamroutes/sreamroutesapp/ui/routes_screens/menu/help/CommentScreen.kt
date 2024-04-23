@@ -31,7 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
 
 @Composable
 fun CommentScreen(myViewModel: MyViewModel = MyViewModel()){

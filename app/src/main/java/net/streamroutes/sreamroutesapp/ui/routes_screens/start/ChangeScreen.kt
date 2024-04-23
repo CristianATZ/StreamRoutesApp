@@ -42,7 +42,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ChangeViewModel
 
 @Composable
 fun ChangeScreen(changeViewModel: ChangeViewModel, navController: NavController){

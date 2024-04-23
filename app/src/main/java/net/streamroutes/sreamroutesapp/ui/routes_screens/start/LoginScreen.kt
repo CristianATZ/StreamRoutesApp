@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel, navController: NavController){

@@ -7,13 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.MapOptionsScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.NotificationsScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.PrivacityScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.AboutScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.CommentScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.ContactScreen
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.MainScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.ChangeScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.LanguageScreen
@@ -21,13 +15,13 @@ import net.streamroutes.sreamroutesapp.ui.routes_screens.start.LoginScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.RegistrationScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.SplashScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.VerificationScreen
-import net.streamroutes.sreamroutesapp.ui.parkin_screens.MainParking
-import net.streamroutes.sreamroutesapp.ui.parkin_screens.SelectOptionScreen
-import net.streamroutes.sreamroutesapp.viewmodel.ChangeViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.FastViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.LoginViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
+import net.streamroutes.sreamroutesapp.ui.parking_screens.MainParking
+import net.streamroutes.sreamroutesapp.ui.parking_screens.SelectOptionScreen
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ChangeViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
 
 
 @RequiresApi(Build.VERSION_CODES.Q)

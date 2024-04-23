@@ -1,17 +1,12 @@
-package net.streamroutes.sreamroutesapp.viewmodel
+package net.streamroutes.sreamroutesapp.viewmodel.routes
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.initializer
-import androidx.lifecycle.viewmodel.viewModelFactory
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import net.streamroutes.sreamroutesapp.data.AppContainer
-import net.streamroutes.sreamroutesapp.data.RemoteContainer
 
 class LoginViewModel: ViewModel() {
     // Login UI State

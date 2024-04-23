@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.viewmodel
+package net.streamroutes.sreamroutesapp.utils
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf

@@ -89,7 +89,7 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import org.osmdroid.util.GeoPoint
 
 

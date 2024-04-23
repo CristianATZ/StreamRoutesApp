@@ -57,7 +57,7 @@ import com.utsman.osmandcompose.rememberCameraState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-import net.streamroutes.sreamroutesapp.viewmodel.FastViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
 import org.osmdroid.util.GeoPoint
 import net.streamroutes.sreamroutesapp.R
 

@@ -14,7 +14,6 @@ import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -93,10 +92,10 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.profile.ProfileScreen
-import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.FastViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.MainViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
 
 enum class RoutesNavigationOptions{
     HOME_SCREEN,

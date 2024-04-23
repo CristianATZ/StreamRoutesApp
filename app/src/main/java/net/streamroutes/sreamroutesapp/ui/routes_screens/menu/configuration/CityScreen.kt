@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import net.streamroutes.sreamroutesapp.viewmodel.Ciudad
-import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.Ciudad
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 
 
 @Composable

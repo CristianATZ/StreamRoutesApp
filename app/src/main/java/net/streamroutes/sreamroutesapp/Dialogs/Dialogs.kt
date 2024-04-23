@@ -52,11 +52,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import net.streamroutes.sreamroutesapp.viewmodel.ConfigurationViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.viewmodel.Notification
-import net.streamroutes.sreamroutesapp.viewmodel.ProfileViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.Notification
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ProfileViewModel
 
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)
 // DIALOG DE NOTIFICACIONES PUSH (NOTIFICATIONS SCREEN)

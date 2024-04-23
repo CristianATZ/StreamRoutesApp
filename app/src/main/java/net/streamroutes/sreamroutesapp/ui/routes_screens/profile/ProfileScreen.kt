@@ -66,7 +66,7 @@ import androidx.core.content.ContextCompat.getString
 import net.streamroutes.sreamroutesapp.Dialogs.MembDialogEdit
 import net.streamroutes.sreamroutesapp.Dialogs.UserDialogEdit
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.viewmodel.ProfileViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ProfileViewModel
 
 data class DataInfoItem(val title: String, val inf: String)
 

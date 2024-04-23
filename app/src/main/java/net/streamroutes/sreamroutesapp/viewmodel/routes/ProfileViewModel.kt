@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.viewmodel
+package net.streamroutes.sreamroutesapp.viewmodel.routes
 
 import android.os.Build
 import androidx.annotation.RequiresApi

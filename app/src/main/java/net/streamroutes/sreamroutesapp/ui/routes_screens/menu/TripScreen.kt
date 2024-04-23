@@ -56,17 +56,12 @@ import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
-import com.utsman.osmandcompose.DefaultMapProperties
-import com.utsman.osmandcompose.OpenStreetMap
-import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberCameraState
 import com.utsman.osmandcompose.rememberOverlayManagerState
-import net.streamroutes.sreamroutesapp.viewmodel.AddressInfo
-import net.streamroutes.sreamroutesapp.viewmodel.MyViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.getAddressInfoFromCoordinates
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+import net.streamroutes.sreamroutesapp.utils.AddressInfo
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
+import net.streamroutes.sreamroutesapp.utils.getAddressInfoFromCoordinates
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.overlay.CopyrightOverlay
 
 data class PlaceItem(
     val coordenadas: AddressInfo,
