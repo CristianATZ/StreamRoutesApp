@@ -20,6 +20,7 @@ import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -37,6 +38,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -44,11 +46,15 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.ui.Theme.md_theme_light_errorContainer
+import net.streamroutes.sreamroutesapp.ui.Theme.md_theme_light_onErrorContainer
+import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 
 data class Vehiculo (
     val matricula: String,
@@ -56,22 +62,20 @@ data class Vehiculo (
 )
 
 @Composable
-fun ParkingHomeScreen() {
-    var vehiculos = listOf(
-        Vehiculo("58ECP3",Icons.Filled.MonetizationOn),
-        Vehiculo("31EHP3",Icons.Filled.Star),
-        Vehiculo("HMN123",Icons.Filled.MonetizationOn)
-    )
+fun ParkingHomeScreen(homePkViewModel: HomePkViewModel) {
+        Column {
+        Header(homePkViewModel)
 
-    Column {
-        Header()
-        Vehicle(vehiculos)
-        Spots()
+        if(!homePkViewModel.verTodo){
+            Vehicle(homePkViewModel)
+        }
+
+        Spots(homePkViewModel)
     }
 }
 
 @Composable
-private fun Spots() {
+private fun Spots(homePkViewModel: HomePkViewModel) {
     Column {
         // encabezado
         Row {
@@ -85,11 +89,17 @@ private fun Spots() {
             Spacer(modifier = Modifier.weight(1f))
             
             Text(
-                text = stringResource(id = R.string.lblVerTodo),
+                text = stringResource(id = if(!homePkViewModel.verTodo) R.string.lblVerTodo else R.string.lblVerMenos),
                 style = MaterialTheme.typography.titleMedium,
                 color = colorScheme.tertiary,
                 fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
+                    .clickable {
+                        homePkViewModel.updateVerTodo(
+                            !homePkViewModel.verTodo
+                        )
+                    }
             )
         }
 
@@ -120,7 +130,9 @@ private fun SpotItem(
     }
 
     if(openDialog){
-        DialogIniciarRecorrido()
+        DialogIniciarRecorrido(){
+            openDialog = !openDialog
+        }
     }
 
     Card(
@@ -193,19 +205,68 @@ private fun SpotItem(
 }
 
 @Composable
-fun DialogIniciarRecorrido() {
-    Dialog(onDismissRequest = { /*TODO*/ }) {
+fun DialogIniciarRecorrido(
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = { onDismiss() }) {
         Card {
-            Text(text = "Quieres iniciar el recorrido?")
-            Button(onClick = { /*TODO*/ }) {
-                Text(text = "Si")
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.lblIniciarRecorrido),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+
+            // boton comenzar
+            Button(
+                onClick = { /*TODO*/ },
+                shape = RoundedCornerShape(0.dp),
+                colors = ButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = colorScheme.onPrimaryContainer,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Transparent
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text(text = stringResource(id = R.string.lblComenzar))
+            }
+
+            // boton cancelar
+            Button(
+                onClick = { onDismiss() },
+                shape = RoundedCornerShape(0.dp),
+                colors = ButtonColors(
+                    containerColor = colorScheme.error,
+                    contentColor = colorScheme.onError,
+                    disabledContainerColor = colorScheme.error,
+                    disabledContentColor = colorScheme.onError
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text(text = stringResource(id = R.string.lblCancelar))
             }
         }
     }
 }
 
 @Composable
-private fun Vehicle(vehiculos: List<Vehiculo>) {
+private fun Vehicle(homePkViewModel: HomePkViewModel) {
+    val vehiculos = listOf(
+        Vehiculo("58ECP3",Icons.Filled.MonetizationOn),
+        Vehiculo("31EHP3",Icons.Filled.Star),
+        Vehiculo("HMN123",Icons.Filled.MonetizationOn)
+    )
+
     var selection by remember {
         mutableIntStateOf(0)
     }
@@ -287,7 +348,7 @@ private fun VehicleItem(
 }
 
 @Composable
-private fun Header() {
+private fun Header(homePkViewModel: HomePkViewModel) {
 
     val headerText1 = buildAnnotatedString {
         withStyle(
@@ -311,7 +372,7 @@ private fun Header() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(250.dp)
+            //.height(250.dp)
             .background(
                 color = colorScheme.primary,
                 RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
@@ -320,19 +381,21 @@ private fun Header() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // texto e imagen
-        Row(
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Column {
-                Text(text = headerText1, style = MaterialTheme.typography.displaySmall)
-                Text(text = headerText2, style = MaterialTheme.typography.displaySmall)
+        if(!homePkViewModel.verTodo){
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(text = headerText1, style = MaterialTheme.typography.displaySmall)
+                    Text(text = headerText2, style = MaterialTheme.typography.displaySmall)
+                }
+                Image(
+                    painter = painterResource(id = R.drawable.logo_icono),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp)
+                )
             }
-            Image(
-                painter = painterResource(id = R.drawable.logo_icono),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(100.dp)
-            )
         }
         
         Spacer(modifier = Modifier.size(8.dp))
@@ -365,6 +428,8 @@ private fun Header() {
             modifier = Modifier
                 .fillMaxWidth(0.85f)
         )
+        
+        Spacer(modifier = Modifier.size(16.dp))
     }
 }
 

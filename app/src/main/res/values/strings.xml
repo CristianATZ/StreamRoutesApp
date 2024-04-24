@@ -246,6 +246,7 @@
     <string name="lblEspaciosCercanos">Espacios cercanos</string>]
     <string name="lblVerTodo">VER TODO</string>
     <string name="lblSignoDinero">$</string>
+    <string name="lblVerMenos">VER MENOS</string>
 
 
     //////////////////////////////////////////////////////////
@@ -307,4 +308,7 @@
         }
     ]
     </string>
+    <string name="lblComenzar">Comenzar</string>
+    <string name="lblCancelar">Cancelar</string>
+    <string name="lblIniciarRecorrido">¿Quieres iniciar el recorrido?</string>
 </resources>

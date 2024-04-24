@@ -17,6 +17,7 @@ import net.streamroutes.sreamroutesapp.ui.routes_screens.start.SplashScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.start.VerificationScreen
 import net.streamroutes.sreamroutesapp.ui.parking_screens.MainParking
 import net.streamroutes.sreamroutesapp.ui.parking_screens.SelectOptionScreen
+import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
@@ -32,7 +33,9 @@ fun AppNavigation(
     changeViewModel: ChangeViewModel = viewModel(),
     loginViewModel: LoginViewModel = viewModel(),
     configurationViewModel: ConfigurationViewModel = viewModel(),
-    fastViewModel: FastViewModel = viewModel()
+    fastViewModel: FastViewModel = viewModel(),
+
+    homePkViewModel: HomePkViewModel = viewModel()
 ) {
     val NavController = rememberNavController()
 
@@ -70,7 +73,7 @@ fun AppNavigation(
         }
 
         composable(AppScreens.MainParking.route){
-            MainParking()
+            MainParking(homePkViewModel)
         }
 
         composable(AppScreens.SelectOptionScreen.route){
