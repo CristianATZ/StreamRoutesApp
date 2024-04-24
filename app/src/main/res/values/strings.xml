@@ -311,4 +311,6 @@
     <string name="lblComenzar">Comenzar</string>
     <string name="lblCancelar">Cancelar</string>
     <string name="lblIniciarRecorrido">¿Quieres iniciar el recorrido?</string>
+    <string name="lblCancelarViaje">Cancelar viaje</string>
+    <string name="lblSeguroCancelarViaje">Esta a punto de cancelar el viaje, ¿Esta seguro?.</string>
 </resources>

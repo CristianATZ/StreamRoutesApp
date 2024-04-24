@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package net.streamroutes.sreamroutesapp.ui.routes_screens.start
+package net.streamroutes.sreamroutesapp.ui.start_screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image

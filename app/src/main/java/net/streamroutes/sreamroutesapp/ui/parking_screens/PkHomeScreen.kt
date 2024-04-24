@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.DirectionsCar
+import androidx.compose.material.icons.filled.DoneAll
 import androidx.compose.material.icons.filled.MonetizationOn
+import androidx.compose.material.icons.filled.Motorcycle
+import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
@@ -51,31 +58,211 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.ui.Theme.md_theme_light_errorContainer
-import net.streamroutes.sreamroutesapp.ui.Theme.md_theme_light_onErrorContainer
+import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
-
-data class Vehiculo (
-    val matricula: String,
-    val icono: ImageVector
-)
+import net.streamroutes.sreamroutesapp.viewmodel.parking.TipoVehiculo
+import net.streamroutes.sreamroutesapp.viewmodel.parking.Vehiculo
 
 @Composable
 fun ParkingHomeScreen(homePkViewModel: HomePkViewModel) {
-        Column {
-        Header(homePkViewModel)
+    Column {
+        if( !homePkViewModel.iniciarRecorrido ){
+            Header(homePkViewModel)
 
-        if(!homePkViewModel.verTodo){
-            Vehicle(homePkViewModel)
+            if( !homePkViewModel.verTodo ){
+                Vehicle(homePkViewModel)
+            }
+
+            Spots(homePkViewModel)
+        } else {
+            IniciarViaje(homePkViewModel)
         }
+    }
+}
 
-        Spots(homePkViewModel)
+@Composable
+fun IniciarViaje(homePkViewModel: HomePkViewModel) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        // mapa
+        MapaRecorrido(homePkViewModel)
+
+        // header iniciar viaje
+        HeaderIniciarViaje(homePkViewModel)
+
+        // cancelar viaje
+        CancelarViaje(homePkViewModel)
+    }
+}
+
+@Composable
+fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
+
+    val ubicacion = LatLng(20.139609738093373, -101.1507421629189)
+
+    val cameraPosition = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(ubicacion, 15f)
+    }
+
+    GoogleMap(
+        cameraPositionState = cameraPosition,
+        modifier = Modifier
+            .fillMaxSize()
+    )
+}
+
+@Composable
+fun CancelarViaje(
+    homePkViewModel: HomePkViewModel
+) {
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if(openDialog){
+        DialogCancelarRecorrido(homePkViewModel){
+            openDialog = !openDialog
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = {
+                openDialog = !openDialog
+            },
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .height(50.dp)
+        ) {
+            Text(text = stringResource(id = R.string.lblCancelarViaje))
+        }
+        
+        Spacer(modifier = Modifier.size(8.dp))
+    }
+}
+
+@Composable
+fun DialogCancelarRecorrido(
+    homePkViewModel: HomePkViewModel,
+    onDismiss: () -> Unit
+) {
+    Dialog(onDismissRequest = { onDismiss() }) {
+        Card {
+            // nombre stacionamiento y pregunta
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                // nombre estacionamiento
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Icon(
+                    imageVector = Icons.Filled.Cancel,
+                    contentDescription = null,
+                    tint = colorScheme.error,
+                    modifier = Modifier
+                        .size(50.dp)
+                )
+                
+                Spacer(modifier = Modifier.size(8.dp))
+
+                // titulo
+                Text(
+                    text = stringResource(id = R.string.lblSeguroCancelarViaje),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+
+            Spacer(modifier = Modifier.size(32.dp))
+
+            // boton comenzar
+            Button(
+                onClick = {
+                    homePkViewModel.updateIniciarRecorrido(false)
+                    homePkViewModel.updateEstacionamientoSeleccionado(
+                        Estacionamiento("","", "", "", "", -1)
+                    )
+                },
+                shape = RoundedCornerShape(0.dp),
+                colors = ButtonColors(
+                    containerColor = Color.Transparent,
+                    contentColor = colorScheme.onPrimaryContainer,
+                    disabledContainerColor = Color.Transparent,
+                    disabledContentColor = Color.Transparent
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text(text = stringResource(id = R.string.lblAceptar))
+            }
+
+            // boton cancelar
+            Button(
+                onClick = { onDismiss() },
+                shape = RoundedCornerShape(0.dp),
+                colors = ButtonColors(
+                    containerColor = colorScheme.error,
+                    contentColor = colorScheme.onError,
+                    disabledContainerColor = colorScheme.error,
+                    disabledContentColor = colorScheme.onError
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(50.dp)
+            ) {
+                Text(text = stringResource(id = R.string.lblCancelar))
+            }
+        }
+    }
+}
+
+@Composable
+fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            //.height(250.dp)
+            .background(
+                color = colorScheme.primary,
+                RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
+            ),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ){
+        SpotItem(
+            spot = homePkViewModel.estacionamientoSeleccionado,
+            homePkViewModel = homePkViewModel
+        )
+        
+        Spacer(modifier = Modifier.size(16.dp))
     }
 }
 
 @Composable
 private fun Spots(homePkViewModel: HomePkViewModel) {
+    val spotList = listOf(
+        Estacionamiento("Gueros","Padre Luis Gaytan", "San Isidro", "38887", "5.0", 30),
+        Estacionamiento("Negros","Padre Luis ", "San ", "38887", "5.0", 24),
+    )
+
     Column {
         // encabezado
         Row {
@@ -109,8 +296,8 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(5){
-                SpotItem("Nombre del lugar", "Calle #N, Colonia, Codigo Postal", "5.0", "30", Icons.Filled.MonetizationOn)
+            items(spotList.size) { index ->
+                SpotItem(spotList[index], homePkViewModel)
             }
         }
     }
@@ -118,11 +305,8 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
 
 @Composable
 private fun SpotItem(
-    name: String,
-    informacion: String,
-    calificacion: String,
-    precio: String,
-    foto: ImageVector
+    spot: Estacionamiento,
+    homePkViewModel: HomePkViewModel
 ) {
 
     var openDialog by remember {
@@ -130,28 +314,39 @@ private fun SpotItem(
     }
 
     if(openDialog){
-        DialogIniciarRecorrido(){
+        DialogIniciarRecorrido(
+            spot,
+            homePkViewModel
+        ){
             openDialog = !openDialog
         }
+    }
+
+    val modifier = if(homePkViewModel.iniciarRecorrido){
+        Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(0.9f)
+    } else {
+        Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(0.9f)
+            .clickable {
+                openDialog = !openDialog
+            }
     }
 
     Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         ),
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(0.9f)
-            .clickable {
-                openDialog = !openDialog
-            }
+        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
 
-            Icon(imageVector = foto, contentDescription = null, modifier = Modifier.size(100.dp))
+            Icon(imageVector = Icons.Filled.RestartAlt, contentDescription = null, modifier = Modifier.size(100.dp))
 
             Column(
                 verticalArrangement = Arrangement.Center,
@@ -159,17 +354,16 @@ private fun SpotItem(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = name,
+                    text = spot.nombre,
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
                         .padding(vertical = 4.dp)
                 )
                 Text(
-                    text = informacion,
-                    style = MaterialTheme.typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp,
+                    text = "${spot.calle}, ${spot.colonia}, ${spot.codigoPostal}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    //letterSpacing = 2.sp,
                     modifier = Modifier
                         .padding(vertical = 4.dp)
                 )
@@ -184,7 +378,7 @@ private fun SpotItem(
                             .size(25.dp)
                     )
                     Text(
-                        text = calificacion,
+                        text = spot.calificacion,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold
                     )
@@ -192,7 +386,7 @@ private fun SpotItem(
                     Spacer(modifier = Modifier.weight(1f))
                     
                     Text(
-                        text = "$$precio",
+                        text = "$${spot.precio}",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
                     )
@@ -206,25 +400,54 @@ private fun SpotItem(
 
 @Composable
 fun DialogIniciarRecorrido(
+    spot: Estacionamiento,
+    homePkViewModel: HomePkViewModel,
     onDismiss: () -> Unit
 ) {
     Dialog(onDismissRequest = { onDismiss() }) {
         Card {
+            // nombre stacionamiento y pregunta
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // nombre estacionamiento
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Icon(
+                imageVector = Icons.Filled.DoneAll,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(50.dp)
+                )
+
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Text(
+                    text = spot.nombre,
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.displayMedium,
+                    fontWeight = FontWeight.Bold
+                )
+
                 Text(
                     text = stringResource(id = R.string.lblIniciarRecorrido),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleLarge,
-                    modifier = Modifier.padding(16.dp)
+                    style = MaterialTheme.typography.bodyLarge
                 )
             }
 
+            Spacer(modifier = Modifier.size(16.dp))
+            
             // boton comenzar
             Button(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    homePkViewModel.updateIniciarRecorrido(true)
+                    homePkViewModel.updateEstacionamientoSeleccionado(spot)
+                    onDismiss()
+                },
                 shape = RoundedCornerShape(0.dp),
                 colors = ButtonColors(
                     containerColor = Color.Transparent,
@@ -262,14 +485,10 @@ fun DialogIniciarRecorrido(
 @Composable
 private fun Vehicle(homePkViewModel: HomePkViewModel) {
     val vehiculos = listOf(
-        Vehiculo("58ECP3",Icons.Filled.MonetizationOn),
-        Vehiculo("31EHP3",Icons.Filled.Star),
-        Vehiculo("HMN123",Icons.Filled.MonetizationOn)
+        Vehiculo("58ECP3", TipoVehiculo.CARRO),
+        Vehiculo("31EHP3", TipoVehiculo.MOTO),
+        Vehiculo("HMN123", TipoVehiculo.TRACTOR)
     )
-
-    var selection by remember {
-        mutableIntStateOf(0)
-    }
 
     Column {
         // encabezado
@@ -289,8 +508,8 @@ private fun Vehicle(homePkViewModel: HomePkViewModel) {
         ) {
             if( true ){
                 items( vehiculos.size/*Aqui agregar el viewmodel*/){ index ->
-                    VehicleItem(index, vehiculos[index], selection){
-                        selection = index
+                    VehicleItem(index, vehiculos[index], homePkViewModel.vehiculoSeleccionado.matricula){
+                        homePkViewModel.updateVehiculoSeleccionado(vehiculos[index])
                     }
                 }
             } else {
@@ -304,11 +523,18 @@ private fun Vehicle(homePkViewModel: HomePkViewModel) {
 private fun VehicleItem(
     index: Int,
     item: Vehiculo,
-    selection: Int,
+    selection: String,
     onClick: () -> Unit
 ) {
-    val cont = if(index == selection) colorScheme.tertiary else colorScheme.primaryContainer
-    val int = if(index == selection) colorScheme.onTertiary else colorScheme.onPrimaryContainer
+    val cont = if(item.matricula == selection) colorScheme.tertiary else colorScheme.primaryContainer
+    val int = if(item.matricula == selection) colorScheme.onTertiary else colorScheme.onPrimaryContainer
+
+    val icono = when(item.tipo) {
+        TipoVehiculo.CARRO -> Icons.Filled.DirectionsCar
+        TipoVehiculo.MOTO -> Icons.Filled.Motorcycle
+        TipoVehiculo.TRACTOR -> Icons.Filled.Audiotrack
+        TipoVehiculo.NINGUNO -> TODO()
+    }
 
     Card(
         elevation = CardDefaults.cardElevation(
@@ -333,7 +559,7 @@ private fun VehicleItem(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Icon(
-                imageVector = item.icono,
+                imageVector = icono,
                 contentDescription = null,
                 modifier = Modifier
                     .size(50.dp)
@@ -381,20 +607,22 @@ private fun Header(homePkViewModel: HomePkViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // texto e imagen
-        if(!homePkViewModel.verTodo){
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Column {
-                    Text(text = headerText1, style = MaterialTheme.typography.displaySmall)
-                    Text(text = headerText2, style = MaterialTheme.typography.displaySmall)
+        if(!homePkViewModel.iniciarRecorrido){
+            if(!homePkViewModel.verTodo){
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Column {
+                        Text(text = headerText1, style = MaterialTheme.typography.displaySmall)
+                        Text(text = headerText2, style = MaterialTheme.typography.displaySmall)
+                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_icono),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(100.dp)
+                    )
                 }
-                Image(
-                    painter = painterResource(id = R.drawable.logo_icono),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .size(100.dp)
-                )
             }
         }
         

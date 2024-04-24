@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.ui.parking_screens
+package net.streamroutes.sreamroutesapp.ui.start_screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

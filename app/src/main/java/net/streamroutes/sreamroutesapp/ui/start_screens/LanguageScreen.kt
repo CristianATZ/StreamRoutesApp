@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.ui.routes_screens.start
+package net.streamroutes.sreamroutesapp.ui.start_screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
