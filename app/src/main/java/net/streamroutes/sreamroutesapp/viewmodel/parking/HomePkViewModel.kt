@@ -22,13 +22,18 @@ class HomePkViewModel(): ViewModel() {
         private set
 
     var vehiculoSeleccionado by mutableStateOf(Vehiculo("", TipoVehiculo.NINGUNO))
+        private set
+
+    var verEstacionamiento by mutableStateOf(false)
+        private set
 
     init {
         _uiState.value = HomePkUiState(
             vehiculoSeleccionado,
             verTodo,
             iniciarRecorrido,
-            estacionamientoSeleccionado
+            estacionamientoSeleccionado,
+            verEstacionamiento
         )
     }
 
@@ -47,13 +52,18 @@ class HomePkViewModel(): ViewModel() {
     fun updateEstacionamientoSeleccionado(_estacionamiento: Estacionamiento){
         estacionamientoSeleccionado = _estacionamiento
     }
+
+    fun updateVerEstacionamiento(_ver: Boolean){
+        verEstacionamiento = _ver
+    }
 }
 
 data class HomePkUiState(
     val vehiculoSeleccionado: Vehiculo? = null,
     val verTodo: Boolean = false,
     val iniciarRecorrido: Boolean = false,
-    val estacionamientoSeleccionado: Estacionamiento? = null
+    val estacionamientoSeleccionado: Estacionamiento? = null,
+    val verEstacionamiento: Boolean = false
 )
 
 enum class TipoVehiculo {

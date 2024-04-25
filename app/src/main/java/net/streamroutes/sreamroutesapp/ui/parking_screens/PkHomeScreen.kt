@@ -50,7 +50,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -77,7 +76,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.Vehiculo
 @Composable
 fun ParkingHomeScreen(homePkViewModel: HomePkViewModel) {
     Column {
-        if( !homePkViewModel.iniciarRecorrido ){
+        if( !homePkViewModel.iniciarRecorrido && !homePkViewModel.verEstacionamiento ){
             Header(homePkViewModel)
 
             if( !homePkViewModel.verTodo ){
@@ -103,8 +102,40 @@ fun IniciarViaje(homePkViewModel: HomePkViewModel) {
         // header iniciar viaje
         HeaderIniciarViaje(homePkViewModel)
 
-        // cancelar viaje
-        CancelarViaje(homePkViewModel)
+        if(!homePkViewModel.verEstacionamiento){
+            // cancelar viaje
+            CancelarViaje(homePkViewModel)
+        } else {
+            // regresar al inicio
+            RegresarViaje(homePkViewModel)
+        }
+    }
+}
+
+@Composable
+fun RegresarViaje(homePkViewModel: HomePkViewModel) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Button(
+            onClick = {
+                homePkViewModel.updateVerEstacionamiento(false)
+                homePkViewModel.updateEstacionamientoSeleccionado(
+                    Estacionamiento("","", "", "", "", -1)
+                )
+            },
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .height(50.dp)
+        ) {
+            Text(text = stringResource(id = R.string.btnRegresarViaje))
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
     }
 }
 
@@ -123,7 +154,7 @@ fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
             zoomControlsEnabled = false
         ),
         properties = MapProperties(
-            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight))
+            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleDark=))
         ),
         modifier = Modifier
             .fillMaxSize()
@@ -159,7 +190,7 @@ fun CancelarViaje(
                 .fillMaxWidth(0.95f)
                 .height(50.dp)
         ) {
-            Text(text = stringResource(id = R.string.lblCancelarViaje))
+            Text(text = stringResource(id = R.string.btnCancelarViaje))
         }
         
         Spacer(modifier = Modifier.size(8.dp))
@@ -461,7 +492,10 @@ fun SportItemBack(
 
         // apartar lugar
         Button(
-            onClick = {  },
+            onClick = {
+                homePkViewModel.updateVerEstacionamiento(true)
+                homePkViewModel.updateEstacionamientoSeleccionado(spot)
+            },
             shape = RoundedCornerShape(0.dp),
             colors = ButtonColors(
                 containerColor = colorScheme.secondary.copy(0.6f),
