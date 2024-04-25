@@ -247,70 +247,12 @@
     <string name="lblVerTodo">VER TODO</string>
     <string name="lblSignoDinero">$</string>
     <string name="lblVerMenos">VER MENOS</string>
-
-
-    //////////////////////////////////////////////////////////
-    MAPA
-    //////////////////////////////////////////////////////////
-    <string name="stylejson">
-    [
-        {
-            "featureType": "poi",
-            "elementType": "all",
-            "stylers": [
-                {
-                "visibility": "off"
-                }
-            ]
-        },
-        {
-            "featureType": "poi.park",
-            "elementType": "all",
-            "stylers": [
-                { "visibility": "on" }
-            ]
-        },
-        {
-            "featureType": "landscape",
-            "elementType": "all",
-            "stylers": [
-                {
-                "visibility": "on"
-                }
-            ]
-        },
-        {
-            "featureType": "transit",
-            "elementType": "all",
-            "stylers": [
-                {
-                "visibility": "off"
-                }
-            ]
-        },
-        {
-            "featureType": "road",
-            "elementType": "labels.icon",
-            "stylers": [
-                {
-                "visibility": "off"
-                }
-            ]
-        },
-        {
-            "featureType": "road",
-            "elementType": "labels.text",
-            "stylers": [
-                {
-                "visibility": "on"
-                }
-            ]
-        }
-    ]
-    </string>
     <string name="lblComenzar">Comenzar</string>
     <string name="lblCancelar">Cancelar</string>
     <string name="lblIniciarRecorrido">¿Quieres iniciar el recorrido?</string>
     <string name="lblCancelarViaje">Cancelar viaje</string>
     <string name="lblSeguroCancelarViaje">Esta a punto de cancelar el viaje, ¿Esta seguro?.</string>
+    <string name="btnApartarLugar">Apartar lugar</string>
+    <string name="btnVerMapa">Ver mapa</string>
+    <string name="btnIniciarRecorrido">Iniciar recorrido</string>
 </resources>

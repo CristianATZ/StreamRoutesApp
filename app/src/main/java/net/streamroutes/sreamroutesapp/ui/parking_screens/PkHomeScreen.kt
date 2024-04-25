@@ -1,5 +1,7 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -8,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,10 +21,11 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.BackHand
 import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.DoneAll
-import androidx.compose.material.icons.filled.MonetizationOn
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Motorcycle
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Star
@@ -39,14 +43,14 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -56,11 +60,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapProperties
+import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
@@ -113,6 +119,12 @@ fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
 
     GoogleMap(
         cameraPositionState = cameraPosition,
+        uiSettings = MapUiSettings(
+            zoomControlsEnabled = false
+        ),
+        properties = MapProperties(
+            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight))
+        ),
         modifier = Modifier
             .fillMaxSize()
     )
@@ -239,7 +251,6 @@ fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            //.height(250.dp)
             .background(
                 color = colorScheme.primary,
                 RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
@@ -309,6 +320,77 @@ private fun SpotItem(
     homePkViewModel: HomePkViewModel
 ) {
 
+    var rotated by remember {
+        mutableStateOf(false)
+    }
+
+    val rotationFront by animateFloatAsState(
+        targetValue = if (rotated) 180f else 0f,
+        animationSpec = tween(500)
+    )
+
+    val rotationBack by animateFloatAsState(
+        targetValue = if (rotated) -180f else 0f,
+        animationSpec = tween(500)
+    )
+
+    val animateFront by animateFloatAsState(
+        targetValue = if (!rotated) 1f else 0f,
+        animationSpec = tween(500)
+    )
+
+    val animateBack by animateFloatAsState(
+        targetValue = if (rotated) 1f else 0f,
+        animationSpec = tween(500)
+    )
+
+    val modifier = if(homePkViewModel.iniciarRecorrido){
+        Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(0.9f)
+    } else {
+        Modifier
+            .padding(vertical = 8.dp)
+            .fillMaxWidth(0.9f)
+            .height(150.dp)
+            .graphicsLayer {
+                rotationY = if (!rotated) rotationFront else rotationBack
+                cameraDistance = 8 * density
+            }
+            .clickable {
+                //openDialog = !openDialog
+                rotated = !rotated
+            }
+    }
+
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
+        modifier = modifier
+    ) {
+        if(!rotated){
+            // frente
+            SpotItemFront(spot)
+        } else {
+            // reverso
+            SportItemBack(spot, rotationBack, animateBack, homePkViewModel){
+                rotated = !rotated
+            }
+        }
+
+    }
+}
+
+@Composable
+fun SportItemBack(
+    spot: Estacionamiento,
+    rotationBack: Float,
+    animateBack: Float,
+    homePkViewModel: HomePkViewModel,
+    onBack: () -> Unit
+) {
+
     var openDialog by remember {
         mutableStateOf(false)
     }
@@ -322,77 +404,163 @@ private fun SpotItem(
         }
     }
 
-    val modifier = if(homePkViewModel.iniciarRecorrido){
-        Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(0.9f)
-    } else {
-        Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(0.9f)
-            .clickable {
-                openDialog = !openDialog
-            }
-    }
+    val modifier = Modifier
+        .size(40.dp)
+        .graphicsLayer {
+            alpha = animateBack
+            rotationY = rotationBack
+        }
 
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        ),
-        modifier = modifier
+    Row(
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+        // regresar
+        Button(
+            onClick = { onBack() },
+            shape = RoundedCornerShape(0.dp),
+            colors = ButtonColors(
+                containerColor = colorScheme.error,
+                contentColor = colorScheme.onError,
+                disabledContainerColor = colorScheme.error,
+                disabledContentColor = colorScheme.onError
+            ),
+            modifier = Modifier
+                .weight(0.3f)
+                .fillMaxHeight()
         ) {
+            Icon(
+                imageVector = Icons.Filled.Cancel,
+                contentDescription = null,
+                modifier = modifier
+            )
+        }
 
-            Icon(imageVector = Icons.Filled.RestartAlt, contentDescription = null, modifier = Modifier.size(100.dp))
+        // ver mapa
+        Button(
+            onClick = {  },
+            shape = RoundedCornerShape(0.dp),
+            colors = ButtonColors(
+                containerColor = colorScheme.tertiary.copy(0.9f),
+                contentColor = colorScheme.onTertiary,
+                disabledContainerColor = colorScheme.tertiary.copy(0.9f),
+                disabledContentColor = colorScheme.onTertiary
+            ),
+            modifier = Modifier
+                .weight(0.3f)
+                .fillMaxHeight()
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Map,
+                contentDescription = null,
+                modifier = modifier
+            )
+        }
 
-            Column(
-                verticalArrangement = Arrangement.Center,
+        // apartar lugar
+        Button(
+            onClick = {  },
+            shape = RoundedCornerShape(0.dp),
+            colors = ButtonColors(
+                containerColor = colorScheme.secondary.copy(0.6f),
+                contentColor = colorScheme.onSecondary,
+                disabledContainerColor = colorScheme.secondary.copy(0.6f),
+                disabledContentColor = colorScheme.onSecondary
+            ),
+            modifier = Modifier
+                .weight(0.3f)
+                .fillMaxHeight()
+        ) {
+            Icon(
+                imageVector = Icons.Filled.BackHand,
+                contentDescription = null,
+                modifier = modifier
+            )
+        }
+
+        // iniciar recorrido
+        Button(
+            onClick = { openDialog = !openDialog },
+            shape = RoundedCornerShape(0.dp),
+            colors = ButtonColors(
+                containerColor = Color.Green.copy(0.5f),
+                contentColor = Color.DarkGray,
+                disabledContainerColor = Color.Green.copy(0.5f),
+                disabledContentColor = Color.DarkGray
+            ),
+            modifier = Modifier
+                .weight(0.3f)
+                .fillMaxHeight()
+        ) {
+            Icon(
+                imageVector = Icons.Filled.DoneAll,
+                contentDescription = null,
+                modifier = modifier
+            )
+        }
+    }
+}
+
+@Composable
+fun SpotItemFront(
+    spot: Estacionamiento
+) {
+    Row(
+        modifier = Modifier
+            .height(150.dp)
+            .fillMaxWidth(0.9f),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center
+    ) {
+
+        Icon(imageVector = Icons.Filled.RestartAlt, contentDescription = null, modifier = Modifier.size(100.dp))
+
+        Column(
+            verticalArrangement = Arrangement.Center,
+        ) {
+            Spacer(modifier = Modifier.size(8.dp))
+
+            Text(
+                text = spot.nombre,
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+            )
+            Text(
+                text = "${spot.calle}, ${spot.colonia}, ${spot.codigoPostal}",
+                style = MaterialTheme.typography.bodyLarge,
+                //letterSpacing = 2.sp,
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Spacer(modifier = Modifier.size(8.dp))
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = null,
+                    tint = colorScheme.tertiary,
+                    modifier = Modifier
+                        .size(25.dp)
+                )
+                Text(
+                    text = spot.calificacion,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = spot.nombre,
+                    text = "$${spot.precio}",
                     style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(vertical = 4.dp)
+                    fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = "${spot.calle}, ${spot.colonia}, ${spot.codigoPostal}",
-                    style = MaterialTheme.typography.bodyLarge,
-                    //letterSpacing = 2.sp,
-                    modifier = Modifier
-                        .padding(vertical = 4.dp)
-                )
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = null,
-                        tint = colorScheme.tertiary,
-                        modifier = Modifier
-                            .size(25.dp)
-                    )
-                    Text(
-                        text = spot.calificacion,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold
-                    )
-                    
-                    Spacer(modifier = Modifier.weight(1f))
-                    
-                    Text(
-                        text = "$${spot.precio}",
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                    
-                    Spacer(modifier = Modifier.size(16.dp))
-                }
+
+                Spacer(modifier = Modifier.size(16.dp))
             }
         }
     }
@@ -688,6 +856,3 @@ fun generaHeaderText(
         }
     }
 }
-
-
-
