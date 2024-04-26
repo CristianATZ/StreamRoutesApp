@@ -502,7 +502,7 @@ fun HeaderProfile() {
 
         ) {
             Image(
-                painter = painterResource(id = R.drawable.usuario_2),
+                painter = painterResource(id = R.drawable.usuario_3),
                 contentDescription = null,
                 modifier = Modifier
                     .clip(CircleShape)

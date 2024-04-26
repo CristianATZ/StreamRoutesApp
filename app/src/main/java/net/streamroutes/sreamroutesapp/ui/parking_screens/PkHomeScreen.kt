@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import android.util.Log
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
@@ -29,6 +30,7 @@ import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Motorcycle
 import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.LocalParking
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -60,18 +62,30 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.google.android.gms.maps.model.AdvancedMarker
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.model.Ruta
+import net.streamroutes.sreamroutesapp.network.ORService
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.TipoVehiculo
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Vehiculo
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
 fun ParkingHomeScreen(homePkViewModel: HomePkViewModel) {
@@ -144,8 +158,15 @@ fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
 
     val ubicacion = LatLng(20.139609738093373, -101.1507421629189)
 
+    val destino = LatLng(20.13374121427186, -101.19009201321087)
+
     val cameraPosition = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(ubicacion, 15f)
+        position = CameraPosition.fromLatLngZoom(LatLng(20.140945774103578, -101.16965771241047), 13.5f)
+    }
+
+    // Puntos para graficar la ruta con la polilínea
+    val rutaGraficada = remember {
+        mutableStateOf<List<LatLng>>(emptyList())
     }
 
     GoogleMap(
@@ -154,11 +175,38 @@ fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
             zoomControlsEnabled = false
         ),
         properties = MapProperties(
-            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleDark=))
+            //mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleDark=))
         ),
         modifier = Modifier
             .fillMaxSize()
-    )
+    ) {
+        // Marcador ubicación
+        Marker(
+            state = MarkerState(position = ubicacion),
+            title = "Aquí estás",
+            icon = BitmapDescriptorFactory.fromResource(R.drawable.coche_izq)
+        )
+        // Marcador destino
+        Marker(
+            state = MarkerState(position = destino),
+            title = "Estacionamiento",
+            icon = BitmapDescriptorFactory.fromResource(R.drawable.parking_2)
+        )
+        calcularRuta(ubicacion, destino) { ruta ->
+            val listaPuntos = mutableListOf<LatLng>()
+            for(i in ruta.indices step 2) {
+                val latitud = ruta[i]
+                val longitud = ruta[i+1]
+                listaPuntos.add(LatLng(latitud, longitud))
+                // Log.d("PuntoXPunto", "${longitud}"+","+"${latitud}")
+            }
+            rutaGraficada.value = listaPuntos
+            // Log.d("RUTA", rutaGraficada.value.toString())
+        }
+        Polyline(
+            points = rutaGraficada.value
+        )
+    }
 }
 
 @Composable
@@ -888,5 +936,42 @@ fun generaHeaderText(
         ){
             append(lblHeader3)
         }
+    }
+}
+
+private fun calcularRuta(
+    inicio: LatLng,
+    fin: LatLng,
+    callback: (List<Double>) -> Unit
+){
+    val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.openrouteservice.org/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    val puntos = mutableListOf<LatLng>()
+    CoroutineScope(Dispatchers.IO).launch {
+        val response = retrofit.create(ORService::class.java)
+            .getRuta(
+                key = "5b3ce3597851110001cf6248cf096e9bff7543a9b65bfeea90be20ac",
+                start = "${inicio.longitude},${inicio.latitude}",
+                end = "${fin.longitude},${fin.latitude}"
+            )
+        if(response.isSuccessful){
+            // Log.d("SI SE PUDO", response.body().toString())
+            extraccionJSON(response.body(), puntos)
+            val listaPuntos = puntos.flatMap {
+                listOf(it.latitude, it.longitude)
+            }
+            callback(listaPuntos)
+        } else {
+            // Log.d("NO SE PUDO LOCO", "CHEQUELE PRIMO")
+        }
+    }
+}
+
+private fun extraccionJSON(ruta: Ruta?, puntos: MutableList<LatLng>) {
+    ruta?.features?.firstOrNull()?.geometry?.coordinates?.forEach {
+        val punto = LatLng(it[1], it[0])
+        puntos.add(punto)
     }
 }
