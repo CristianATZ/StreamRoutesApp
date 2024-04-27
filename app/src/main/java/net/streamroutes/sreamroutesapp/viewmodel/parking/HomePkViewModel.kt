@@ -7,6 +7,25 @@ import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import com.google.android.gms.maps.model.LatLng
+
+enum class TipoVehiculo {
+    NINGUNO, CARRO, MOTO, TRACTOR
+}
+
+data class Vehiculo (
+    val matricula: String,
+    val tipo: TipoVehiculo
+)
+
+data class Estacionamiento (
+    val nombre: String,
+    val calle: String,
+    val colonia: String,
+    val codigoPostal: String,
+    val calificacion: String,
+    val precio: Int
+)
 
 class HomePkViewModel(): ViewModel() {
     private val _uiState = MutableStateFlow(HomePkUiState())
@@ -27,13 +46,23 @@ class HomePkViewModel(): ViewModel() {
     var verEstacionamiento by mutableStateOf(false)
         private set
 
+    var rutaEstacionamiento by mutableStateOf(mutableListOf<LatLng>())
+        private set
+
+    var currentLocation by mutableStateOf(
+        LatLng(20.139609738093373, -101.1507421629189)
+    )
+        private set
+
     init {
         _uiState.value = HomePkUiState(
             vehiculoSeleccionado,
             verTodo,
             iniciarRecorrido,
             estacionamientoSeleccionado,
-            verEstacionamiento
+            verEstacionamiento,
+            rutaEstacionamiento,
+            currentLocation
         )
     }
 
@@ -56,6 +85,15 @@ class HomePkViewModel(): ViewModel() {
     fun updateVerEstacionamiento(_ver: Boolean){
         verEstacionamiento = _ver
     }
+
+    fun updateRutaEstacionamiento(_ruta: MutableList<LatLng>){
+        rutaEstacionamiento = _ruta
+    }
+
+    fun updateCurrentLocation(_current: LatLng){
+        currentLocation = _current
+    }
+
 }
 
 data class HomePkUiState(
@@ -63,23 +101,8 @@ data class HomePkUiState(
     val verTodo: Boolean = false,
     val iniciarRecorrido: Boolean = false,
     val estacionamientoSeleccionado: Estacionamiento? = null,
-    val verEstacionamiento: Boolean = false
-)
+    val verEstacionamiento: Boolean = false,
 
-enum class TipoVehiculo {
-    NINGUNO, CARRO, MOTO, TRACTOR
-}
-
-data class Vehiculo (
-    val matricula: String,
-    val tipo: TipoVehiculo
-)
-
-data class Estacionamiento (
-    val nombre: String,
-    val calle: String,
-    val colonia: String,
-    val codigoPostal: String,
-    val calificacion: String,
-    val precio: Int
+    val rutaEstacionamiento: MutableList<LatLng> = mutableListOf(),
+    val currentLocation: LatLng? = null
 )
