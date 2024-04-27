@@ -16,9 +16,8 @@ data class Route(
     val imgs : List<Image>
 )
 
-data class RouteState(
+data class RouteUiState(
     val routes : List<Route>,
     val filter : String,
     val currentLocation : LatLng,
-    // val selectedLocation : LatLng
 )

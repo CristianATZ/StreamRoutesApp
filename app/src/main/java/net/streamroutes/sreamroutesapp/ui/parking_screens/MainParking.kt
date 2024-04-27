@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 
 enum class ParkingNavigationOptions {
@@ -41,7 +42,10 @@ data class NavigationItem(
 )
 
 @Composable
-fun MainParking(homePkViewModel: HomePkViewModel) {
+fun MainParking(
+    homePkViewModel: HomePkViewModel,
+    accountPkViewModel: AccountPkViewModel
+) {
     var parkingScreen by remember {
         mutableStateOf(ParkingNavigationOptions.HOME_SCREEN)
     }
@@ -67,9 +71,9 @@ fun MainParking(homePkViewModel: HomePkViewModel) {
         ) {
             when(parkingScreen) {
                 ParkingNavigationOptions.PARKING_SCREEN -> ParkingEstacionamientoScreen()
-                ParkingNavigationOptions.ACCOUNT_SCREEN -> ParkingAccountScreen()
+                ParkingNavigationOptions.ACCOUNT_SCREEN -> ParkingAccountScreen(accountPkViewModel)
                 ParkingNavigationOptions.CONF_SCREEN -> ParkingConfigurationScreen()
-                else -> ParkingHomeScreen(homePkViewModel)
+                else -> ParkingHomeScreen(homePkViewModel, accountPkViewModel)
             }
         }
     }

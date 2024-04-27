@@ -77,6 +77,7 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.model.Ruta
 import net.streamroutes.sreamroutesapp.network.ORService
+import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.TipoVehiculo
@@ -85,13 +86,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
-fun ParkingHomeScreen(homePkViewModel: HomePkViewModel) {
+fun ParkingHomeScreen(
+    homePkViewModel: HomePkViewModel,
+    accountPkViewModel: AccountPkViewModel
+) {
     Column {
         if( !homePkViewModel.iniciarRecorrido && !homePkViewModel.verEstacionamiento ){
             Header(homePkViewModel)
 
             if( !homePkViewModel.verTodo ){
-                Vehicle(homePkViewModel)
+                Vehicle(homePkViewModel, accountPkViewModel)
             }
 
             Spots(homePkViewModel)
@@ -488,12 +492,11 @@ private fun DialogIniciarRecorrido(
 }
 
 @Composable
-private fun Vehicle(homePkViewModel: HomePkViewModel) {
-    val vehiculos = listOf(
-        Vehiculo("58ECP3", TipoVehiculo.CARRO),
-        Vehiculo("31EHP3", TipoVehiculo.MOTO),
-        Vehiculo("HMN123", TipoVehiculo.TRACTOR)
-    )
+private fun Vehicle(
+    homePkViewModel: HomePkViewModel,
+    accountPkViewModel: AccountPkViewModel
+) {
+    val vehiculos = accountPkViewModel.vehicles
 
     Column {
         // encabezado
@@ -525,7 +528,7 @@ private fun Vehicle(homePkViewModel: HomePkViewModel) {
 }
 
 @Composable
-private fun VehicleItem(
+fun VehicleItem(
     index: Int,
     item: Vehiculo,
     selection: String,

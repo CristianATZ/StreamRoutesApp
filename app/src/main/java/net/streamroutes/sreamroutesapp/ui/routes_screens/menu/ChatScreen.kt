@@ -26,10 +26,14 @@ import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.outlined.AttachFile
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
@@ -46,10 +50,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.routes.ChatViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.Mensaje
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
@@ -63,54 +70,13 @@ data class Messages(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChatScreen(
-    myViewModel: MyViewModel = MyViewModel()
+    chatViewModel: ChatViewModel = ChatViewModel()
 ) {
-    val mensajes = listOf(
-        Messages(
-            autor = 2,
-            name = "Nayeli",
-            mensaje = "Hola, ¿Alguien puede ayudarme?"
-        ),
-        Messages(
-            autor = 1,
-            name = "Alan",
-            mensaje = "Holaa amiga, ¿En que necesitas ayuda?"
-        ),
-        Messages(
-            autor = 1,
-            name = "Anaid",
-            mensaje = "¡Claro que si! ¿Que necesitas?"
-        ),
-        Messages(
-            autor = 2,
-            name = "Nayeli",
-            mensaje = "Necesito llegar al callejon del beso pero, no soy de aqui :("
-        ),
-        Messages(
-            autor = 1,
-            name = "Alan",
-            mensaje = "¿Que ves cerca?"
-        ),
-        Messages(
-            autor = 2,
-            name = "Nayeli",
-            mensaje = "Estoy en la universidad de Guanajuato"
-        ),
-        Messages(
-            autor = 1,
-            name = "Anaid",
-            mensaje = "Dirigete una cuadra abajo, para esperar la ruta 5, el autobus tiene franjas azules y tiene en letras grandes RUTA 5"
-        ),
-        Messages(
-            autor = 2,
-            name = "Nayeli",
-            mensaje = "Muchas gracias Anaid, tambien a ti Alan."
-        )
-    )
+    val mensajes = chatViewModel.messages
 
     Scaffold(
         topBar = {
-            TopBarBody(myViewModel)
+            TopBarBody()
         },
     ) { paddingValues ->
         Box {
@@ -131,7 +97,7 @@ fun ChatScreen(
                 }
             }
 
-            BottomBarBody(myViewModel)
+            BottomBarBody()
         }
     }
 }
@@ -139,11 +105,8 @@ fun ChatScreen(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun MessageIn(
-    item: Messages
+    item: Mensaje
 ) {
-
-
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -152,7 +115,7 @@ fun MessageIn(
     ) {
         if (item.autor == 1){
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(id = item.imagen),
                 contentDescription = "Avatar del usuario",
                 modifier = Modifier
                     .clip(CircleShape)
@@ -166,7 +129,7 @@ fun MessageIn(
                 .fillMaxWidth(0.6f)
         ) {
             Text(
-                text = item.name,
+                text = item.usuario,
                 style = typography.labelMedium,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier
@@ -185,8 +148,9 @@ fun MessageIn(
             Row {
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
-                    text = DateTimeFormatter.ofPattern("hh:mm a").format(LocalDateTime.now().atZone(
-                        ZoneId.of("America/Mazatlan"))),
+                    // text = DateTimeFormatter.ofPattern("hh:mm a").format(LocalDateTime.now().atZone(
+                    //    ZoneId.of("America/Mazatlan"))),
+                    text = item.hora,
                     style = typography.labelSmall,
                     modifier = Modifier
                         .padding(PaddingValues(8.dp))
@@ -197,7 +161,7 @@ fun MessageIn(
         if (item.autor == 0){
             Spacer(modifier = Modifier.size(8.dp))
             Image(
-                painter = painterResource(id = R.drawable.ic_launcher_background),
+                painter = painterResource(item.imagen),
                 contentDescription = "Avatar del usuario",
                 modifier = Modifier
                     .clip(CircleShape)
@@ -209,13 +173,11 @@ fun MessageIn(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
-    myViewModel: MyViewModel
-) {
+private fun TopBarBody() {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType()[356]
+                text = stringResource(id = R.string.lblChat)
             )
         },
         navigationIcon = {
@@ -236,9 +198,7 @@ private fun TopBarBody(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BottomBarBody(
-    myViewModel: MyViewModel
-) {
+private fun BottomBarBody() {
     var mensaje by remember {
         mutableStateOf("")
     }
@@ -254,7 +214,7 @@ private fun BottomBarBody(
                 onValueChange = {mensaje = it},
                 placeholder = {
                     Text(
-                        text = myViewModel.languageType()[357],
+                        text = stringResource(id = R.string.contact_head_message),
                         color = colorScheme.onPrimary
                     )
                 },

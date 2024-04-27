@@ -13,10 +13,6 @@ enum class TipoVehiculo {
     NINGUNO, CARRO, MOTO, TRACTOR
 }
 
-data class Vehiculo (
-    val matricula: String,
-    val tipo: TipoVehiculo
-)
 
 data class Estacionamiento (
     val nombre: String,
@@ -40,7 +36,9 @@ class HomePkViewModel(): ViewModel() {
     var estacionamientoSeleccionado by mutableStateOf(Estacionamiento("","", "", "", "", -1))
         private set
 
-    var vehiculoSeleccionado by mutableStateOf(Vehiculo("", TipoVehiculo.NINGUNO))
+    var vehiculoSeleccionado by mutableStateOf(
+        Vehiculo("", TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.NINGUNO)
+    )
         private set
 
     var verEstacionamiento by mutableStateOf(false)
@@ -102,7 +100,6 @@ data class HomePkUiState(
     val iniciarRecorrido: Boolean = false,
     val estacionamientoSeleccionado: Estacionamiento? = null,
     val verEstacionamiento: Boolean = false,
-
     val rutaEstacionamiento: MutableList<LatLng> = mutableListOf(),
     val currentLocation: LatLng? = null
 )

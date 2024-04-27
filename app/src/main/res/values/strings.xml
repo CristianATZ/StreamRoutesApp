@@ -256,4 +256,10 @@
     <string name="btnVerMapa">Ver mapa</string>
     <string name="btnIniciarRecorrido">Iniciar recorrido</string>
     <string name="btnRegresarViaje">Regresar</string>
+
+    // ACCOUNT PARKING
+    <string name="lblAgregar">Agregar</string>
+    <string name="lblMatricula">Matricula:</string>
+    <string name="lblTipo">Tipo:</string>
+    <string name="lblColor">Color:</string>
 </resources>
