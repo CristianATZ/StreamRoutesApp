@@ -22,6 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.AlternateEmail
 import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.CreditCard
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Motorcycle
@@ -98,7 +99,7 @@ private fun Header(
             fontWeight = FontWeight.Bold,
             color = colorScheme.background,
             modifier = Modifier
-                .padding(PaddingValues(16.dp)),
+                .padding(PaddingValues(5.dp)),
         )
         Column(
             horizontalAlignment = Alignment.Start,
@@ -125,7 +126,7 @@ private fun Vehicles(
                 text = stringResource(id = R.string.lblMisVehiculos),
                 style = MaterialTheme.typography.titleMedium,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(10.dp)
             )
         }
 
@@ -183,7 +184,88 @@ private fun Vehicles(
 
 @Composable
 private fun Payment(){
-    Text(text = "PAGO")
+    Column(
+        modifier = Modifier
+            .padding(vertical = 10.dp)
+    ) {
+        Text(
+            text = stringResource(id = R.string.lblDatosPago),
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Card(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp
+            ),
+            colors = CardColors(
+                containerColor = colorScheme.inverseOnSurface,
+                contentColor = colorScheme.inverseSurface,
+                disabledContainerColor = colorScheme.inverseOnSurface,
+                disabledContentColor = colorScheme.inverseSurface
+            ),
+            modifier = Modifier
+                .padding(horizontal = 10.dp, vertical = 5.dp)
+                .clickable {
+                    /* TODO */
+                }
+                .fillMaxWidth(),
+            border = BorderStroke(1.dp, colorScheme.tertiary)
+        ) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .padding(10.dp)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.CreditCard,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(75.dp)
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(start = 5.dp)
+                ) {
+                    Row{
+                        Text(
+                            text = stringResource(id = R.string.lblNoTarjeta) + " ",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "**** **** **** 2345",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    Row{
+                        Text(
+                            text = stringResource(id = R.string.lblCCV) + " ",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "365",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                    Row{
+                        Text(
+                            text = stringResource(id = R.string.lblEmisor) + " ",
+                            style = MaterialTheme.typography.bodyLarge,
+                            fontWeight = FontWeight.SemiBold
+                        )
+                        Text(
+                            text = "MasterCard",
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                    }
+                }
+            }
+        }
+    }
 }
 
 @Composable
@@ -218,7 +300,7 @@ private fun VehicleInfo(
             disabledContentColor = colorScheme.inverseSurface
         ),
         modifier = Modifier
-            .padding(horizontal = 10.dp, vertical = 25.dp)
+            .padding(horizontal = 10.dp, vertical = 10.dp)
             .clickable {
                 /* TODO */
             }

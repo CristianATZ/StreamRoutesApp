@@ -262,4 +262,8 @@
     <string name="lblMatricula">Matricula:</string>
     <string name="lblTipo">Tipo:</string>
     <string name="lblColor">Color:</string>
+    <string name="lblDatosPago">Datos de pago</string>
+    <string name="lblNoTarjeta">No. de Tarjeta: </string>
+    <string name="lblCCV">CCV:</string>
+    <string name="lblEmisor">Emisor:</string>
 </resources>
