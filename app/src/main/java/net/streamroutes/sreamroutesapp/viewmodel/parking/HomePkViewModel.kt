@@ -92,6 +92,18 @@ class HomePkViewModel(): ViewModel() {
         currentLocation = _current
     }
 
+    fun resetViewModel(){
+        verTodo = false
+        iniciarRecorrido = false
+        estacionamientoSeleccionado = Estacionamiento("","", "", "", "", -1)
+        vehiculoSeleccionado = Vehiculo("", TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.NINGUNO)
+        verEstacionamiento = false
+        rutaEstacionamiento.clear()
+        currentLocation = LatLng(20.139609738093373, -101.1507421629189)
+
+        _uiState.value = HomePkUiState()
+    }
+
 }
 
 data class HomePkUiState(

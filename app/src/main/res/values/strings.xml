@@ -266,4 +266,7 @@
     <string name="lblNoTarjeta">No. de Tarjeta: </string>
     <string name="lblCCV">CCV:</string>
     <string name="lblEmisor">Emisor:</string>
+    <string name="lblVerHistorial">VER HISTORIAL</string>
+    <string name="lblRegresar">REGRESAR</string>
+    <string name="lblYaLlegue">Llegue</string>
 </resources>

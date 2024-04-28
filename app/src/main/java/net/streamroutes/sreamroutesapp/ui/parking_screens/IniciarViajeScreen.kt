@@ -54,16 +54,17 @@ import net.streamroutes.sreamroutesapp.model.Ruta
 import net.streamroutes.sreamroutesapp.network.ORService
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 @Composable
-fun IniciarViajeScreen(homePkViewModel: HomePkViewModel) {
-    IniciarViaje(homePkViewModel)
+fun IniciarViajeScreen(homePkViewModel: HomePkViewModel, parkingPkViewModel: ParkingPkViewModel) {
+    IniciarViaje(homePkViewModel, parkingPkViewModel)
 }
 
 @Composable
-private fun IniciarViaje(homePkViewModel: HomePkViewModel) {
+private fun IniciarViaje(homePkViewModel: HomePkViewModel, parkingPkViewModel: ParkingPkViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -76,7 +77,7 @@ private fun IniciarViaje(homePkViewModel: HomePkViewModel) {
 
         if(!homePkViewModel.verEstacionamiento){
             // cancelar viaje
-            CancelarViaje(homePkViewModel)
+            CancelarViaje(homePkViewModel, parkingPkViewModel)
         } else {
             // regresar al inicio
             RegresarViaje(homePkViewModel)
@@ -176,7 +177,8 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
 
 @Composable
 private fun CancelarViaje(
-    homePkViewModel: HomePkViewModel
+    homePkViewModel: HomePkViewModel,
+    parkingPkViewModel: ParkingPkViewModel
 ) {
     var openDialog by remember {
         mutableStateOf(false)
@@ -194,6 +196,24 @@ private fun CancelarViaje(
         verticalArrangement = Arrangement.Bottom,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Button(
+            onClick = {
+                parkingPkViewModel.updateEstacionamiento(homePkViewModel.estacionamientoSeleccionado)
+                parkingPkViewModel.updateVehiculo(homePkViewModel.vehiculoSeleccionado)
+                parkingPkViewModel.updateEstacionado(true)
+
+                homePkViewModel.resetViewModel()
+            },
+            shape = RoundedCornerShape(8.dp),
+            modifier = Modifier
+                .fillMaxWidth(0.95f)
+                .height(50.dp)
+        ) {
+            Text(text = stringResource(id = R.string.lblYaLlegue))
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+
         Button(
             onClick = {
                 openDialog = !openDialog

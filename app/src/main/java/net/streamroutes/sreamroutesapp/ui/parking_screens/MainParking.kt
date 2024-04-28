@@ -75,7 +75,7 @@ fun MainParking(
                 ParkingNavigationOptions.PARKING_SCREEN -> ParkingEstacionamientoScreen(parkingPkViewModel)
                 ParkingNavigationOptions.ACCOUNT_SCREEN -> ParkingAccountScreen(accountPkViewModel)
                 ParkingNavigationOptions.CONF_SCREEN -> ParkingConfigurationScreen()
-                else -> ParkingHomeScreen(homePkViewModel, accountPkViewModel)
+                else -> ParkingHomeScreen(homePkViewModel, accountPkViewModel, parkingPkViewModel)
             }
         }
     }
