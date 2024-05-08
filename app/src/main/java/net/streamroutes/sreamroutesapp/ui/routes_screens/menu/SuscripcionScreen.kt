@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -32,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -51,9 +53,8 @@ data class PremiumItem(
     val carac: List<String>
 )
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SuscripcionScreen(myViewModel: MyViewModel = MyViewModel()) {
+fun SuscripcionScreen(myViewModel: MyViewModel = MyViewModel(), onBack: () -> Unit) {
     val profit_items = listOf(
         ProfitItem(
             name = myViewModel.languageType().get(186),
@@ -116,7 +117,7 @@ fun SuscripcionScreen(myViewModel: MyViewModel = MyViewModel()) {
     )
 
     Scaffold(
-        topBar = { TopBar(myViewModel) }
+        topBar = { TopBar(myViewModel, onBack) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -131,40 +132,6 @@ fun SuscripcionScreen(myViewModel: MyViewModel = MyViewModel()) {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 item {
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    // logo
-                    Row(
-                        Modifier.fillMaxWidth(0.8f),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.logo),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(100.dp)
-                        )
-
-                        Spacer(modifier = Modifier.size(8.dp))
-                        
-                        Image(
-                            painter = if(myViewModel.tema) painterResource(id = R.drawable.letrablanca) else painterResource(id = R.drawable.letranegra),
-                            contentDescription = null
-                        )
-                    }
-                }
-
-                item {
-
-                    Spacer(modifier = Modifier.size(16.dp))
-                    
-                    Text(
-                        text = myViewModel.languageType()[307],
-                        style = typography.titleLarge,
-                        textAlign = TextAlign.Center
-                    )
-
                     profit_items.forEach() { item ->
                         Card(
                             modifier = Modifier
@@ -324,18 +291,19 @@ fun Paquete(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    myViewModel: MyViewModel
+    myViewModel: MyViewModel,
+    onBack: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType()[303]
+                text = stringResource(id = R.string.lblBeneficios)
             )
         },
         navigationIcon = {
-            IconButton(onClick = { }) {
+            IconButton(onClick = { onBack() }) {
                 Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    imageVector = Icons.Outlined.ArrowBackIosNew,
                     contentDescription = "Te enviara al menu de opciones",
                 )
             }

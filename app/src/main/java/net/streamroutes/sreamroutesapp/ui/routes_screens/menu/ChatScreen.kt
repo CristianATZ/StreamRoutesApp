@@ -70,13 +70,14 @@ data class Messages(
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChatScreen(
-    chatViewModel: ChatViewModel = ChatViewModel()
+    chatViewModel: ChatViewModel = ChatViewModel(),
+    onBack: () -> Unit
 ) {
     val mensajes = chatViewModel.messages
 
     Scaffold(
         topBar = {
-            TopBarBody()
+            TopBarBody(onBack)
         },
     ) { paddingValues ->
         Box {
@@ -173,7 +174,9 @@ fun MessageIn(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody() {
+private fun TopBarBody(
+    onBack: () -> Unit
+) {
     CenterAlignedTopAppBar(
         title = {
             Text(
@@ -181,7 +184,7 @@ private fun TopBarBody() {
             )
         },
         navigationIcon = {
-            IconButton(onClick = { } ) {
+            IconButton(onClick = { onBack() } ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,
                     contentDescription = "Te enviara al menu de opciones",

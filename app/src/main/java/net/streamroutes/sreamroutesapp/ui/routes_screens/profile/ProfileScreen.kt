@@ -73,7 +73,8 @@ data class DataInfoItem(val title: String, val inf: String)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel = ProfileViewModel()
+    profileViewModel: ProfileViewModel = ProfileViewModel(),
+    onBack: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -86,7 +87,7 @@ fun ProfileScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderProfile()
+            HeaderProfile(onBack)
             FeaturedProfile(profileViewModel)
             FooterProfile(profileViewModel)
         }
@@ -482,7 +483,9 @@ fun InfoItem(
 }
 
 @Composable
-fun HeaderProfile() {
+fun HeaderProfile(
+    onBack: () -> Unit
+) {
     Column(
         modifier = Modifier
             .background(
@@ -496,7 +499,7 @@ fun HeaderProfile() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        TopBarBody()
+        TopBarBody(onBack)
 
         Box(
 
@@ -541,7 +544,9 @@ fun HeaderProfile() {
 }
 
 @Composable
-private fun TopBarBody() {
+private fun TopBarBody(
+    onBack: () -> Unit
+) {
     Row(
         modifier = Modifier
             .height(64.dp)
@@ -550,7 +555,7 @@ private fun TopBarBody() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         IconButton(
-            onClick = {  }
+            onClick = { onBack() }
         ) {
             Icon(
                 imageVector = Icons.Outlined.KeyboardArrowLeft,

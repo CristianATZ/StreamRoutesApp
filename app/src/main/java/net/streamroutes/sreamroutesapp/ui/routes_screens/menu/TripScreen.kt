@@ -72,7 +72,10 @@ data class PlaceItem(
     ExperimentalMaterialApi::class
 )
 @Composable
-fun TripScreen(myViewModel: MyViewModel = MyViewModel()) {
+fun TripScreen(
+    myViewModel: MyViewModel = MyViewModel(),
+    onBack: () -> Unit
+) {
     var markers by remember { mutableStateOf(listOf<PlaceItem?>()) }
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
     val context = LocalContext.current
@@ -209,7 +212,8 @@ fun TripScreen(myViewModel: MyViewModel = MyViewModel()) {
             },
             onCancel = {
                 selectedLocation = null
-            }
+            },
+            onBack = onBack
         )
     }
 }
@@ -392,7 +396,8 @@ private fun PlaceOption(
 private fun TopBarBody(
     myViewModel: MyViewModel,
     onAdd: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
+    onBack: () -> Unit
 ) {
 
     var destino by remember {
@@ -408,7 +413,7 @@ private fun TopBarBody(
             },
             leadingIcon = {
                 IconButton(
-                    onClick = {  }
+                    onClick = { onBack() }
                 ) {
                     Icon(
                         imageVector = Icons.Filled.KeyboardArrowLeft,

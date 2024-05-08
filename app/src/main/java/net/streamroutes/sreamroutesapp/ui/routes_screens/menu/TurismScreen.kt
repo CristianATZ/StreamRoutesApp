@@ -84,20 +84,22 @@ import org.osmdroid.views.overlay.CopyrightOverlay
 
 @Composable
 fun TurismScreen(
-    myViewModel: MyViewModel = MyViewModel()
+    myViewModel: MyViewModel = MyViewModel(),
+    onBack: () -> Unit
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
-    Turism(myViewModel, drawerState)
+    Turism(myViewModel, drawerState, onBack)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Turism(
     myViewModel: MyViewModel,
-    drawerState: MutableState<DrawerValue>
+    drawerState: MutableState<DrawerValue>,
+    onBack: () -> Unit
 ){
     Scaffold (
-        topBar = { TopBar(myViewModel) },
+        topBar = { TopBar(myViewModel, onBack) },
         bottomBar = { BottomBar(myViewModel) }
     ){ paddingValues ->
         LazyColumn(
@@ -266,7 +268,8 @@ fun Turism(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    myViewModel: MyViewModel
+    myViewModel: MyViewModel,
+    onBack: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -278,6 +281,7 @@ private fun TopBar(
         navigationIcon = {
             IconButton(
                 onClick = {
+                    onBack()
                 }
             ) {
                 Icon(

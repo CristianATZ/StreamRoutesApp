@@ -94,8 +94,11 @@ import org.osmdroid.util.GeoPoint
 
 
 @Composable
-fun RoutesScreen(myViewModel: MyViewModel = MyViewModel()){
-    RoutesScreenView(myViewModel)
+fun RoutesScreen(
+    myViewModel: MyViewModel = MyViewModel(),
+    onBack: () -> Unit
+){
+    RoutesScreenView(myViewModel, onBack)
 }
 
 enum class DrawerValue {
@@ -105,7 +108,8 @@ enum class DrawerValue {
 
 @Composable
 fun RoutesScreenView(
-    myViewModel: MyViewModel
+    myViewModel: MyViewModel,
+    onBack: () -> Unit
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
 
@@ -119,7 +123,8 @@ fun RoutesScreenView(
                     } else {
                         drawerState.value = DrawerValue.Closed
                     }
-                }
+                },
+                onBack = onBack
             ) },
     ) { paddingValues ->
 
@@ -914,7 +919,8 @@ fun MainContent() {
 @Composable
 private fun TopBarBody(
     myViewModel: MyViewModel,
-    openPanel: () -> Unit
+    openPanel: () -> Unit,
+    onBack: () -> Unit
 ) {
     TopAppBar(
         title = {
@@ -925,6 +931,7 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(
                 onClick = {
+                    onBack()
                 }
             ) {
                 Icon(

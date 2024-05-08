@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration
+package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
@@ -12,8 +12,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Divider
+import androidx.compose.material.IconButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
@@ -29,6 +33,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.CityScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.LanguageScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.MapOptionsScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.NotificationsScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.PrivacityScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.ThemeScreen
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 
 data class ConfItem(
@@ -48,7 +58,10 @@ enum class ConfigurationSelection{
 }
 
 @Composable
-fun ConfigurationScreen(configurationViewModel: ConfigurationViewModel){
+fun ConfigurationScreen(
+    configurationViewModel: ConfigurationViewModel,
+    onBack: () -> Unit
+){
     var selection by remember {
         mutableStateOf(ConfigurationSelection.NONE)
     }
@@ -64,7 +77,7 @@ fun ConfigurationScreen(configurationViewModel: ConfigurationViewModel){
 
 
     Scaffold(
-        topBar = { TopBarConfiguration() },
+        topBar = { TopBarConfiguration(onBack) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -91,8 +104,21 @@ fun ConfigurationScreen(configurationViewModel: ConfigurationViewModel){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarConfiguration() {
-    CenterAlignedTopAppBar(title = { Text(text = "Configuracion") })
+fun TopBarConfiguration(
+    onBack: () -> Unit
+) {
+    CenterAlignedTopAppBar(
+        title = { Text(text = "Configuracion") },
+        navigationIcon = {
+            IconButton(
+                onClick = { onBack() }) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBackIosNew,
+                    contentDescription = null
+                )
+            }
+        }
+    )
 }
 
 @Composable

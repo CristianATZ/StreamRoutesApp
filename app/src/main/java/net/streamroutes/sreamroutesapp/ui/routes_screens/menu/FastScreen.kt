@@ -68,7 +68,8 @@ import net.streamroutes.sreamroutesapp.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FastScreen(
-    fastViewModel: FastViewModel
+    fastViewModel: FastViewModel,
+    onBack: () -> Unit
 ) {
     //Camara
     var cameraState = rememberCameraState {
@@ -122,7 +123,7 @@ fun FastScreen(
 
 
     Scaffold(
-        topBar = { TopBarBody() }
+        topBar = { TopBarBody(onBack) }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -216,7 +217,9 @@ fun DialogStart(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody() {
+private fun TopBarBody(
+    onBack: () -> Unit
+) {
     var destino by remember {
         mutableStateOf("")
     }
@@ -232,7 +235,7 @@ private fun TopBarBody() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(
-                onClick = { }
+                onClick = { onBack() }
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowLeft,

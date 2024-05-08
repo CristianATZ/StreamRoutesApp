@@ -89,8 +89,8 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.configuration.ConfigurationScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HelpScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.HomeScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
@@ -194,28 +194,40 @@ fun Main(
             }
         ) { paddingValues ->
             Column(modifier = Modifier.padding(paddingValues)) {
-                val itsur = LatLng(19.057988677624586, -98.180047630148)
-                val cameraState = rememberCameraPositionState {
-                    position = CameraPosition.fromLatLngZoom(itsur, 17f)
-                }
-
                 when(routeScreen){
-                    RoutesNavigationOptions.PREMIUM_SCREEN -> SuscripcionScreen()
-                    RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel)
-                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen()
-                    RoutesNavigationOptions.TRIP_SCREEN -> TripScreen()
-                    RoutesNavigationOptions.TURISM_SCREEN -> TurismScreen()
-                    RoutesNavigationOptions.CHAT_SCREEN -> ChatScreen()
+                    RoutesNavigationOptions.PREMIUM_SCREEN -> SuscripcionScreen {
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+
+                    RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel){
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen(){
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+                    RoutesNavigationOptions.TRIP_SCREEN -> TripScreen(){
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+                    RoutesNavigationOptions.TURISM_SCREEN -> TurismScreen(){
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+                    RoutesNavigationOptions.CHAT_SCREEN -> ChatScreen(){
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
                     //NavigationOptions.UBI_OPTION ->
                     //NavigationOptions.DOWNLOAD_OPTION ->
                     //NavigationOptions.SHARE_OPTION ->
-                    RoutesNavigationOptions.CONF_SCREEN -> ConfigurationScreen(configurationViewModel)
+                    RoutesNavigationOptions.CONF_SCREEN -> ConfigurationScreen(configurationViewModel){
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
                     RoutesNavigationOptions.HELP_SCREEN -> HelpScreen {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
 
-                    RoutesNavigationOptions.PROFILE_SCREEN -> ProfileScreen()
-                    else -> MapBody(cameraPositionState = cameraState)
+                    RoutesNavigationOptions.PROFILE_SCREEN -> ProfileScreen(){
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+                    else -> HomeScreen()
                 }
             }
         }
@@ -534,29 +546,6 @@ fun DrawerBody(
         }
     }
 }*/
-
-@Composable
-private fun MapBody(
-    cameraPositionState: CameraPositionState,
-) {
-    val context = LocalContext.current
-    GoogleMap(
-        modifier = Modifier
-            .fillMaxSize(),
-        cameraPositionState = cameraPositionState,
-        properties = MapProperties(
-            maxZoomPreference = 18f,
-            minZoomPreference = 15f,
-            isMyLocationEnabled = false,
-            isBuildingEnabled = false
-        ),
-        uiSettings = MapUiSettings(
-            zoomControlsEnabled = false
-        )
-    ) {
-
-    }
-}
 
 ///////// SHARE SHEET ////////
 
