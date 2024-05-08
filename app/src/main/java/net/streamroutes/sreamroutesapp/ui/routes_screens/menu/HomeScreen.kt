@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help
+package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
