@@ -2,7 +2,19 @@ package net.streamroutes.sreamroutesapp.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.TransformOrigin
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -28,7 +40,6 @@ import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ProfileViewModel
 
-
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun AppNavigation(
@@ -43,46 +54,97 @@ fun AppNavigation(
     accountPkViewModel: AccountPkViewModel = viewModel(),
     parkingPkViewModel: ParkingPkViewModel = viewModel()
 ) {
+
     val NavController = rememberNavController()
 
 
     NavHost(navController = NavController, startDestination = AppScreens.SplashScreen
         .route) {
         // splash screen
-        composable(AppScreens.SplashScreen.route){
+        composable(
+            route = AppScreens.SplashScreen.route
+        ){
             SplashScreen(NavController,myViewModel)
         }
         // pantalla principal
-        composable(AppScreens.MainScreen.route){
+        composable(
+            route = AppScreens.MainScreen.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             MainScreen(mainViewModel, configurationViewModel, fastViewModel, NavController)
         }
         // registrar pantalla
-        composable(AppScreens.RegistrationScreen.route){
+        composable(
+            route = AppScreens.RegistrationScreen.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             RegistrationScreen(myViewModel,NavController)
         }
         // confirmar telefono pantalla
-        composable(AppScreens.VerificationScreen.route){
+        composable(
+            route = AppScreens.VerificationScreen.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             VerificationScreen(myViewModel,NavController)
         }
         // cambiar contraseña pantalla
-        composable(AppScreens.ChangeScreen.route){
+        composable(
+            route = AppScreens.ChangeScreen.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             ChangeScreen(changeViewModel, NavController)
         }
         // inicio de sesion pantalla
-        composable(AppScreens.LoginScreen.route){
+        composable(
+            route = AppScreens.LoginScreen.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             LoginScreen(loginViewModel, NavController)
         }
 
         // LANGUAGE SCREEN
-        composable(AppScreens.LanguageScreen.route){
+        composable(
+            route = AppScreens.LanguageScreen.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             LanguageScreen(myViewModel, NavController)
         }
 
-        composable(AppScreens.MainParking.route){
+        composable(
+            route = AppScreens.MainParking.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             MainParking(homePkViewModel, accountPkViewModel, parkingPkViewModel)
         }
 
-        composable(AppScreens.SelectOptionScreen.route){
+        composable(
+            route = AppScreens.SelectOptionScreen.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
             SelectOptionScreen(NavController)
         }
     }

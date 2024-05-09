@@ -1,7 +1,10 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -71,7 +74,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.Vehiculo
 fun ParkingHomeScreen(
     homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel,
-    parkingPkViewModel: ParkingPkViewModel
+    parkingPkViewModel: ParkingPkViewModel,
 ) {
     Column {
         if( !homePkViewModel.iniciarRecorrido && !homePkViewModel.verEstacionamiento ){

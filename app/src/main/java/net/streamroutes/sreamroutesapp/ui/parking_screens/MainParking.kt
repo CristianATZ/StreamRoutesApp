@@ -1,7 +1,16 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ContentTransform
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
@@ -17,7 +26,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MovableContentState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -28,15 +39,8 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 
-enum class ParkingNavigationOptions {
-    HOME_SCREEN,
-    PARKING_SCREEN,
-    ACCOUNT_SCREEN,
-    CONF_SCREEN
-}
-
 data class NavigationItem(
-    val option: ParkingNavigationOptions,
+    val option: Int,
     val iconUnselected: ImageVector,
     val iconSelected: ImageVector,
     val label: String
@@ -49,15 +53,15 @@ fun MainParking(
     parkingPkViewModel: ParkingPkViewModel
 ) {
     var parkingScreen by remember {
-        mutableStateOf(ParkingNavigationOptions.HOME_SCREEN)
+        mutableIntStateOf(0)
     }
 
     // lista de items
     val navigationItems = listOf(
-        NavigationItem(ParkingNavigationOptions.HOME_SCREEN, Icons.Outlined.Home, Icons.Filled.Home, "Inicio"),
-        NavigationItem(ParkingNavigationOptions.PARKING_SCREEN, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, "Parking"),
-        NavigationItem(ParkingNavigationOptions.ACCOUNT_SCREEN, Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, "Cuenta"),
-        NavigationItem(ParkingNavigationOptions.CONF_SCREEN, Icons.Outlined.Settings, Icons.Filled.Settings, "Ajustes")
+        NavigationItem(0, Icons.Outlined.Home, Icons.Filled.Home, "Inicio"),
+        NavigationItem(1, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, "Parking"),
+        NavigationItem(2, Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, "Cuenta"),
+        NavigationItem(3, Icons.Outlined.Settings, Icons.Filled.Settings, "Ajustes")
     )
 
     Scaffold(
@@ -67,15 +71,29 @@ fun MainParking(
             }
         }
     ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-        ) {
-            when(parkingScreen) {
-                ParkingNavigationOptions.PARKING_SCREEN -> ParkingEstacionamientoScreen(parkingPkViewModel)
-                ParkingNavigationOptions.ACCOUNT_SCREEN -> ParkingAccountScreen(accountPkViewModel)
-                ParkingNavigationOptions.CONF_SCREEN -> ParkingConfigurationScreen()
-                else -> ParkingHomeScreen(homePkViewModel, accountPkViewModel, parkingPkViewModel)
+        Column(Modifier.padding(paddingValues)) {
+            AnimatedContent(
+                targetState = parkingScreen,
+                label = "",
+                transitionSpec = {
+                    if(parkingScreen > initialState )
+                        slideInHorizontally(initialOffsetX = { it }) + fadeIn() togetherWith
+                                slideOutHorizontally(targetOffsetX = {-it}) + fadeOut()
+                    else
+                        slideInHorizontally(initialOffsetX = { -it }) + fadeIn() togetherWith
+                                slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+                }
+            ) {
+                when(it) {
+                    1 -> ParkingEstacionamientoScreen(parkingPkViewModel)
+                    2 -> ParkingAccountScreen(accountPkViewModel)
+                    3 -> ParkingConfigurationScreen()
+                    else -> ParkingHomeScreen(
+                        homePkViewModel,
+                        accountPkViewModel,
+                        parkingPkViewModel
+                    )
+                }
             }
         }
     }
@@ -83,9 +101,9 @@ fun MainParking(
 
 @Composable
 fun ParkingBottomBar(
-    selectedScreen: ParkingNavigationOptions,
+    selectedScreen: Int,
     items: List<NavigationItem>,
-    onChangeScreen: (ParkingNavigationOptions) -> Unit,
+    onChangeScreen: (Int) -> Unit,
 ) {
     NavigationBar {
         items.forEach { item ->
