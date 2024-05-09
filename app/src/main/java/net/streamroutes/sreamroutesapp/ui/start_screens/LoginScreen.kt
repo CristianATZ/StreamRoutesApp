@@ -14,11 +14,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.AppBarDefaults
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,18 +33,28 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
@@ -55,15 +72,20 @@ fun Login(
     navController: NavController
 ){
 
+    val brush = Brush.linearGradient(
+        listOf(Color(0xFFE8AA42),Color(0xFFEACE43))
+    )
+
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(brush),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // logo
         Image(
-            painter = painterResource(id = R.drawable.logo),
+            painter = painterResource(id = R.drawable.logo_blanco),
             contentDescription = null,
             modifier = Modifier
                 .size(200.dp)
@@ -73,7 +95,8 @@ fun Login(
 
         Text(
             text = stringResource(id = R.string.log_in),
-            style = typography.titleLarge
+            style = typography.displaySmall,
+            fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.size(32.dp))
@@ -82,10 +105,11 @@ fun Login(
         OutlinedTextField(
             value = loginViewModel.telefono,
             onValueChange = { loginViewModel.updateTelefono(it) },
-            label = {
+            placeholder = {
                 Text(
-                    text = stringResource(id = R.string.phone),
-                    style = typography.titleMedium
+                    text = stringResource(id = R.string.txtTelefono),
+                    style = typography.titleMedium,
+                    color = colorScheme.primary.copy(0.5f)
                 )
             },
             shape = RoundedCornerShape(16.dp),
@@ -105,12 +129,24 @@ fun Login(
                     }
                 }
             },
+            leadingIcon = {
+                Icon(imageVector = Icons.Filled.Phone, contentDescription = null)
+            },
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Next,
                 keyboardType = KeyboardType.Number
             ),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color.White,
+                focusedTextColor = Color.Black,
+                focusedBorderColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                unfocusedTextColor = Color.Black,
+                unfocusedBorderColor = Color.White,
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.9f)
+                .shadow(4.dp, CircleShape)
         )
 
         Spacer(modifier = Modifier.size(16.dp))
@@ -119,13 +155,13 @@ fun Login(
         OutlinedTextField(
             value = loginViewModel.password,
             onValueChange = { loginViewModel.updatePassword(it) },
-            label = {
+            placeholder = {
                 Text(
-                    text = stringResource(id = R.string.password_profile),
-                    style = typography.titleMedium
+                    text = stringResource(id = R.string.txtPassword),
+                    style = typography.titleMedium,
+                    color = colorScheme.primary.copy(0.5f)
                 )
             },
-            shape = RoundedCornerShape(16.dp),
             trailingIcon = {
                 IconButton(
                     onClick = {
@@ -137,16 +173,28 @@ fun Login(
                             painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
                         contentDescription = "visibilidad contraseña",
                         modifier = Modifier
-                            .size(32.dp)
+                            .size(28.dp)
                     )
                 }
+            },
+            leadingIcon = {
+                Icon(imageVector = Icons.Filled.Lock, contentDescription = null)
             },
             visualTransformation = if (loginViewModel.passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done
             ),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedContainerColor = Color.White,
+                focusedTextColor = Color.Black,
+                focusedBorderColor = Color.White,
+                unfocusedContainerColor = Color.White,
+                unfocusedTextColor = Color.Black,
+                unfocusedBorderColor = Color.White,
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.9f)
+                .shadow(4.dp, CircleShape)
         )
 
         // olvide mi contrasenia
@@ -173,13 +221,9 @@ fun Login(
             onClick = {
                 navController.navigate(AppScreens.SelectOptionScreen.route)
             },
-            shape = RoundedCornerShape(16),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = colorScheme.tertiary,
-                contentColor = colorScheme.onTertiary
-            ),
+            shape = CircleShape,
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth(0.7f)
                 .padding(top = 16.dp)
                 .height(50.dp)
         ) {

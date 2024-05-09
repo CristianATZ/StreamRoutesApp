@@ -270,4 +270,6 @@
     <string name="lblRegresar">REGRESAR</string>
     <string name="lblYaLlegue">Llegue</string>
     <string name="lblBeneficios">Beneficios</string>
+    <string name="txtTelefono">Telefono</string>
+    <string name="txtPassword">Contraseña</string>
 </resources>
