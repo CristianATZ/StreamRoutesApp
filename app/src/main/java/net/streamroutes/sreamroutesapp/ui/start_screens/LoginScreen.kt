@@ -59,6 +59,7 @@ import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.utils.brush
 import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel
 
 @Composable
@@ -72,11 +73,6 @@ fun Login(
     loginViewModel: LoginViewModel,
     navController: NavController
 ){
-
-    val brush = Brush.verticalGradient(
-        listOf(Color(0xFFE8AA42),Color(0xFFEACE43))
-    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()

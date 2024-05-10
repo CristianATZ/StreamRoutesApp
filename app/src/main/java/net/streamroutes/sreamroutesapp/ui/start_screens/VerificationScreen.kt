@@ -66,6 +66,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.utils.brush
 import java.util.Random
 
 @Composable
@@ -88,10 +89,6 @@ fun Verification(myViewModel: MyViewModel, navController: NavController) {
 
     val smsPermissionState = rememberPermissionState(
         Manifest.permission.SEND_SMS
-    )
-
-    val brush = Brush.verticalGradient(
-        listOf(Color(0xFFE8AA42), Color(0xFFEACE43))
     )
 
     fun isPermissionsGranted(context: Context): Boolean {

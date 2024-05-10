@@ -19,6 +19,7 @@ import kotlinx.coroutines.delay
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.utils.brush
 
 
 @Composable
@@ -32,10 +33,6 @@ fun SplashScreen(navController: NavHostController, myViewModel: MyViewModel) {
 
 @Composable
 fun Splash(myViewModel: MyViewModel) {
-    val brush = Brush.verticalGradient(
-        listOf(Color(0xFFE8AA42), Color(0xFFEACE43))
-    )
-
     Column(
         modifier = Modifier
             .fillMaxSize()

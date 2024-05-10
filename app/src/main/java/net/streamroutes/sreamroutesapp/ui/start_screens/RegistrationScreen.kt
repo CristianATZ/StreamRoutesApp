@@ -53,6 +53,7 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.utils.brush
 
 @Composable
 fun RegistrationScreen (myViewModel: MyViewModel, navController: NavController) {
@@ -68,10 +69,6 @@ fun Registration (myViewModel: MyViewModel, navController: NavController) {
     var passwordVisibility by remember { mutableStateOf(true) }
     var confirmPass by remember { mutableStateOf("") }
     var confirmPassVisibility by remember { mutableStateOf(true) }
-
-    val brush = Brush.verticalGradient(
-        listOf(Color(0xFFE8AA42), Color(0xFFEACE43))
-    )
 
     Column(
         modifier = Modifier
