@@ -213,7 +213,7 @@ class MyViewModel : ViewModel() {
 
 
 
-        // Start > MainScreen.kt
+        // Start > MainTransport.kt
         "Ayuda y soporte",          // 151
         "Cerrar sesión",            // 152
         "Comparte",                 // 153
@@ -707,7 +707,7 @@ class MyViewModel : ViewModel() {
         "Verify code",                          // 149
         "Valid",                                // 150
 
-        // Start > MainScreen.kt
+        // Start > MainTransport.kt
         "Help and support",                     // 151
         "Log out",                              // 152
         "Share",                                // 153

@@ -283,4 +283,7 @@
     <string name="btnCambiar">Cambiar</string>
     <string name="btnCancelar">Cancelar</string>
     <string name="btnRegistrarme">Registrarme</string>
+    <string name="lblQueQuieresHacer">¿Que quieres hacer hoy?</string>
+    <string name="lblTransportePublico">Transporte publico</string>
+    <string name="lblEstacionamiento">Estacionamiento</string>
 </resources>
