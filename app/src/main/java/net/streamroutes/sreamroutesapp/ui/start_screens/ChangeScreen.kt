@@ -52,12 +52,6 @@ fun ChangeScreen(changeViewModel: ChangeViewModel, navController: NavController)
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Change(changeViewModel: ChangeViewModel, navController: NavController ){
-    /*
-    var password by remember { mutableStateOf("") }
-    var passwordVisibility by remember { mutableStateOf(true) }
-    var confirmPass by remember { mutableStateOf("") }
-    var confirmPassVisibility by remember { mutableStateOf(true) }
-    */
 
 
     val focusManager = LocalFocusManager.current
@@ -65,7 +59,7 @@ fun Change(changeViewModel: ChangeViewModel, navController: NavController ){
 
 
     Scaffold(
-        topBar = { TopBar(navController) }
+        topBar = { TopAppBar(navController) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -206,7 +200,7 @@ fun Change(changeViewModel: ChangeViewModel, navController: NavController ){
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBar(
+private fun TopAppBar(
     navController: NavController
 ) {
     CenterAlignedTopAppBar(

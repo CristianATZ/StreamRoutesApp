@@ -63,9 +63,7 @@ fun VerificationScreen (myViewModel: MyViewModel, navController: NavController) 
     Verification(myViewModel,navController)
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class,
-    ExperimentalComposeUiApi::class
-)
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun Verification(myViewModel: MyViewModel, navController: NavController) {
     var telefono by remember { mutableStateOf("") }
@@ -130,7 +128,7 @@ fun Verification(myViewModel: MyViewModel, navController: NavController) {
 
 
     Scaffold(
-        topBar = { TopBar(navController,myViewModel) }
+        topBar = { TopAppBar(navController,myViewModel) }
     ) { paddingValues ->  
         Column(
             modifier = Modifier
@@ -274,7 +272,7 @@ fun Verification(myViewModel: MyViewModel, navController: NavController) {
 }
 
 @Composable
-private fun TopBar(
+private fun TopAppBar(
     navController: NavController,
     myViewModel: MyViewModel
 ) {

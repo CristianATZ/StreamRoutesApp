@@ -272,4 +272,6 @@
     <string name="lblBeneficios">Beneficios</string>
     <string name="txtTelefono">Telefono</string>
     <string name="txtPassword">Contraseña</string>
+    <string name="lblPreferencia">Selecciona el idioma de tu preferencia.</string>
+    <string name="lblPreferenciaEN">Select your preferred language.</string>
 </resources>

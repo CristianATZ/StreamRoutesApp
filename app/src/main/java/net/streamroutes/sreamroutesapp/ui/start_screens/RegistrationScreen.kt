@@ -62,7 +62,7 @@ fun Registration (myViewModel: MyViewModel, navController: NavController) {
     var confirmPassVisibility by remember { mutableStateOf(true) }
 
     Scaffold(
-        topBar = { TopBar(navController,myViewModel) }
+        topBar = { TopAppBar(navController,myViewModel) }
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -229,7 +229,7 @@ fun Registration (myViewModel: MyViewModel, navController: NavController) {
 }
 
 @Composable
-private fun TopBar(
+private fun TopAppBar(
     navController: NavController,
     myViewModel: MyViewModel
 ) {

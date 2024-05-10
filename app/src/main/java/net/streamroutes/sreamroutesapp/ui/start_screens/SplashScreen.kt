@@ -11,6 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.delay
@@ -30,10 +32,14 @@ fun SplashScreen(navController: NavHostController, myViewModel: MyViewModel) {
 
 @Composable
 fun Splash(myViewModel: MyViewModel) {
+    val brush = Brush.verticalGradient(
+        listOf(Color(0xFFE8AA42), Color(0xFFEACE43))
+    )
+
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background),
+            .background(brush),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -45,21 +51,3 @@ fun Splash(myViewModel: MyViewModel) {
         )
     }
 }
-
-
-/*
-@Preview
-@Composable
-fun SplashScreenDark() {
-    StreamRoutesAppTheme(true) {
-        Splash()
-    }
-}
-
-@Preview
-@Composable
-fun SplashScreenLight() {
-    StreamRoutesAppTheme(false) {
-        Splash()
-    }
-}*/

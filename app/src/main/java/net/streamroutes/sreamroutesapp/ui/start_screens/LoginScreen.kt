@@ -44,6 +44,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -72,7 +73,7 @@ fun Login(
     navController: NavController
 ){
 
-    val brush = Brush.linearGradient(
+    val brush = Brush.verticalGradient(
         listOf(Color(0xFFE8AA42),Color(0xFFEACE43))
     )
 
@@ -84,123 +85,16 @@ fun Login(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // logo
-        Image(
-            painter = painterResource(id = R.drawable.logo_blanco),
-            contentDescription = null,
-            modifier = Modifier
-                .size(200.dp)
-        )
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        Text(
-            text = stringResource(id = R.string.log_in),
-            style = typography.displaySmall,
-            fontWeight = FontWeight.Bold
-        )
+        LogoTitleLogin()
 
         Spacer(modifier = Modifier.size(32.dp))
 
-        // telefono
-        OutlinedTextField(
-            value = loginViewModel.telefono,
-            onValueChange = { loginViewModel.updateTelefono(it) },
-            placeholder = {
-                Text(
-                    text = stringResource(id = R.string.txtTelefono),
-                    style = typography.titleMedium,
-                    color = colorScheme.primary.copy(0.5f)
-                )
-            },
-            shape = RoundedCornerShape(16.dp),
-            trailingIcon = {
-                if( loginViewModel.telefono.isNotEmpty() ){
-                    IconButton(
-                        onClick = {
-                            loginViewModel.updateTelefono("")
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Clear,
-                            contentDescription = "borrar telefono",
-                            modifier = Modifier
-                                .size(32.dp)
-                        )
-                    }
-                }
-            },
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Phone, contentDescription = null)
-            },
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Next,
-                keyboardType = KeyboardType.Number
-            ),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                focusedTextColor = Color.Black,
-                focusedBorderColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                unfocusedBorderColor = Color.White,
-            ),
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .shadow(4.dp, CircleShape)
-        )
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // contrasenia
-        OutlinedTextField(
-            value = loginViewModel.password,
-            onValueChange = { loginViewModel.updatePassword(it) },
-            placeholder = {
-                Text(
-                    text = stringResource(id = R.string.txtPassword),
-                    style = typography.titleMedium,
-                    color = colorScheme.primary.copy(0.5f)
-                )
-            },
-            trailingIcon = {
-                IconButton(
-                    onClick = {
-                        loginViewModel.updatePasswordVisibility( !loginViewModel.passwordVisibility )
-                    }
-                ) {
-                    Icon(
-                        painter = if (!loginViewModel.passwordVisibility)
-                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
-                        contentDescription = "visibilidad contraseña",
-                        modifier = Modifier
-                            .size(28.dp)
-                    )
-                }
-            },
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Lock, contentDescription = null)
-            },
-            visualTransformation = if (loginViewModel.passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = KeyboardOptions(
-                imeAction = ImeAction.Done
-            ),
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = Color.White,
-                focusedTextColor = Color.Black,
-                focusedBorderColor = Color.White,
-                unfocusedContainerColor = Color.White,
-                unfocusedTextColor = Color.Black,
-                unfocusedBorderColor = Color.White,
-            ),
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .shadow(4.dp, CircleShape)
-        )
+        TextfieldsLogin(loginViewModel)
 
         // olvide mi contrasenia
         Row(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth(0.9f),
             horizontalArrangement = Arrangement.End
         ) {
             TextButton(
@@ -210,10 +104,10 @@ fun Login(
             ) {
                 Text(
                     text = stringResource(id = R.string.forgot_text_part1) + " " + stringResource(id = R.string.forgot_text_part2),
-                    style = typography.titleSmall
+                    style = typography.titleSmall,
+                    color = colorScheme.background
                 )
             }
-            Spacer(modifier = Modifier.size(16.dp))
         }
 
         // boton ingresar
@@ -222,6 +116,13 @@ fun Login(
                 navController.navigate(AppScreens.SelectOptionScreen.route)
             },
             shape = CircleShape,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.onTertiaryContainer
+            ),
+            elevation = ButtonDefaults.elevatedButtonElevation(
+                defaultElevation = 4.dp
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.7f)
                 .padding(top = 16.dp)
@@ -241,7 +142,8 @@ fun Login(
         ) {
             Text(
                 text = stringResource(id = R.string.register_text_part1) + " " + stringResource(id = R.string.register_text_part2),
-                style = typography.titleSmall
+                style = typography.titleSmall,
+                color = colorScheme.background
             )
         }
 
@@ -254,11 +156,12 @@ fun Login(
             Spacer(modifier = Modifier
                 .weight(1f)
                 .height(1.dp)
-                .background(colorScheme.onSurface))
+                .background(colorScheme.background))
 
             Text(
                 text = "o",
                 style = typography.bodyLarge,
+                color = colorScheme.background,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
             )
@@ -266,7 +169,7 @@ fun Login(
             Spacer(modifier = Modifier
                 .weight(1f)
                 .height(1.dp)
-                .background(colorScheme.onSurface))
+                .background(colorScheme.background))
         }
 
         // otros metodos (fb, twt, gm)
@@ -298,4 +201,111 @@ fun Login(
             }
         }
     }
+}
+
+@Composable
+fun TextfieldsLogin(
+    loginViewModel: LoginViewModel
+) {
+    // telefono
+    CustomOutlinedTextField(
+        value = loginViewModel.telefono,
+        onValueChange = { loginViewModel.updateTelefono(it) },
+        placeholderText = stringResource(id = R.string.txtTelefono),
+        leadingIcon = Icons.Filled.Phone,
+        keyboardType = KeyboardType.Number,
+        imeAction = ImeAction.Next
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    CustomOutlinedTextField(
+        value = loginViewModel.password,
+        onValueChange = { loginViewModel.updatePassword(it) },
+        placeholderText = stringResource(id = R.string.txtPassword),
+        leadingIcon = Icons.Filled.Lock,
+        visualTransformation = if (loginViewModel.passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+        trailingIcon = {
+            IconButton(
+                onClick = {
+                    loginViewModel.updatePasswordVisibility(!loginViewModel.passwordVisibility)
+                }
+            ) {
+                Icon(
+                    painter = if (!loginViewModel.passwordVisibility)
+                        painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
+                    contentDescription = "visibilidad contraseña",
+                    modifier = Modifier
+                        .size(28.dp)
+                )
+            }
+        },
+        keyboardType = KeyboardType.Password,
+        imeAction = ImeAction.Done
+    )
+}
+
+@Composable
+fun CustomOutlinedTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholderText: String,
+    leadingIcon: ImageVector,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    imeAction: ImeAction = ImeAction.None,
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = value,
+        onValueChange = onValueChange,
+        placeholder = {
+            Text(
+                text = placeholderText,
+                style = typography.titleMedium,
+                color = colorScheme.primary.copy(0.5f)
+            )
+        },
+        shape = RoundedCornerShape(16.dp),
+        trailingIcon = trailingIcon,
+        leadingIcon = {
+            Icon(imageVector = leadingIcon, contentDescription = null)
+        },
+        visualTransformation = visualTransformation,
+        keyboardOptions = KeyboardOptions(
+            keyboardType = keyboardType,
+            imeAction = imeAction
+        ),
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedContainerColor = colorScheme.background,
+            focusedTextColor = colorScheme.onBackground,
+            focusedBorderColor = colorScheme.background,
+            unfocusedContainerColor = colorScheme.background,
+            unfocusedTextColor = colorScheme.onBackground,
+            unfocusedBorderColor = colorScheme.background,
+        ),
+        modifier = modifier
+            .fillMaxWidth(0.9f)
+            .shadow(4.dp, CircleShape)
+    )
+}
+
+@Composable
+fun LogoTitleLogin() {
+    Image(
+        painter = painterResource(id = R.drawable.logo_blanco),
+        contentDescription = null,
+        modifier = Modifier
+            .size(200.dp)
+    )
+
+    Spacer(modifier = Modifier.size(16.dp))
+
+    Text(
+        text = stringResource(id = R.string.log_in),
+        style = typography.displaySmall,
+        fontWeight = FontWeight.Bold,
+        color = colorScheme.background
+    )
 }
