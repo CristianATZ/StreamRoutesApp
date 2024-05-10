@@ -61,6 +61,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -69,6 +70,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -77,6 +79,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.maps.android.compose.MapType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -86,6 +89,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.Tema
 
 enum class RoutesNavigationOptions{
     HOME_SCREEN,
@@ -158,6 +162,17 @@ fun Main(
         RoutesNavigationItem(RoutesNavigationOptions.CONF_SCREEN, Icons.Filled.Settings, Icons.Outlined.Settings, R.string.lblConfiguration),
         RoutesNavigationItem(RoutesNavigationOptions.HELP_SCREEN, Icons.Filled.Help, Icons.Outlined.Help, R.string.lblHelp),
     )
+
+    val systemUiController = rememberSystemUiController()
+
+    LaunchedEffect(true) {
+        systemUiController.setNavigationBarColor(Color.Black)
+        if(configurationViewModel.tema == Tema.Claro) {
+            systemUiController.setStatusBarColor(Color(0xFFFEFBFF))
+        } else {
+            systemUiController.setStatusBarColor(Color(0xFF00000F))
+        }
+    }
 
     ModalNavigationDrawer(
         drawerContent = {
