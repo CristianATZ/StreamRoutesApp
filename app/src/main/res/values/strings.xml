@@ -274,4 +274,13 @@
     <string name="txtPassword">Contraseña</string>
     <string name="lblPreferencia">Selecciona el idioma de tu preferencia.</string>
     <string name="lblPreferenciaEN">Select your preferred language.</string>
+    <string name="btnEnviar">Enviar</string>
+    <string name="txtCodigoVerificacion">Codigo de verificacion</string>
+    <string name="btnVerificar">Verificar</string>
+    <string name="btnRegresar">Regresar</string>
+    <string name="txtContra">Contraseña</string>
+    <string name="txtConfrimarContra">Confirmar contraseña</string>
+    <string name="btnCambiar">Cambiar</string>
+    <string name="btnCancelar">Cancelar</string>
+    <string name="btnRegistrarme">Registrarme</string>
 </resources>

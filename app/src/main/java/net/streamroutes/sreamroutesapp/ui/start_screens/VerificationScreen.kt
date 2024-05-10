@@ -8,7 +8,9 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.telephony.SmsManager
 import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,10 +18,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Button
@@ -33,6 +38,7 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,9 +48,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -78,6 +88,10 @@ fun Verification(myViewModel: MyViewModel, navController: NavController) {
 
     val smsPermissionState = rememberPermissionState(
         Manifest.permission.SEND_SMS
+    )
+
+    val brush = Brush.verticalGradient(
+        listOf(Color(0xFFE8AA42), Color(0xFFEACE43))
     )
 
     fun isPermissionsGranted(context: Context): Boolean {
@@ -126,124 +140,75 @@ fun Verification(myViewModel: MyViewModel, navController: NavController) {
         }
     }
 
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(brush),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.size(64.dp))
 
-    Scaffold(
-        topBar = { TopAppBar(navController,myViewModel) }
-    ) { paddingValues ->  
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.size(64.dp))
+        // logo
+        Image(
+            painter = painterResource(id = R.drawable.logo),
+            contentDescription = "logo",
+            modifier = Modifier.size(100.dp)
+        )
 
-            // logo
-            Image(
-                painter = painterResource(id = R.drawable.logo),
-                contentDescription = "logo"
-            )
+        Spacer(modifier = Modifier.size(32.dp))
 
-            Spacer(modifier = Modifier.size(64.dp))
+        // telefono
+        CustomOutlinedTextField(
+            value = telefono,
+            onValueChange = {telefono = it},
+            placeholderText = stringResource(id = R.string.txtTelefono),
+            leadingIcon = Icons.Filled.Phone,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Done
+        )
 
-            if(!habilitar){
-                // telefono
-                OutlinedTextField(
-                    value = telefono,
-                    onValueChange = { telefono = it },
-                    label = {
-                        Text(
-                            text = myViewModel.languageType().get(270),
-                            style = typography.titleMedium
-                        )
-                    },
-                    shape = RoundedCornerShape(16.dp),
-                    trailingIcon = {
-                        if( telefono.isNotEmpty() ){
-                            IconButton(
-                                onClick = {
-                                    telefono = ""
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Clear,
-                                    contentDescription = "borrar telefono",
-                                    modifier = Modifier
-                                        .size(32.dp)
-                                )
-                            }
-                        }
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Next,
-                        keyboardType = KeyboardType.Number
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            sendCode()
-                        }
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
+        // enviar codigo
+        AnimatedVisibility(visible = !habilitar) {
+            Button(
+                onClick = {
+                    //sendCode
+                          habilitar = !habilitar
+                },
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                ),
+                elevation = ButtonDefaults.elevatedButtonElevation(
+                    defaultElevation = 4.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(0.7f)
+                    .padding(top = 16.dp)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.btnEnviar),
+                    style = typography.bodyLarge
                 )
-
-                // enviar codigo
-                Button(
-                    onClick = {
-                        sendCode()
-                    },
-                    shape = RoundedCornerShape(16),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .padding(top = 16.dp)
-                        .height(50.dp)
-                ) {
-                    Text(
-                        text = myViewModel.languageType().get(286),
-                        style = typography.bodyLarge
-                    )
-                }
             }
+        }
 
-            //Spacer(modifier = Modifier.size(8.dp))
-
-            if(habilitar){
-                // codigo de verificacino
-                OutlinedTextField(
+        Spacer(modifier = Modifier.size(32.dp))
+        
+        AnimatedVisibility(visible = habilitar) {
+            // codigo de verificacino
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                
+                CustomOutlinedTextField(
                     value = codigo,
-                    onValueChange = { codigo = it },
-                    label = {
-                        Text(
-                            text = myViewModel.languageType().get(287),
-                            style = typography.titleMedium
-                        )
-                    },
-                    shape = RoundedCornerShape(16.dp),
-                    trailingIcon = {
-                        if( codigo.isNotEmpty() ){
-                            IconButton(
-                                onClick = {
-                                    codigo = ""
-                                }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Clear,
-                                    contentDescription = "borrar telefono",
-                                    modifier = Modifier
-                                        .size(32.dp)
-                                )
-                            }
-                        }
-                    },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done,
-                        keyboardType = KeyboardType.Number
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
+                    onValueChange = {codigo = it},
+                    placeholderText = stringResource(id = R.string.txtCodigoVerificacion),
+                    leadingIcon = Icons.Filled.VerifiedUser,
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
                 )
 
                 // verificar codigo
@@ -251,49 +216,53 @@ fun Verification(myViewModel: MyViewModel, navController: NavController) {
                     onClick = {
                         navController.navigate(AppScreens.ChangeScreen.route)
                     },
-                    shape = RoundedCornerShape(16),
+                    shape = CircleShape,
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                        contentColor = MaterialTheme.colorScheme.onTertiaryContainer
+                    ),
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = 4.dp
                     ),
                     modifier = Modifier
-                        .fillMaxWidth(0.9f)
+                        .fillMaxWidth(0.7f)
                         .padding(top = 16.dp)
                         .height(50.dp)
                 ) {
                     Text(
-                        text = myViewModel.languageType().get(290),
+                        text = stringResource(id = R.string.btnVerificar),
                         style = typography.bodyLarge
                     )
                 }
             }
         }
-    }
 
-}
+        Column {
+            Spacer(modifier = Modifier.weight(1f))
 
-@Composable
-private fun TopAppBar(
-    navController: NavController,
-    myViewModel: MyViewModel
-) {
-    CenterAlignedTopAppBar(
-        title = { 
-            Text(
-                text = myViewModel.languageType().get(282),
-                style = typography.titleLarge
-            )
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = { 
-                    navController.navigate(AppScreens.LoginScreen.route) 
-                }
+            Button(
+                onClick = {
+                    navController.navigate(AppScreens.LoginScreen.route)
+                },
+                shape = RoundedCornerShape(8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.tertiary,
+                    contentColor = MaterialTheme.colorScheme.onTertiary
+                ),
+                elevation = ButtonDefaults.elevatedButtonElevation(
+                    defaultElevation = 4.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp)
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft, 
-                    contentDescription = "regresar al login"
+                Text(
+                    text = stringResource(id = R.string.btnRegresar),
+                    style = typography.bodyLarge
                 )
             }
+            
+            Spacer(modifier = Modifier.size(16.dp))
         }
-    )
+    }
 }

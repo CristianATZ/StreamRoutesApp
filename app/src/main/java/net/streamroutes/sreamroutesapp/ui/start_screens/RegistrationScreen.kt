@@ -4,6 +4,7 @@ package net.streamroutes.sreamroutesapp.ui.start_screens
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +12,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockReset
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.ButtonDefaults
@@ -35,7 +40,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -61,196 +69,131 @@ fun Registration (myViewModel: MyViewModel, navController: NavController) {
     var confirmPass by remember { mutableStateOf("") }
     var confirmPassVisibility by remember { mutableStateOf(true) }
 
-    Scaffold(
-        topBar = { TopAppBar(navController,myViewModel) }
-    ) { paddingValues ->
-        Column(
+    val brush = Brush.verticalGradient(
+        listOf(Color(0xFFE8AA42), Color(0xFFEACE43))
+    )
+
+    Column(
+        modifier = Modifier
+            .background(brush)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+
+        Spacer(modifier = Modifier.size(64.dp))
+
+        // logo
+        Image(
+            painter = painterResource(id = R.drawable.logo_navbar_2),
+            contentDescription = "logo",
+            Modifier.size(100.dp)
+        )
+
+        Spacer(modifier = Modifier.size(64.dp))
+
+        // telefono
+        CustomOutlinedTextField(
+            value = telefono,
+            onValueChange = {telefono = it},
+            placeholderText = stringResource(id = R.string.txtTelefono),
+            leadingIcon = Icons.Filled.Phone,
+            keyboardType = KeyboardType.Number,
+            imeAction = ImeAction.Next
+        )
+
+        Spacer(modifier = Modifier.size(16.dp))
+
+        // contrasenia
+        CustomOutlinedTextField(
+            value = password,
+            onValueChange = {password = it},
+            placeholderText = stringResource(id = R.string.txtContra),
+            leadingIcon = Icons.Filled.Lock,
+            visualTransformation = if (passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        passwordVisibility = !passwordVisibility
+                    }
+                ) {
+                    Icon(
+                        painter = if (!passwordVisibility)
+                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
+                        contentDescription = "visibilidad contraseña",
+                        modifier = Modifier
+                            .size(28.dp)
+                    )
+                }
+            },
+            imeAction = ImeAction.Next
+        )
+
+        Spacer(modifier = Modifier.size(32.dp))
+
+        // confimar contrasenia
+        CustomOutlinedTextField(
+            value = confirmPass,
+            onValueChange = {confirmPass = it},
+            placeholderText = stringResource(id = R.string.txtConfrimarContra),
+            leadingIcon = Icons.Filled.LockReset,
+            visualTransformation = if (confirmPassVisibility) PasswordVisualTransformation() else VisualTransformation.None,
+            trailingIcon = {
+                IconButton(
+                    onClick = {
+                        confirmPassVisibility = !confirmPassVisibility
+                    }
+                ) {
+                    Icon(
+                        painter = if (!confirmPassVisibility)
+                            painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
+                        contentDescription = "visibilidad contraseña",
+                        modifier = Modifier
+                            .size(28.dp)
+                    )
+                }
+            },
+            imeAction = ImeAction.Done
+        )
+
+        // boton registgrar
+        Button(
+            onClick = {
+                navController.navigate(AppScreens.LoginScreen.route)
+            },
+            shape = CircleShape,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.onTertiaryContainer
+            ),
+            elevation = ButtonDefaults.elevatedButtonElevation(
+                defaultElevation = 4.dp
+            ),
             modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxWidth(0.7f)
+                .padding(top = 16.dp)
+                .height(50.dp)
         ) {
-
-            Spacer(modifier = Modifier.size(64.dp))
-
-            // logo
-            Image(
-                painter = painterResource(id = R.drawable.logo_navbar_2),
-                contentDescription = "logo",
-                Modifier.size(200.dp)
+            Text(
+                text = stringResource(id = R.string.btnRegistrarme),
+                style = MaterialTheme.typography.bodyLarge
             )
+        }
 
-            Spacer(modifier = Modifier.size(64.dp))
-
-            // telefono
-            OutlinedTextField(
-                value = telefono,
-                onValueChange = { telefono = it },
-                label = {
-                    Text(
-                        text = myViewModel.languageType().get(270),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                shape = RoundedCornerShape(16.dp),
-                trailingIcon = {
-                    if( telefono.isNotEmpty() ){
-                        IconButton(
-                            onClick = {
-                                telefono = ""
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Clear,
-                                contentDescription = "borrar telefono",
-                                modifier = Modifier
-                                    .size(32.dp)
-                            )
-                        }
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next,
-                    keyboardType = KeyboardType.Number
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
+        // boton cancelar
+        TextButton(
+            onClick = {
+                navController.navigate(AppScreens.LoginScreen.route)
+            },
+            shape = CircleShape,
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .padding(top = 8.dp)
+                .height(50.dp)
+        ) {
+            Text(
+                text = stringResource(id = R.string.btnCancelar),
+                style = MaterialTheme.typography.bodyLarge
             )
-
-            Spacer(modifier = Modifier.size(16.dp))
-
-            // contrasenia
-            OutlinedTextField(
-                value = password,
-                onValueChange = { password = it },
-                label = {
-                    Text(
-                        text = myViewModel.languageType().get(292),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                shape = RoundedCornerShape(16.dp),
-                trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            passwordVisibility = !passwordVisibility
-                        }
-                    ) {
-                        Icon(
-                            painter = if (!passwordVisibility)
-                                painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
-                            contentDescription = "visibilidad contraseña",
-                            modifier = Modifier
-                                .size(32.dp)
-                        )
-                    }
-                },
-                visualTransformation = if (passwordVisibility) PasswordVisualTransformation() else VisualTransformation.None,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Next
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-            )
-
-            Spacer(modifier = Modifier.size(32.dp))
-
-            // confimar contrasenia
-            OutlinedTextField(
-                value = confirmPass,
-                onValueChange = { confirmPass = it },
-                label = {
-                    Text(
-                        text = myViewModel.languageType().get(293),
-                        style = MaterialTheme.typography.titleMedium
-                    )
-                },
-                shape = RoundedCornerShape(16.dp),
-                trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            confirmPassVisibility = !confirmPassVisibility
-                        }
-                    ) {
-                        Icon(
-                            painter = if (!confirmPassVisibility)
-                                painterResource(id = R.drawable.visibilityoff) else painterResource(id = R.drawable.visibilityon),
-                            contentDescription = "visibilidad contraseña",
-                            modifier = Modifier
-                                .size(32.dp)
-                        )
-                    }
-                },
-                visualTransformation = if (confirmPassVisibility) PasswordVisualTransformation() else VisualTransformation.None,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-            )
-
-            // boton registgrar
-            Button(
-                onClick = {
-                    navController.navigate(AppScreens.LoginScreen.route)
-                },
-                shape = RoundedCornerShape(16),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = colorScheme.tertiary,
-                    contentColor = colorScheme.onTertiary
-                ),
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .padding(top = 16.dp)
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = myViewModel.languageType().get(281),
-                    style = MaterialTheme.typography.bodyLarge
-                )
-            }
-
-            // boton cancelar
-            TextButton(
-                onClick = {
-                    navController.navigate(AppScreens.LoginScreen.route)
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.85f)
-                    .height(50.dp)
-            ) {
-                Text(
-                    text = myViewModel.languageType()[302],
-                    style = MaterialTheme.typography.titleSmall
-                )
-            }
         }
     }
-}
-
-@Composable
-private fun TopAppBar(
-    navController: NavController,
-    myViewModel: MyViewModel
-) {
-    CenterAlignedTopAppBar(
-        title = {
-            Text(
-                text = myViewModel.languageType().get(277),
-                style = MaterialTheme.typography.titleLarge
-            )
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    navController.navigate(AppScreens.LoginScreen.route)
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft,
-                    contentDescription = "regresar al login"
-                )
-            }
-        }
-    )
 }
