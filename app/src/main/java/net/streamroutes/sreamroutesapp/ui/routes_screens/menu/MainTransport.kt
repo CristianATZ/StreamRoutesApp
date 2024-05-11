@@ -164,7 +164,6 @@ fun Main(
     )
 
     val systemUiController = rememberSystemUiController()
-
     LaunchedEffect(true) {
         systemUiController.setNavigationBarColor(Color.Black)
         if(configurationViewModel.tema == Tema.Claro) {
@@ -177,9 +176,9 @@ fun Main(
     ModalNavigationDrawer(
         drawerContent = {
             AppDrawer(selectedScreen = routeScreen, items = routesNavigationList){ item ->
-                routeScreen = item
                 scope.launch(Dispatchers.IO) {
                     drawerState.close()
+                    routeScreen = item
                 }
             }
         },
@@ -303,7 +302,7 @@ fun DrawerHeader(
 private fun TopBarBody(openDrawer: () -> Unit) {
     TopAppBar(
         title = {
-            //Text(text = "Ciudad")
+            Text(text = stringResource(id = R.string.Bienvenido))
         },
         navigationIcon = {
             IconButton(onClick = { openDrawer() }) {

@@ -177,7 +177,7 @@ fun ChangeCityDialog(
 @Composable
 fun SecuDialogEdit(
     onClose: () -> Unit,
-    myViewModel: MyViewModel
+    myViewModel: MyViewModel = MyViewModel()
 ) {
     var changePhone by remember {
         mutableStateOf(false)

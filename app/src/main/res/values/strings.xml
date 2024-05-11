@@ -286,4 +286,12 @@
     <string name="lblQueQuieresHacer">¿Que quieres hacer hoy?</string>
     <string name="lblTransportePublico">Transporte publico</string>
     <string name="lblEstacionamiento">Estacionamiento</string>
+    <string name="Bienvenido">Bienvenido</string>
+    <string name="lblCorreo">Correo</string>
+    <string name="lblTelefono">Telefono</string>
+    <string name="lblDireccion">Direccion</string>
+    <string name="lblMembresia">Membresia</string>
+    <string name="lblSeguridad">Seguridad</string>
+    <string name="lblEditarInformacion">Editar inf</string>
+    <string name="lblCerrarSesion">Cerrar sesion</string>
 </resources>

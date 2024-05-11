@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp
+package net.streamroutes.sreamroutesapp.ui
 
 import android.os.Build
 import android.os.Bundle
