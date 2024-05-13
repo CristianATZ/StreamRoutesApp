@@ -53,6 +53,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -251,6 +252,7 @@ fun CustomOutlinedTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.None,
+    ancho: Float = 0.9f,
     modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
@@ -282,7 +284,7 @@ fun CustomOutlinedTextField(
             unfocusedBorderColor = colorScheme.background,
         ),
         modifier = modifier
-            .fillMaxWidth(0.9f)
+            .fillMaxWidth(ancho)
             .shadow(4.dp, CircleShape)
     )
 }

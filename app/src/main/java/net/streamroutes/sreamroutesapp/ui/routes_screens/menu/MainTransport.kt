@@ -79,6 +79,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.maps.android.compose.MapType
 import kotlinx.coroutines.Dispatchers
@@ -164,14 +165,14 @@ fun Main(
     )
 
     val systemUiController = rememberSystemUiController()
-    LaunchedEffect(true) {
+    /*LaunchedEffect(true) {
         systemUiController.setNavigationBarColor(Color.Black)
         if(configurationViewModel.tema == Tema.Claro) {
             systemUiController.setStatusBarColor(Color(0xFFFEFBFF))
         } else {
             systemUiController.setStatusBarColor(Color(0xFF00000F))
         }
-    }
+    }*/
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -197,6 +198,13 @@ fun Main(
                 }
             }
         ) { paddingValues ->
+
+            if(configurationViewModel.tema == Tema.Claro) {
+                changeStatusBar(systemUiController, Color.Black, Color(0xFFFEFBFF))
+            } else {
+                changeStatusBar(systemUiController, Color.Black, Color(0xFF00000F))
+            }
+
             Column(modifier = Modifier.padding(paddingValues)) {
                 when(routeScreen){
                     RoutesNavigationOptions.PREMIUM_SCREEN -> SuscripcionScreen {
@@ -236,6 +244,15 @@ fun Main(
             }
         }
     }
+}
+
+fun changeStatusBar(
+    systemUiController: SystemUiController,
+    navigation: Color,
+    status: Color
+) {
+    systemUiController.setNavigationBarColor(navigation)
+    systemUiController.setStatusBarColor(status)
 }
 
 @Composable
