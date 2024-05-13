@@ -3,12 +3,10 @@
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.LinearOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,10 +18,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
@@ -41,29 +39,25 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BusAlert
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.MyLocation
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.AccessTime
-import androidx.compose.material.icons.outlined.FilterAlt
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
-import androidx.compose.material.icons.outlined.Mic
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -77,10 +71,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -89,6 +84,8 @@ import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import org.osmdroid.util.GeoPoint
 
@@ -98,7 +95,7 @@ fun RoutesScreen(
     myViewModel: MyViewModel = MyViewModel(),
     onBack: () -> Unit
 ){
-    RoutesScreenView(myViewModel, onBack)
+    RoutesScreenView(onBack)
 }
 
 enum class DrawerValue {
@@ -108,7 +105,6 @@ enum class DrawerValue {
 
 @Composable
 fun RoutesScreenView(
-    myViewModel: MyViewModel,
     onBack: () -> Unit
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
@@ -116,7 +112,6 @@ fun RoutesScreenView(
     Scaffold(
         topBar = {
             TopBarBody(
-                myViewModel = myViewModel,
                 openPanel = {
                     if (drawerState.value == DrawerValue.Closed) {
                         drawerState.value = DrawerValue.Open
@@ -130,8 +125,6 @@ fun RoutesScreenView(
 
         val sidePanelVisible = drawerState.value != DrawerValue.Open
 
-        val configuration = LocalConfiguration.current
-
         Box(
             Modifier
                 .padding(paddingValues)
@@ -140,17 +133,9 @@ fun RoutesScreenView(
             MainContent()
 
             AnimatedVisibility(
-                enter = slideIn(tween(1000, easing = LinearOutSlowInEasing)) { fullSize ->
-                    IntOffset(fullSize.width, 0)
-                },
-                exit = slideOut(tween(1000, easing = LinearOutSlowInEasing)) { fullSize ->
-                    IntOffset(fullSize.width+(fullSize.width/8), 0)
-                },
-                visible = sidePanelVisible,
-                modifier = Modifier
-                    .offset(configuration.screenWidthDp.dp/4)
+                visible = sidePanelVisible
             ) {
-                SidePanel(drawerState,myViewModel)
+                SidePanel()
             }
         }
     }    
@@ -165,467 +150,168 @@ data class RutaView(
     val ubi: Boolean
 )
 
-
-
 @Composable
-fun SidePanel(
-    drawerState: MutableState<DrawerValue>,
-    myViewModel: MyViewModel
-) {
-
-    val list = listOf(
-        RutaView(
-            name = "Ruta 1 - Pipila",
-            time = "2.30",
-            time1 = "HRS",
-            aprox = "6 min",
-            aprox1 = "",
-            ubi = true
-        ),
-        RutaView(
-            name = "Ruta 2 - Tlaxcala",
-            time = "2.00",
-            time1 = "HRS",
-            aprox = "6 min",
-            aprox1 = "5, 10 min",
-            ubi = false
-        ),
-        RutaView(
-            name = "Ruta 3 - Oaxaca",
-            time = "3.45",
-            time1 = "HRS",
-            aprox = "6 min",
-            aprox1 = "9, 15 min",
-            ubi = false
-        ),
-        RutaView(
-            name = "Ruta 4 - Ocampo",
-            time = "1.30",
-            time1 = "HRS",
-            aprox = "6 min",
-            aprox1 = "8, 10 min",
-            ubi = false
-        ),
-        RutaView(
-            name = "Ruta 5 - Defensores",
-            time = "2.30",
-            time1 = "HRS",
-            aprox = "6 min",
-            aprox1 = "",
-            ubi = true
-        ),
-        RutaView(
-            name = "Ruta 6 - Hidalgo",
-            time = "3.30",
-            time1 = "HRS",
-            aprox = "6 min",
-            aprox1 = "",
-            ubi = true
-        ),
-    )
+fun SidePanel() {
 
     Column(
         Modifier
             .fillMaxWidth(0.75f)
             .fillMaxHeight()
-            .shadow(16.dp)
-            .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp))
+            .shadow(8.dp)
             .background(colorScheme.background)
     ) {
-        Column {
-            OutlinedTextField(
-                value = "",
-                onValueChange = {  },
-                placeholder = {
-                    Text(text = myViewModel.languageType()[328])
-                },
-                trailingIcon = {
-                    IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Mic,
-                            contentDescription = "Buscar por audio"
-                        )
-                    }
-                },
-                shape = CircleShape,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.background,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.background,
-                    focusedBorderColor = MaterialTheme.colorScheme.background,
-                    unfocusedBorderColor = MaterialTheme.colorScheme.background,
-                    focusedLeadingIconColor = MaterialTheme.colorScheme.onBackground,
-                    unfocusedLeadingIconColor = MaterialTheme.colorScheme.onBackground,
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.onBackground,
-                    unfocusedTrailingIconColor = MaterialTheme.colorScheme.onBackground
-                ),
-                singleLine = true,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .shadow(64.dp, CircleShape)
-                    .padding(8.dp)
-            )
-
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Button(
-                    onClick = {  },
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.tertiary,
-                        contentColor = MaterialTheme.colorScheme.onTertiary
-                    ),
-                    elevation = ButtonDefaults.buttonElevation(
-                        defaultElevation = 30.dp
-                    )
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.FilterAlt,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onTertiary
-                    )
-
-                    Spacer(modifier = Modifier.size(8.dp))
-
-                    Text(
-                        text = myViewModel.languageType()[329],
-                        style = MaterialTheme.typography.labelLarge
-                    )
-                }
-            }
-        }
+        BarraFiltrado()
 
         // lista de rutas de transporte publico
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            items(list.size) { index ->
-                RouteOption(
-                    list[index],
-                    myViewModel
-                ) {
-                    if(drawerState.value == DrawerValue.Closed){
-                        drawerState.value = DrawerValue.Open
-                    }
-                    else {
-                        drawerState.value = DrawerValue.Closed
-                    }
-                }
-            }
+        ListaRutas()
+    }
+}
+
+@Composable
+fun ListaRutas() {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        item {
+            RutaInfo()
         }
     }
 }
 
-data class RoutesOption(
-    val name: String,
-    val action: () -> Unit
-)
-
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun RouteOption(
-    ubication: RutaView,
-    myViewModel: MyViewModel,
-    onClose: () -> Unit
-) {
+fun RutaInfo() {
 
-    var openExactUbi by remember {
+    var openBottomSheet by remember {
         mutableStateOf(false)
     }
 
-    var openUnexactUbi by remember {
-        mutableStateOf(false)
-    }
-
-    var openSheet by remember {
-        mutableStateOf(false)
-    }
-    
     var sheetState = SheetState(
         skipPartiallyExpanded = true,
+        density = LocalDensity.current,
         initialValue = SheetValue.Hidden
     )
 
-    if(openExactUbi){
-        AlertDialog(
-            onDismissRequest = { openExactUbi = !openExactUbi },
-            confirmButton = {
-                TextButton(onClick = { openExactUbi = !openExactUbi }) {
-                    Text(text = myViewModel.languageType()[331])
-                }
-            },
-            text = {
-                Text(
-                    text = myViewModel.languageType()[330],
-                    style = typography.bodyLarge
-                )
-            }
-        )
-    }
-    
-    if(openUnexactUbi){
-        AlertDialog(
-            onDismissRequest = { openUnexactUbi = !openUnexactUbi },
-            confirmButton = {
-                TextButton(onClick = { openUnexactUbi = !openUnexactUbi }) {
-                    Text(text = myViewModel.languageType()[331])
-                }
-            },
-            text = {
-                Text(
-                    text = myViewModel.languageType()[332],
-                    style = typography.bodyLarge
-                )
-            }
-        )
-    }
-
-    val pageCount = 10
-    var pagerState = rememberPagerState(
-        initialPage = 0,
-        initialPageOffsetFraction = 0f
-    ) {
-        pageCount
-    }
-
-    val scope = rememberCoroutineScope()
-
-    val routes_options = listOf(
-        RoutesOption(
-            name = myViewModel.languageType()[333],
-            action = {
-                scope.launch {
-                    pagerState.animateScrollToPage(0)
-                }
-            }
-        ),
-        RoutesOption(
-            name = myViewModel.languageType()[334],
-            action = {
-                scope.launch {
-                    pagerState.animateScrollToPage(1)
-                }
-            }
-        ),
-        RoutesOption(
-            name = myViewModel.languageType()[335],
-            action = {
-                scope.launch {
-                    pagerState.animateScrollToPage(2)
-                }
-            }
-        ),
-        RoutesOption(
-            name = myViewModel.languageType()[336],
-            action = {
-                scope.launch {
-                    pagerState.animateScrollToPage(8)
-                }
-            }
-        ),
-    )
-
-    if(openSheet){
+    if(openBottomSheet) {
         BottomSheet(
             sheetState = sheetState,
-            pagerState = pagerState,
-            myViewModel = myViewModel,
-            pageCount = pageCount,
-            list = routes_options,
             onDismiss = {
-                openSheet = !openSheet
+                openBottomSheet = !openBottomSheet
             },
             onCalculate = {
-                onClose()
+
             }
         )
     }
-
-    Card (
+    Card(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 8.dp
         ),
+        colors = CardDefaults.cardColors(
+            containerColor = colorScheme.background,
+            contentColor = colorScheme.onBackground
+        ),
         modifier = Modifier
-            .fillMaxWidth(0.95f)
+            .fillMaxWidth(0.92f)
             .padding(vertical = 8.dp)
-            .combinedClickable(
-                onClick = { openSheet = !openSheet },
-                onDoubleClick = { }
-            )
+            .clickable { openBottomSheet = !openBottomSheet }
     ) {
         Row(
             modifier = Modifier
-                .height(100.dp)
+                .padding(vertical = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier
-                    .width(100.dp)
-                    .fillMaxHeight()
-                    .background(colorScheme.tertiary),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Text(
-                    text = ubication.time + " " + ubication.time1,
-                    style = typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    color = colorScheme.onTertiary.copy(0.5f),
-                    modifier = Modifier.padding(PaddingValues(8.dp))
-                )
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Image(painter = painterResource(id = R.drawable.autobus), contentDescription = null, modifier = Modifier.size(50.dp))
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Column {
+                Text(text = "El charco", style = typography.headlineSmall, fontWeight = FontWeight.Bold, textAlign = TextAlign.Center)
+                Spacer(modifier = Modifier.size(8.dp))
+
+
+                Text(text = "3 paradas restantes", style = typography.bodyLarge)
+
+                Text(text = "7 minutos aprox", style = typography.titleSmall, color = colorScheme.tertiary)
             }
 
             Spacer(modifier = Modifier.size(8.dp))
-
-            Column(
-                modifier = Modifier
-                    .padding(8.dp)
-            ) {
-                Text(
-                    text = ubication.name,
-                    style = typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.End
-                ) {
-                    if (!ubication.ubi){
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-
-                            Icon(
-                                imageVector = Icons.Outlined.AccessTime,
-                                contentDescription = null
-                            )
-                            
-                            Spacer(modifier = Modifier.size(8.dp))
-
-                            // tiempo aprox
-                            Column {
-                                Text(
-                                    text = ubication.aprox,
-                                    style = typography.labelMedium
-                                )
-                                Text(
-                                    text = ubication.aprox1,
-                                    style = typography.labelMedium
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.size(16.dp))
-                            
-                            // boton indicando que no tiene ubicacino exacta
-                            Button(
-                                onClick = {
-                                    openUnexactUbi = !openUnexactUbi
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = colorScheme.error
-                                ),
-                                shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier
-                                    .width(75.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.Error,
-                                    contentDescription = "Autobus sin ubicacion exacta",
-                                    tint = colorScheme.onError
-                                )
-                            }
-
-                        }
-                    } else {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            // tiempo exacto
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.AccessTime,
-                                    contentDescription = null
-                                )
-
-                                Spacer(modifier = Modifier.size(8.dp))
-
-                                Text(
-                                    text = ubication.aprox,
-                                    style = typography.labelMedium
-                                )
-                            }
-                            
-                            Spacer(modifier = Modifier.size(16.dp))
-
-                            // boton indicando que si tiene ubicacion exacta
-                            Button(
-                                onClick = {
-                                    openExactUbi = !openExactUbi
-                                },
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = colorScheme.tertiary
-                                ),
-                                shape = RoundedCornerShape(8.dp),
-                                modifier = Modifier
-                                    .width(75.dp)
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Filled.BusAlert,
-                                    contentDescription = "Autobus con ubicacion exacta",
-                                    tint = colorScheme.onTertiary
-                                )
-                            }
-                        }
-                    }
-                }
-            }
         }
-
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterialApi::class)
+@Composable
+fun BarraFiltrado() {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.size(8.dp))
+
+        CustomOutlinedTextField(
+            value = "",
+            onValueChange = {},
+            placeholderText = stringResource(id = R.string.txtFiltraAqui),
+            leadingIcon = Icons.Filled.Search
+        )
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth(0.9f),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(
+                onClick = {
+                    //navController.navigate(AppScreens.SelectOptionScreen.route)
+                },
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.inverseSurface,
+                    contentColor = colorScheme.inverseOnSurface
+                ),
+                elevation = ButtonDefaults.elevatedButtonElevation(
+                    defaultElevation = 4.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(0.4f)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.btnFiltrar),
+                    style = typography.bodyLarge
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BottomSheet(
     sheetState: SheetState,
-    pagerState: PagerState,
-    myViewModel: MyViewModel,
-    pageCount: Int,
-    list: List<RoutesOption>,
     onDismiss: () -> Unit,
     onCalculate: () -> Unit
 ) {
+    val pagerState = rememberPagerState(0){1}
+
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
         sheetState = sheetState,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight(0.80f)
-        ) {
-            // carrusel
-            Box(
-                Modifier
-                    .fillMaxHeight(0.4f)
-                    .align(Alignment.TopCenter)
-            ) {
+        Column {
+            Box {
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight()
+                        .height(200.dp)
                         .background(if (pagerState.currentPage % 2 == 0) Color.LightGray else Color.DarkGray)
                 ) {
 
@@ -638,7 +324,7 @@ fun BottomSheet(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    repeat(pageCount){ index ->
+                    repeat(2){ index ->
                         val color = if(pagerState.currentPage == index) colorScheme.tertiary else colorScheme.onTertiary
                         val size = if(pagerState.currentPage == index) 15.dp else 10.dp
                         Box(modifier = Modifier
@@ -651,155 +337,139 @@ fun BottomSheet(
             }
 
             // caja de informacino de la ruta
-            Box(
-                Modifier.fillMaxSize(),
-                contentAlignment = Alignment.BottomEnd
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+                    .background(colorScheme.background)
             ) {
                 Column(
-                    Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Bottom
+                    Modifier
+                        .padding(PaddingValues(16.dp))
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        Modifier
-                            .fillMaxHeight(0.67f)
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
-                            .background(colorScheme.background)
-                    ) {
-                        Column(
-                            Modifier
-                                .padding(PaddingValues(16.dp))
-                                .fillMaxWidth()
-                                .verticalScroll(rememberScrollState()),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            // nombre ruta y descripcion
-                            Column(
-                                Modifier.fillMaxWidth()
-                            ) {
-                                // nombre
-                                Text(
-                                    text = "Pipila - Obregon",
-                                    style = typography.headlineSmall,
-                                    fontWeight = FontWeight.Bold
-                                )
+                    // nombre ruta y descripcion
+                    Text(
+                        text = "El charco",
+                        style = typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                                // descripcion
-                                Text(
-                                    text = "Contiene restaurantes dentro de la ruta.",
-                                    style = typography.bodyLarge
-                                )
-                            }
+                    // descripcion
+                    Text(
+                        text = "Un lugar coincide con tus intereses.",
+                        style = typography.bodyLarge
+                    )
 
-                            Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                            // botons de accion
-                            LazyRow(){
-                                items(list.size){ index ->
-                                    val item = list[index]
-                                    Chip(
-                                        onClick = { item.action() },
-                                        colors = ChipDefaults.chipColors(
-                                            backgroundColor = colorScheme.tertiary
-                                        ),
-                                        shape = RoundedCornerShape(8.dp),
-                                        modifier = Modifier
-                                            .padding(4.dp)
-                                    ) {
-                                        Text(
-                                            text = item.name,
-                                            color = colorScheme.onTertiary
-                                        )
-                                    }
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.size(8.dp))
-
-                            // duracion y cantidad de paradas
-                            Row {
-                                RouteInfo(
-                                    title = myViewModel.languageType()[337],
-                                    desc = "2 horas y 34 minutos.",
-                                    value = 0.5f
-                                )
-
-                                Spacer(modifier = Modifier.size(16.dp))
-
-                                RouteInfo(
-                                    title = myViewModel.languageType()[338],
-                                    desc = "12",
-                                    value = 1f
-                                )
-                            }
-
-                            // inicio de la ruta
-                            RouteInfo(
-                                title = myViewModel.languageType()[339],
-                                desc = "Calle Pipila"
-                            )
-
-                            // final de la ruta
-                            RouteInfo(
-                                title = myViewModel.languageType()[340],
-                                desc = "Calle Obregòn"
-                            )
-
-                            // parada mas cercana
-                            Row(
-                                verticalAlignment = Alignment.Bottom
-                            ) {
-                                RouteInfo(
-                                    title = myViewModel.languageType()[341],
-                                    desc = "Calle 5 de Mayo",
-                                    value = 0.7f
-                                )
-
-                                Button(
-                                    onClick = {  },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = colorScheme.tertiary
-                                    ),
-                                    shape = RoundedCornerShape(16.dp),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(55.dp)
-                                        .padding(horizontal = 8.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.MyLocation,
-                                        contentDescription = "Buscar parada cercana",
-                                        tint = colorScheme.onTertiary
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.size(8.dp))
-
-                            // calcular ruta
-                            Button(
-                                onClick = {
-                                    onDismiss()
-                                    onCalculate()
-                                },
-                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 64.dp, bottomEnd = 64.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = colorScheme.tertiary,
-                                    contentColor = colorScheme.onTertiary
+                    // botons de accion
+                    LazyRow(){
+                        /*items(list.size){ index ->
+                            val item = list[index]
+                            Chip(
+                                onClick = { item.action() },
+                                colors = ChipDefaults.chipColors(
+                                    backgroundColor = colorScheme.tertiary
                                 ),
+                                shape = RoundedCornerShape(8.dp),
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
+                                    .padding(4.dp)
                             ) {
                                 Text(
-                                    text = myViewModel.languageType()[342],
-                                    style = typography.bodyLarge
+                                    text = item.name,
+                                    color = colorScheme.onTertiary
                                 )
                             }
+                        }*/
+                    }
 
-                            Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    // duracion y cantidad de paradas
+                    Row {
+                        RouteInfo(
+                            title = stringResource(id = R.string.lblDuracion),
+                            desc = "2 horas y 34 minutos.",
+                            value = 0.5f
+                        )
+
+                        Spacer(modifier = Modifier.size(16.dp))
+
+                        RouteInfo(
+                            title = stringResource(id = R.string.lblParadasTotales),
+                            desc = "12",
+                            value = 1f
+                        )
+                    }
+
+                    // inicio de la ruta
+                    RouteInfo(
+                        title = stringResource(id = R.string.lblInicioRuta),
+                        desc = "Calle Pipila"
+                    )
+
+                    // final de la ruta
+                    RouteInfo(
+                        title = stringResource(id = R.string.lblFinalRuta),
+                        desc = "Calle Obregòn"
+                    )
+
+                    // parada mas cercana
+                    Row(
+                        verticalAlignment = Alignment.Bottom
+                    ) {
+                        RouteInfo(
+                            title = stringResource(id = R.string.lblParadaCercana),
+                            desc = "Calle 5 de Mayo",
+                            value = 0.7f
+                        )
+
+                        Button(
+                            onClick = {  },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorScheme.tertiary
+                            ),
+                            shape = RoundedCornerShape(16.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(55.dp)
+                                .padding(horizontal = 8.dp)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.MyLocation,
+                                contentDescription = "Buscar parada cercana",
+                                tint = colorScheme.onTertiary
+                            )
                         }
                     }
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    // calcular ruta
+                    Button(
+                        onClick = {
+                            onDismiss()
+                            onCalculate()
+                        },
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 64.dp, bottomEnd = 64.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorScheme.inverseSurface,
+                            contentColor = colorScheme.inverseOnSurface
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.btnMostrarRuta),
+                            style = typography.bodyLarge
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.size(8.dp))
                 }
             }
         }
@@ -918,44 +588,56 @@ fun MainContent() {
 
 @Composable
 private fun TopBarBody(
-    myViewModel: MyViewModel,
     openPanel: () -> Unit,
     onBack: () -> Unit
 ) {
-    TopAppBar(
+    CenterAlignedTopAppBar(
         title = {
-            Text(
-                text = myViewModel.languageType()[326]
-            )
-        },
-        navigationIcon = {
-            IconButton(
-                onClick = {
-                    onBack()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft,
-                    contentDescription = "Abrir el menu de opciones"
-                )
-            }
-        },
-        actions = {
-            TextButton(
-                onClick = {
-                    openPanel()
-                }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = myViewModel.languageType()[327]
+                    text = stringResource(id = R.string.lblTransporte)
+                )
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Button(
+                    onClick = {
+                        openPanel()
+                    },
+                    shape = CircleShape,
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = colorScheme.inverseSurface,
+                        contentColor = colorScheme.inverseOnSurface
+                    ),
+                    elevation = ButtonDefaults.elevatedButtonElevation(
+                        defaultElevation = 4.dp
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth(0.5f)
+                        .height(40.dp)
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.btnRutas),
+                        style = typography.bodyLarge
+                    )
+                }
+            }
+        },
+        navigationIcon = {
+            IconButton(onClick = { onBack() }) {
+                Icon(
+                    imageVector = Icons.Outlined.ArrowBackIosNew,
+                    contentDescription = "Te enviara al menu de opciones",
                 )
             }
         },
-        colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = colorScheme.background,
+            titleContentColor = colorScheme.onBackground
         )
     )
 }

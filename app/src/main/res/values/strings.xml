@@ -322,4 +322,14 @@
     <string name="lblCondiciones">La suscripcion se cobrara de manera automatica al final de cada periodo.</string>
     <string name="txtDestino">Destino</string>
     <string name="btnCalcularDestino">Calcular destino</string>
+    <string name="txtFiltraAqui">Filtrar aqui</string>
+    <string name="btnFiltrar">Filtrar</string>
+    <string name="lblTransporte">Transporte</string>
+    <string name="btnRutas">Rutas</string>
+    <string name="lblDuracion">Duracion</string>
+    <string name="lblParadasTotales">Paradas totales</string>
+    <string name="lblInicioRuta">Inicio ruta</string>
+    <string name="lblFinalRuta">Final ruta</string>
+    <string name="lblParadaCercana">Parada cercana</string>
+    <string name="btnMostrarRuta">Mostrar ruta</string>
 </resources>
