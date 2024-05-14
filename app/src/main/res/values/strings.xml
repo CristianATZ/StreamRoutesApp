@@ -332,4 +332,11 @@
     <string name="lblFinalRuta">Final ruta</string>
     <string name="lblParadaCercana">Parada cercana</string>
     <string name="btnMostrarRuta">Mostrar ruta</string>
+    <string name="txtBuscaAqui">Busca aqui</string>
+    <string name="btnAgregar">Agregar</string>
+    <string name="lblDestinos">Destinos</string>
+    <string name="btnBorrarTodo">Borrar todo</string>
+    <string name="lblColonia">Colonia</string>
+    <string name="lblCodigoPostal">CP</string>
+    <string name="btnPlanificar">Planificar</string>
 </resources>
