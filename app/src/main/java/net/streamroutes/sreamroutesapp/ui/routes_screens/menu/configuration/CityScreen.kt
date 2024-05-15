@@ -53,7 +53,7 @@ fun CityBody(configurationViewModel: ConfigurationViewModel) {
                         Spacer(modifier = Modifier.weight(1f))
 
                         RadioButton(
-                            selected = option.name.equals(configurationViewModel.ciudad.name),
+                            selected = option.name == configurationViewModel.ciudad.name,
                             onClick = {
                                 configurationViewModel.updateCiudad(option)
                             }

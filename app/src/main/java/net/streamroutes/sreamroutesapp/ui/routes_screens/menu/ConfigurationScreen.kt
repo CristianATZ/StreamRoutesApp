@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -19,6 +20,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -86,16 +88,23 @@ fun ConfigurationScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             confItems.forEach { item ->
-                Options(name = item.name, isSelected = selection == item.configuration) {
+                Options(
+                    name = item.name,
+                    isSelected = selection == item.configuration
+                ) {
                     selection = if(selection == item.configuration)
                         ConfigurationSelection.NONE
                     else
                         item.configuration
                 }
 
-                if(selection == item.configuration){
-                    item.composable()
-                    Divider()
+                AnimatedVisibility(visible = selection == item.configuration) {
+                    Column(
+                        modifier = Modifier
+                            .background(colorScheme.surfaceContainerLow)
+                    ) {
+                        item.composable()
+                    }
                 }
             }
         }
@@ -108,7 +117,7 @@ fun TopBarConfiguration(
     onBack: () -> Unit
 ) {
     CenterAlignedTopAppBar(
-        title = { Text(text = "Configuracion") },
+        title = { Text(text = stringResource(id = R.string.lblConfiguracion)) },
         navigationIcon = {
             IconButton(
                 onClick = { onBack() }) {
@@ -170,7 +179,6 @@ private fun CityOptions(configurationViewModel: ConfigurationViewModel) {
 
 @Composable
 private fun NotificationOptions(configurationViewModel: ConfigurationViewModel) {
-    //Text(text = "Elegir los ajustes de las notificaciones")
     NotificationsScreen(configurationViewModel)
 }
 

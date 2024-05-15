@@ -345,4 +345,6 @@
     <string name="lblLugaresTuristicos">Lugares turisticos</string>
     <string name="btnVerMas">Ver mas</string>
     <string name="btnVerRuta">Ver ruta</string>
+    <string name="lblConfiguracion">Configuracion</string>
+    <string name="lblAyuda">Ayuda</string>
 </resources>

@@ -1,7 +1,8 @@
-package net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help
+package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
 import android.annotation.SuppressLint
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -35,6 +36,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.AboutScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.CommentScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.help.ContactScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 
 
@@ -84,9 +88,8 @@ fun HelpScreen(myViewModel: MyViewModel = MyViewModel(), onBack: () -> Unit) {
                         item.configuration
                 }
 
-                if(selection == item.configuration){
+                AnimatedVisibility(visible = selection == item.configuration) {
                     item.composable()
-                    Divider()
                 }
             }
         }
@@ -99,7 +102,7 @@ fun HelpTopBar(onBack: () -> Unit) {
     CenterAlignedTopAppBar(
         title = {
             Text(
-                text = stringResource(id = R.string.lblHelpTopbar)
+                text = stringResource(id = R.string.lblAyuda)
             )
         },
         navigationIcon = {
@@ -111,9 +114,8 @@ fun HelpTopBar(onBack: () -> Unit) {
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.background,
+            titleContentColor = MaterialTheme.colorScheme.onBackground
         )
     )
 }
