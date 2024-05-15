@@ -6,10 +6,14 @@ import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
 import android.net.Uri
 import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -77,17 +81,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
+import androidx.core.content.ContextCompat
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.isGranted
+import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.systemuicontroller.SystemUiController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import com.google.maps.android.compose.MapType
+import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.utils.getAddressInfoFromCoordinates
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
-import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.Tema
 
 enum class RoutesNavigationOptions{
@@ -100,7 +108,6 @@ enum class RoutesNavigationOptions{
     CHAT_SCREEN,
     UBI_OPTION,
     DOWNLOAD_OPTION,
-    //SHARE_OPTION,
     CONF_SCREEN,
     HELP_SCREEN,
     PROFILE_SCREEN
@@ -118,12 +125,12 @@ data class RoutesNavigationItem(
 fun MainScreen(
     mainViewModel: MainViewModel,
     configurationViewModel: ConfigurationViewModel,
-    fastViewModel: FastViewModel,
-    navController: NavController
+    fastViewModel: FastViewModel
 ) {
     Main(configurationViewModel, fastViewModel)
 }
 
+@OptIn(ExperimentalPermissionsApi::class)
 @SuppressLint("MissingPermission")
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -132,7 +139,6 @@ fun Main(
     fastViewModel: FastViewModel
 ){
     val context = LocalContext.current
-    // variable con todos los valores
 
     var routeScreen by remember {
         mutableStateOf(RoutesNavigationOptions.HOME_SCREEN)
@@ -141,10 +147,14 @@ fun Main(
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
 
-    // Variable para almacenar el tipo de mapa actual y su estado
-    val defaultMapType = MapType.NORMAL
-    var currentMapType by remember { mutableStateOf(defaultMapType) }
-    var changeMap by remember { mutableStateOf(1) }
+    // variable para recordar el permiso
+    val locationPermissionState = rememberPermissionState(
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
+
+    val backgroundLocationPermissionState = rememberPermissionState(
+        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+    )
 
     // lista para el menu de opciones
     val routesNavigationList = listOf(
@@ -163,14 +173,6 @@ fun Main(
     )
 
     val systemUiController = rememberSystemUiController()
-    /*LaunchedEffect(true) {
-        systemUiController.setNavigationBarColor(Color.Black)
-        if(configurationViewModel.tema == Tema.Claro) {
-            systemUiController.setStatusBarColor(Color(0xFFFEFBFF))
-        } else {
-            systemUiController.setStatusBarColor(Color(0xFF00000F))
-        }
-    }*/
 
     ModalNavigationDrawer(
         drawerContent = {
@@ -187,8 +189,10 @@ fun Main(
         // cuerpo de la navegacion
         Scaffold(
             topBar = {
-                if(routeScreen == RoutesNavigationOptions.HOME_SCREEN){
-                    TopBarBody(){
+                if(routeScreen == RoutesNavigationOptions.HOME_SCREEN ||
+                    routeScreen == RoutesNavigationOptions.UBI_OPTION ||
+                    routeScreen == RoutesNavigationOptions.DOWNLOAD_OPTION ){
+                    TopBarBody {
                         scope.launch(Dispatchers.IO) {
                             drawerState.open()
                         }
@@ -212,21 +216,26 @@ fun Main(
                     RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel){
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
-                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen(){
+                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
-                    RoutesNavigationOptions.TRIP_SCREEN -> TripScreen(){
+                    RoutesNavigationOptions.TRIP_SCREEN -> TripScreen {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
-                    RoutesNavigationOptions.TURISM_SCREEN -> TurismScreen(){
+                    RoutesNavigationOptions.TURISM_SCREEN -> TurismScreen {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
-                    RoutesNavigationOptions.CHAT_SCREEN -> ChatScreen(){
+                    RoutesNavigationOptions.CHAT_SCREEN -> ChatScreen {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
-                    //NavigationOptions.UBI_OPTION ->
-                    //NavigationOptions.DOWNLOAD_OPTION ->
-                    //NavigationOptions.SHARE_OPTION ->
+                    RoutesNavigationOptions.UBI_OPTION -> {
+                        getUbi(locationPermissionState, backgroundLocationPermissionState, context)
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
+                    RoutesNavigationOptions.DOWNLOAD_OPTION -> {
+                        startDownload(context = context)
+                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
+                    }
                     RoutesNavigationOptions.CONF_SCREEN -> ConfigurationScreen(configurationViewModel){
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
@@ -234,7 +243,7 @@ fun Main(
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
 
-                    RoutesNavigationOptions.PROFILE_SCREEN -> ProfileScreen(){
+                    RoutesNavigationOptions.PROFILE_SCREEN -> ProfileScreen {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
                     else -> HomeScreen()
@@ -242,15 +251,6 @@ fun Main(
             }
         }
     }
-}
-
-fun changeStatusBar(
-    systemUiController: SystemUiController,
-    navigation: Color,
-    status: Color
-) {
-    systemUiController.setNavigationBarColor(navigation)
-    systemUiController.setStatusBarColor(status)
 }
 
 @Composable
@@ -327,256 +327,14 @@ private fun TopBarBody(openDrawer: () -> Unit) {
     )
 }
 
-/*@RequiresApi(Build.VERSION_CODES.Q)
-@OptIn(ExperimentalPermissionsApi::class)
-@Composable
-fun DrawerBody(
-    navController: NavController,
-    myViewModel: MyViewModel,
-    scope: CoroutineScope,
-    drawerState: DrawerState,
-    changeScreen: (RoutesNavigationOptions) -> Unit
-) {
-    val context = LocalContext.current
-
-    // variable para recordar el permiso
-    val locationPermissionState = rememberPermissionState(
-        Manifest.permission.ACCESS_FINE_LOCATION
-    )
-
-    val backgroundLocationPermissionState = rememberPermissionState(
-        Manifest.permission.ACCESS_BACKGROUND_LOCATION
-    )
-
-    // Función para verificar si el permiso de ubicación en segundo plano está habilitado
-    fun isBackgroundLocationPermissionGranted(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true // En versiones anteriores a Android 10, no se requiere este permiso
-        }
-    }
-
-    // Función para verificar si el permiso de ubicación precisa esta habilitado
-    fun isLocationPermissionGranted(context: Context): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            ContextCompat.checkSelfPermission(
-                context,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        } else {
-            true // En versiones anteriores a Android 10, no se requiere este permiso
-        }
-    }
-
-    // Función para verificar si los servicios de ubicación están habilitados
-    fun areLocationServicesEnabled(context: Context): Boolean {
-        val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
-    }
-    // 0xFF195093
-
-    Column (
-        modifier = Modifier
-            .background(colorScheme.background),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ){
-        // header perfil
-        *//*HeaderProfileMenu(
-            navController = navController,
-            scope = scope,
-            drawerState = drawerState,
-            changeScreen = changeScreen
-        )*//*
-
-        // cuerpo opciones del menu
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            // premium
-
-            Text(
-                text = "Premium",
-                style = typography.titleSmall,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(PaddingValues(16.dp))
-            )
-
-            DrawerItem(
-                text = myViewModel.languageType()[303],
-                icon = Icons.Outlined.AttachMoney
-            ) {
-                //changeScreen(NavigationOptions.PAQUETES_SCREEN)
-                navController.navigate(AppScreens.MainParking.route)
-            }
-
-            // transporte
-
-            Text(
-                text = "Transporte",
-                style = typography.titleSmall,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(PaddingValues(16.dp))
-            )
-
-            DrawerItem(
-                text = myViewModel.languageType()[304],
-                icon = Icons.Outlined.SwitchAccessShortcut
-            ) {
-                changeScreen(RoutesNavigationOptions.FAST_SCREEN)
-            }
-
-            DrawerItem(
-                text = myViewModel.languageType().get(167),
-                icon = Icons.Outlined.DirectionsBus
-            ) {
-                changeScreen(RoutesNavigationOptions.ROUTES_SCREEN)
-            }
-
-            DrawerItem(
-                text = myViewModel.languageType().get(164),
-                icon = Icons.Outlined.Route
-            ) {
-                changeScreen(RoutesNavigationOptions.TRIP_SCREEN)
-            }
-
-            DrawerItem(
-                text = myViewModel.languageType()[305],
-                icon = Icons.Outlined.Museum
-            ) {
-                changeScreen(RoutesNavigationOptions.TURISM_SCREEN)
-            }
-
-            // funciones extra
-            Text(
-                text = "Funciones",
-                style = typography.titleSmall,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(PaddingValues(16.dp))
-            )
-
-            DrawerItem(
-                text = myViewModel.languageType()[306],
-                icon = Icons.Outlined.Chat,
-            ) {
-                changeScreen(RoutesNavigationOptions.CHAT_SCREEN)
-            }
-
-            DrawerItem(
-                text = myViewModel.languageType().get(155),
-                icon = Icons.Outlined.ShareLocation
-            ) {
-                if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
-                    locationPermissionState.launchPermissionRequest()
-                    backgroundLocationPermissionState.launchPermissionRequest()
-                }
-
-                if (!areLocationServicesEnabled(context)) {
-                    Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
-                    // Mostrar un mensaje al usuario indicando que los servicios de ubicación están deshabilitados
-                    // y proporcionar una opción para abrir la configuración para habilitarlos
-                } else {
-                    if( isBackgroundLocationPermissionGranted(context) && isLocationPermissionGranted(context) ){
-                        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
-                        fusedLocationClient.lastLocation
-                            .addOnSuccessListener { location: Location? ->
-                                if (location != null) {
-                                    val latitude = location.latitude
-                                    val longitude = location.longitude
-
-                                    // Construir la URL con el marcador en tu ubicación actual
-                                    val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
-                                    val addressInfo = getAddressInfoFromCoordinates(context,latitude,longitude)
-                                    val message = myViewModel.languageType().get(179) + addressInfo?.cityName + ", " +
-                                            addressInfo?.streetName +  ", " + addressInfo?.postalCode + "\n"
-
-                                    val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl, myViewModel), null)
-                                    context.startActivity(shareIntent)
-
-                                } else {
-                                    Toast.makeText(context, myViewModel.languageType().get(10), Toast.LENGTH_LONG).show()
-                                }
-                            }
-                            .addOnFailureListener {
-                                // Manejar el error al obtener la ubicación actual
-                                Toast.makeText(context, myViewModel.languageType().get(161), Toast.LENGTH_SHORT).show()
-                            }
-                    } else {
-                        Toast.makeText(context, myViewModel.languageType().get(165), Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-
-            DrawerItem(
-                text = myViewModel.languageType().get(159),
-                icon = Icons.Outlined.Download
-            ) {
-                startDownload(context = context, myViewModel = myViewModel)
-            }
-
-            DrawerItem(
-                text = myViewModel.languageType().get(154),
-                icon = Icons.Outlined.Share
-            ) {
-                val shareIntent = Intent.createChooser(getShareApp(myViewModel), null)
-                context.startActivity(shareIntent)
-            }
-
-            *//*DrawerItem(
-                text = myViewModel.languageType().get(170),
-                icon = Icons.Outlined.StarRate
-            ) {
-                navController.navigate(AppScreens.ValoranoScreen.route)
-            }*//*
-
-            // configuracion y soporte
-
-            Text(
-                text = "Configuracion y soporte",
-                style = typography.titleSmall,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(PaddingValues(16.dp))
-            )
-
-            DrawerItem(
-                text = myViewModel.languageType().get(156),
-                icon = Icons.Outlined.Settings
-            ) {
-                changeScreen(RoutesNavigationOptions.CONF_SCREEN)
-            }
-
-            DrawerItem(
-                text = myViewModel.languageType().get(152),
-                icon = Icons.Outlined.HelpOutline
-            ) {
-                changeScreen(RoutesNavigationOptions.HELP_SCREEN)
-            }
-        }
-    }
-}*/
-
-///////// SHARE SHEET ////////
-
 // hoja para compartir la ubicacion
 fun getShareUbi(
     context: Context,
     message: String,
-    myViewModel: MyViewModel
 ) : Intent{
     val shareUbi: Intent = Intent().apply {
         action = Intent.ACTION_SEND
-        putExtra(Intent.EXTRA_TITLE, myViewModel.languageType().get(178))
+        putExtra(Intent.EXTRA_TITLE, "Ubicacion")
         val manager = context.getSystemService(Context.BATTERY_SERVICE) as BatteryManager
         val level: Int = manager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
         putExtra(Intent.EXTRA_TEXT, "Bat:$level% $message\n")
@@ -589,19 +347,92 @@ fun getShareUbi(
 
 private fun startDownload(
     context: Context,
-    pdfUrl: String = "https://drive.google.com/uc?export=download&id=1Xt85BpR47S6adKdRlh_ERVfo8TxD1fM4",
-    myViewModel: MyViewModel
+    pdfUrl: String = "https://drive.google.com/uc?export=download&id=1Xt85BpR47S6adKdRlh_ERVfo8TxD1fM4"
 ) {
     val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
 
     val request = DownloadManager.Request(Uri.parse(pdfUrl))
-        .setTitle(myViewModel.languageType().get(158))
-        .setDescription(myViewModel.languageType().get(159))
+        .setTitle("Rutas")
+        .setDescription("Descargando archivo PDF")
         .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+        .setAllowedOverMetered(true)
+        .setAllowedOverRoaming(true)
         .setDestinationInExternalPublicDir(
             Environment.DIRECTORY_DOWNLOADS,
-            "RutaRoute1.pdf"
+            "Ruta.pdf"
         )
 
     downloadManager.enqueue(request)
+}
+
+// Función para verificar si los servicios de ubicación están habilitados
+fun areLocationServicesEnabled(context: Context): Boolean {
+    val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+    return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+}
+
+// Función para verificar si el permiso de ubicación está habilitado
+fun isLocationPermissionGranted(context: Context, permission: String): Boolean {
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
+    } else {
+        true // En versiones anteriores a Android 10, no se requiere este permiso
+    }
+}
+
+@SuppressLint("MissingPermission")
+@OptIn(ExperimentalPermissionsApi::class)
+fun getUbi(
+    locationPermissionState: PermissionState,
+    backgroundLocationPermissionState: PermissionState,
+    context: Context
+) {
+    if (!locationPermissionState.status.isGranted || !backgroundLocationPermissionState.status.isGranted) {
+        locationPermissionState.launchPermissionRequest()
+        backgroundLocationPermissionState.launchPermissionRequest()
+        return
+    }
+
+    if (!areLocationServicesEnabled(context)) {
+        Toast.makeText(context, "Por favor activa la ubicación en todo momento.", Toast.LENGTH_LONG).show()
+        return
+    }
+
+    if (!isLocationPermissionGranted(context, android.Manifest.permission.ACCESS_FINE_LOCATION) ||
+        !isLocationPermissionGranted(context, android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
+        Toast.makeText(context, "Por favor activa la ubicación en todo momento.", Toast.LENGTH_LONG).show()
+        return
+    }
+
+    val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+    fusedLocationClient.lastLocation
+        .addOnSuccessListener { location: Location? ->
+            if (location != null) {
+                val latitude = location.latitude
+                val longitude = location.longitude
+
+                // Construir la URL con el marcador en tu ubicación actual
+                val mapUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
+                val addressInfo = getAddressInfoFromCoordinates(context, latitude, longitude)
+                val message = "Ubicación: ${addressInfo?.cityName}, ${addressInfo?.streetName}, ${addressInfo?.postalCode}\n"
+
+                val shareIntent = Intent.createChooser(getShareUbi(context, message + mapUrl), null)
+                context.startActivity(shareIntent)
+            } else {
+                Toast.makeText(context, "Por favor activa la ubicación en todo momento.", Toast.LENGTH_LONG).show()
+            }
+        }
+        .addOnFailureListener {
+            // Manejar el error al obtener la ubicación actual
+            Toast.makeText(context, "Error al obtener la ubicacion actual.", Toast.LENGTH_SHORT).show()
+        }
+}
+
+fun changeStatusBar(
+    systemUiController: SystemUiController,
+    navigation: Color,
+    status: Color
+) {
+    systemUiController.setNavigationBarColor(navigation)
+    systemUiController.setStatusBarColor(status)
 }
