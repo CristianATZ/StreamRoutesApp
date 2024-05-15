@@ -11,51 +11,42 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Chat
-import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.MyLocation
-import androidx.compose.material.icons.outlined.KeyboardArrowLeft
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,8 +55,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -77,8 +70,8 @@ import com.utsman.osmandcompose.Polyline
 import com.utsman.osmandcompose.ZoomButtonVisibility
 import com.utsman.osmandcompose.rememberMarkerState
 import com.utsman.osmandcompose.rememberOverlayManagerState
-import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.overlay.CopyrightOverlay
 
@@ -87,195 +80,212 @@ fun TurismScreen(
     myViewModel: MyViewModel = MyViewModel(),
     onBack: () -> Unit
 ) {
-    val drawerState = remember { mutableStateOf(DrawerValue.Open) }
-    Turism(myViewModel, drawerState, onBack)
+    Turism(onBack)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Turism(
-    myViewModel: MyViewModel,
-    drawerState: MutableState<DrawerValue>,
     onBack: () -> Unit
 ){
     Scaffold (
-        topBar = { TopBar(myViewModel, onBack) },
-        bottomBar = { BottomBar(myViewModel) }
+        topBar = { TopBar(onBack) },
+        bottomBar = { BottomBar() }
     ){ paddingValues ->
-        LazyColumn(
+        Column(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(paddingValues)
-                .fillMaxSize(),
-                //.fillMaxWidth(0.8f),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
-            item {
-                Spacer(modifier = Modifier.size(16.dp))
+        ) {
+            CitaTextual()
 
-                Text(
-                    text = "\"No hay que llegar primero... pero hay que saber llegar\"",
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleMedium,
-                )
+            Spacer(modifier = Modifier.size(32.dp))
+
+            Lugares()
+        }
+    }
+}
+
+@Composable
+fun Lugares() {
+    val drawerState = remember { mutableStateOf(DrawerValue.Open) }
+    Row(
+        modifier = Modifier.padding(vertical = 8.dp)
+    ) {
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Text(
+            text = stringResource(id = R.string.lblLugaresTuristicos),
+            style = typography.headlineSmall,
+            fontWeight = FontWeight.Bold
+        )
+    }
+
+    LazyRow {
+        item{
+            Tarjeta(
+                titulo = "Callejón del Beso",
+                idFoto = R.drawable.lugar_callejon_beso,
+                url = "callejon-del-beso"
+            ) {
+                if (drawerState.value == DrawerValue.Closed) {
+                    drawerState.value = DrawerValue.Open
+                } else {
+                    drawerState.value = DrawerValue.Closed
+                }
             }
-            item {
-                Text(
-                    text = "- José Alfredo Jiménez",
-                    modifier = Modifier.fillMaxWidth(0.9f),
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.labelLarge
-                )
+
+            Tarjeta(
+                titulo = "Alhóndiga de Granaditas",
+                idFoto = R.drawable.lugar_alhondiga,
+                url = "alhondiga-de-granaditas"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
             }
-            item{
-                Tarjeta(
-                    "Callejón del Beso",
-                    R.drawable.lugar_callejon_beso,
-                    "callejon-del-beso",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
 
-                Tarjeta(
-                    "Alhóndiga de Granaditas",
-                    R.drawable.lugar_alhondiga,
-                    "alhondiga-de-granaditas",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
+            Tarjeta(
+                titulo = "Universidad de Guanajuato",
+                idFoto = R.drawable.lugar_universidad_gto,
+                url = "universidad-guanajuato"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
+            }
 
-                Tarjeta(
-                    "Universidad de Guanajuato",
-                    R.drawable.lugar_universidad_gto,
-                    "universidad-guanajuato",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
-                Tarjeta(
-                    "Parque Bicentenario",
-                    R.drawable.lugar_parque_bicentenario,
-                    "parque-bicentenario",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
-                Tarjeta(
-                    "Palacio de Gobierno",
-                    R.drawable.lugar_palacio,
-                    "palacio-de-gobierno",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
-                Tarjeta(
-                    "Minas",
-                    R.drawable.lugar_minas,
-                    "minas",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
-                Tarjeta(
-                    "Teatro Juárez",
-                    R.drawable.lugar_teatro_juarez,
-                    "teatro-juarez",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
-                Tarjeta(
-                    "Casa del Conde Rul",
-                    R.drawable.lugar_casa_conde_rul,
-                    "casa-conde-rul",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
-                Tarjeta(
-                    "Puente del Campanero",
-                    R.drawable.lugar_puente_campanero,
-                    "puente-campanero",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
-                Tarjeta(
-                    "Sierra de Santa Rosa",
-                    R.drawable.lugar_sierra_santa_rosa,
-                    "sierra-santa-rosa",
-                    onClose = {
-                        if(drawerState.value == DrawerValue.Closed){
-                            drawerState.value = DrawerValue.Open
-                        }
-                        else {
-                            drawerState.value = DrawerValue.Closed
-                        }
-                    }
-                )
+            Tarjeta(
+                titulo = "Parque Bicentenario",
+                idFoto = R.drawable.lugar_parque_bicentenario,
+                url = "parque-bicentenario"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
+            }
+
+            Tarjeta(
+                titulo = "Palacio de Gobierno",
+                idFoto = R.drawable.lugar_palacio,
+                url = "palacio-de-gobierno"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
+            }
+            Tarjeta(
+                titulo = "Minas",
+                idFoto = R.drawable.lugar_minas,
+                url = "minas"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
+            }
+
+            Tarjeta(
+                titulo = "Teatro Juárez",
+                idFoto = R.drawable.lugar_teatro_juarez,
+                url = "teatro-juarez"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
+            }
+
+            Tarjeta(
+                titulo = "Casa del Conde Rul",
+                idFoto = R.drawable.lugar_casa_conde_rul,
+                url = "casa-conde-rul"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
+            }
+
+            Tarjeta(
+                titulo = "Puente del Campanero",
+                idFoto = R.drawable.lugar_puente_campanero,
+                url = "puente-campanero"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
+            }
+
+            Tarjeta(
+                titulo = "Sierra de Santa Rosa",
+                idFoto = R.drawable.lugar_sierra_santa_rosa,
+                url = "sierra-santa-rosa"
+            ) {
+                if(drawerState.value == DrawerValue.Closed){
+                    drawerState.value = DrawerValue.Open
+                }
+                else {
+                    drawerState.value = DrawerValue.Closed
+                }
             }
         }
+    }
+}
+
+@Composable
+fun CitaTextual() {
+    Column(
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = "\"No hay que llegar primero... pero hay que saber llegar\"",
+            modifier = Modifier.fillMaxWidth(0.9f),
+            textAlign = TextAlign.Left,
+            style = typography.titleMedium,
+        )
+        Text(
+            text = "- José Alfredo Jiménez",
+            modifier = Modifier.fillMaxWidth(0.7f),
+            textAlign = TextAlign.End,
+            style = typography.bodyMedium
+        )
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun TopBar(
-    myViewModel: MyViewModel,
     onBack: () -> Unit
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         title = {
             Text(
-                text = myViewModel.languageType().get(297),
-                style = MaterialTheme.typography.titleLarge
+                text = stringResource(id = R.string.lblTurismo),
+                style = typography.titleLarge
             )
         },
         navigationIcon = {
@@ -285,26 +295,23 @@ private fun TopBar(
                 }
             ) {
                 Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    imageVector = Icons.Outlined.ArrowBackIosNew,
                     contentDescription = "regresar a MainScreen"
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            titleContentColor = MaterialTheme.colorScheme.onPrimary,
-            navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = colorScheme.background,
+            titleContentColor = colorScheme.onBackground
         )
     )
 }
 
 @Composable
-private fun BottomBar(
-    myViewModel: MyViewModel
-){
+private fun BottomBar(){
     BottomAppBar (
-        containerColor = MaterialTheme.colorScheme.onPrimaryContainer,
-        contentColor = MaterialTheme.colorScheme.onPrimary
+        containerColor = colorScheme.inverseSurface,
+        contentColor = colorScheme.inverseOnSurface
     ) {
         Row (
             modifier = Modifier
@@ -313,26 +320,38 @@ private fun BottomBar(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = myViewModel.languageType().get(299)
+                text = stringResource(id = R.string.lblAtencionTurista)
             )
-            ExtendedFloatingActionButton(
+
+            Button(
                 onClick = {
 
                 },
-                icon = { Icon(Icons.Filled.Chat, contentDescription = "Invocar Chatbot") },
-                text = { Text(text = myViewModel.languageType().get(298)) },
-                containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                contentColor = MaterialTheme.colorScheme.onTertiaryContainer
-            )
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = colorScheme.tertiaryContainer,
+                    contentColor = colorScheme.onTertiaryContainer
+                ),
+                elevation = ButtonDefaults.elevatedButtonElevation(
+                    defaultElevation = 4.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(0.8f)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = stringResource(id = R.string.btnChatApoyo),
+                    style = typography.bodyLarge
+                )
+            }
         }
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun Tarjeta(
     titulo: String,
-    id_foto: Int,
+    idFoto: Int,
     url: String,
     onClose: () -> Unit
 ){
@@ -340,171 +359,215 @@ fun Tarjeta(
 
     val rotationFront by animateFloatAsState(
         targetValue = if (rotated) 180f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500), label = ""
     )
 
     val rotationBack by animateFloatAsState(
         targetValue = if (rotated) -180f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500), label = ""
     )
 
     val animateFront by animateFloatAsState(
         targetValue = if (!rotated) 1f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500), label = ""
     )
 
     val animateBack by animateFloatAsState(
         targetValue = if (rotated) 1f else 0f,
-        animationSpec = tween(500)
+        animationSpec = tween(500), label = ""
     )
 
-    Column {
-        ElevatedCard(
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .padding(16.dp)
-                .graphicsLayer {
-                    rotationY = rotationFront
-                    cameraDistance = 8 * density
-                },
-            elevation = CardDefaults.cardElevation(8.dp),
-            onClick = {
-                rotated = !rotated
-            }
-        ) {
-            if(!rotated){
-                // FRENTE
-                Box(
-                    modifier = Modifier
-                        .height(150.dp)
-                        .fillMaxWidth(),
-                    contentAlignment = Alignment.BottomStart
-                ){
-                    Image(
-                        painter = painterResource(id = id_foto),
-                        contentDescription = titulo,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .graphicsLayer {
-                                alpha = animateFront
-                            },
-                        contentScale = ContentScale.Crop
-                    )
-                    Text(
-                        text = titulo,
-                        style = MaterialTheme.typography.headlineSmall,
-                        color = Color.White,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .graphicsLayer {
-                                alpha = animateFront
-                            }
-                    )
-                }
-            }
-            else{
-                // VARIABLES
-                var openSheet by remember {
-                    mutableStateOf(false)
-                }
-
-                var sheetState = SheetState(
-                    skipPartiallyExpanded = true,
-                    initialValue = SheetValue.Hidden
-                )
-
-                val pageCount = 3
-                var pagerState = rememberPagerState(
-                    initialPage = 0,
-                    initialPageOffsetFraction = 0f
-                ) {
-                    pageCount
-                }
-
-                val scope = rememberCoroutineScope()
-
-                // REVERSO
-                Box(
-                    modifier = Modifier
-                        .height(150.dp)
-                        .fillMaxWidth()
-                ){
-                    Column (
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        val uriHandler = LocalUriHandler.current
-                        Text(
-                            text = titulo,
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    alpha = animateBack
-                                    rotationY = rotationBack
-                                }
-                                .padding(4.dp)
-                        )
-                        Button(
-                            onClick = {
-                                openSheet = !openSheet
-                            },
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    alpha = animateBack
-                                    rotationY = rotationBack
-                                }
-                                .padding(4.dp)
-                        ) {
-                            Row {
-                                Icon(Icons.Filled.Map, contentDescription = "Ver ruta")
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(text = "Ver Ruta")
-                            }
-                        }
-                        Button(
-                            onClick = {
-                                uriHandler.openUri("http://streamroutes.com/tourism.html#"+url)
-                            },
-                            modifier = Modifier
-                                .graphicsLayer {
-                                    alpha = animateBack
-                                    rotationY = rotationBack
-                                }
-                                .padding(4.dp)
-                        ) {
-                            Row {
-                                Icon(Icons.Filled.Language, contentDescription = "Ver Más")
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text(text = "Ver Más")
-                            }
-                        }
-                        if(openSheet) {
-                            BottomSheetTourism(
-                                route = titulo,
-                                sheetState = sheetState,
-                                pagerState = pagerState,
-                                pageCount = pageCount,
-                                onDismiss = {
-                                    openSheet = !openSheet
-                                },
-                                onCalculate = {
-                                    onClose()
-                                },
-                                rutas = alhondiga_rutas
-                            )
-                        }
-                    }
-                }
-            }
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 4.dp
+        ),
+        modifier = Modifier
+            .width(300.dp)
+            .height(250.dp)
+            .padding(horizontal = 16.dp)
+            .graphicsLayer {
+                rotationY = rotationFront
+                cameraDistance = 8 * density
+            },
+        onClick = {
+            rotated = !rotated
+        }
+    ) {
+        if(!rotated){
+            // FRENTE
+            FrenteTarjeta(
+                idPhoto = idFoto,
+                titulo = titulo,
+                animateFront = animateFront
+            )
+        }
+        else{
+            ReversoTarjeta(
+                titulo = titulo,
+                animateBack = animateBack,
+                rotationBack = rotationBack,
+                onClose = onClose,
+                url = url
+            )
         }
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@Composable
+fun ReversoTarjeta(
+    titulo: String,
+    animateBack: Float,
+    rotationBack: Float,
+    onClose: () -> Unit,
+    url: String
+) {
+    // VARIABLES
+    var openSheet by remember {
+        mutableStateOf(false)
+    }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class,
-    ExperimentalMaterialApi::class
-)
+    val sheetState = SheetState(
+        skipPartiallyExpanded = true,
+        density = LocalDensity.current,
+        initialValue = SheetValue.Hidden
+    )
+
+    val pageCount = 3
+    val pagerState = rememberPagerState(
+        initialPage = 0,
+        initialPageOffsetFraction = 0f
+    ) {
+        pageCount
+    }
+
+    if(openSheet) {
+        BottomSheetTourism(
+            route = titulo,
+            sheetState = sheetState,
+            pagerState = pagerState,
+            pageCount = pageCount,
+            onDismiss = {
+                openSheet = !openSheet
+            },
+            onCalculate = {
+                onClose()
+            },
+            rutas = alhondiga_rutas
+        )
+    }
+
+    // REVERSO
+    Column (
+        modifier = Modifier
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val uriHandler = LocalUriHandler.current
+        Text(
+            text = titulo,
+            style = typography.bodyLarge,
+            modifier = Modifier
+                .graphicsLayer {
+                    alpha = animateBack
+                    rotationY = rotationBack
+                }
+                .padding(4.dp)
+        )
+
+        Button(
+            onClick = {
+                openSheet = !openSheet
+            },
+            shape = CircleShape,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.inverseSurface,
+                contentColor = colorScheme.tertiary
+            ),
+            elevation = ButtonDefaults.elevatedButtonElevation(
+                defaultElevation = 4.dp
+            ),
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .padding(top = 16.dp)
+                .height(50.dp)
+                .graphicsLayer {
+                    alpha = animateBack
+                    rotationY = rotationBack
+                }
+        ) {
+            Text(
+                text = stringResource(id = R.string.btnVerRuta),
+                style = typography.titleMedium
+            )
+        }
+
+        Button(
+            onClick = {
+                uriHandler.openUri("http://streamroutes.com/tourism.html#$url")
+            },
+            shape = CircleShape,
+            colors = ButtonDefaults.buttonColors(
+                containerColor = colorScheme.inverseSurface,
+                contentColor = colorScheme.inverseOnSurface
+            ),
+            elevation = ButtonDefaults.elevatedButtonElevation(
+                defaultElevation = 4.dp
+            ),
+            modifier = Modifier
+                .fillMaxWidth(0.7f)
+                .padding(top = 16.dp)
+                .height(50.dp)
+                .graphicsLayer {
+                    alpha = animateBack
+                    rotationY = rotationBack
+                }
+        ) {
+            Text(
+                text = stringResource(id = R.string.btnVerMas),
+                style = typography.titleMedium
+            )
+        }
+    }
+}
+
+@Composable
+fun FrenteTarjeta(
+    idPhoto: Int,
+    titulo: String,
+    animateFront: Float
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.BottomStart
+    ){
+        Image(
+            painter = painterResource(id = idPhoto),
+            contentDescription = titulo,
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer {
+                    alpha = animateFront
+                },
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            text = titulo,
+            style = typography.headlineSmall,
+            color = Color.White,
+            modifier = Modifier
+                .padding(8.dp)
+                .graphicsLayer {
+                    alpha = animateFront
+                }
+        )
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun BottomSheetTourism(
     route: String,
@@ -520,26 +583,17 @@ private fun BottomSheetTourism(
         onDismissRequest = { onDismiss() },
         sheetState = sheetState,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxHeight(0.80f)
-        ) {
+        Column {
             // carrusel
-            Box(
-                Modifier
-                    .fillMaxHeight(0.4f)
-                    .align(Alignment.TopCenter)
-            ) {
+            Box {
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight()
+                        .height(200.dp)
                         .background(Color.Blue)
                 ) {
-                    if(ruta!=null){
-                        MapaRuta(ruta)
-                    }
+                    MapaRuta(ruta)
                 }
 
                 Row(
@@ -549,7 +603,7 @@ private fun BottomSheetTourism(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     repeat(pageCount){ index ->
-                        val color = if(pagerState.currentPage == index) MaterialTheme.colorScheme.tertiary else MaterialTheme.colorScheme.onTertiary
+                        val color = if(pagerState.currentPage == index) colorScheme.tertiary else colorScheme.onTertiary
                         val size = if(pagerState.currentPage == index) 15.dp else 10.dp
                         Box(modifier = Modifier
                             .padding(horizontal = 8.dp)
@@ -561,124 +615,104 @@ private fun BottomSheetTourism(
             }
 
             // caja de informacino de la ruta
-            Box(
+            Column(
                 Modifier
-                    .fillMaxSize()
-                    .padding(top = 80.dp),
-                contentAlignment = Alignment.BottomEnd
+                    .fillMaxWidth()
+                    .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
+                    .background(colorScheme.background)
             ) {
                 Column(
-                    Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.Bottom
+                    Modifier
+                        .padding(PaddingValues(16.dp))
+                        .fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        Modifier
-                            .fillMaxHeight(0.67f)
-                            .fillMaxWidth()
-                            .clip(RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp))
-                            .background(MaterialTheme.colorScheme.background)
+                    // nombre ruta y descripcion
+                    Text(
+                        text = route,
+                        style = typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    // duracion y cantidad de paradas
+                    Row {
+                        RouteInfo(
+                            title = stringResource(id = R.string.lblDuracion),
+                            desc = ruta.duracion,
+                            value = 0.5f
+                        )
+
+                        Spacer(modifier = Modifier.size(16.dp))
+
+                        RouteInfo(
+                            title = stringResource(id = R.string.lblParadasTotales),
+                            desc = ruta.paradas,
+                            value = 1f
+                        )
+                    }
+
+                    // inicio de la ruta
+                    RouteInfo(
+                        title = stringResource(id = R.string.lblInicioRuta),
+                        desc = ruta.lugarInicio
+                    )
+
+
+                    // parada mas cercana
+                    Row(
+                        verticalAlignment = Alignment.Bottom
                     ) {
-                        Column(
-                            Modifier
-                                .padding(PaddingValues(16.dp))
+                        RouteInfo(
+                            title = stringResource(id = R.string.lblParadaCercana),
+                            desc = ruta.paradaCercana,
+                            value = 0.7f
+                        )
+
+                        Button(
+                            onClick = {  },
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = colorScheme.tertiary
+                            ),
+                            shape = RoundedCornerShape(16.dp),
+                            modifier = Modifier
                                 .fillMaxWidth()
-                                .verticalScroll(rememberScrollState()),
-                            horizontalAlignment = Alignment.CenterHorizontally
+                                .height(55.dp)
+                                .padding(horizontal = 8.dp)
                         ) {
-                            // nombre ruta y descripcion
-                            Column(
-                                Modifier.fillMaxWidth()
-                            ) {
-                                // nombre
-                                Text(
-                                    text = route,
-                                    style = MaterialTheme.typography.headlineSmall,
-                                    fontWeight = FontWeight.Bold
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.size(8.dp))
-
-                            Spacer(modifier = Modifier.size(8.dp))
-
-                            // duracion y cantidad de paradas
-                            Row {
-                                RouteInfo(
-                                    title = "Duración",
-                                    desc = ruta.duracion,
-                                    value = 0.5f
-                                )
-
-                                Spacer(modifier = Modifier.size(16.dp))
-
-                                RouteInfo(
-                                    title = "Paradas totales",
-                                    desc = ruta.paradas,
-                                    value = 1f
-                                )
-                            }
-
-                            // inicio de la ruta
-                            RouteInfo(
-                                title = "Inicio ruta",
-                                desc = ruta.lugar_inicio
+                            Icon(
+                                imageVector = Icons.Filled.MyLocation,
+                                contentDescription = "Buscar parada cercana",
+                                tint = colorScheme.onTertiary
                             )
-
-
-                            // parada mas cercana
-                            Row(
-                                verticalAlignment = Alignment.Bottom
-                            ) {
-                                RouteInfo(
-                                    title = "Parada cercana",
-                                    desc = ruta.parada_cercana,
-                                    value = 0.7f
-                                )
-
-                                Button(
-                                    onClick = {  },
-                                    colors = ButtonDefaults.buttonColors(
-                                        containerColor = MaterialTheme.colorScheme.tertiary
-                                    ),
-                                    shape = RoundedCornerShape(16.dp),
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .height(55.dp)
-                                        .padding(horizontal = 8.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.MyLocation,
-                                        contentDescription = "Buscar parada cercana",
-                                        tint = MaterialTheme.colorScheme.onTertiary
-                                    )
-                                }
-                            }
-
-                            Spacer(modifier = Modifier.size(8.dp))
-
-                            // calcular ruta
-                            Button(
-                                onClick = {
-                                    onDismiss()
-                                    onCalculate()
-                                },
-                                shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 64.dp, bottomEnd = 64.dp),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.tertiary
-                                ),
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
-                            ) {
-                                Text(
-                                    text = "Mostrar ruta",
-                                    style = MaterialTheme.typography.bodyLarge
-                                )
-                            }
-
-                            Spacer(modifier = Modifier.size(8.dp))
                         }
                     }
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    // calcular ruta
+                    Button(
+                        onClick = {
+                            onDismiss()
+                            onCalculate()
+                        },
+                        shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp, bottomStart = 64.dp, bottomEnd = 64.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = colorScheme.inverseSurface,
+                            contentColor = colorScheme.inverseOnSurface
+                        ),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(50.dp)
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.btnMostrarRuta),
+                            style = typography.bodyLarge
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.size(8.dp))
                 }
             }
         }
@@ -755,10 +789,10 @@ private fun MapaRuta(){
 data class Ruta(
     val duracion: String,
     val paradas: String,
-    val lugar_inicio: String,
-    val lugar_fin: String,
-    val parada_cercana: String,
-    val map_ruta: List<Pair<Double, Double>>,
+    val lugarInicio: String,
+    val lugarFin: String,
+    val paradaCercana: String,
+    val mapRuta: List<Pair<Double, Double>>,
     val zoom: Double,
     val inicio: Pair<Double, Double>,
     val pov: GeoPoint
@@ -772,13 +806,6 @@ private fun MapaRuta(
 ) {
     val context = LocalContext.current
 
-    /*
-    val cameraState = rememberCameraState {
-        geoPoint = GeoPoint(ruta.pov)
-        zoom = ruta.zoom
-    }
-     */
-
     val cameraState = CameraState(
         CameraProperty(
             geoPoint = GeoPoint(ruta.pov),
@@ -786,7 +813,7 @@ private fun MapaRuta(
         )
     )
 
-    var mapProperties by remember {
+    val mapProperties by remember {
         mutableStateOf(
             MapProperties(
                 zoomButtonVisibility = ZoomButtonVisibility.NEVER
@@ -795,7 +822,7 @@ private fun MapaRuta(
     }
 
     val overlayManagerState = rememberOverlayManagerState()
-    val ruta = ruta.map_ruta
+    val ruta = ruta.mapRuta
     val rutaGeoPoint = ruta.map { GeoPoint(it.first, it.second) }
     val inicio = rememberMarkerState(
         geoPoint = GeoPoint(rutaGeoPoint.first())
@@ -815,22 +842,20 @@ private fun MapaRuta(
         com.utsman.osmandcompose.Marker(
             state = inicio, title = "inicio", visible = true
         )
-        if(rutaGeoPoint!=null){
-            Polyline(geoPoints = rutaGeoPoint)
-        }
+        Polyline(geoPoints = rutaGeoPoint)
 
     }
 }
 
 
-val alhondiga_rutas = listOf<Ruta>(
+val alhondiga_rutas = listOf(
     Ruta(
         duracion = "10 minutos",
         paradas = "4",
-        lugar_inicio = "Universidad de Guanajuato",
-        lugar_fin = "Alhondiga",
-        parada_cercana = "Escarola",
-        map_ruta = listOf(
+        lugarInicio = "Universidad de Guanajuato",
+        lugarFin = "Alhondiga",
+        paradaCercana = "Escarola",
+        mapRuta = listOf(
             Pair(21.01895889398486, -101.25741027410066),
             Pair(21.019343866463387, -101.25839897585983),
             Pair(21.0195886166583, -101.25847271880534),
@@ -880,10 +905,10 @@ val alhondiga_rutas = listOf<Ruta>(
     Ruta(
         duracion = "5 minutos",
         paradas = "1",
-        lugar_inicio = "Scotiabank",
-        lugar_fin = "Alhondiga",
-        parada_cercana = "Plaza del Musico",
-        map_ruta = listOf(
+        lugarInicio = "Scotiabank",
+        lugarFin = "Alhondiga",
+        paradaCercana = "Plaza del Musico",
+        mapRuta = listOf(
             Pair(21.018954022576814, -101.25741785215),
             Pair(21.019215446144983, -101.25801410541705),
             Pair(21.0194304877688, -101.2586871488776),
@@ -929,10 +954,10 @@ val alhondiga_rutas = listOf<Ruta>(
     Ruta(
         duracion = "7 minutos",
         paradas = "3",
-        lugar_inicio = "Citibanamex Guanajuato",
-        lugar_fin = "Alhondiga",
-        parada_cercana = "Mercado Hidalgo",
-        map_ruta = listOf(
+        lugarInicio = "Citibanamex Guanajuato",
+        lugarFin = "Alhondiga",
+        paradaCercana = "Mercado Hidalgo",
+        mapRuta = listOf(
             Pair(21.01899278181935, -101.25744862091926),
             Pair(21.01941771927471, -101.25863346143544),
             Pair(21.019301298174494, -101.2588143055142),

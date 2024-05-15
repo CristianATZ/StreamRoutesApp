@@ -231,7 +231,7 @@
     <string name="lblRoutes">Rutas de transporte</string>
     <string name="lblTrip">Planifica tu viaje</string>
     <string name="lblTurism">Turismo</string>
-    <string name="lblChat">Chat general</string>
+    <string name="lblChat">Chat</string>
     <string name="lblShare">Compartir ubicacion</string>
     <string name="lblDownload">Descargar rutas</string>
     <string name="lblConfiguration">Configuracion</string>
@@ -339,4 +339,10 @@
     <string name="lblColonia">Colonia</string>
     <string name="lblCodigoPostal">CP</string>
     <string name="btnPlanificar">Planificar</string>
+    <string name="lblTurismo">Turismo</string>
+    <string name="lblAtencionTurista">Atencion al turista</string>
+    <string name="btnChatApoyo">Chat de apoyo</string>
+    <string name="lblLugaresTuristicos">Lugares turisticos</string>
+    <string name="btnVerMas">Ver mas</string>
+    <string name="btnVerRuta">Ver ruta</string>
 </resources>

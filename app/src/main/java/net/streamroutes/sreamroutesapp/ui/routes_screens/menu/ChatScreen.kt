@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.CameraAlt
 import androidx.compose.material.icons.filled.EmojiEmotions
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.AttachFile
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Card
@@ -61,12 +62,6 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-data class Messages(
-    val autor: Int,
-    val name: String,
-    val mensaje: String
-)
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ChatScreen(
@@ -85,7 +80,6 @@ fun ChatScreen(
                 modifier = Modifier
                     .padding(paddingValues)
                     .fillMaxSize()
-                    .background(colorScheme.inverseOnSurface)
             ) {
                 Column(
                     modifier = Modifier
@@ -126,6 +120,10 @@ fun MessageIn(
         }
 
         Card(
+            colors = CardDefaults.cardColors(
+                containerColor =
+                    if(item.autor == 2) colorScheme.onTertiaryContainer.copy(0.2f) else colorScheme.onPrimaryContainer.copy(0.3f)
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.6f)
         ) {
@@ -186,15 +184,14 @@ private fun TopBarBody(
         navigationIcon = {
             IconButton(onClick = { onBack() } ) {
                 Icon(
-                    imageVector = Icons.Outlined.KeyboardArrowLeft,
+                    imageVector = Icons.Outlined.ArrowBackIosNew,
                     contentDescription = "Te enviara al menu de opciones",
                 )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = colorScheme.primary,
-            titleContentColor = colorScheme.onPrimary,
-            navigationIconContentColor = colorScheme.onPrimary
+            containerColor = colorScheme.background,
+            titleContentColor = colorScheme.onBackground
         )
     )
 }
@@ -260,10 +257,12 @@ private fun BottomBarBody() {
                     }
                 },
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = colorScheme.primary,
-                    unfocusedContainerColor = colorScheme.primary,
-                    focusedTextColor = colorScheme.onPrimary,
-                    unfocusedTextColor = colorScheme.onPrimary
+                    focusedContainerColor = colorScheme.inverseSurface,
+                    focusedTextColor = colorScheme.inverseOnSurface,
+                    focusedBorderColor = colorScheme.inverseSurface,
+                    unfocusedContainerColor = colorScheme.inverseSurface,
+                    unfocusedTextColor = colorScheme.inverseOnSurface,
+                    unfocusedBorderColor = colorScheme.inverseSurface,
                 ),
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier

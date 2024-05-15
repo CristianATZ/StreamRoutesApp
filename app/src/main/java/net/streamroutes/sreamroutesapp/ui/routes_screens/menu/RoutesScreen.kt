@@ -326,7 +326,7 @@ fun BottomSheet(
                 ) {
                     repeat(2){ index ->
                         val color = if(pagerState.currentPage == index) colorScheme.tertiary else colorScheme.onTertiary
-                        val size = if(pagerState.currentPage == index) 15.dp else 10.dp
+                        val size = if(pagerState.currentPage == index) 16.dp else 8.dp
                         Box(modifier = Modifier
                             .padding(8.dp)
                             .background(color, CircleShape)
@@ -346,8 +346,7 @@ fun BottomSheet(
                 Column(
                     Modifier
                         .padding(PaddingValues(16.dp))
-                        .fillMaxWidth()
-                        .verticalScroll(rememberScrollState()),
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     // nombre ruta y descripcion
