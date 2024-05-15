@@ -74,7 +74,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            MainScreen(mainViewModel, configurationViewModel, fastViewModel, NavController)
+            MainScreen(mainViewModel, configurationViewModel, fastViewModel)
         }
         // registrar pantalla
         composable(

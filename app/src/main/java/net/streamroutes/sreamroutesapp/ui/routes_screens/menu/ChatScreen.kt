@@ -41,6 +41,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -72,7 +73,7 @@ fun ChatScreen(
 
     Scaffold(
         topBar = {
-            TopBarBody(onBack)
+            TopBar(onBack)
         },
     ) { paddingValues ->
         Box {
@@ -172,10 +173,10 @@ fun MessageIn(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun TopBarBody(
+private fun TopBar(
     onBack: () -> Unit
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         title = {
             Text(
                 text = stringResource(id = R.string.lblChat)

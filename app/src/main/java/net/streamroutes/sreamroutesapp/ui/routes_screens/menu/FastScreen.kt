@@ -86,21 +86,8 @@ fun FastScreen(
         systemUiController.setStatusBarColor(Color(0xFFFEFBFF))
     }
 
-
-    //Elementos para ubicaci�n actual
-    val scope = rememberCoroutineScope()
-    val context = LocalContext.current
-    val locationClient = remember {
-        LocationServices.getFusedLocationProviderClient(context)
-    }
-    var locationInfo by remember {
-        mutableStateOf("")
-    }
-    //////////////////////////////////////////////
-    var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
-
     Scaffold(
-        topBar = { TopBarBody(onBack) }
+        topBar = { TopBar(onBack) }
     ) { paddingValues ->
         Box(
             modifier = Modifier
@@ -178,7 +165,7 @@ fun MapBodyFast(fastViewModel: FastViewModel, onMapClick: (LatLng) -> Unit) {
 }
 
 @Composable
-private fun TopBarBody(
+private fun TopBar(
     onBack: () -> Unit
 ) {
     var destino by remember {

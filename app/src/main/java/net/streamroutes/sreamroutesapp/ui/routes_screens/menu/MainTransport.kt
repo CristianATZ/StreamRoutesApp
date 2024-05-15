@@ -60,6 +60,7 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
+import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -79,6 +80,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -266,7 +268,12 @@ fun AppDrawer(
 
         items.forEach { item ->
             NavigationDrawerItem(
-                label = { Text(text = stringResource(id = item.label)) },
+                label = {
+                    Text(
+                        text = stringResource(id = item.label),
+                        fontWeight = if (selectedScreen == item.option) FontWeight.Bold else FontWeight.Normal
+                    )
+                },
                 selected = selectedScreen == item.option,
                 icon = {
                     Icon(
@@ -274,7 +281,12 @@ fun AppDrawer(
                         contentDescription = "icono de ${stringResource(id = item.label)}"
                     )
                 },
-                onClick = { onChangeScreen(item.option) }
+                onClick = { onChangeScreen(item.option) },
+                colors = NavigationDrawerItemDefaults.colors(
+                    selectedContainerColor = colorScheme.tertiary.copy(0.6f),
+                    selectedTextColor = colorScheme.onTertiary,
+                    selectedIconColor = colorScheme.onTertiary
+                )
             )
         }
     }
@@ -288,7 +300,7 @@ fun DrawerHeader(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start,
         modifier = modifier
-            .background(colorScheme.secondary)
+            .background(colorScheme.inverseSurface)
             .padding(15.dp)
             .fillMaxWidth()
     ) {
@@ -304,10 +316,10 @@ fun DrawerHeader(
         Spacer(modifier = Modifier.padding(5.dp))
 
         Text(
-            text = "Cristian Torres",
+            text = "Cristian Alexis Torres Zavala",
             textAlign = TextAlign.Center,
             style = typography.bodyLarge,
-            color = colorScheme.onPrimary,
+            color = colorScheme.inverseOnSurface,
         )
     }
 }

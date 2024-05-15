@@ -21,6 +21,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material.icons.outlined.KeyboardArrowLeft
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -350,7 +351,7 @@ private fun TopBarBody(
             onClick = { onBack() }
         ) {
             Icon(
-                imageVector = Icons.Outlined.KeyboardArrowLeft,
+                imageVector = Icons.Outlined.ArrowBackIosNew,
                 contentDescription = "Regresar a la pantalla principal",
                 tint = Color(0xFF281800)
             )

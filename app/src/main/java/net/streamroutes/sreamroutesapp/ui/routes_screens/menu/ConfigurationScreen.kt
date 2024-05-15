@@ -24,6 +24,7 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -79,7 +80,7 @@ fun ConfigurationScreen(
 
 
     Scaffold(
-        topBar = { TopBarConfiguration(onBack) },
+        topBar = { TopBar(onBack) },
     ) { paddingValues ->
         Column(
             modifier = Modifier
@@ -113,10 +114,10 @@ fun ConfigurationScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarConfiguration(
+private fun TopBar(
     onBack: () -> Unit
 ) {
-    CenterAlignedTopAppBar(
+    TopAppBar(
         title = { Text(text = stringResource(id = R.string.lblConfiguracion)) },
         navigationIcon = {
             IconButton(

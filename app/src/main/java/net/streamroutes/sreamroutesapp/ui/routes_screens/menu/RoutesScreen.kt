@@ -111,7 +111,7 @@ fun RoutesScreenView(
 
     Scaffold(
         topBar = {
-            TopBarBody(
+            TopBar(
                 openPanel = {
                     if (drawerState.value == DrawerValue.Closed) {
                         drawerState.value = DrawerValue.Open
@@ -586,7 +586,7 @@ fun MainContent() {
 }
 
 @Composable
-private fun TopBarBody(
+private fun TopBar(
     openPanel: () -> Unit,
     onBack: () -> Unit
 ) {
