@@ -24,7 +24,7 @@ class ParkingPkViewModel: ViewModel(){
 
     var estacionado by mutableStateOf(false)
         private set
-    var estacionamiento by mutableStateOf(Estacionamiento("","", "", "", "", -1))
+    var estacionamiento by mutableStateOf(Estacionamiento("","", "", "", "", "", "" , -1))
         private set
 
     var vehiculo by mutableStateOf(Vehiculo("", TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.NINGUNO))

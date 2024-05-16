@@ -29,18 +29,24 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.navigation.AppScreens
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.changeStatusBar
 import net.streamroutes.sreamroutesapp.utils.brush
 
 @Composable
 fun SelectOptionScreen(navController: NavHostController) {
+    val systemUiController = rememberSystemUiController()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(brush),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        changeStatusBar(systemUiController,Color(0xFFEACE43), Color(0xFFE8AA42))
+
         Spacer(modifier = Modifier.size(64.dp))
 
         Text(

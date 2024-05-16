@@ -14,9 +14,9 @@ class AccountPkViewModel(): ViewModel() {
 
     var vehicles by mutableStateOf(
         mutableListOf(
-            Vehiculo("PRA-46-42", TipoVehiculo.CARRO, "Ford", "Ranger", "1991", ColorVehiculo.BLANCO),
-            Vehiculo("M3BC6", TipoVehiculo.MOTO, "Italika", "150", "2020", ColorVehiculo.NEGRO),
-            Vehiculo("ULK-67-46", TipoVehiculo.CARRO, "Ford", "Mustang", "1996", ColorVehiculo.ROJO)
+            Vehiculo("PRA46G", TipoVehiculo.CARRO, "Ford", "Ranger", "1991", ColorVehiculo.BLANCO),
+            Vehiculo("58ECP3", TipoVehiculo.MOTO, "Italika", "150", "2020", ColorVehiculo.NEGRO),
+            Vehiculo("ULK32K", TipoVehiculo.CARRO, "Ford", "Mustang", "1996", ColorVehiculo.ROJO)
         )
     )
         private set

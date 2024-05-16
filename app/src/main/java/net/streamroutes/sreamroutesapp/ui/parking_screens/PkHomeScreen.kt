@@ -1,18 +1,15 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,38 +17,43 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Audiotrack
-import androidx.compose.material.icons.filled.BackHand
-import androidx.compose.material.icons.filled.Cancel
 import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.DoneAll
-import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Motorcycle
-import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -62,7 +64,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
@@ -75,18 +80,27 @@ fun ParkingHomeScreen(
     homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
+    qrScanner: () -> Unit
 ) {
-    Column {
-        if( !homePkViewModel.iniciarRecorrido && !homePkViewModel.verEstacionamiento ){
-            Header(homePkViewModel)
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        AnimatedVisibility(visible = !homePkViewModel.iniciarRecorrido && !homePkViewModel.verEstacionamiento) {
+            Column {
+                Header(homePkViewModel)
 
-            if( !homePkViewModel.verTodo ){
-                Vehicle(homePkViewModel, accountPkViewModel)
+                AnimatedVisibility(visible = !homePkViewModel.verTodo) {
+                    Vehicle(homePkViewModel, accountPkViewModel)
+                }
+
+                Spots(homePkViewModel)
             }
+        }
 
-            Spots(homePkViewModel)
-        } else {
-            IniciarViajeScreen(homePkViewModel, parkingPkViewModel)
+        if(homePkViewModel.iniciarRecorrido || homePkViewModel.verEstacionamiento) {
+            IniciarViajeScreen(homePkViewModel, parkingPkViewModel){
+                qrScanner()
+            }
         }
     }
 }
@@ -94,8 +108,7 @@ fun ParkingHomeScreen(
 @Composable
 private fun Spots(homePkViewModel: HomePkViewModel) {
     val spotList = listOf(
-        Estacionamiento("Gueros","Padre Luis Gaytan", "San Isidro", "38887", "5.0", 30),
-        Estacionamiento("Negros","Padre Luis ", "San ", "38887", "5.0", 24),
+        Estacionamiento("ITSUR", "Avenida Educacion Superior #2000", "Benito Juarez", "38980", "469", "4 minutos", "4.6", 0),
     )
 
     Column {
@@ -103,7 +116,7 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
         Row {
             Text(
                 text = stringResource(id = R.string.lblEspaciosCercanos),
-                style = MaterialTheme.typography.titleMedium,
+                style = typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(16.dp)
             )
@@ -112,7 +125,7 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
             
             Text(
                 text = stringResource(id = if(!homePkViewModel.verTodo) R.string.lblVerTodo else R.string.lblVerMenos),
-                style = MaterialTheme.typography.titleMedium,
+                style = typography.titleMedium,
                 color = colorScheme.tertiary,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier
@@ -138,37 +151,34 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SpotItem(
+private fun SpotItem(
     spot: Estacionamiento,
     homePkViewModel: HomePkViewModel
 ) {
+    val scope = rememberCoroutineScope()
+    val waves = colorScheme.secondary
 
-    var rotated by remember {
+    var openBottomSheet by remember {
         mutableStateOf(false)
     }
 
-    val rotationFront by animateFloatAsState(
-        targetValue = if (rotated) 180f else 0f,
-        animationSpec = tween(500)
+    val sheetState = SheetState(
+        skipPartiallyExpanded = true,
+        density = LocalDensity.current,
+        initialValue = SheetValue.Hidden
     )
+    
+    if(openBottomSheet){
+        BottomSheetInfo(sheetState, spot, homePkViewModel){
+            scope.launch {
+                sheetState.hide()
+            }.invokeOnCompletion { openBottomSheet = false }
+        }
+    }
 
-    val rotationBack by animateFloatAsState(
-        targetValue = if (rotated) -180f else 0f,
-        animationSpec = tween(500)
-    )
-
-    val animateFront by animateFloatAsState(
-        targetValue = if (!rotated) 1f else 0f,
-        animationSpec = tween(500)
-    )
-
-    val animateBack by animateFloatAsState(
-        targetValue = if (rotated) 1f else 0f,
-        animationSpec = tween(500)
-    )
-
-    val modifier = if(homePkViewModel.iniciarRecorrido){
+    val modifier = if(homePkViewModel.verEstacionamiento || homePkViewModel.iniciarRecorrido){
         Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth(0.9f)
@@ -176,14 +186,8 @@ fun SpotItem(
         Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth(0.9f)
-            .height(150.dp)
-            .graphicsLayer {
-                rotationY = if (!rotated) rotationFront else rotationBack
-                cameraDistance = 8 * density
-            }
             .clickable {
-                //openDialog = !openDialog
-                rotated = !rotated
+                openBottomSheet = !openBottomSheet
             }
     }
 
@@ -191,214 +195,300 @@ fun SpotItem(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 4.dp
         ),
+        colors = CardDefaults.cardColors(
+            containerColor = colorScheme.secondaryContainer,
+            contentColor = colorScheme.onSecondaryContainer
+        ),
         modifier = modifier
     ) {
-        if(!rotated){
-            // frente
-            SpotItemFront(spot)
-        } else {
-            // reverso
-            SportItemBack(spot, rotationBack, animateBack, homePkViewModel){
-                rotated = !rotated
-            }
-        }
+        Column {
+            Spacer(modifier = Modifier.size(16.dp))
 
-    }
-}
-
-@Composable
-private fun SportItemBack(
-    spot: Estacionamiento,
-    rotationBack: Float,
-    animateBack: Float,
-    homePkViewModel: HomePkViewModel,
-    onBack: () -> Unit
-) {
-
-    var openDialog by remember {
-        mutableStateOf(false)
-    }
-
-    if(openDialog){
-        DialogIniciarRecorrido(
-            spot,
-            homePkViewModel
-        ){
-            openDialog = !openDialog
-        }
-    }
-
-    val modifier = Modifier
-        .size(40.dp)
-        .graphicsLayer {
-            alpha = animateBack
-            rotationY = rotationBack
-        }
-
-    Row(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-        // regresar
-        Button(
-            onClick = { onBack() },
-            shape = RoundedCornerShape(0.dp),
-            colors = ButtonColors(
-                containerColor = colorScheme.error,
-                contentColor = colorScheme.onError,
-                disabledContainerColor = colorScheme.error,
-                disabledContentColor = colorScheme.onError
-            ),
-            modifier = Modifier
-                .weight(0.3f)
-                .fillMaxHeight()
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Cancel,
-                contentDescription = null,
-                modifier = modifier
-            )
-        }
-
-        // ver mapa
-        Button(
-            onClick = {  },
-            shape = RoundedCornerShape(0.dp),
-            colors = ButtonColors(
-                containerColor = colorScheme.tertiary.copy(0.9f),
-                contentColor = colorScheme.onTertiary,
-                disabledContainerColor = colorScheme.tertiary.copy(0.9f),
-                disabledContentColor = colorScheme.onTertiary
-            ),
-            modifier = Modifier
-                .weight(0.3f)
-                .fillMaxHeight()
-        ) {
-            Icon(
-                imageVector = Icons.Filled.Map,
-                contentDescription = null,
-                modifier = modifier
-            )
-        }
-
-        // apartar lugar
-        Button(
-            onClick = {
-                homePkViewModel.updateVerEstacionamiento(true)
-                homePkViewModel.updateEstacionamientoSeleccionado(spot)
-            },
-            shape = RoundedCornerShape(0.dp),
-            colors = ButtonColors(
-                containerColor = colorScheme.secondary.copy(0.6f),
-                contentColor = colorScheme.onSecondary,
-                disabledContainerColor = colorScheme.secondary.copy(0.6f),
-                disabledContentColor = colorScheme.onSecondary
-            ),
-            modifier = Modifier
-                .weight(0.3f)
-                .fillMaxHeight()
-        ) {
-            Icon(
-                imageVector = Icons.Filled.BackHand,
-                contentDescription = null,
-                modifier = modifier
-            )
-        }
-
-        // iniciar recorrido
-        Button(
-            onClick = { openDialog = !openDialog },
-            shape = RoundedCornerShape(0.dp),
-            colors = ButtonColors(
-                containerColor = Color.Green.copy(0.5f),
-                contentColor = Color.DarkGray,
-                disabledContainerColor = Color.Green.copy(0.5f),
-                disabledContentColor = Color.DarkGray
-            ),
-            modifier = Modifier
-                .weight(0.3f)
-                .fillMaxHeight()
-        ) {
-            Icon(
-                imageVector = Icons.Filled.DoneAll,
-                contentDescription = null,
-                modifier = modifier
-            )
-        }
-    }
-}
-
-@Composable
-private fun SpotItemFront(
-    spot: Estacionamiento
-) {
-    Row(
-        modifier = Modifier
-            .height(150.dp)
-            .fillMaxWidth(0.9f),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
-    ) {
-
-        Icon(imageVector = Icons.Filled.RestartAlt, contentDescription = null, modifier = Modifier.size(100.dp))
-
-        Column(
-            verticalArrangement = Arrangement.Center,
-        ) {
-            Spacer(modifier = Modifier.size(8.dp))
-
-            Text(
-                text = spot.nombre,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .padding(vertical = 4.dp)
-            )
-            Text(
-                text = "${spot.calle}, ${spot.colonia}, ${spot.codigoPostal}",
-                style = MaterialTheme.typography.bodyLarge,
-                //letterSpacing = 2.sp,
-                modifier = Modifier
-                    .padding(vertical = 4.dp)
-            )
             Row(
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = Icons.Filled.Star,
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.estacionamiento),
                     contentDescription = null,
-                    tint = colorScheme.tertiary,
                     modifier = Modifier
-                        .size(25.dp)
-                )
-                Text(
-                    text = spot.calificacion,
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Text(
-                    text = "$${spot.precio}",
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold
+                        .size(75.dp)
                 )
 
                 Spacer(modifier = Modifier.size(16.dp))
+
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(
+                        text = spot.nombre,
+                        style = typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                    )
+
+                    Text(
+                        text = "${spot.calle}, ${spot.colonia}, ${spot.codigoPostal}",
+                        style = typography.bodyLarge,
+                        //letterSpacing = 2.sp,
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                    )
+                }
+
+                Spacer(modifier = Modifier.size(16.dp))
+            }
+
+            Spacer(modifier = Modifier.size(16.dp))
+
+            // importante
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp)
+                ) {
+                    val path = androidx.compose.ui.graphics.Path().apply {
+                        moveTo(0f, 0f)
+                        cubicTo(
+                            size.width * 0.25f, 40f,
+                            size.width * 0.75f, -40f,
+                            size.width, 0f
+                        )
+                        lineTo(size.width, size.height)
+                        lineTo(0f, size.height)
+                        close()
+                    }
+                    drawPath(path, color = waves)
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.size(16.dp))
+
+                    Icon(
+                        imageVector = Icons.Filled.Star,
+                        contentDescription = null,
+                        tint = colorScheme.tertiary,
+                        modifier = Modifier
+                            .size(25.dp)
+                    )
+                    Text(
+                        text = spot.calificacion,
+                        style = typography.titleMedium,
+                        color = colorScheme.onSecondary
+                    )
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Text(
+                        text = "$${spot.precio}",
+                        style = typography.headlineSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = colorScheme.tertiary
+                    )
+
+                    Spacer(modifier = Modifier.size(16.dp))
+                }
             }
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomSheetInfo(
+    sheetState: SheetState,
+    spot: Estacionamiento,
+    homePkViewModel: HomePkViewModel,
+    onDismiss: () -> Unit
+) {
+    val scope = rememberCoroutineScope()
+
+    var openDialogIniciarRecorrido by remember {
+        mutableStateOf(false)
+    }
+
+    if(openDialogIniciarRecorrido){
+        DialogIniciarRecorrido(spot = spot, homePkViewModel = homePkViewModel, closeBottom = {
+            onDismiss()
+        }) {
+            openDialogIniciarRecorrido = !openDialogIniciarRecorrido
+        }
+    }
+
+    ModalBottomSheet(
+        onDismissRequest = { onDismiss() },
+        sheetState = sheetState
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            BeneficioItem(
+                icon = painterResource(id = R.drawable.estacionamiento),
+                title = stringResource(id = R.string.lblEstacionamiento),
+                subtitle = spot.nombre
+            )
+
+            BeneficioItem(
+                icon = painterResource(id = R.drawable.direccion),
+                title = stringResource(id = R.string.lblDireccion),
+                subtitle = "${spot.calle}, ${spot.codigoPostal}."
+            )
+
+            BeneficioItem(
+                icon = painterResource(id = R.drawable.opinion),
+                title = stringResource(id = R.string.lblOpiniones),
+                subtitle = spot.opiniones
+            )
+
+            BeneficioItem(
+                icon = painterResource(id = R.drawable.calificacion),
+                title = stringResource(id = R.string.lblCalificacion),
+                subtitle = spot.calificacion
+            )
+
+            Spacer(modifier = Modifier.size(32.dp))
+
+            CustomCard(
+                backgroundColor = colorScheme.background,
+                content = {
+                    BeneficioItem(
+                        icon = painterResource(id = R.drawable.hora_exacta),
+                        title = stringResource(id = R.string.lblTiempoAproxEspera),
+                        subtitle = spot.tiempoAprox
+                    )
+                },
+                button1Text = stringResource(id = R.string.btnApartarEspacio),
+                button1OnClick = {
+                    // Acción del primer botón
+                },
+                color1 = ButtonDefaults.buttonColors(
+                    containerColor = Color(0f, 0f, 1f, 0.2f),
+                    contentColor = Color(0.2f, 0.3f, 1f)
+                ),
+                shape1 = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+            )
+
+            Spacer(modifier = Modifier.size(32.dp))
+
+            CustomCard(
+                backgroundColor = colorScheme.background,
+                content = {
+                    BeneficioItem(
+                        icon = painterResource(id = R.drawable.precio),
+                        title = stringResource(id = R.string.lblPrecioPorHora),
+                        subtitle = "$${spot.precio}"
+                    )
+                },
+                button1Text = stringResource(id = R.string.btnIniciarRecorrido),
+                button1OnClick = {
+                    openDialogIniciarRecorrido = !openDialogIniciarRecorrido
+                },
+                color1 = ButtonDefaults.buttonColors(
+                    containerColor = Color(0f, 0.5f, 0f, 0.2f),
+                    contentColor = Color(0f, 0.7f, 0f)
+                ),
+                shape1 = RoundedCornerShape(bottomStart = 16.dp),
+                button2Text = stringResource(id = R.string.btnVerMapa),
+                button2OnClick = {
+                    scope.launch {
+                        onDismiss()
+                        homePkViewModel.updateEstacionamientoSeleccionado(spot)
+                        homePkViewModel.updateVerEstacionamiento(true)
+                    }
+                },
+                color2 = ButtonDefaults.buttonColors(
+                    containerColor = Color(1f, 0.647f, 0f, 0.2f),
+                    contentColor = Color(1f, 0.55f, 0f)
+                ),
+                shape2 = RoundedCornerShape(bottomEnd = 16.dp)
+            )
+
+
+            Spacer(modifier = Modifier.size(64.dp))
+        }
+    }
+}
+
+@Composable
+fun CustomCard(
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = Color.Transparent,
+    content: @Composable () -> Unit,
+    button1Text: String,
+    button1OnClick: () -> Unit,
+    shape1: RoundedCornerShape,
+    color1: ButtonColors,
+    button2Text: String? = null,
+    button2OnClick: (() -> Unit)? = null,
+    shape2: Shape = CircleShape,
+    color2: ButtonColors = ButtonColors(Color.Transparent,Color.Transparent, Color.Transparent, Color.Transparent)
+) {
+    Column(
+        modifier = modifier
+            .fillMaxWidth(0.9f)
+            .shadow(4.dp, RoundedCornerShape(16.dp))
+            .background(backgroundColor)
+    ) {
+        content()
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Button(
+                onClick = button1OnClick,
+                shape = shape1,
+                colors = color1,
+                modifier = Modifier
+                    .weight(1f)
+                    .height(50.dp)
+            ) {
+                Text(
+                    text = button1Text,
+                    style = typography.bodyLarge
+                )
+            }
+            if (button2Text != null && button2OnClick != null) {
+                Button(
+                    onClick = button2OnClick,
+                    shape = shape2,
+                    colors = color2,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp)
+                ) {
+                    Text(
+                        text = button2Text,
+                        style = typography.bodyLarge
+                    )
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
 private fun DialogIniciarRecorrido(
     spot: Estacionamiento,
     homePkViewModel: HomePkViewModel,
-    onDismiss: () -> Unit
+    closeBottom: () -> Unit,
+    onDismiss: () -> Unit,
 ) {
+    val scope = rememberCoroutineScope()
+
     Dialog(onDismissRequest = { onDismiss() }) {
         Card {
             // nombre stacionamiento y pregunta
@@ -423,14 +513,14 @@ private fun DialogIniciarRecorrido(
                 Text(
                     text = spot.nombre,
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.displayMedium,
+                    style = typography.displayMedium,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
                     text = stringResource(id = R.string.lblIniciarRecorrido),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.bodyLarge
+                    style = typography.bodyLarge
                 )
             }
 
@@ -439,9 +529,13 @@ private fun DialogIniciarRecorrido(
             // boton comenzar
             Button(
                 onClick = {
-                    homePkViewModel.updateIniciarRecorrido(true)
-                    homePkViewModel.updateEstacionamientoSeleccionado(spot)
-                    onDismiss()
+                    scope.launch {
+                        closeBottom()
+                        delay(200)
+                        onDismiss()
+                        homePkViewModel.updateIniciarRecorrido(true)
+                        homePkViewModel.updateEstacionamientoSeleccionado(spot)
+                    }
                 },
                 shape = RoundedCornerShape(0.dp),
                 colors = ButtonColors(
@@ -489,7 +583,7 @@ private fun Vehicle(
         Row {
             Text(
                 text = stringResource(id = R.string.lblMisVehiculos),
-                style = MaterialTheme.typography.titleMedium,
+                style = typography.titleMedium,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(16.dp)
             )
@@ -500,14 +594,10 @@ private fun Vehicle(
             modifier = Modifier
                 .fillMaxWidth(0.95f)
         ) {
-            if( true ){
-                items( vehiculos.size/*Aqui agregar el viewmodel*/){ index ->
-                    VehicleItem(index, vehiculos[index], homePkViewModel.vehiculoSeleccionado.matricula){
-                        homePkViewModel.updateVehiculoSeleccionado(vehiculos[index])
-                    }
+            items( vehiculos.size/*Aqui agregar el viewmodel*/){ index ->
+                VehicleItem(index, vehiculos[index], homePkViewModel.vehiculoSeleccionado.matricula){
+                    homePkViewModel.updateVehiculoSeleccionado(vehiculos[index])
                 }
-            } else {
-
             }
         }
     }
@@ -524,9 +614,9 @@ fun VehicleItem(
     val int = if(item.matricula == selection) colorScheme.onTertiary else colorScheme.onPrimaryContainer
 
     val icono = when(item.tipo) {
-        TipoVehiculo.CARRO -> Icons.Filled.DirectionsCar
-        TipoVehiculo.MOTO -> Icons.Filled.Motorcycle
-        TipoVehiculo.TRACTOR -> Icons.Filled.Audiotrack
+        TipoVehiculo.CARRO -> painterResource(id = R.drawable.car)
+        TipoVehiculo.MOTO -> painterResource(id = R.drawable.motorcycle)
+        TipoVehiculo.TRACTOR -> painterResource(id = R.drawable.car)
         TipoVehiculo.NINGUNO -> TODO()
     }
 
@@ -552,15 +642,15 @@ fun VehicleItem(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Icon(
-                imageVector = icono,
+            Image(
+                painter = icono,
                 contentDescription = null,
                 modifier = Modifier
                     .size(50.dp)
             )
             Text(
                 text = item.matricula,
-                style = MaterialTheme.typography.bodyLarge,
+                style = typography.bodyLarge,
                 fontWeight = FontWeight.SemiBold
             )
         }
@@ -592,7 +682,6 @@ private fun Header(homePkViewModel: HomePkViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            //.height(250.dp)
             .background(
                 color = colorScheme.primary,
                 RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
@@ -600,23 +689,23 @@ private fun Header(homePkViewModel: HomePkViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.size(32.dp))
+
         // texto e imagen
-        if(!homePkViewModel.iniciarRecorrido){
-            if(!homePkViewModel.verTodo){
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Column {
-                        Text(text = headerText1, style = MaterialTheme.typography.displaySmall)
-                        Text(text = headerText2, style = MaterialTheme.typography.displaySmall)
-                    }
-                    Image(
-                        painter = painterResource(id = R.drawable.logo_icono),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .size(100.dp)
-                    )
+        AnimatedVisibility(visible = (!homePkViewModel.iniciarRecorrido && !homePkViewModel.verTodo)) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Column {
+                    Text(text = headerText1, style = typography.displaySmall)
+                    Text(text = headerText2, style = typography.displaySmall)
                 }
+                Image(
+                    painter = painterResource(id = R.drawable.logo_icono),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp)
+                )
             }
         }
         
@@ -629,7 +718,7 @@ private fun Header(homePkViewModel: HomePkViewModel) {
             placeholder = {
                 Text(
                     text = stringResource(id = R.string.lblBarraBusquedaInicio),
-                    style = MaterialTheme.typography.titleMedium
+                    style = typography.titleMedium
                 )
             },
             shape = RoundedCornerShape(16.dp),
@@ -651,7 +740,7 @@ private fun Header(homePkViewModel: HomePkViewModel) {
                 .fillMaxWidth(0.85f)
         )
         
-        Spacer(modifier = Modifier.size(16.dp))
+        Spacer(modifier = Modifier.size(32.dp))
     }
 }
 

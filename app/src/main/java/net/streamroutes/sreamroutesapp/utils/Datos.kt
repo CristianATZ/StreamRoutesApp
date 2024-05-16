@@ -9,8 +9,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 
 class MyViewModel : ViewModel() {
-
-
     // variables importantes
     // 0 = ES 1 = EN
     var idioma by mutableStateOf(0)

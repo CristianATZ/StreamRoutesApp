@@ -33,8 +33,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.changeStatusBar
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
@@ -64,6 +67,8 @@ fun MainParking(
         NavigationItem(3, Icons.Outlined.Settings, Icons.Filled.Settings, "Ajustes")
     )
 
+    val systemUiController = rememberSystemUiController()
+
     Scaffold(
         bottomBar = {
             ParkingBottomBar(selectedScreen = parkingScreen, items = navigationItems){ item ->
@@ -72,6 +77,7 @@ fun MainParking(
         }
     ) { paddingValues ->
         Column(Modifier.padding(paddingValues)) {
+            changeStatusBar(systemUiController, Color.Black, Color(0xFF001A40))
             AnimatedContent(
                 targetState = parkingScreen,
                 label = "",
@@ -92,7 +98,9 @@ fun MainParking(
                         homePkViewModel,
                         accountPkViewModel,
                         parkingPkViewModel
-                    )
+                    ){
+                        parkingScreen = 1
+                    }
                 }
             }
         }

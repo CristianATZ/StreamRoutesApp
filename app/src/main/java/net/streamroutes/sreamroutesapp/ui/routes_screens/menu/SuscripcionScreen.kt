@@ -207,7 +207,7 @@ fun Beneficios() {
     )
 
     BeneficioItem(
-        painterResource(id = R.drawable.parking),
+        painterResource(id = R.drawable.espacios),
         stringResource(id = R.string.lblDisponibilidad),
         stringResource(id = R.string.lblDisponibilidad1)
     )

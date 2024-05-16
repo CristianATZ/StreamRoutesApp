@@ -1,13 +1,17 @@
 package net.streamroutes.sreamroutesapp.viewmodel.parking
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 enum class TipoVehiculo {
     NINGUNO, CARRO, MOTO, TRACTOR
@@ -19,11 +23,14 @@ data class Estacionamiento (
     val calle: String,
     val colonia: String,
     val codigoPostal: String,
+    val opiniones: String,
+    val tiempoAprox: String,
     val calificacion: String,
     val precio: Int
 )
 
-class HomePkViewModel(): ViewModel() {
+@SuppressLint("MutableCollectionMutableState")
+class HomePkViewModel: ViewModel() {
     private val _uiState = MutableStateFlow(HomePkUiState())
     val uiState: StateFlow<HomePkUiState> = _uiState.asStateFlow()
 
@@ -33,7 +40,7 @@ class HomePkViewModel(): ViewModel() {
     var iniciarRecorrido by mutableStateOf(false)
         private set
 
-    var estacionamientoSeleccionado by mutableStateOf(Estacionamiento("","", "", "", "", -1))
+    var estacionamientoSeleccionado by mutableStateOf(Estacionamiento("","", "", "", "", "", "", -1))
         private set
 
     var vehiculoSeleccionado by mutableStateOf(
@@ -48,8 +55,11 @@ class HomePkViewModel(): ViewModel() {
         private set
 
     var currentLocation by mutableStateOf(
-        LatLng(20.139609738093373, -101.1507421629189)
+        LatLng(20.13961981092977, -101.15076362059153)
     )
+        private set
+
+    var leerQR by mutableStateOf(false)
         private set
 
     init {
@@ -60,7 +70,8 @@ class HomePkViewModel(): ViewModel() {
             estacionamientoSeleccionado,
             verEstacionamiento,
             rutaEstacionamiento,
-            currentLocation
+            currentLocation,
+            leerQR
         )
     }
 
@@ -73,15 +84,24 @@ class HomePkViewModel(): ViewModel() {
     }
 
     fun updateIniciarRecorrido(_iniciarRecorrido: Boolean){
-        iniciarRecorrido = _iniciarRecorrido
+        viewModelScope.launch {
+            delay(250)
+            iniciarRecorrido = _iniciarRecorrido
+        }
     }
 
     fun updateEstacionamientoSeleccionado(_estacionamiento: Estacionamiento){
-        estacionamientoSeleccionado = _estacionamiento
+        viewModelScope.launch {
+            delay(250)
+            estacionamientoSeleccionado = _estacionamiento
+        }
     }
 
     fun updateVerEstacionamiento(_ver: Boolean){
-        verEstacionamiento = _ver
+        viewModelScope.launch {
+            delay(250)
+            verEstacionamiento = _ver
+        }
     }
 
     fun updateRutaEstacionamiento(_ruta: MutableList<LatLng>){
@@ -92,14 +112,22 @@ class HomePkViewModel(): ViewModel() {
         currentLocation = _current
     }
 
+    fun updateLeerQR(_leer: Boolean){
+        viewModelScope.launch {
+            delay(250)
+            leerQR = _leer
+        }
+    }
+
     fun resetViewModel(){
         verTodo = false
         iniciarRecorrido = false
-        estacionamientoSeleccionado = Estacionamiento("","", "", "", "", -1)
+        estacionamientoSeleccionado = Estacionamiento("","", "", "", "", "", "", -1)
         vehiculoSeleccionado = Vehiculo("", TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.NINGUNO)
         verEstacionamiento = false
         rutaEstacionamiento.clear()
         currentLocation = LatLng(20.139609738093373, -101.1507421629189)
+        leerQR = false
 
         _uiState.value = HomePkUiState()
     }
@@ -113,5 +141,6 @@ data class HomePkUiState(
     val estacionamientoSeleccionado: Estacionamiento? = null,
     val verEstacionamiento: Boolean = false,
     val rutaEstacionamiento: MutableList<LatLng> = mutableListOf(),
-    val currentLocation: LatLng? = null
+    val currentLocation: LatLng? = null,
+    val leerQR: Boolean = false
 )

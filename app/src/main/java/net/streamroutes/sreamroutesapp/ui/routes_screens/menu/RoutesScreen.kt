@@ -180,15 +180,15 @@ fun ListaRutas() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RutaInfo() {
-
+    val scope = rememberCoroutineScope()
     var openBottomSheet by remember {
         mutableStateOf(false)
     }
 
-    var sheetState = SheetState(
+    val sheetState = SheetState(
         skipPartiallyExpanded = true,
         density = LocalDensity.current,
         initialValue = SheetValue.Hidden
@@ -198,7 +198,9 @@ fun RutaInfo() {
         BottomSheet(
             sheetState = sheetState,
             onDismiss = {
-                openBottomSheet = !openBottomSheet
+                scope.launch {
+                    sheetState.hide()
+                }.invokeOnCompletion { openBottomSheet = false }
             },
             onCalculate = {
 
@@ -294,7 +296,7 @@ fun BarraFiltrado() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun BottomSheet(
+private fun BottomSheet(
     sheetState: SheetState,
     onDismiss: () -> Unit,
     onCalculate: () -> Unit

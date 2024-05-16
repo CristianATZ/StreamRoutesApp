@@ -58,7 +58,7 @@ fun AppNavigation(
     val NavController = rememberNavController()
 
 
-    NavHost(navController = NavController, startDestination = AppScreens.SplashScreen
+    NavHost(navController = NavController, startDestination = AppScreens.MainParking
         .route) {
         // splash screen
         composable(

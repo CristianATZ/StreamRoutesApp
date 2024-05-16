@@ -347,4 +347,10 @@
     <string name="btnVerRuta">Ver ruta</string>
     <string name="lblConfiguracion">Configuracion</string>
     <string name="lblAyuda">Ayuda</string>
+    <string name="lblOpiniones">Opiniones</string>
+    <string name="lblCalificacion">Calificacion</string>
+    <string name="lblTiempoAproxEspera">Tiempo aproximado de espera</string>
+    <string name="btnApartarEspacio">Apartar espacio</string>
+    <string name="lblPrecioPorHora">Precio por hora</string>
+    <string name="lblAnalizaElCodigo">Analiza el QR del estacionamiento.</string>
 </resources>
