@@ -35,6 +35,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
@@ -275,6 +276,12 @@ private fun CancelarViaje(
                 }
             },
             shape = RoundedCornerShape(8.dp),
+            colors = ButtonColors(
+                containerColor = colorScheme.primary,
+                contentColor = colorScheme.tertiary,
+                disabledContentColor = Color.White,
+                disabledContainerColor = Color.White
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .height(50.dp)
@@ -293,6 +300,12 @@ private fun CancelarViaje(
                 )
             },
             shape = RoundedCornerShape(8.dp),
+            colors = ButtonColors(
+                containerColor = colorScheme.primary,
+                contentColor = colorScheme.onPrimary,
+                disabledContentColor = Color.White,
+                disabledContainerColor = Color.White
+            ),
             modifier = Modifier
                 .fillMaxWidth(0.95f)
                 .height(50.dp)
