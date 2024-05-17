@@ -35,8 +35,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.changeStatusBar
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
@@ -61,10 +63,9 @@ fun MainParking(
 
     // lista de items
     val navigationItems = listOf(
-        NavigationItem(0, Icons.Outlined.Home, Icons.Filled.Home, "Inicio"),
-        NavigationItem(1, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, "Parking"),
-        NavigationItem(2, Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, "Cuenta"),
-        NavigationItem(3, Icons.Outlined.Settings, Icons.Filled.Settings, "Ajustes")
+        NavigationItem(0, Icons.Outlined.Home, Icons.Filled.Home, stringResource(id = R.string.lblInicio)),
+        NavigationItem(1, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, stringResource(id = R.string.lblEstacionamiento)),
+        NavigationItem(2, Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, stringResource(id = R.string.lblCuenta))
     )
 
     val systemUiController = rememberSystemUiController()
@@ -93,7 +94,6 @@ fun MainParking(
                 when(it) {
                     1 -> ParkingEstacionamientoScreen(parkingPkViewModel)
                     2 -> ParkingAccountScreen(accountPkViewModel)
-                    3 -> ParkingConfigurationScreen()
                     else -> ParkingHomeScreen(
                         homePkViewModel,
                         accountPkViewModel,

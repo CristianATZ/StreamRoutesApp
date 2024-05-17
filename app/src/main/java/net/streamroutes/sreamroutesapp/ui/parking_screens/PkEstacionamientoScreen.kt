@@ -2,7 +2,6 @@ package net.streamroutes.sreamroutesapp.ui.parking_screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,11 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme.colorScheme
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -67,7 +65,7 @@ fun VehiculoNoEstacionado() {
     val label = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colorScheme.onBackground,
+                color = colorScheme.onBackground,
                 fontWeight = FontWeight.Bold
             )
         ){
@@ -75,7 +73,7 @@ fun VehiculoNoEstacionado() {
             append("No hay coches estacionados.")
         }
     }
-    
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -93,7 +91,7 @@ fun VehiculoNoEstacionado() {
 
         Text(
             text = label,
-            style = MaterialTheme.typography.displaySmall,
+            style = typography.displaySmall,
             textAlign = TextAlign.Center
         )
     }
@@ -104,13 +102,13 @@ fun VehiculoEstacionado(parkingPkViewModel: ParkingPkViewModel) {
 
     Column {
         // label de VER HISTORIAL
-        Row {
+        /*Row {
             Spacer(modifier = Modifier.weight(1f))
 
             Text(
                 text = stringResource(id = if(parkingPkViewModel.verHistorial) R.string.lblRegresar else R.string.lblVerHistorial),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.tertiary,
+                style = typography.titleMedium,
+                color = colorScheme.tertiary,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier
                     .padding(16.dp)
@@ -118,13 +116,16 @@ fun VehiculoEstacionado(parkingPkViewModel: ParkingPkViewModel) {
                         parkingPkViewModel.updateVerHistorial(!parkingPkViewModel.verHistorial)
                     }
             )
-        }
-        // coches estacionados
+        }*/
+        Spacer(modifier = Modifier.size(16.dp))
+
+        Estacionados(parkingPkViewModel)
+       /* // coches estacionados
         if(!parkingPkViewModel.verHistorial){
             Estacionados(parkingPkViewModel)
         } else {
             Historial(parkingPkViewModel)
-        }
+        }*/
     }
 }
 
@@ -150,33 +151,88 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
 
 @Composable
 private fun VehiculoItem(historialItem: HistorialItem) {
-    Card {
-        Row {
-            Image(
-                painter = painterResource(id = R.drawable.coche_izq),
-                contentDescription = null,
-                modifier = Modifier.size(50.dp)
-            )
+    Card(
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 8.dp
+        ),
+        colors = CardDefaults.cardColors(
+            containerColor = colorScheme.background,
+            contentColor = colorScheme.onBackground
+        ),
+        modifier = Modifier
+            .fillMaxWidth(0.9f)
+    ) {
 
-            Column {
-                Text(text = historialItem.vehiculo.matricula)
-                Text(text = historialItem.estacionamiento.nombre)
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
 
-                Row {
-                    Icon(
-                        imageVector = Icons.Filled.MonetizationOn,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier
-                            .size(25.dp)
-                    )
-                    Text(text = "${historialItem.tiempo}")
+                Spacer(modifier = Modifier.size(8.dp))
 
-                    Spacer(modifier = Modifier.weight(1f))
+                Image(
+                    painter = painterResource(id = R.drawable.car),
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp)
+                )
 
-                    Text(text = "$${historialItem.total}")
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Column {
+                    Text(text = stringResource(id = R.string.lblVehiculo), style = typography.titleMedium)
+                    Text(text = historialItem.vehiculo.matricula, style = typography.bodyMedium)
                 }
+            }
 
+            Spacer(modifier = Modifier.size(16.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.size(8.dp))
+
+                Image(
+                    painter = painterResource(id = R.drawable.marker_parking),
+                    contentDescription = null,
+                    modifier = Modifier.size(50.dp)
+                )
+
+                Spacer(modifier = Modifier.size(16.dp))
+
+                Column {
+                    Text(text = stringResource(id = R.string.lblEstacionamiento), style = typography.titleMedium)
+                    Text(text = historialItem.estacionamiento.nombre, style = typography.bodyMedium)
+                    Text(text = historialItem.estacionamiento.calle, style = typography.bodyMedium)
+                }
+            }
+
+            Spacer(modifier = Modifier.size(32.dp))
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Spacer(modifier = Modifier.size(16.dp))
+                Image(
+                    painter = painterResource(id = R.drawable.hora_exacta),
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp)
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(text = "1 minuto", style = typography.titleMedium)
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Image(
+                    painter = painterResource(id = R.drawable.precio),
+                    contentDescription = null,
+                    modifier = Modifier.size(25.dp)
+                )
+                Spacer(modifier = Modifier.size(16.dp))
+                Text(text = "$0", style = typography.headlineSmall, fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.size(16.dp))
             }
         }
     }
@@ -188,7 +244,7 @@ private fun Header(parkingPkViewModel: ParkingPkViewModel) {
     val headerText1 = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colorScheme.background,
+                color = colorScheme.background,
                 fontWeight = FontWeight.Bold
             )
         ){
@@ -201,14 +257,14 @@ private fun Header(parkingPkViewModel: ParkingPkViewModel) {
         "Tu",
         "Vehiculo",
         "Esta",
-        SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.background),
-        SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.tertiary),
+        SpanStyle(fontWeight = FontWeight.Bold, color = colorScheme.background),
+        SpanStyle(fontWeight = FontWeight.Bold, color = colorScheme.tertiary),
     )
 
     val headerText3 = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
-                color = MaterialTheme.colorScheme.tertiary,
+                color = colorScheme.tertiary,
                 fontWeight = FontWeight.Bold
             )
         ){
@@ -222,7 +278,7 @@ private fun Header(parkingPkViewModel: ParkingPkViewModel) {
             .fillMaxWidth()
             //.height(250.dp)
             .background(
-                color = MaterialTheme.colorScheme.primary,
+                color = colorScheme.primary,
                 RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
             ),
         verticalArrangement = Arrangement.Center,
@@ -233,9 +289,9 @@ private fun Header(parkingPkViewModel: ParkingPkViewModel) {
             modifier = Modifier
                 .padding(vertical = 16.dp)
         ) {
-            Text(text = headerText1, style = MaterialTheme.typography.displaySmall)
-            Text(text = headerText2, style = MaterialTheme.typography.displaySmall)
-            Text(text = headerText3, style = MaterialTheme.typography.displaySmall)
+            Text(text = headerText1, style = typography.displaySmall)
+            Text(text = headerText2, style = typography.displaySmall)
+            Text(text = headerText3, style = typography.displaySmall)
         }
     }
 }

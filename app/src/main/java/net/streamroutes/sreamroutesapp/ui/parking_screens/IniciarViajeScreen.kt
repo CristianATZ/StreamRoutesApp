@@ -11,8 +11,6 @@ import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -98,7 +96,11 @@ fun IniciarViajeScreen(homePkViewModel: HomePkViewModel, parkingPkViewModel: Par
 
 @androidx.annotation.OptIn(ExperimentalGetImage::class)
 @Composable
-private fun IniciarViaje(homePkViewModel: HomePkViewModel, parkingPkViewModel: ParkingPkViewModel, qrScanner: () -> Unit) {
+private fun IniciarViaje(
+    homePkViewModel: HomePkViewModel,
+    parkingPkViewModel: ParkingPkViewModel,
+    qrScanner: () -> Unit
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -204,7 +206,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
             zoomControlsEnabled = false,
         ),
         properties = MapProperties(
-            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleDark)),
+            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
             maxZoomPreference = 18f,
             minZoomPreference = 15f
         ),
@@ -226,7 +228,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
 
             Polyline(
                 points = homePkViewModel.rutaEstacionamiento,
-                color = Color.White,
+                color = Color.Black,
                 jointType = JointType.ROUND,
                 startCap = RoundCap(),
                 endCap = RoundCap()
@@ -250,7 +252,7 @@ private fun CancelarViaje(
 ) {
     val scope = rememberCoroutineScope()
 
-    var openDialog by remember {
+    /*var openDialog by remember {
         mutableStateOf(false)
     }
 
@@ -258,7 +260,7 @@ private fun CancelarViaje(
         DialogCancelarRecorrido(homePkViewModel){
             openDialog = !openDialog
         }
-    }
+    }*/
 
     Column(
         modifier = Modifier
@@ -284,7 +286,11 @@ private fun CancelarViaje(
 
         Button(
             onClick = {
-                openDialog = !openDialog
+                //openDialog = !openDialog
+                homePkViewModel.updateIniciarRecorrido(false)
+                homePkViewModel.updateEstacionamientoSeleccionado(
+                    Estacionamiento("","", "", "", "", "", "", -1)
+                )
             },
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -536,9 +542,13 @@ private fun SpotItem(
     }
 }
 
-@androidx.camera.core.ExperimentalGetImage
+@ExperimentalGetImage
 @Composable
-fun BarCodeScanner(homePkViewModel: HomePkViewModel, parkingPkViewModel: ParkingPkViewModel, qrScanner: () -> Unit) {
+fun BarCodeScanner(
+    homePkViewModel: HomePkViewModel,
+    parkingPkViewModel: ParkingPkViewModel,
+    qrScanner: () -> Unit
+) {
     val scope = rememberCoroutineScope()
 
     AndroidView({ context ->
@@ -623,7 +633,10 @@ private fun calcularRuta(
     }
 }
 
-private fun extraccionJSON(ruta: Ruta?, puntos: MutableList<LatLng>) {
+private fun extraccionJSON(
+    ruta: Ruta?,
+    puntos: MutableList<LatLng>
+) {
     ruta?.features?.firstOrNull()?.geometry?.coordinates?.forEach {
         val punto = LatLng(it[1], it[0])
         puntos.add(punto)

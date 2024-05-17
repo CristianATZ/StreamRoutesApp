@@ -54,7 +54,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
@@ -62,18 +61,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.utsman.osmandcompose.CameraProperty
-import com.utsman.osmandcompose.CameraState
-import com.utsman.osmandcompose.MapProperties
-import com.utsman.osmandcompose.OpenStreetMap
-import com.utsman.osmandcompose.Polyline
-import com.utsman.osmandcompose.ZoomButtonVisibility
-import com.utsman.osmandcompose.rememberMarkerState
-import com.utsman.osmandcompose.rememberOverlayManagerState
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.Polyline
+import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
-import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.overlay.CopyrightOverlay
 
 @Composable
 fun TurismScreen(
@@ -719,73 +717,6 @@ private fun BottomSheetTourism(
     }
 }
 
-/*
-@Composable
-private fun MapaRuta(){
-    val context = LocalContext.current
-
-    val cameraState = rememberCameraState {
-        geoPoint = GeoPoint(20.09950128925512, -101.58378650988855)
-        zoom = 16.5
-    }
-
-    var mapProperties by remember {
-        mutableStateOf(DefaultMapProperties)
-    }
-
-    val overlayManagerState = rememberOverlayManagerState()
-
-    /*
-    SideEffect {
-        mapProperties = mapProperties
-            .copy(isTilesScaledToDpi = true)
-            .copy(tileSources = TileSourceFactory.MAPNIK)
-            .copy(isEnableRotationGesture = true)
-            .copy(zoomButtonVisibility = ZoomButtonVisibility.ALWAYS)
-    }*/
-
-    val ruta1 = listOf(
-        Pair(20.09764865179107, -101.58262491376681),
-        Pair(20.097653551678118, -101.58351190436487),
-        Pair(20.099492939558726, -101.58367216594583),
-        Pair(20.099492939558726, -101.58367216594583),
-        Pair(20.09941617559237, -101.58406696370828),
-        Pair(20.099421075422615, -101.58454176461021),
-        Pair(20.100484334655306, -101.58453132942023),
-        Pair(20.10058723032516, -101.5850304790142),
-        Pair(20.10087468454622, -101.58502004384296)
-    )
-
-    val ruta1GeoPoint = ruta1.map { GeoPoint(it.first, it.second) }
-
-    val inicio = rememberMarkerState(
-        geoPoint = ruta1GeoPoint.first()
-    )
-    val final = rememberMarkerState(
-        geoPoint = ruta1GeoPoint.last()
-    )
-
-    OpenStreetMap(
-        modifier = Modifier.fillMaxSize(),
-        cameraState = cameraState,
-        properties = mapProperties,
-        overlayManagerState = overlayManagerState,
-        onFirstLoadListener = {
-            val copyright = CopyrightOverlay(context)
-            overlayManagerState.overlayManager.add(copyright)
-        }
-    ) {
-        com.utsman.osmandcompose.Marker(
-            state = inicio, title = "inicio", visible = true
-        )
-        com.utsman.osmandcompose.Marker(
-            state = final, title = "fin", visible = true
-        )
-        Polyline(geoPoints = ruta1GeoPoint)
-    }
-}
- */
-
 data class Ruta(
     val duracion: String,
     val paradas: String,
@@ -795,7 +726,7 @@ data class Ruta(
     val mapRuta: List<Pair<Double, Double>>,
     val zoom: Double,
     val inicio: Pair<Double, Double>,
-    val pov: GeoPoint
+    val pov: LatLng
 )
 
 
@@ -804,45 +735,33 @@ data class Ruta(
 private fun MapaRuta(
     ruta: Ruta
 ) {
-    val context = LocalContext.current
-
-    val cameraState = CameraState(
-        CameraProperty(
-            geoPoint = GeoPoint(ruta.pov),
-            zoom = ruta.zoom
-        )
-    )
-
-    val mapProperties by remember {
-        mutableStateOf(
-            MapProperties(
-                zoomButtonVisibility = ZoomButtonVisibility.NEVER
-            )
-        )
+    val cameraPosition = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(ruta.pov, 15f)
     }
 
-    val overlayManagerState = rememberOverlayManagerState()
     val ruta = ruta.mapRuta
-    val rutaGeoPoint = ruta.map { GeoPoint(it.first, it.second) }
+    val rutaGeoPoint = ruta.map { LatLng(it.first, it.second) }
     val inicio = rememberMarkerState(
-        geoPoint = GeoPoint(rutaGeoPoint.first())
+        position = LatLng(rutaGeoPoint.first().latitude, rutaGeoPoint.first().longitude)
     )
 
-
-    OpenStreetMap(
-        modifier = Modifier.fillMaxSize(),
-        cameraState = cameraState,
-        properties = mapProperties,
-        overlayManagerState = overlayManagerState,
-        onFirstLoadListener = {
-            val copyright = CopyrightOverlay(context)
-            overlayManagerState.overlayManager.add(copyright)
-        }
+    GoogleMap(
+        cameraPositionState = cameraPosition,
+        uiSettings = MapUiSettings(
+            zoomControlsEnabled = false,
+        ),
+        properties = com.google.maps.android.compose.MapProperties(
+            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
+            maxZoomPreference = 18f,
+            minZoomPreference = 15f
+        ),
+        modifier = Modifier
+            .fillMaxSize()
     ) {
-        com.utsman.osmandcompose.Marker(
+        Marker(
             state = inicio, title = "inicio", visible = true
         )
-        Polyline(geoPoints = rutaGeoPoint)
+        Polyline(points = rutaGeoPoint)
 
     }
 }
@@ -899,7 +818,7 @@ val alhondiga_rutas = listOf(
             Pair(21.019335143894015, -101.25837696124582)
         ),
         zoom = 17.25,
-        pov = GeoPoint(21.020660510916677, -101.25704553348501),
+        pov = LatLng(21.020660510916677, -101.25704553348501),
         inicio = Pair(21.018150229524146, -101.25512289819623)
     ),
     Ruta(
@@ -948,7 +867,7 @@ val alhondiga_rutas = listOf(
             Pair(21.018965858777975, -101.25743141091148)
         ),
         zoom = 17.25,
-        pov = GeoPoint(21.018429947144696, -101.25623121695456),
+        pov = LatLng(21.018429947144696, -101.25623121695456),
         inicio = Pair(21.018150229524146, -101.25512289819623)
     ),
     Ruta(
@@ -986,7 +905,7 @@ val alhondiga_rutas = listOf(
             Pair(21.01907310087343, -101.25763642122071)
         ),
         zoom = 17.25,
-        pov = GeoPoint(21.01771225466381, -101.25785425986423),
+        pov = LatLng(21.01771225466381, -101.25785425986423),
         inicio = Pair(21.018322290707335, -101.25588812646622)
     )
 )

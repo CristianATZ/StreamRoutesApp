@@ -2,63 +2,61 @@
     <string name="app_name">Rumapp</string>
     <string name="titulo">Rumapp</string>
 
-
     //////////////////////////////////////////////////////////
-        PROFILE SCREEN TEXTS
+    PROFILE SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="user_name">Cristian Alexis Torres Zavala</string>
-    <string name="phone">Telefono</string>
-    <string name="email">E-Mail</string>
+    <string name="phone">Teléfono</string>
+    <string name="email">Correo Electrónico</string>
     <string name="configuration">Configuración</string>
     <string name="title_profile_screen">Perfil</string>
     <string name="favorite_routes">Rutas favoritas</string>
-    <string name="suscription">Suscripcion</string>
-    <string name="verification">Verificacion</string>
+    <string name="suscription">Suscripción</string>
+    <string name="verification">Verificación</string>
     <string name="interestings">Intereses</string>
-    <string name="log_out">Cerrar sesion</string>
-    <string name="personal_information">Informacion personal</string>
-    <string name="personal_information_desc">Fecha nac, pais, telefono, etc.</string>
+    <string name="log_out">Cerrar sesión</string>
+    <string name="personal_information">Información personal</string>
+    <string name="personal_information_desc">Fecha de nacimiento, país, teléfono, etc.</string>
     <string name="security">Seguridad</string>
     <string name="security_desc">Contraseña, verificación en dos pasos.</string>
     <string name="birthday">Cumpleaños</string>
-    <string name="country">Pais</string>
+    <string name="country">País</string>
     <string name="city">Ciudad</string>
     <string name="name">Nombre</string>
     <string name="lastname">Apellidos</string>
     <string name="state">Estado</string>
-    <string name="address">Direccion</string>
+    <string name="address">Dirección</string>
     <string name="colonia">Colonia</string>
-    <string name="postal_code">CP</string>
-    <string name="gender">Genero</string>
-    <string name="save_information">Guardar informacion</string>
-    <string name="more_information">Mas informacion</string>
+    <string name="postal_code">Código Postal</string>
+    <string name="gender">Género</string>
+    <string name="save_information">Guardar información</string>
+    <string name="more_information">Más información</string>
     <string name="edit">Editar</string>
-    <string name="type">Tipo membresia</string>
-    <string name="duration">Duracion</string>
-    <string name="expiration_date">Corte</string>
-    <string name="idMembership">Id. Membresia</string>
+    <string name="type">Tipo de membresía</string>
+    <string name="duration">Duración</string>
+    <string name="expiration_date">Fecha de Corte</string>
+    <string name="idMembership">Id. Membresía</string>
     <string name="status">Estatus</string>
     <string name="active">Activo</string>
     <string name="user">Usuario</string>
     <string name="home">Inicio</string>
-    <string name="expiration">Expiracion</string>
+    <string name="expiration">Expiración</string>
     <string name="mxn">MXN</string>
     <string name="usd">USD</string>
     <string name="mensual">Mensual</string>
     <string name="payment_currency">Moneda de pago</string>
-    <string name="cancel_suscription">Cancelar suscripcion</string>
-    <string name="membership">Membresia</string>
-
+    <string name="cancel_suscription">Cancelar suscripción</string>
+    <string name="membership">Membresía</string>
 
     //////////////////////////////////////////////////////////
-        PROFILE CONFIGURE SCREEN TEXTS
+    PROFILE CONFIGURE SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="personal_info">Datos Personales</string>
     <string name="password_profile">Contraseña</string>
     <string name="title_profile_configure_screen">Configuración del Perfil</string>
 
     //////////////////////////////////////////////////////////
-        PROFILE DATA INFO SCREEN TEXTS
+    PROFILE DATA INFO SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="contact_info">Información de Contacto</string>
     <string name="varied_info">Información Variada</string>
@@ -67,90 +65,89 @@
     <string name="title_profile_data_info_screen">Datos Personales</string>
 
     //////////////////////////////////////////////////////////
-        PROFILE CONTACT INFO SCREEN TEXTS
+    PROFILE CONTACT INFO SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="change_phone_number">Cambiar Teléfono</string>
     <string name="change_email">Cambiar Correo</string>
     <string name="title_profile_contact_info_screen">Información de Contacto</string>
 
     //////////////////////////////////////////////////////////
-        PROFILE CHANGE PHONE SCREEN TEXTS
+    PROFILE CHANGE PHONE SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="new_phone">Teléfono Nuevo</string>
     <string name="security_code">Código de Seguridad</string>
     <string name="send_code">Enviar Código</string>
     <string name="verify">Verificar</string>
-    <string name="title_profile_change_phone_screen">Cambiar teléfono</string>
+    <string name="title_profile_change_phone_screen">Cambiar Teléfono</string>
 
     //////////////////////////////////////////////////////////
-        PROFILE CHANGE EMAIL SCREEN TEXTS
+    PROFILE CHANGE EMAIL SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="new_email">Correo Nuevo</string>
-    <string name="title_profile_change_email_screen">Cambiar E-Mail</string>
+    <string name="title_profile_change_email_screen">Cambiar Correo Electrónico</string>
 
     //////////////////////////////////////////////////////////
-        PROFILE VARIED INFO SCREEN TEXTS
+    PROFILE VARIED INFO SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="title_profile_varied_info_screen">Información Variada</string>
 
     //////////////////////////////////////////////////////////
-        LOGIN SCREEN TEXTS
+    LOGIN SCREEN TEXTS
     //////////////////////////////////////////////////////////
-    <string name="user_tittle_text">Ingresa tu telefono</string>
-    <string name="encabezadoUser">Telefono</string>
+    <string name="user_tittle_text">Ingresa tu teléfono</string>
+    <string name="encabezadoUser">Teléfono</string>
     <string name="password_tittle_text">Ingresa tu contraseña</string>
     <string name="encabezadoPass">Contraseña</string>
-    <string name="forgot_text_part1">Olvide mi</string>
+    <string name="forgot_text_part1">Olvidé mi</string>
     <string name="forgot_text_part2">contraseña</string>
     <string name="register_text_part1">¿No tienes cuenta?</string>
-    <string name="register_text_part2">Registrate</string>
-    <string name="log_in">Iniciar Sesion</string>
+    <string name="register_text_part2">Regístrate</string>
+    <string name="log_in">Iniciar Sesión</string>
     <string name="sign_in">Ingresar</string>
 
     //////////////////////////////////////////////////////////
-        HELP SCREEN TEXTS
+    HELP SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="lblHelpTopbar">Ayuda</string>
     <string name="lblCommentTitle">Comentarios</string>
     <string name="lblCommentSubtitle">¿Sugerencias?</string>
-    <string name="lblAboutTitle">Info. de aplicación</string>
+    <string name="lblAboutTitle">Información de la aplicación</string>
     <string name="lblAboutSubtitle">Versión.</string>
-    <string name="lblContactTitle">Contactanos</string>
-    <string name="lblContactSubtitle">Cuentanos tu opinión</string>
+    <string name="lblContactTitle">Contáctanos</string>
+    <string name="lblContactSubtitle">Cuéntanos tu opinión</string>
 
     //////////////////////////////////////////////////////////
-        COMMENTS SCREEN TEXTS
+    COMMENTS SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="tittle_comments_screen">Comentarios</string>
     <string name="subcomment1_comments_screen">¿Deseas incluir información de la cuenta? (Opcional)</string>
     <string name="subcomment2_comments_screen">Si incluyes detalles de la cuenta en tu comentario,
-        como correo, etc. Sera mas facil para nosotros responderte</string>
-    <string name="bottomComment_comments_screen">Se tomara en cuenta tus sugerencias para futuras versiones
+        como correo, etc. será más fácil para nosotros responderte</string>
+    <string name="bottomComment_comments_screen">Se tomarán en cuenta tus sugerencias para futuras versiones
     de la aplicación</string>
 
     //////////////////////////////////////////////////////////
-        ABOUT APP SCREEN TEXTS
+    ABOUT APP SCREEN TEXTS
     //////////////////////////////////////////////////////////
     <string name="tittle_aboutapp_screen">Acerca de</string>
-    <string name="aboutapp_version">Version 2.0</string>
+    <string name="aboutapp_version">Versión 2.0</string>
     <string name="aboutapp_reserved"> Rumapp. ® Todos los derechos reservados 2023-2024.</string>
 
     //////////////////////////////////////////////////////////
-        ABOUT APP SCREEN TEXTS
+    ABOUT APP SCREEN TEXTS
     //////////////////////////////////////////////////////////
-    <string name="tittle_contact_screen">Contactanos</string>
+    <string name="tittle_contact_screen">Contáctanos</string>
     <string name="contact_head_name">Nombre</string>
     <string name="contact_body_name">Escribe el nombre</string>
-    <string name="contact_head_mail">Destinatario</string>
+    <string name="contact_head_mail">Correo Electrónico</string>
     <string name="contact_head_message">Mensaje</string>
-    <string name="contact_body_message">Escribe tu incertidumbre</string>
+    <string name="contact_body_message">Escribe tu inquietud</string>
     <string name="contact_bottom_text1">ITSUR, Uriangato, Gto.</string>
-    <string name="contact_bottom_text2">¿Como llegar?</string>
+    <string name="contact_bottom_text2">¿Cómo llegar?</string>
 
     //////////////////////////////////////////////////////////
-        ´PROFILE CHANGE PHONE SCREEN TEXTS
+    PROFILE CHANGE PHONE SCREEN TEXTS
     //////////////////////////////////////////////////////////
-
 
     //////////////////////////////////////////////////////////
     CHANGE PASSWORD SCREEN
@@ -161,13 +158,12 @@
     <string name="cancel">Cancelar</string>
 
     //////////////////////////////////////////////////////////
-        ´CHANGE CITY SCREEN
+    CHANGE CITY SCREEN
     //////////////////////////////////////////////////////////
     <string name="back">.</string>
 
-
     //////////////////////////////////////////////////////////
-    ´VALORANOS SCREEN
+    VALÓRANOS SCREEN
     //////////////////////////////////////////////////////////
     <string name="staroff">.</string>
     <string name="staron">.</string>
@@ -180,7 +176,6 @@
     <string name="lblElegirDestino">Elige un destino</string>
     <string name="lblElegirDestinoDesc">Toca el mapa para elegir un destino y calcular la ruta óptima para llegar.</string>
     <string name="lblDestino">Destino</string>
-
     <string name="lblTransporteTitle">Transporte</string>
     <string name="lblEstacionamientoTitle">Estacionamiento</string>
 
@@ -194,17 +189,19 @@
     <string name="lblTema">Tema</string>
     <string name="lblAlerts">Alertas</string>
     <string name="lblAlertsDescription">Cambios de horarios, rutas, etc.</string>
-    <string name="lblSuscriptionDescription">Expiracion de la suscripcion, etc.</string>
+    <string name="lblSuscriptionDescription">Expiración de suscripciones.</string>
+    <string name="tituloPage">.</string>
+
     <string name="lblMap">Mapa</string>
     <string name="lblMapDescription">Paradas</string>
     <string name="lblSiempre">Siempre</string>
     <string name="lblNunca">Nunca</string>
     <string name="lblParadas">Paradas</string>
-    <string name="lblParadasDescription">Indica donde son las paradas</string>
+    <string name="lblParadasDescription">Indica dónde son las paradas</string>
     <string name="lblTerminales">Terminales</string>
     <string name="lblTerminalesDescription">Indica estaciones de autobuses</string>
-    <string name="lblUbiActual">Ubicacion Actual</string>
-    <string name="lblUbiActualDescription">Mira tu ubicacion actuak</string>
+    <string name="lblUbiActual">Ubicación Actual</string>
+    <string name="lblUbiActualDescription">Mira tu ubicación actual</string>
     <string name="lblComida">Comida</string>
     <string name="lblComidaDescription">Restaurantes, puestos de comida, etc.</string>
     <string name="lblSalud">Salud</string>
@@ -213,28 +210,28 @@
     <string name="lblTipoMapa">Tipo del mapa</string>
     <string name="lblTipoMapaDescription">Mapnik, etc.</string>
     <string name="lblTemaMapa">Tema del mapa</string>
-    <string name="lblTemaMapaDescription">Claro, oscuro, neon, etc.</string>
-    <string name="lblLocaliz">Localizacion</string>
+    <string name="lblTemaMapaDescription">Claro, oscuro, neón, etc.</string>
+    <string name="lblLocaliz">Localización</string>
     <string name="lblLocalizDescription">Podremos sugerirte mejores rutas en base a tu ubicación. Permite este servicio incluso cuando la app no esté en uso.</string>
     <string name="lblAnuncios">Anuncios personalizados</string>
-    <string name="lblAnunciosDescription">Podremos usar tus datos para mostrarte anuncios que podrían ser relevantes para ti. Si esta opción no esta marcada se mostrarán anuncios genéricos.</string>
+    <string name="lblAnunciosDescription">Podremos usar tus datos para mostrarte anuncios que podrían ser relevantes para ti. Si esta opción no está marcada se mostrarán anuncios genéricos.</string>
     <string name="lblRutas">Rutas personalizadas</string>
-    <string name="lblRutasDescription">Usar tus rutas frecuentes para generarte un plan de viaje personalizado para ti. Si esta opción no esta marcada no se mostrarán estrategias de viajes personaliszadas.</string>
-    <string name="lblPagoSuscrip">Pago de suscripcion</string>
-    <string name="lblPagoSuscripDescription">Si esta opción está marcada se permitirá el cobro automatico de la suscripción cada mes.</string>
+    <string name="lblRutasDescription">Usar tus rutas frecuentes para generarte un plan de viaje personalizado para ti. Si esta opción no está marcada no se mostrarán estrategias de viajes personalizadas.</string>
+    <string name="lblPagoSuscrip">Pago de suscripción</string>
+    <string name="lblPagoSuscripDescription">Si esta opción está marcada se permitirá el cobro automático de la suscripción cada mes.</string>
 
     // menu strings
     <string name="lblProfile">Perfil</string>
     <string name="lblHome">Inicio</string>
     <string name="lblSuscription">Paquetes</string>
-    <string name="lblFast">Ruta mas rapida</string>
+    <string name="lblFast">Ruta más rápida</string>
     <string name="lblRoutes">Rutas de transporte</string>
     <string name="lblTrip">Planifica tu viaje</string>
     <string name="lblTurism">Turismo</string>
     <string name="lblChat">Chat</string>
-    <string name="lblShare">Compartir ubicacion</string>
+    <string name="lblShare">Compartir ubicación</string>
     <string name="lblDownload">Descargar rutas</string>
-    <string name="lblConfiguration">Configuracion</string>
+    <string name="lblConfiguration">Configuración</string>
     <string name="lblHelp">Ayuda y soporte</string>
 
     <string name="lblHeader1">Busquemos Un</string>
@@ -242,8 +239,8 @@
     <string name="lblHeader3">Para</string>
     <string name="lblHeader4">Ti.</string>
     <string name="lblBarraBusquedaInicio">Buscar lugar</string>
-    <string name="lblMisVehiculos">Mis vehiculos</string>
-    <string name="lblEspaciosCercanos">Espacios cercanos</string>]
+    <string name="lblMisVehiculos">Mis vehículos</string>
+    <string name="lblEspaciosCercanos">Espacios cercanos</string>
     <string name="lblVerTodo">VER TODO</string>
     <string name="lblSignoDinero">$</string>
     <string name="lblVerMenos">VER MENOS</string>
@@ -251,7 +248,7 @@
     <string name="lblCancelar">Cancelar</string>
     <string name="lblIniciarRecorrido">¿Quieres iniciar el recorrido?</string>
     <string name="btnCancelarViaje">Cancelar viaje</string>
-    <string name="lblSeguroCancelarViaje">Esta a punto de cancelar el viaje, ¿Esta seguro?.</string>
+    <string name="lblSeguroCancelarViaje">Está a punto de cancelar el viaje, ¿Está seguro?</string>
     <string name="btnApartarLugar">Apartar lugar</string>
     <string name="btnVerMapa">Ver mapa</string>
     <string name="btnIniciarRecorrido">Iniciar recorrido</string>
@@ -259,7 +256,7 @@
 
     // ACCOUNT PARKING
     <string name="lblAgregar">Agregar</string>
-    <string name="lblMatricula">Matricula:</string>
+    <string name="lblMatricula">Matrícula:</string>
     <string name="lblTipo">Tipo:</string>
     <string name="lblColor">Color:</string>
     <string name="lblDatosPago">Datos de pago</string>
@@ -268,14 +265,14 @@
     <string name="lblEmisor">Emisor:</string>
     <string name="lblVerHistorial">VER HISTORIAL</string>
     <string name="lblRegresar">REGRESAR</string>
-    <string name="lblYaLlegue">Llegue</string>
+    <string name="lblYaLlegue">Llegué</string>
     <string name="lblBeneficios">Beneficios</string>
-    <string name="txtTelefono">Telefono</string>
+    <string name="txtTelefono">Teléfono</string>
     <string name="txtPassword">Contraseña</string>
     <string name="lblPreferencia">Selecciona el idioma de tu preferencia.</string>
     <string name="lblPreferenciaEN">Select your preferred language.</string>
     <string name="btnEnviar">Enviar</string>
-    <string name="txtCodigoVerificacion">Codigo de verificacion</string>
+    <string name="txtCodigoVerificacion">Código de verificación</string>
     <string name="btnVerificar">Verificar</string>
     <string name="btnRegresar">Regresar</string>
     <string name="txtContra">Contraseña</string>
@@ -283,56 +280,56 @@
     <string name="btnCambiar">Cambiar</string>
     <string name="btnCancelar">Cancelar</string>
     <string name="btnRegistrarme">Registrarme</string>
-    <string name="lblQueQuieresHacer">¿Que quieres hacer hoy?</string>
-    <string name="lblTransportePublico">Transporte publico</string>
+    <string name="lblQueQuieresHacer">¿Qué quieres hacer hoy?</string>
+    <string name="lblTransportePublico">Transporte público</string>
     <string name="lblEstacionamiento">Estacionamiento</string>
     <string name="Bienvenido">Bienvenido</string>
     <string name="lblCorreo">Correo</string>
-    <string name="lblTelefono">Telefono</string>
-    <string name="lblDireccion">Direccion</string>
-    <string name="lblMembresia">Membresia</string>
+    <string name="lblTelefono">Teléfono</string>
+    <string name="lblDireccion">Dirección</string>
+    <string name="lblMembresia">Membresía</string>
     <string name="lblSeguridad">Seguridad</string>
     <string name="lblEditarInformacion">Editar inf</string>
-    <string name="lblCerrarSesion">Cerrar sesion</string>
+    <string name="lblCerrarSesion">Cerrar sesión</string>
     <string name="lblSinPublicidad">Sin publicidad</string>
     <string name="lblSinPublicidad1">Elimina los anuncios por completo.</string>
     <string name="lblTiempoExato">Tiempo exacto</string>
-    <string name="lblTiempoExato1">Seguimiento de tu autobus en tiempo real.</string>
+    <string name="lblTiempoExato1">Seguimiento de tu autobús en tiempo real.</string>
     <string name="lblPlanifica">Planifica tu viaje</string>
-    <string name="lblPlanifica1">Organiza tus visitas turisticas.</string>
-    <string name="lblDisponibilidad">Estacionamiento disponibles</string>
-    <string name="lblDisponibilidad1">Espacios vacios de los estacionamientos.</string>
+    <string name="lblPlanifica1">Organiza tus visitas turísticas.</string>
+    <string name="lblDisponibilidad">Estacionamientos disponibles</string>
+    <string name="lblDisponibilidad1">Espacios vacíos de los estacionamientos.</string>
     <string name="lblFree">Free</string>
-    <string name="lblFreePrecio">7 dias gratis</string>
-    <string name="lblEstandar">Estandar</string>
+    <string name="lblFreePrecio">7 días gratis</string>
+    <string name="lblEstandar">Estándar</string>
     <string name="lblEstandarPrecio">1 mes</string>
     <string name="lblEstudiante">Estudiante</string>
     <string name="lblEstudiantePrecio">1 mes</string>
     <string name="lblTurista">Turista</string>
-    <string name="lblTuristaPrecio">15 dias</string>
+    <string name="lblTuristaPrecio">15 días</string>
     <string name="lblAnual">Anual</string>
     <string name="lblAnualPrecio">1 año</string>
     <string name="lblAnualDesc">Ahorra $60 por año.</string>
-    <string name="lblFreeDesc">Despues paga $20 por mes.</string>
+    <string name="lblFreeDesc">Después paga $20 por mes.</string>
     <string name="lblEstandarDesc">Paga $20 por mes.</string>
     <string name="lblEstudianteDesc">Paga $15 por mes.</string>
     <string name="lblTuristaDesc">Paga $15 por mes.</string>
     <string name="lblIniciarPrueba">Empieza la prueba gratuita ahora</string>
     <string name="btnEmpezarAhora">Empezar ahora</string>
-    <string name="lblCondiciones">La suscripcion se cobrara de manera automatica al final de cada periodo.</string>
+    <string name="lblCondiciones">La suscripción se cobrará de manera automática al final de cada periodo.</string>
     <string name="txtDestino">Destino</string>
     <string name="btnCalcularDestino">Calcular destino</string>
-    <string name="txtFiltraAqui">Filtrar aqui</string>
+    <string name="txtFiltraAqui">Filtrar aquí</string>
     <string name="btnFiltrar">Filtrar</string>
     <string name="lblTransporte">Transporte</string>
     <string name="btnRutas">Rutas</string>
-    <string name="lblDuracion">Duracion</string>
+    <string name="lblDuracion">Duración</string>
     <string name="lblParadasTotales">Paradas totales</string>
     <string name="lblInicioRuta">Inicio ruta</string>
     <string name="lblFinalRuta">Final ruta</string>
     <string name="lblParadaCercana">Parada cercana</string>
     <string name="btnMostrarRuta">Mostrar ruta</string>
-    <string name="txtBuscaAqui">Busca aqui</string>
+    <string name="txtBuscaAqui">Busca aquí</string>
     <string name="btnAgregar">Agregar</string>
     <string name="lblDestinos">Destinos</string>
     <string name="btnBorrarTodo">Borrar todo</string>
@@ -340,17 +337,48 @@
     <string name="lblCodigoPostal">CP</string>
     <string name="btnPlanificar">Planificar</string>
     <string name="lblTurismo">Turismo</string>
-    <string name="lblAtencionTurista">Atencion al turista</string>
+    <string name="lblAtencionTurista">Atención al turista</string>
     <string name="btnChatApoyo">Chat de apoyo</string>
-    <string name="lblLugaresTuristicos">Lugares turisticos</string>
-    <string name="btnVerMas">Ver mas</string>
+    <string name="lblLugaresTuristicos">Lugares turísticos</string>
+    <string name="btnVerMas">Ver más</string>
     <string name="btnVerRuta">Ver ruta</string>
-    <string name="lblConfiguracion">Configuracion</string>
+    <string name="lblConfiguracion">Configuración</string>
     <string name="lblAyuda">Ayuda</string>
     <string name="lblOpiniones">Opiniones</string>
-    <string name="lblCalificacion">Calificacion</string>
+    <string name="lblCalificacion">Calificación</string>
     <string name="lblTiempoAproxEspera">Tiempo aproximado de espera</string>
     <string name="btnApartarEspacio">Apartar espacio</string>
     <string name="lblPrecioPorHora">Precio por hora</string>
     <string name="lblAnalizaElCodigo">Analiza el QR del estacionamiento.</string>
+    <string name="lblInicio">Inicio</string>
+    <string name="lblCuenta">Cuenta</string>
+    <string name="lblVehiculo">Vehículo</string>
+    <string name="lblDisfrutaMovilidad">Disfruta de la movilidad en la Ciudad de Guanajuato Capital.</string>
+
+    <string name="msgErrorDatosInvalidos">Datos incorrectos, favor de verificar</string>
+    <string name="msgExitoRegistro">Registro exitoso</string>
+    <string name="msgErrorRegistro">Error en el registro</string>
+    <string name="msgExitoInicioSesion">Inicio de sesión exitoso</string>
+    <string name="msgErrorInicioSesion">Error en el inicio de sesión</string>
+    <string name="msgExitoCambioContrasena">Cambio de contraseña exitoso</string>
+    <string name="msgErrorCambioContrasena">Error en el cambio de contraseña</string>
+    <string name="msgExitoActualizacionDatos">Actualización de datos exitosa</string>
+    <string name="msgErrorActualizacionDatos">Error en la actualización de datos</string>
+    <string name="msgExitoSuscripcion">Suscripción exitosa</string>
+    <string name="msgErrorSuscripcion">Error en la suscripción</string>
+    <string name="msgExitoCancelacionSuscripcion">Cancelación de suscripción exitosa</string>
+    <string name="msgErrorCancelacionSuscripcion">Error en la cancelación de la suscripción</string>
+
+    <string name="msgUbicacion">Permitir que la app acceda a tu ubicación incluso cuando no esté en uso</string>
+    <string name="msgDatosAnuncios">Permitir el uso de tus datos para mostrarte anuncios personalizados</string>
+    <string name="msgRutasPersonalizadas">Permitir el uso de tus rutas frecuentes para generar un plan de viaje personalizado</string>
+    <string name="msgCobroAutomatico">Permitir el cobro automático de la suscripción cada mes</string>
+
+    <string name="tituloAlertaUbicacion">Ubicación</string>
+    <string name="tituloAlertaAnuncios">Anuncios</string>
+    <string name="tituloAlertaRutas">Rutas</string>
+    <string name="tituloAlertaCobro">Cobro automático</string>
+
+    <string name="btnAceptar">Aceptar</string>
+    <string name="btnRechazar">Rechazar</string>
 </resources>

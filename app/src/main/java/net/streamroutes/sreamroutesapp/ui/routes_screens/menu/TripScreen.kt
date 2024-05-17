@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
@@ -139,25 +140,25 @@ fun TripScreen(
         // cuerpo del scaffold
         val context = LocalContext.current
         val itsur = LatLng(20.139539228288044, -101.15073143400946)
-        val cameraState = rememberCameraPositionState {
-            position = CameraPosition.fromLatLngZoom(itsur, 17f)
+        val cameraPosition = rememberCameraPositionState {
+            position = CameraPosition.fromLatLngZoom(itsur, 15f)
         }
+
         GoogleMap(
-            modifier = Modifier
-                .fillMaxSize(),
-            cameraPositionState = cameraState,
-            properties = MapProperties(
-                maxZoomPreference = 18f,
-                minZoomPreference = 15f,
-                isMyLocationEnabled = false,
-                isBuildingEnabled = false
-            ),
+            cameraPositionState = cameraPosition,
             uiSettings = MapUiSettings(
-                zoomControlsEnabled = false
+                zoomControlsEnabled = false,
+            ),
+            properties = MapProperties(
+                mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
+                maxZoomPreference = 18f,
+                minZoomPreference = 15f
             ),
             onMapClick = {
                 selectedLocation = LatLng(it.latitude,it.longitude)
-            }
+            },
+            modifier = Modifier
+                .fillMaxSize()
         ) {
             selectedLocation?.let {
                 Marker(state = MarkerState(position = it))

@@ -315,7 +315,7 @@ fun BottomSheetInfo(
 ) {
     val scope = rememberCoroutineScope()
 
-    var openDialogIniciarRecorrido by remember {
+    /*var openDialogIniciarRecorrido by remember {
         mutableStateOf(false)
     }
 
@@ -325,7 +325,7 @@ fun BottomSheetInfo(
         }) {
             openDialogIniciarRecorrido = !openDialogIniciarRecorrido
         }
-    }
+    }*/
 
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
@@ -393,7 +393,14 @@ fun BottomSheetInfo(
                 },
                 button1Text = stringResource(id = R.string.btnIniciarRecorrido),
                 button1OnClick = {
-                    openDialogIniciarRecorrido = !openDialogIniciarRecorrido
+                    //openDialogIniciarRecorrido = !openDialogIniciarRecorrido
+                    scope.launch {
+                        onDismiss()
+                        delay(200)
+                        onDismiss()
+                        homePkViewModel.updateIniciarRecorrido(true)
+                        homePkViewModel.updateEstacionamientoSeleccionado(spot)
+                    }
                 },
                 color1 = ButtonDefaults.buttonColors(
                     containerColor = Color(0f, 0.5f, 0f, 0.2f),

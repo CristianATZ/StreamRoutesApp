@@ -40,12 +40,14 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
@@ -139,20 +141,26 @@ fun CalcularDestino() {
 
 @Composable
 fun MapBodyFast(fastViewModel: FastViewModel, onMapClick: (LatLng) -> Unit) {
+    val itsur = LatLng(20.139539228288044, -101.15073143400946)
+    val cameraPosition = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(itsur, 15f)
+    }
+
     GoogleMap(
-        modifier = Modifier
-            .fillMaxSize(),
+        cameraPositionState = cameraPosition,
+        uiSettings = MapUiSettings(
+            zoomControlsEnabled = false,
+        ),
         properties = MapProperties(
             mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
             maxZoomPreference = 18f,
             minZoomPreference = 15f
         ),
-        uiSettings = MapUiSettings(
-            zoomControlsEnabled = false
-        ),
         onMapClick = {
             onMapClick(it)
-        }
+        },
+        modifier = Modifier
+            .fillMaxSize()
     ) {
         fastViewModel.selectedLocation.let {
             Marker(

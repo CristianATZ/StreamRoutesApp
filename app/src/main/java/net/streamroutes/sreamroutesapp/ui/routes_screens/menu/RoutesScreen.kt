@@ -3,11 +3,9 @@
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,29 +18,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Chip
-import androidx.compose.material.ChipDefaults
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.BusAlert
-import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.outlined.AccessTime
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -60,7 +43,6 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,14 +53,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
@@ -294,14 +280,25 @@ fun BarraFiltrado() {
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
+data class Pager(
+    val painter: Painter,
+    val name: String
+)
+
 @Composable
 private fun BottomSheet(
     sheetState: SheetState,
     onDismiss: () -> Unit,
     onCalculate: () -> Unit
 ) {
-    val pagerState = rememberPagerState(0){1}
+    val list = listOf(
+        Pager(painterResource(id = R.drawable.lugar_alhondiga),"Alhóndiga de granaditas"),
+        Pager(painterResource(id = R.drawable.lugar_parque_bicentenario),"Parque bicentenario"),
+        Pager(painterResource(id = R.drawable.lugar_casa_conde_rul),"Casa del Conde Rul"),
+        Pager(painterResource(id = R.drawable.lugar_universidad_gto),"Universidad de Guanajuato")
+    )
+
+    val pagerState = rememberPagerState(0)
 
     ModalBottomSheet(
         onDismissRequest = { onDismiss() },
@@ -311,12 +308,20 @@ private fun BottomSheet(
             Box {
                 HorizontalPager(
                     state = pagerState,
+                    count = list.size,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(200.dp)
-                        .background(if (pagerState.currentPage % 2 == 0) Color.LightGray else Color.DarkGray)
-                ) {
-
+                ) { page ->
+                    Box {
+                        Image(painter = list[page].painter, contentDescription = null, modifier = Modifier.fillMaxSize())
+                        Column(
+                            modifier = Modifier.padding(16.dp)
+                        ) {
+                            Spacer(modifier = Modifier.weight(1f))
+                            Text(text = list[page].name, style = typography.titleLarge, color = Color.White)
+                        }
+                    }
                 }
 
                 Row(
@@ -326,7 +331,7 @@ private fun BottomSheet(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    repeat(2){ index ->
+                    repeat(list.size){ index ->
                         val color = if(pagerState.currentPage == index) colorScheme.tertiary else colorScheme.onTertiary
                         val size = if(pagerState.currentPage == index) 16.dp else 8.dp
                         Box(modifier = Modifier
@@ -569,18 +574,17 @@ fun MainContent() {
     ) {
 
         GoogleMap(
-            modifier = Modifier
-                .fillMaxSize(),
             cameraPositionState = cameraState,
-            properties = MapProperties(
-                maxZoomPreference = 18f,
-                minZoomPreference = 15f,
-                isMyLocationEnabled = false,
-                isBuildingEnabled = false
-            ),
             uiSettings = MapUiSettings(
-                zoomControlsEnabled = false
-            )
+                zoomControlsEnabled = false,
+            ),
+            properties = MapProperties(
+                mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
+                maxZoomPreference = 18f,
+                minZoomPreference = 15f
+            ),
+            modifier = Modifier
+                .fillMaxSize()
         ) {
 
         }
