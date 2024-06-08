@@ -592,6 +592,7 @@ fun BarCodeScanner(
                     it.setAnalyzer(cameraExecutor, BarcodeAnalyser{
                         scope.launch {
                             parkingPkViewModel.updateEstacionamiento(uiState.estacionamientoSeleccionado)
+                            parkingPkViewModel.updateTotal(uiState.estacionamientoSeleccionado.price)
                             parkingPkViewModel.updateVehiculo(uiState.vehiculoSeleccionado)
                             parkingPkViewModel.updateEstacionado(true)
                             homePkViewModel.resetViewModel()

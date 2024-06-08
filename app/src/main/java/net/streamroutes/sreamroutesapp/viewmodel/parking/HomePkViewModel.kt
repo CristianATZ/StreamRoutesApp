@@ -104,7 +104,7 @@ class HomePkViewModel(
     }
 
     fun resetViewModel() {
-        _uiState.value = HomePkUiState()
+        _uiState.value = HomePkUiState(parkingList = _uiState.value.parkingList)
     }
 }
 

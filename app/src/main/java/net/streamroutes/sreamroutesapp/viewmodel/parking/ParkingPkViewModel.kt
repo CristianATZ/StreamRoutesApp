@@ -1,9 +1,5 @@
 package net.streamroutes.sreamroutesapp.viewmodel.parking
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,83 +19,51 @@ data class HistorialItem(
 
 class ParkingPkViewModel(
     private val remoteRepository: RemoteRepository
-): ViewModel(){
+) : ViewModel() {
     private val _uiState = MutableStateFlow(ParkingPkUiState())
     val uiState: StateFlow<ParkingPkUiState> = _uiState.asStateFlow()
 
-    var estacionado by mutableStateOf(false)
-        private set
-    var estacionamiento by mutableStateOf(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""))
-        private set
-
-    var vehiculo by mutableStateOf(Vehiculo("", TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.NINGUNO))
-        private set
-
-    var total by mutableIntStateOf(0)
-        private set
-
-    var tiempo by mutableIntStateOf(0)
-        private set
-
-    var pagado by mutableStateOf(false)
-        private set
-
-    var historial by mutableStateOf(mutableListOf<HistorialItem>())
-        private set
-
-    var verHistorial by mutableStateOf(false)
-        private set
-
     init {
-        _uiState.value = ParkingPkUiState(
-            estacionado,
-            estacionamiento,
-            vehiculo,
-            total,
-            tiempo,
-            pagado,
-            historial,
-            verHistorial
-        )
+        ParkingPkUiState()
     }
 
-    fun updateVehiculo(_vehiculo: Vehiculo){
-        vehiculo = _vehiculo
+    fun updateVehiculo(vehiculo: Vehiculo) {
+        _uiState.value = _uiState.value.copy(vehiculo = vehiculo)
     }
 
-    fun updateEstacionamiento(_estacionamiento: ParkingResultItem){
-        estacionamiento = _estacionamiento
+    fun updateEstacionamiento(estacionamiento: ParkingResultItem) {
+        _uiState.value = _uiState.value.copy(estacionamiento = estacionamiento)
     }
 
-    fun updateEstacionado(_estacionado: Boolean){
-        estacionado = _estacionado
+    fun updateEstacionado(estacionado: Boolean) {
+        _uiState.value = _uiState.value.copy(estacionado = estacionado)
     }
 
-    fun updateTotal(_total: Int){
-        total = _total
+    fun updateTotal(total: Int) {
+        _uiState.value = _uiState.value.copy(total = total)
     }
 
-    fun updateTiempo(_tiempo: Int){
-        tiempo = _tiempo
+    fun updateTiempo(tiempo: Int) {
+        _uiState.value = _uiState.value.copy(tiempo = tiempo)
     }
 
-    fun updatePagado(_pagado: Boolean){
-        pagado = _pagado
+    fun updatePagado(pagado: Boolean) {
+        _uiState.value = _uiState.value.copy(pagado = pagado)
     }
 
-    fun updateHistorial(_new: HistorialItem){
-        historial.add(_new)
+    fun updateHistorial(new: HistorialItem) {
+        _uiState.value = _uiState.value.copy(historial = _uiState.value.historial + new)
     }
 
-    fun updateVerHistorial(_ver: Boolean){
-        verHistorial = _ver
+    fun updateVerHistorial(ver: Boolean) {
+        _uiState.value = _uiState.value.copy(verHistorial = ver)
     }
 }
 
 data class ParkingPkUiState(
     val estacionado: Boolean = false,
     val estacionamiento: ParkingResultItem = ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""),
-    val vehiculo: Vehiculo = Vehiculo("",TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.BLANCO),
+    val vehiculo: Vehiculo = Vehiculo("",TipoVehiculo.NINGUNO, "","","",ColorVehiculo.BLANCO),
     val total: Int = 0,
     val tiempo: Int = 0,
     val pagado: Boolean = false,

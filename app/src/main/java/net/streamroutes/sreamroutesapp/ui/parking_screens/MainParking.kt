@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -21,6 +22,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -62,7 +64,10 @@ fun MainParking(
 
     val systemUiController = rememberSystemUiController()
 
-    val uiState = parkingPkViewModel.uiState
+    LaunchedEffect(key1 = Unit) {
+        homePkViewModel.fetchParkings()
+        Log.d("CARGANDO", homePkViewModel.uiState.value.state.toString())
+    }
 
     Scaffold(
         bottomBar = {

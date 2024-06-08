@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -35,27 +37,14 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 
 @Composable
 fun ParkingEstacionamientoScreen(parkingPkViewModel: ParkingPkViewModel) {
+    val parkingState by parkingPkViewModel.uiState.collectAsState()
+
     Column {
-        if(parkingPkViewModel.estacionado){
+        if(parkingState.estacionado){
             Header(parkingPkViewModel)
             VehiculoEstacionado(parkingPkViewModel)
         } else {
             VehiculoNoEstacionado()
-        }
-    }
-}
-
-@Composable
-private fun Historial(parkingPkViewModel: ParkingPkViewModel) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        parkingPkViewModel.historial.forEach { item ->
-            item {
-                VehiculoItem(item)
-            }
         }
     }
 }
@@ -101,36 +90,16 @@ fun VehiculoNoEstacionado() {
 fun VehiculoEstacionado(parkingPkViewModel: ParkingPkViewModel) {
 
     Column {
-        // label de VER HISTORIAL
-        /*Row {
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = stringResource(id = if(parkingPkViewModel.verHistorial) R.string.lblRegresar else R.string.lblVerHistorial),
-                style = typography.titleMedium,
-                color = colorScheme.tertiary,
-                fontWeight = FontWeight.ExtraBold,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .clickable {
-                        parkingPkViewModel.updateVerHistorial(!parkingPkViewModel.verHistorial)
-                    }
-            )
-        }*/
         Spacer(modifier = Modifier.size(16.dp))
 
         Estacionados(parkingPkViewModel)
-        /* // coches estacionados
-         if(!parkingPkViewModel.verHistorial){
-             Estacionados(parkingPkViewModel)
-         } else {
-             Historial(parkingPkViewModel)
-         }*/
     }
 }
 
 @Composable
 private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
+    val parkingState by parkingPkViewModel.uiState.collectAsState()
+
     LazyColumn(
         modifier = Modifier
             .fillMaxSize(),
@@ -139,10 +108,10 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
         item {
             VehiculoItem(
                 HistorialItem(
-                    parkingPkViewModel.vehiculo,
-                    parkingPkViewModel.estacionamiento,
-                    parkingPkViewModel.tiempo,
-                    parkingPkViewModel.total
+                    parkingState.vehiculo,
+                    parkingState.estacionamiento,
+                    parkingState.tiempo,
+                    parkingState.total
                 )
             )
         }
@@ -231,7 +200,7 @@ private fun VehiculoItem(historialItem: HistorialItem) {
                     modifier = Modifier.size(25.dp)
                 )
                 Spacer(modifier = Modifier.size(16.dp))
-                Text(text = "$0", style = typography.headlineSmall, fontWeight = FontWeight.Bold)
+                Text(text = "$${historialItem.total}", style = typography.headlineSmall, fontWeight = FontWeight.Bold)
                 Spacer(modifier = Modifier.size(16.dp))
             }
         }

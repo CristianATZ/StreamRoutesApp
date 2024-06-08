@@ -41,7 +41,6 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -83,11 +82,6 @@ fun ParkingHomeScreen(
     qrScanner: () -> Unit
 ) {
     val uiState by homePkViewModel.uiState.collectAsState()
-
-    LaunchedEffect(key1 = Unit) {
-        homePkViewModel.fetchParkings()
-        Log.d("CARGANDO", homePkViewModel.uiState.value.state.toString())
-    }
 
     Column(
         modifier = Modifier.fillMaxSize()
