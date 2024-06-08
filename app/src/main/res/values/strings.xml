@@ -381,4 +381,8 @@
 
     <string name="btnAceptar">Aceptar</string>
     <string name="btnRechazar">Rechazar</string>
+    <string name="lblRelajate">Relajate, Disfruta.</string>
+    <string name="lblTu">Tu</string>
+    <string name="lblEsta">Esta</string>
+    <string name="lblAqui">Aqui.</string>
 </resources>

@@ -217,15 +217,14 @@ private fun Header(parkingPkViewModel: ParkingPkViewModel) {
                 fontWeight = FontWeight.Bold
             )
         ){
-            //append(stringResource(id = R.string.lblHeader1) + " ")
-            append("Relajate, Disfruta.")
+            append(stringResource(id = R.string.lblRelajate) + " ")
         }
     }
 
     val headerText2 = generaHeaderText(
-        "Tu",
-        "Vehiculo",
-        "Esta",
+        stringResource(id = R.string.lblTu),
+        stringResource(id = R.string.lblVehiculo),
+        stringResource(id = R.string.lblEsta),
         SpanStyle(fontWeight = FontWeight.Bold, color = colorScheme.background),
         SpanStyle(fontWeight = FontWeight.Bold, color = colorScheme.tertiary),
     )
@@ -237,8 +236,7 @@ private fun Header(parkingPkViewModel: ParkingPkViewModel) {
                 fontWeight = FontWeight.Bold
             )
         ){
-            //append(stringResource(id = R.string.lblHeader1) + " ")
-            append("Aqui.")
+            append(stringResource(id = R.string.lblAqui) + " ")
         }
     }
 
