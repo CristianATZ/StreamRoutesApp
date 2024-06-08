@@ -58,7 +58,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
-import net.streamroutes.sreamroutesapp.navigation.AppScreens
+import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.utils.brush
 import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel

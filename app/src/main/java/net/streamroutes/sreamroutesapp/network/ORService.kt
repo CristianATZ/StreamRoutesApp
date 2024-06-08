@@ -1,6 +1,6 @@
 package net.streamroutes.sreamroutesapp.network
 
-import net.streamroutes.sreamroutesapp.model.Ruta
+import net.streamroutes.sreamroutesapp.data.model.Ruta
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,7 +1,6 @@
-package net.streamroutes.sreamroutesapp.data
+package net.streamroutes.sreamroutesapp.data.container
 
 import android.app.Application
-import android.content.Context
 
 class RemoteContainer : Application() {
     lateinit var container: AppContainer
@@ -15,12 +14,12 @@ class RemoteContainer : Application() {
         instance = this
     }
 
-    fun getAppContainer():AppContainer {
+    fun getAppContainer(): AppContainer {
         return container
     }
 
     companion object {
-        private var instance: RemoteContainer ?= null
+        private var instance: RemoteContainer?= null
 
         // funciones de base de datos
     }

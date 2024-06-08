@@ -34,7 +34,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.SheetState
@@ -42,6 +41,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -78,10 +78,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.model.Ruta
+import net.streamroutes.sreamroutesapp.data.model.Location
+import net.streamroutes.sreamroutesapp.data.model.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.model.Ruta
 import net.streamroutes.sreamroutesapp.network.ORService
 import net.streamroutes.sreamroutesapp.utils.BarcodeAnalyser
-import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import retrofit2.Retrofit
@@ -102,20 +103,22 @@ private fun IniciarViaje(
     parkingPkViewModel: ParkingPkViewModel,
     qrScanner: () -> Unit
 ) {
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     Box(
         modifier = Modifier
             .fillMaxSize()
     ) {
         // mapa
         AnimatedVisibility(
-            visible = !homePkViewModel.leerQR,
+            visible = !uiState.leerQR,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
             MapaRecorrido(homePkViewModel)
             HeaderIniciarViaje(homePkViewModel)
 
-            if (!homePkViewModel.verEstacionamiento) {
+            if (!uiState.verEstacionamiento) {
                 CancelarViaje(homePkViewModel)
             } else {
                 RegresarViaje(homePkViewModel)
@@ -123,7 +126,7 @@ private fun IniciarViaje(
         }
 
         AnimatedVisibility(
-            visible = homePkViewModel.leerQR,
+            visible = uiState.leerQR,
             enter = fadeIn(),
             exit = fadeOut()
         ) {
@@ -161,9 +164,7 @@ private fun RegresarViaje(homePkViewModel: HomePkViewModel) {
         Button(
             onClick = {
                 homePkViewModel.updateVerEstacionamiento(false)
-                homePkViewModel.updateEstacionamientoSeleccionado(
-                    Estacionamiento("","", "", "", "", "", "", -1)
-                )
+                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""))
             },
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -179,17 +180,18 @@ private fun RegresarViaje(homePkViewModel: HomePkViewModel) {
 
 @Composable
 private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
+    val uiState by homePkViewModel.uiState.collectAsState()
+
+    val estacionamiento = LatLng(uiState.estacionamientoSeleccionado.location.latitude, uiState.estacionamientoSeleccionado.location.longitude)
     val cameraPosition = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(homePkViewModel.currentLocation, 15f)
+        position = CameraPosition.fromLatLngZoom(estacionamiento, 15f)
     }
 
     val ubicacion = LatLng(20.141173538431637, -101.15040622126999)
 
-    val destino = LatLng(20.13961981092977, -101.15076362059153)
-
 
     LaunchedEffect(key1 = Unit) {
-        calcularRuta(ubicacion, destino) { ruta ->
+        calcularRuta(ubicacion, estacionamiento) { ruta ->
             val listaPuntos = mutableListOf<LatLng>()
             for(i in ruta.indices step 2) {
                 val latitud = ruta[i]
@@ -214,7 +216,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
         modifier = Modifier
             .fillMaxSize()
     ) {
-        if(!homePkViewModel.verEstacionamiento){
+        if(!uiState.verEstacionamiento){
             Marker(
                 state = MarkerState(position = ubicacion),
                 title = "Aquí estás",
@@ -222,13 +224,13 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
             )
             // Marcador destino
             Marker(
-                state = MarkerState(position = destino),
+                state = MarkerState(position = estacionamiento),
                 title = "Estacionamiento",
                 icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
             )
 
             Polyline(
-                points = homePkViewModel.rutaEstacionamiento,
+                points = uiState.rutaEstacionamiento,
                 color = Color.Black,
                 jointType = JointType.ROUND,
                 startCap = RoundCap(),
@@ -236,7 +238,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
             )
         }
 
-        if(homePkViewModel.verEstacionamiento){
+        if(uiState.verEstacionamiento){
             Marker(
                 state = MarkerState(position = LatLng(20.13961981092977, -101.15076362059153)),
                 title = "Estacionamiento",
@@ -295,9 +297,7 @@ private fun CancelarViaje(
             onClick = {
                 //openDialog = !openDialog
                 homePkViewModel.updateIniciarRecorrido(false)
-                homePkViewModel.updateEstacionamientoSeleccionado(
-                    Estacionamiento("","", "", "", "", "", "", -1)
-                )
+                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""),)
             },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonColors(
@@ -337,7 +337,7 @@ private fun DialogCancelarRecorrido(
                 Icon(
                     imageVector = Icons.Filled.Cancel,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.error,
+                    tint = colorScheme.error,
                     modifier = Modifier
                         .size(50.dp)
                 )
@@ -348,7 +348,7 @@ private fun DialogCancelarRecorrido(
                 Text(
                     text = stringResource(id = R.string.lblSeguroCancelarViaje),
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
             }
@@ -359,14 +359,12 @@ private fun DialogCancelarRecorrido(
             Button(
                 onClick = {
                     homePkViewModel.updateIniciarRecorrido(false)
-                    homePkViewModel.updateEstacionamientoSeleccionado(
-                        Estacionamiento("","", "", "", "", "", "", -1)
-                    )
+                    homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""),)
                 },
                 shape = RoundedCornerShape(0.dp),
                 colors = ButtonColors(
                     containerColor = Color.Transparent,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    contentColor = colorScheme.onPrimaryContainer,
                     disabledContainerColor = Color.Transparent,
                     disabledContentColor = Color.Transparent
                 ),
@@ -382,10 +380,10 @@ private fun DialogCancelarRecorrido(
                 onClick = { onDismiss() },
                 shape = RoundedCornerShape(0.dp),
                 colors = ButtonColors(
-                    containerColor = MaterialTheme.colorScheme.error,
-                    contentColor = MaterialTheme.colorScheme.onError,
-                    disabledContainerColor = MaterialTheme.colorScheme.error,
-                    disabledContentColor = MaterialTheme.colorScheme.onError
+                    containerColor = colorScheme.error,
+                    contentColor = colorScheme.onError,
+                    disabledContainerColor = colorScheme.error,
+                    disabledContentColor = colorScheme.onError
                 ),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -399,18 +397,20 @@ private fun DialogCancelarRecorrido(
 
 @Composable
 private fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.primary,
+                color = colorScheme.primary,
                 RoundedCornerShape(bottomEnd = 16.dp, bottomStart = 16.dp)
             ),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         SpotItem(
-            spot = homePkViewModel.estacionamientoSeleccionado,
+            spot = uiState.estacionamientoSeleccionado,
             homePkViewModel = homePkViewModel
         )
 
@@ -421,11 +421,13 @@ private fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SpotItem(
-    spot: Estacionamiento,
+    spot: ParkingResultItem,
     homePkViewModel: HomePkViewModel
 ) {
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     val scope = rememberCoroutineScope()
-    val waves = MaterialTheme.colorScheme.secondary
+    val waves = colorScheme.secondary
 
     var openBottomSheet by remember {
         mutableStateOf(false)
@@ -445,7 +447,7 @@ private fun SpotItem(
         }
     }
 
-    val modifier = if(homePkViewModel.verEstacionamiento || homePkViewModel.iniciarRecorrido){
+    val modifier = if(uiState.verEstacionamiento || uiState.iniciarRecorrido){
         Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth(0.9f)
@@ -463,8 +465,8 @@ private fun SpotItem(
             defaultElevation = 4.dp
         ),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+            containerColor = colorScheme.secondaryContainer,
+            contentColor = colorScheme.onSecondaryContainer
         ),
         modifier = modifier
     ) {
@@ -484,8 +486,8 @@ private fun SpotItem(
                     Spacer(modifier = Modifier.size(8.dp))
 
                     Text(
-                        text = "${spot.calle}, ${spot.colonia}, ${spot.codigoPostal}",
-                        style = MaterialTheme.typography.bodyLarge,
+                        text = "${spot.direccion}, ${spot.postalCode}",
+                        style =typography.bodyLarge,
                         //letterSpacing = 2.sp,
                         modifier = Modifier
                             .padding(vertical = 4.dp)
@@ -529,23 +531,23 @@ private fun SpotItem(
                     Icon(
                         imageVector = Icons.Filled.Star,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.tertiary,
+                        tint = colorScheme.tertiary,
                         modifier = Modifier
                             .size(25.dp)
                     )
                     Text(
-                        text = spot.calificacion,
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onSecondary
+                        text = "${spot.calification}",
+                        style = typography.titleMedium,
+                        color = colorScheme.onSecondary
                     )
 
                     Spacer(modifier = Modifier.weight(1f))
 
                     Text(
-                        text = "$${spot.precio}",
-                        style = MaterialTheme.typography.headlineSmall,
+                        text = "$${spot.price}",
+                        style = typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.tertiary
+                        color = colorScheme.tertiary
                     )
 
                     Spacer(modifier = Modifier.size(16.dp))
@@ -562,6 +564,9 @@ fun BarCodeScanner(
     parkingPkViewModel: ParkingPkViewModel,
     qrScanner: () -> Unit
 ) {
+
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     val scope = rememberCoroutineScope()
 
     AndroidView({ context ->
@@ -586,8 +591,8 @@ fun BarCodeScanner(
                 .also {
                     it.setAnalyzer(cameraExecutor, BarcodeAnalyser{
                         scope.launch {
-                            parkingPkViewModel.updateEstacionamiento(homePkViewModel.estacionamientoSeleccionado)
-                            parkingPkViewModel.updateVehiculo(homePkViewModel.vehiculoSeleccionado)
+                            parkingPkViewModel.updateEstacionamiento(uiState.estacionamientoSeleccionado)
+                            parkingPkViewModel.updateVehiculo(uiState.vehiculoSeleccionado)
                             parkingPkViewModel.updateEstacionado(true)
                             homePkViewModel.resetViewModel()
                             delay(250)

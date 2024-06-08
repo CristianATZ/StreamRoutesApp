@@ -57,7 +57,7 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.navigation.AppScreens
+import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.utils.AddressInfo
 import net.streamroutes.sreamroutesapp.utils.MyViewModel

@@ -64,7 +64,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
-import net.streamroutes.sreamroutesapp.navigation.AppScreens
+import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.utils.brush
 import java.util.Random

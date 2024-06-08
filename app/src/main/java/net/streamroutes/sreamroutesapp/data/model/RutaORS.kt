@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.model
+package net.streamroutes.sreamroutesapp.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Geometry(

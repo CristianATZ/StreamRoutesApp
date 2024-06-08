@@ -1,146 +1,136 @@
 package net.streamroutes.sreamroutesapp.viewmodel.parking
 
-import android.annotation.SuppressLint
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import com.google.android.gms.maps.model.LatLng
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import net.streamroutes.sreamroutesapp.data.model.Location
+import net.streamroutes.sreamroutesapp.data.model.ParkingResult
+import net.streamroutes.sreamroutesapp.data.model.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
 enum class TipoVehiculo {
     NINGUNO, CARRO, MOTO, TRACTOR
 }
 
+enum class ParkingState {
+    NONE, LOADING, SUCCESSFUL, FAILURE
+}
 
-data class Estacionamiento (
-    val nombre: String,
-    val calle: String,
-    val colonia: String,
-    val codigoPostal: String,
-    val opiniones: String,
-    val tiempoAprox: String,
-    val calificacion: String,
-    val precio: Int
-)
-
-@SuppressLint("MutableCollectionMutableState")
-class HomePkViewModel: ViewModel() {
+class HomePkViewModel(
+    private val remoteRepository: RemoteRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(HomePkUiState())
     val uiState: StateFlow<HomePkUiState> = _uiState.asStateFlow()
 
-    var verTodo by mutableStateOf(false)
-        private set
-
-    var iniciarRecorrido by mutableStateOf(false)
-        private set
-
-    var estacionamientoSeleccionado by mutableStateOf(Estacionamiento("","", "", "", "", "", "", -1))
-        private set
-
-    var vehiculoSeleccionado by mutableStateOf(
-        Vehiculo("", TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.NINGUNO)
-    )
-        private set
-
-    var verEstacionamiento by mutableStateOf(false)
-        private set
-
-    var rutaEstacionamiento by mutableStateOf(mutableListOf<LatLng>())
-        private set
-
-    var currentLocation by mutableStateOf(
-        LatLng(20.13961981092977, -101.15076362059153)
-    )
-        private set
-
-    var leerQR by mutableStateOf(false)
-        private set
-
     init {
-        _uiState.value = HomePkUiState(
-            vehiculoSeleccionado,
-            verTodo,
-            iniciarRecorrido,
-            estacionamientoSeleccionado,
-            verEstacionamiento,
-            rutaEstacionamiento,
-            currentLocation,
-            leerQR
-        )
+        resetViewModel()
     }
 
-    fun updateVehiculoSeleccionado(_selection: Vehiculo){
-        vehiculoSeleccionado = _selection
-    }
-
-    fun updateVerTodo(_verTodo: Boolean){
-        verTodo = _verTodo
-    }
-
-    fun updateIniciarRecorrido(_iniciarRecorrido: Boolean){
+    // traer la informacion de los estacionamientos
+    fun fetchParkings() {
         viewModelScope.launch {
-            delay(250)
-            iniciarRecorrido = _iniciarRecorrido
+            _uiState.value = _uiState.value.copy(state = ParkingState.LOADING, message = "Cargando todos...")
+            try {
+                val parkings = withContext(Dispatchers.IO) {
+                    remoteRepository.getParkings()
+                }
+                _uiState.value = _uiState.value.copy(parkingList = parkings, message = "Información cargada con exito.", state = ParkingState.SUCCESSFUL)
+
+                Log.d("PARKINGS", uiState.value.state.toString())
+            } catch (e: Exception) {
+                val errorMessage = when (e) {
+                    is java.net.UnknownHostException -> "No hay conexión a Internet."
+                    is java.net.SocketTimeoutException -> "La solicitud ha tardado demasiado en responder."
+                    else -> "Error al cargar la información."
+                }
+
+                Log.d("STATE", e.message.toString())
+                _uiState.value = _uiState.value.copy(state = ParkingState.FAILURE, message = errorMessage, error = e.message.toString())
+            }
         }
     }
 
-    fun updateEstacionamientoSeleccionado(_estacionamiento: Estacionamiento){
+    fun updateVehiculoSeleccionado(selection: Vehiculo) {
+        _uiState.value = _uiState.value.copy(vehiculoSeleccionado = selection)
+    }
+
+    fun updateVerTodo(verTodo: Boolean) {
+        _uiState.value = _uiState.value.copy(verTodo = verTodo)
+    }
+
+    fun updateIniciarRecorrido(iniciarRecorrido: Boolean) {
         viewModelScope.launch {
             delay(250)
-            estacionamientoSeleccionado = _estacionamiento
+            _uiState.value = _uiState.value.copy(iniciarRecorrido = iniciarRecorrido)
         }
     }
 
-    fun updateVerEstacionamiento(_ver: Boolean){
+    fun updateEstacionamientoSeleccionado(estacionamiento: ParkingResultItem) {
         viewModelScope.launch {
             delay(250)
-            verEstacionamiento = _ver
+            _uiState.value = _uiState.value.copy(estacionamientoSeleccionado = estacionamiento)
         }
     }
 
-    fun updateRutaEstacionamiento(_ruta: MutableList<LatLng>){
-        rutaEstacionamiento = _ruta
-    }
-
-    fun updateCurrentLocation(_current: LatLng){
-        currentLocation = _current
-    }
-
-    fun updateLeerQR(_leer: Boolean){
+    fun updateVerEstacionamiento(ver: Boolean) {
         viewModelScope.launch {
             delay(250)
-            leerQR = _leer
+            _uiState.value = _uiState.value.copy(verEstacionamiento = ver)
         }
     }
 
-    fun resetViewModel(){
-        verTodo = false
-        iniciarRecorrido = false
-        estacionamientoSeleccionado = Estacionamiento("","", "", "", "", "", "", -1)
-        vehiculoSeleccionado = Vehiculo("", TipoVehiculo.NINGUNO, "", "", "", ColorVehiculo.NINGUNO)
-        verEstacionamiento = false
-        rutaEstacionamiento.clear()
-        currentLocation = LatLng(20.139609738093373, -101.1507421629189)
-        leerQR = false
+    fun updateRutaEstacionamiento(ruta: MutableList<LatLng>) {
+        _uiState.value = _uiState.value.copy(rutaEstacionamiento = ruta)
+    }
 
+    fun updateCurrentLocation(current: LatLng) {
+        _uiState.value = _uiState.value.copy(currentLocation = current)
+    }
+
+    fun updateLeerQR(leer: Boolean) {
+        viewModelScope.launch {
+            delay(250)
+            _uiState.value = _uiState.value.copy(leerQR = leer)
+        }
+    }
+
+    fun resetViewModel() {
         _uiState.value = HomePkUiState()
     }
-
 }
 
 data class HomePkUiState(
-    val vehiculoSeleccionado: Vehiculo? = null,
+    val parkingList: ParkingResult = ParkingResult(),
+    val state: ParkingState = ParkingState.NONE,
+    val message: String = "",
+    val error: String = "",
+    val vehiculoSeleccionado: Vehiculo = Vehiculo("",TipoVehiculo.NINGUNO, "","","",ColorVehiculo.BLANCO),
     val verTodo: Boolean = false,
     val iniciarRecorrido: Boolean = false,
-    val estacionamientoSeleccionado: Estacionamiento? = null,
+    val estacionamientoSeleccionado: ParkingResultItem = ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""),
     val verEstacionamiento: Boolean = false,
     val rutaEstacionamiento: MutableList<LatLng> = mutableListOf(),
-    val currentLocation: LatLng? = null,
+    val currentLocation: LatLng = LatLng(0.0,0.0),
     val leerQR: Boolean = false
 )
+
+@Suppress("UNCHECKED_CAST")
+class HomePkViewModelFactory(
+    private val remoteRepository: RemoteRepository
+): ViewModelProvider.Factory {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(HomePkViewModel::class.java)) {
+            return HomePkViewModel(remoteRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}

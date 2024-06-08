@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data
+package net.streamroutes.sreamroutesapp.data.repository
 
 import android.content.Context
 import androidx.work.ExistingWorkPolicy
@@ -13,7 +13,7 @@ interface WorkerRepository {
     //val outputWorkGuardado: Flow<WorkInfo>
 }
 
-class WorkerSupervisor(private val context : Context) : WorkerRepository{
+class WorkerSupervisor(private val context : Context) : WorkerRepository {
     private val workManager = WorkManager.getInstance(context)
 
     override fun guardadoWorker() {

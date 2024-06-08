@@ -1,11 +1,13 @@
-package net.streamroutes.sreamroutesapp.data
+package net.streamroutes.sreamroutesapp.data.container
 
 import android.content.Context
+import net.streamroutes.sreamroutesapp.data.repository.NetworkOfflineRepository
+import net.streamroutes.sreamroutesapp.data.repository.OfflineRepository
 
 interface AppContainer {
     // hola alan
     val offlineRepository : OfflineRepository
-    val remoteRepository : RemoteRepository
+    //val remoteRepository : RemoteRepository
 }
 
 class DefaultAppContainer(private val context: Context) : AppContainer {
@@ -14,9 +16,9 @@ class DefaultAppContainer(private val context: Context) : AppContainer {
         NetworkOfflineRepository()
     }
 
-    override val remoteRepository: RemoteRepository by lazy {
+    /*override val remoteRepository: RemoteRepository by lazy {
         NetworkRemoteReposiroty()
-    }
+    }*/
 
     /*override val workerRepository: WorkerRepository by lazy {
         WorkerSupervisor(context)

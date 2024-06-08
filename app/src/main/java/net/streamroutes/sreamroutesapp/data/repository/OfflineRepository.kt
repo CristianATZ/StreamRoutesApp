@@ -1,4 +1,6 @@
-package net.streamroutes.sreamroutesapp.data
+package net.streamroutes.sreamroutesapp.data.repository
+
+import net.streamroutes.sreamroutesapp.data.container.AppContainer
 
 interface OfflineRepository {
 

@@ -120,12 +120,12 @@ fun VehiculoEstacionado(parkingPkViewModel: ParkingPkViewModel) {
         Spacer(modifier = Modifier.size(16.dp))
 
         Estacionados(parkingPkViewModel)
-       /* // coches estacionados
-        if(!parkingPkViewModel.verHistorial){
-            Estacionados(parkingPkViewModel)
-        } else {
-            Historial(parkingPkViewModel)
-        }*/
+        /* // coches estacionados
+         if(!parkingPkViewModel.verHistorial){
+             Estacionados(parkingPkViewModel)
+         } else {
+             Historial(parkingPkViewModel)
+         }*/
     }
 }
 
@@ -204,8 +204,8 @@ private fun VehiculoItem(historialItem: HistorialItem) {
 
                 Column {
                     Text(text = stringResource(id = R.string.lblEstacionamiento), style = typography.titleMedium)
-                    Text(text = historialItem.estacionamiento.nombre, style = typography.bodyMedium)
-                    Text(text = historialItem.estacionamiento.calle, style = typography.bodyMedium)
+                    Text(text = historialItem.estacionamiento.name, style = typography.bodyMedium)
+                    Text(text = historialItem.estacionamiento.direccion, style = typography.bodyMedium)
                 }
             }
 

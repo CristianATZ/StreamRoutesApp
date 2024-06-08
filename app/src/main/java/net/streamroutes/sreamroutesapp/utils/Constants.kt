@@ -13,3 +13,9 @@ const val CHANNEL_ID = "VERBOSE_NOTIFICATION"
 const val NOTIFICATION_ID = 1
 
 val brush = Brush.verticalGradient(listOf(Color(0xFFE8AA42), Color(0xFFEACE43)))
+
+object Constants {
+    object ParkingApi {
+        val BASE_URL = "https://rumapp.free.beeceptor.com/api/"
+    }
+}

@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
@@ -20,10 +21,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Audiotrack
-import androidx.compose.material.icons.filled.DirectionsCar
 import androidx.compose.material.icons.filled.DoneAll
-import androidx.compose.material.icons.filled.Motorcycle
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
@@ -43,6 +41,8 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -67,9 +67,9 @@ import androidx.compose.ui.window.Dialog
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.data.model.ParkingResultItem
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.parking.Estacionamiento
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.TipoVehiculo
@@ -82,14 +82,21 @@ fun ParkingHomeScreen(
     parkingPkViewModel: ParkingPkViewModel,
     qrScanner: () -> Unit
 ) {
+    val uiState by homePkViewModel.uiState.collectAsState()
+
+    LaunchedEffect(key1 = Unit) {
+        homePkViewModel.fetchParkings()
+        Log.d("CARGANDO", homePkViewModel.uiState.value.state.toString())
+    }
+
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        AnimatedVisibility(visible = !homePkViewModel.iniciarRecorrido && !homePkViewModel.verEstacionamiento) {
+        AnimatedVisibility(visible = !uiState.iniciarRecorrido && !uiState.verEstacionamiento) {
             Column {
                 Header(homePkViewModel)
 
-                AnimatedVisibility(visible = !homePkViewModel.verTodo) {
+                AnimatedVisibility(visible = !uiState.verTodo) {
                     Vehicle(homePkViewModel, accountPkViewModel)
                 }
 
@@ -97,19 +104,18 @@ fun ParkingHomeScreen(
             }
         }
 
-        if(homePkViewModel.iniciarRecorrido || homePkViewModel.verEstacionamiento) {
-            IniciarViajeScreen(homePkViewModel, parkingPkViewModel){
+        if (uiState.iniciarRecorrido || uiState.verEstacionamiento) {
+            IniciarViajeScreen(homePkViewModel, parkingPkViewModel) {
                 qrScanner()
             }
         }
     }
 }
 
+
 @Composable
 private fun Spots(homePkViewModel: HomePkViewModel) {
-    val spotList = listOf(
-        Estacionamiento("ITSUR", "Avenida Educacion Superior #2000", "Benito Juarez", "38980", "469", "4 minutos", "4.6", 0),
-    )
+    val uiState by homePkViewModel.uiState.collectAsState()
 
     Column {
         // encabezado
@@ -122,41 +128,42 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
             )
 
             Spacer(modifier = Modifier.weight(1f))
-            
+
             Text(
-                text = stringResource(id = if(!homePkViewModel.verTodo) R.string.lblVerTodo else R.string.lblVerMenos),
+                text = stringResource(id = if (!uiState.verTodo) R.string.lblVerTodo else R.string.lblVerMenos),
                 style = typography.titleMedium,
                 color = colorScheme.tertiary,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier
                     .padding(16.dp)
                     .clickable {
-                        homePkViewModel.updateVerTodo(
-                            !homePkViewModel.verTodo
-                        )
+                        homePkViewModel.updateVerTodo(!uiState.verTodo)
                     }
             )
         }
 
         // espacios cercanos
         LazyColumn(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(spotList.size) { index ->
-                SpotItem(spotList[index], homePkViewModel)
+            items(uiState.parkingList.size) { index ->
+                SpotItem(uiState.parkingList[index], homePkViewModel)
             }
         }
     }
 }
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SpotItem(
-    spot: Estacionamiento,
+    spot: ParkingResultItem,
     homePkViewModel: HomePkViewModel
 ) {
+
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     val scope = rememberCoroutineScope()
     val waves = colorScheme.secondary
 
@@ -169,7 +176,7 @@ private fun SpotItem(
         density = LocalDensity.current,
         initialValue = SheetValue.Hidden
     )
-    
+
     if(openBottomSheet){
         BottomSheetInfo(sheetState, spot, homePkViewModel){
             scope.launch {
@@ -178,7 +185,7 @@ private fun SpotItem(
         }
     }
 
-    val modifier = if(homePkViewModel.verEstacionamiento || homePkViewModel.iniciarRecorrido){
+    val modifier = if(uiState.verEstacionamiento || uiState.iniciarRecorrido){
         Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth(0.9f)
@@ -226,7 +233,7 @@ private fun SpotItem(
                     Spacer(modifier = Modifier.size(8.dp))
 
                     Text(
-                        text = spot.nombre,
+                        text = spot.name,
                         style = typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier
@@ -234,7 +241,7 @@ private fun SpotItem(
                     )
 
                     Text(
-                        text = "${spot.calle}, ${spot.colonia}, ${spot.codigoPostal}",
+                        text = "${spot.direccion}, ${spot.postalCode}",
                         style = typography.bodyLarge,
                         //letterSpacing = 2.sp,
                         modifier = Modifier
@@ -284,7 +291,7 @@ private fun SpotItem(
                             .size(25.dp)
                     )
                     Text(
-                        text = spot.calificacion,
+                        text = "${spot.calification}",
                         style = typography.titleMedium,
                         color = colorScheme.onSecondary
                     )
@@ -292,7 +299,7 @@ private fun SpotItem(
                     Spacer(modifier = Modifier.weight(1f))
 
                     Text(
-                        text = "$${spot.precio}",
+                        text = "$${spot.price}",
                         style = typography.headlineSmall,
                         fontWeight = FontWeight.Bold,
                         color = colorScheme.tertiary
@@ -309,7 +316,7 @@ private fun SpotItem(
 @Composable
 fun BottomSheetInfo(
     sheetState: SheetState,
-    spot: Estacionamiento,
+    spot: ParkingResultItem,
     homePkViewModel: HomePkViewModel,
     onDismiss: () -> Unit
 ) {
@@ -337,25 +344,25 @@ fun BottomSheetInfo(
             BeneficioItem(
                 icon = painterResource(id = R.drawable.estacionamiento),
                 title = stringResource(id = R.string.lblEstacionamiento),
-                subtitle = spot.nombre
+                subtitle = spot.name
             )
 
             BeneficioItem(
                 icon = painterResource(id = R.drawable.direccion),
                 title = stringResource(id = R.string.lblDireccion),
-                subtitle = "${spot.calle}, ${spot.codigoPostal}."
+                subtitle = "${spot.direccion}, ${spot.postalCode}."
             )
 
             BeneficioItem(
                 icon = painterResource(id = R.drawable.opinion),
                 title = stringResource(id = R.string.lblOpiniones),
-                subtitle = spot.opiniones
+                subtitle = spot.opinions.size.toString()
             )
 
             BeneficioItem(
                 icon = painterResource(id = R.drawable.calificacion),
                 title = stringResource(id = R.string.lblCalificacion),
-                subtitle = spot.calificacion
+                subtitle = spot.calification.toString()
             )
 
             Spacer(modifier = Modifier.size(32.dp))
@@ -366,7 +373,7 @@ fun BottomSheetInfo(
                     BeneficioItem(
                         icon = painterResource(id = R.drawable.hora_exacta),
                         title = stringResource(id = R.string.lblTiempoAproxEspera),
-                        subtitle = spot.tiempoAprox
+                        subtitle = spot.timeAprox
                     )
                 },
                 button1Text = stringResource(id = R.string.btnApartarEspacio),
@@ -388,7 +395,7 @@ fun BottomSheetInfo(
                     BeneficioItem(
                         icon = painterResource(id = R.drawable.precio),
                         title = stringResource(id = R.string.lblPrecioPorHora),
-                        subtitle = "$${spot.precio}"
+                        subtitle = "$${spot.price}"
                     )
                 },
                 button1Text = stringResource(id = R.string.btnIniciarRecorrido),
@@ -399,6 +406,7 @@ fun BottomSheetInfo(
                         delay(200)
                         onDismiss()
                         homePkViewModel.updateIniciarRecorrido(true)
+                        Log.d("ESTACIONAMIENTO", spot.toString())
                         homePkViewModel.updateEstacionamientoSeleccionado(spot)
                     }
                 },
@@ -489,7 +497,7 @@ fun CustomCard(
 
 @Composable
 private fun DialogIniciarRecorrido(
-    spot: Estacionamiento,
+    spot: ParkingResultItem,
     homePkViewModel: HomePkViewModel,
     closeBottom: () -> Unit,
     onDismiss: () -> Unit,
@@ -509,7 +517,7 @@ private fun DialogIniciarRecorrido(
                 Spacer(modifier = Modifier.size(16.dp))
 
                 Icon(
-                imageVector = Icons.Filled.DoneAll,
+                    imageVector = Icons.Filled.DoneAll,
                     contentDescription = null,
                     modifier = Modifier
                         .size(50.dp)
@@ -518,7 +526,7 @@ private fun DialogIniciarRecorrido(
                 Spacer(modifier = Modifier.size(8.dp))
 
                 Text(
-                    text = spot.nombre,
+                    text = spot.name,
                     textAlign = TextAlign.Center,
                     style = typography.displayMedium,
                     fontWeight = FontWeight.Bold
@@ -532,7 +540,7 @@ private fun DialogIniciarRecorrido(
             }
 
             Spacer(modifier = Modifier.size(16.dp))
-            
+
             // boton comenzar
             Button(
                 onClick = {
@@ -583,6 +591,8 @@ private fun Vehicle(
     homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel
 ) {
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     val vehiculos = accountPkViewModel.vehicles
 
     Column {
@@ -602,7 +612,7 @@ private fun Vehicle(
                 .fillMaxWidth(0.95f)
         ) {
             items( vehiculos.size/*Aqui agregar el viewmodel*/){ index ->
-                VehicleItem(index, vehiculos[index], homePkViewModel.vehiculoSeleccionado.matricula){
+                VehicleItem(index, vehiculos[index], uiState.vehiculoSeleccionado.matricula){
                     homePkViewModel.updateVehiculoSeleccionado(vehiculos[index])
                 }
             }
@@ -667,6 +677,8 @@ fun VehicleItem(
 @Composable
 private fun Header(homePkViewModel: HomePkViewModel) {
 
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     val headerText1 = buildAnnotatedString {
         withStyle(
             style = SpanStyle(
@@ -699,7 +711,7 @@ private fun Header(homePkViewModel: HomePkViewModel) {
         Spacer(modifier = Modifier.size(32.dp))
 
         // texto e imagen
-        AnimatedVisibility(visible = (!homePkViewModel.iniciarRecorrido && !homePkViewModel.verTodo)) {
+        AnimatedVisibility(visible = (!uiState.iniciarRecorrido && !uiState.verTodo)) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -715,7 +727,7 @@ private fun Header(homePkViewModel: HomePkViewModel) {
                 )
             }
         }
-        
+
         Spacer(modifier = Modifier.size(8.dp))
 
         // barra de busqueda
@@ -746,7 +758,7 @@ private fun Header(homePkViewModel: HomePkViewModel) {
             modifier = Modifier
                 .fillMaxWidth(0.85f)
         )
-        
+
         Spacer(modifier = Modifier.size(32.dp))
     }
 }
