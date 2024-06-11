@@ -62,7 +62,7 @@ class ParkingPkViewModel(
 
 data class ParkingPkUiState(
     val estacionado: Boolean = false,
-    val estacionamiento: ParkingResultItem = ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""),
+    val estacionamiento: ParkingResultItem = ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),
     val vehiculo: Vehiculo = Vehiculo("",TipoVehiculo.NINGUNO, "","","",ColorVehiculo.BLANCO),
     val total: Int = 0,
     val tiempo: Int = 0,

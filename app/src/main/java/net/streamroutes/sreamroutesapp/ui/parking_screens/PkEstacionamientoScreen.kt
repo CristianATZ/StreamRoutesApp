@@ -174,7 +174,7 @@ private fun VehiculoItem(historialItem: HistorialItem) {
                 Column {
                     Text(text = stringResource(id = R.string.lblEstacionamiento), style = typography.titleMedium)
                     Text(text = historialItem.estacionamiento.name, style = typography.bodyMedium)
-                    Text(text = historialItem.estacionamiento.direccion, style = typography.bodyMedium)
+                    Text(text = historialItem.estacionamiento.address, style = typography.bodyMedium)
                 }
             }
 

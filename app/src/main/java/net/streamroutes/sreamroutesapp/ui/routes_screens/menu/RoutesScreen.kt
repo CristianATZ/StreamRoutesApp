@@ -73,7 +73,6 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
-import org.osmdroid.util.GeoPoint
 
 
 @Composable
@@ -517,57 +516,6 @@ fun MainContent() {
     val cameraState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(itsur, 17f)
     }
-
-    val ruta1I = listOf(
-        GeoPoint(20.132195, -101.186513),
-        GeoPoint(20.130103, -101.187440),
-        GeoPoint(20.129952, -101.185994),
-        GeoPoint(20.126200, -101.186821),
-        GeoPoint(20.126371, -101.189060),
-        GeoPoint(20.126477, -101.190613),
-        GeoPoint(20.126474, -101.190628),
-        GeoPoint(20.128377, -101.190353),
-        GeoPoint(20.129459, -101.190800),
-        GeoPoint(20.128658, -101.191782),
-        GeoPoint(20.127031, -101.192631),
-        GeoPoint(20.126338, -101.193629),
-        GeoPoint(20.126167, -101.193720),
-        GeoPoint(20.125250, -101.193859),
-        GeoPoint(20.125212, -101.194554),
-        GeoPoint(20.122248, -101.194691),
-        GeoPoint(20.119407, -101.195200),
-        GeoPoint(20.118674, -101.195259),
-        GeoPoint(20.117485, -101.195490),
-        GeoPoint(20.117352, -101.194554),
-        GeoPoint(20.116483, -101.194825),
-        GeoPoint(20.114481, -101.191281),
-        GeoPoint(20.114421, -101.190940),
-        GeoPoint(20.114470, -101.187700),
-        GeoPoint(20.114447, -101.187574),
-        GeoPoint(20.114374, -101.187461),
-        GeoPoint(20.114706, -101.187499),
-        GeoPoint(20.115807, -101.187730),
-        GeoPoint(20.115848, -101.186948),
-        GeoPoint(20.116284, -101.187047),
-        GeoPoint(20.118583, -101.187491)
-    )
-
-    val paradaRuta1I = listOf(
-        GeoPoint(20.132148784075383, -101.18658401178985),
-        GeoPoint(20.130100414302177, -101.18685751997809),
-        GeoPoint(20.1286624384808, -101.18630239997012),
-        GeoPoint(20.12626607542876, -101.18713239733687),
-        GeoPoint(20.126443968930666, -101.1897577478104),
-        GeoPoint(20.12845156492248, -101.19041183942103),
-        GeoPoint(20.128053430395777, -101.19201321119603),
-        GeoPoint(20.125728467872396, -101.19377208621506),
-        GeoPoint(20.124796416351554, -101.19458943512876),
-        GeoPoint(20.117503956009642, -101.19544254943673),
-        GeoPoint(20.116224965329312, -101.19409890304624),
-        GeoPoint(20.11454992685379, -101.19015376389814),
-        GeoPoint(20.115158873743283, -101.18754702065762),
-        GeoPoint(20.118136641252413, -101.1873841522879)
-    )
 
     Column(
         Modifier.fillMaxSize()

@@ -239,11 +239,11 @@
     <string name="lblHeader3">Para</string>
     <string name="lblHeader4">Ti.</string>
     <string name="lblBarraBusquedaInicio">Buscar lugar</string>
-    <string name="lblMisVehiculos">Mis vehículos</string>
-    <string name="lblEspaciosCercanos">Espacios cercanos</string>
-    <string name="lblVerTodo">VER TODO</string>
+    <string name="lblMisVehiculos">MIS VEHÍCULOS</string>
+    <string name="lblEspaciosCercanos">ESPACIOS CERCANOS</string>
+    <string name="lblVerTodo">Ver todo</string>
     <string name="lblSignoDinero">$</string>
-    <string name="lblVerMenos">VER MENOS</string>
+    <string name="lblVerMenos">Ver menos</string>
     <string name="lblComenzar">Comenzar</string>
     <string name="lblCancelar">Cancelar</string>
     <string name="lblIniciarRecorrido">¿Quieres iniciar el recorrido?</string>

@@ -164,7 +164,7 @@ private fun RegresarViaje(homePkViewModel: HomePkViewModel) {
         Button(
             onClick = {
                 homePkViewModel.updateVerEstacionamiento(false)
-                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""))
+                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""))
             },
             shape = RoundedCornerShape(8.dp),
             modifier = Modifier
@@ -297,7 +297,7 @@ private fun CancelarViaje(
             onClick = {
                 //openDialog = !openDialog
                 homePkViewModel.updateIniciarRecorrido(false)
-                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""),)
+                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),)
             },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonColors(
@@ -359,7 +359,7 @@ private fun DialogCancelarRecorrido(
             Button(
                 onClick = {
                     homePkViewModel.updateIniciarRecorrido(false)
-                    homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,""),)
+                    homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),)
                 },
                 shape = RoundedCornerShape(0.dp),
                 colors = ButtonColors(
@@ -486,7 +486,7 @@ private fun SpotItem(
                     Spacer(modifier = Modifier.size(8.dp))
 
                     Text(
-                        text = "${spot.direccion}, ${spot.postalCode}",
+                        text = "${spot.address}, ${spot.zipcode}",
                         style =typography.bodyLarge,
                         //letterSpacing = 2.sp,
                         modifier = Modifier

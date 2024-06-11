@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
-import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,12 +16,13 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -64,10 +64,10 @@ fun MainParking(
 
     val systemUiController = rememberSystemUiController()
 
-    LaunchedEffect(key1 = Unit) {
+    /*LaunchedEffect(key1 = Unit) {
         homePkViewModel.fetchParkings()
         Log.d("CARGANDO", homePkViewModel.uiState.value.state.toString())
-    }
+    }*/
 
     Scaffold(
         bottomBar = {
@@ -112,7 +112,9 @@ fun ParkingBottomBar(
     items: List<NavigationItem>,
     onChangeScreen: (Int) -> Unit,
 ) {
-    NavigationBar {
+    NavigationBar(
+        containerColor = colorScheme.primary
+    ) {
         items.forEach { item ->
             NavigationBarItem(
                 selected = selectedScreen == item.option,
@@ -125,7 +127,16 @@ fun ParkingBottomBar(
                 },
                 label = {
                     Text(text = item.label)
-                }
+                },
+                colors = NavigationBarItemColors(
+                    selectedTextColor = colorScheme.tertiary,
+                    selectedIconColor = colorScheme.onTertiary,
+                    selectedIndicatorColor = colorScheme.tertiary,
+                    unselectedIconColor = colorScheme.onPrimary,
+                    unselectedTextColor = colorScheme.onPrimary,
+                    disabledIconColor = Color.Transparent,
+                    disabledTextColor = Color.Transparent
+                )
             )
         }
     }
