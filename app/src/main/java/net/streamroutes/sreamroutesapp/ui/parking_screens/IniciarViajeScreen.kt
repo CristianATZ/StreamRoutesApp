@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
@@ -11,9 +12,7 @@ import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,22 +27,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Cancel
-import androidx.compose.material.icons.filled.LocalParking
-import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Workspaces
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,17 +43,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.compose.ui.window.Dialog
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -85,10 +69,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.data.model.Location
-import net.streamroutes.sreamroutesapp.data.model.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.model.Ruta
-import net.streamroutes.sreamroutesapp.network.ORService
+import net.streamroutes.sreamroutesapp.data.ORService
 import net.streamroutes.sreamroutesapp.utils.BarcodeAnalyser
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
@@ -189,53 +173,69 @@ private fun RegresarViaje(homePkViewModel: HomePkViewModel) {
 private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
     val uiState by homePkViewModel.uiState.collectAsState()
 
-    val estacionamiento = LatLng(uiState.estacionamientoSeleccionado.location.latitude, uiState.estacionamientoSeleccionado.location.longitude)
+    val estacionamiento = remember(uiState.estacionamientoSeleccionado.location) {
+        LatLng(uiState.estacionamientoSeleccionado.location.latitude, uiState.estacionamientoSeleccionado.location.longitude)
+    }
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(estacionamiento, 15f)
     }
+    val ubicacion = remember { LatLng(20.141173538431637, -101.15040622126999) }
 
-    val ubicacion = LatLng(20.141173538431637, -101.15040622126999)
+    var mapLoaded by remember { mutableStateOf(false) }
 
+    /*if (mapLoaded) {
+        LaunchedEffect(ubicacion, estacionamiento) {
+            *//*calcularRuta(ubicacion, estacionamiento) { ruta ->
+                val listaPuntos = mutableListOf<LatLng>()
+                for (i in ruta.indices step 2) {
+                    val latitud = ruta[i]
+                    val longitud = ruta[i + 1]
+                    listaPuntos.add(LatLng(latitud, longitud))
+                }
+                homePkViewModel.updateRutaEstacionamiento(listaPuntos)
+            }
+             *//*
 
-    LaunchedEffect(key1 = Unit) {
-        calcularRuta(ubicacion, estacionamiento) { ruta ->
+            homePkViewModel.fetchBestRoute(ubicacion.toString(), estacionamiento.toString())
+        }
+    }*/
+    LaunchedEffect(ubicacion, estacionamiento) {
+        /*calcularRuta(ubicacion, estacionamiento) { ruta ->
             val listaPuntos = mutableListOf<LatLng>()
-            for(i in ruta.indices step 2) {
+            for (i in ruta.indices step 2) {
                 val latitud = ruta[i]
-                val longitud = ruta[i+1]
+                val longitud = ruta[i + 1]
                 listaPuntos.add(LatLng(latitud, longitud))
             }
             homePkViewModel.updateRutaEstacionamiento(listaPuntos)
         }
+         */
+        Log.d("ANTES", "si")
+        homePkViewModel.fetchBestRoute("8.681495,49.41461", "8.687872,49.420318")
     }
 
-
-    GoogleMap(
+    /*GoogleMap(
         cameraPositionState = cameraPosition,
-        uiSettings = MapUiSettings(
-            zoomControlsEnabled = false,
-        ),
+        uiSettings = MapUiSettings(zoomControlsEnabled = false),
         properties = MapProperties(
             mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
             maxZoomPreference = 18f,
             minZoomPreference = 15f
         ),
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize(),
+        onMapLoaded = { mapLoaded = true }
     ) {
-        if(!uiState.verEstacionamiento){
+        if (!uiState.verEstacionamiento) {
             Marker(
                 state = MarkerState(position = ubicacion),
                 title = "Aquí estás",
                 icon = BitmapDescriptorFactory.fromResource(R.drawable.coche_izq)
             )
-            // Marcador destino
             Marker(
                 state = MarkerState(position = estacionamiento),
                 title = "Estacionamiento",
                 icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
             )
-
             Polyline(
                 points = uiState.rutaEstacionamiento,
                 color = Color.Black,
@@ -243,9 +243,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
                 startCap = RoundCap(),
                 endCap = RoundCap()
             )
-        }
-
-        if(uiState.verEstacionamiento){
+        } else {
             Marker(
                 state = MarkerState(position = LatLng(20.13961981092977, -101.15076362059153)),
                 title = "Estacionamiento",
@@ -253,7 +251,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
                 anchor = Offset(0.5f, 0.5f)
             )
         }
-    }
+    }*/
 }
 
 @Composable
@@ -322,7 +320,22 @@ fun ParkingInfo(homePkViewModel: HomePkViewModel) {
                 .background(colorScheme.tertiary, RoundedCornerShape(16.dp))
                 .clickable {
                     homePkViewModel.updateIniciarRecorrido(false)
-                    homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),)
+                    homePkViewModel.updateEstacionamientoSeleccionado(
+                        ParkingResultItem(
+                            0.0,
+                            0,
+                            "",
+                            "",
+                            Location(0.0, 0.0),
+                            0,
+                            "",
+                            emptyList(),
+                            "",
+                            0,
+                            "",
+                            ""
+                        ),
+                    )
                 }
         ) {
             Icon(
@@ -428,6 +441,7 @@ fun BarCodeScanner(
             .size(width = 250.dp, height = 250.dp))
 }
 
+/*
 private fun calcularRuta(
     inicio: LatLng,
     fin: LatLng,
@@ -466,4 +480,4 @@ private fun extraccionJSON(
         val punto = LatLng(it[1], it[0])
         puntos.add(punto)
     }
-}
+}*/

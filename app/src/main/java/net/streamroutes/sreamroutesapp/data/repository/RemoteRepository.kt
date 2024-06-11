@@ -1,19 +1,29 @@
 package net.streamroutes.sreamroutesapp.data.repository
 
+import net.streamroutes.sreamroutesapp.data.ORService
 import net.streamroutes.sreamroutesapp.data.ParkingService
-import net.streamroutes.sreamroutesapp.data.container.AppContainer
-import net.streamroutes.sreamroutesapp.data.model.ParkingResult
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResult
+import net.streamroutes.sreamroutesapp.data.model.Ruta
+import net.streamroutes.sreamroutesapp.data.model.bestRouteModel.RouteResult
+import net.streamroutes.sreamroutesapp.utils.Constants
+import retrofit2.Response
 
 interface RemoteRepository {
-    suspend fun getParkings(): ParkingResult
+    suspend fun getParkings(): Response<ParkingResult>
+
+    suspend fun getBestRoute(start: String, end: String): Response<RouteResult>
 }
 
 class NetworkRemoteReposiroty(
-    private val parkingService: ParkingService
+    private val parkingService: ParkingService,
+    private val orsService: ORService
 ) : RemoteRepository {
-    lateinit var container: AppContainer
-    override suspend fun getParkings(): ParkingResult {
+
+    override suspend fun getParkings(): Response<ParkingResult> {
         return parkingService.getParkings()
     }
 
+    override suspend fun getBestRoute(start: String, end: String): Response<RouteResult> {
+        return orsService.getRuta(Constants.ORsApi.apiKey, start, end)
+    }
 }

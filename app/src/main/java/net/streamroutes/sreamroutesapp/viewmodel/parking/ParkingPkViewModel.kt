@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import net.streamroutes.sreamroutesapp.data.model.Location
-import net.streamroutes.sreamroutesapp.data.model.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
 

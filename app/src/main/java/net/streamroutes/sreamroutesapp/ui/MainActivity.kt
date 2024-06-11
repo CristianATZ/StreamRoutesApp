@@ -10,7 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
-import net.streamroutes.sreamroutesapp.data.RetrofitService
+import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
+import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.ui.Theme.RumaAppTheme
@@ -27,8 +28,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             val myViewModel : MyViewModel = viewModel()
 
-            val retrofitService = RetrofitService.retrofitService
-            val repository by lazy { NetworkRemoteReposiroty(retrofitService) }
+            val parkingService = RetrofitParkingService.retrofitService
+            val routesService = RetrofitOpenRouteService.retrofitService
+            val repository by lazy { NetworkRemoteReposiroty(parkingService, routesService) }
             val parkingPkViewModel: ParkingPkViewModel by viewModels { ParkingPkViewModelFactory(repository) }
             val homePkViewModel: HomePkViewModel by viewModels { HomePkViewModelFactory(repository) }
 

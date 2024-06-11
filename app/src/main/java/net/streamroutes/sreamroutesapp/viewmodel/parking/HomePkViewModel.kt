@@ -12,9 +12,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.streamroutes.sreamroutesapp.data.model.Location
-import net.streamroutes.sreamroutesapp.data.model.ParkingResult
-import net.streamroutes.sreamroutesapp.data.model.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.model.bestRouteModel.RouteResult
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResult
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
 enum class TipoVehiculo {
@@ -40,12 +41,23 @@ class HomePkViewModel(
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(state = ParkingState.LOADING, message = "Cargando todos...")
             try {
-                val parkings = withContext(Dispatchers.IO) {
+                val response = withContext(Dispatchers.IO) {
                     remoteRepository.getParkings()
                 }
-                _uiState.value = _uiState.value.copy(parkingList = parkings, message = "Información cargada con exito.", state = ParkingState.SUCCESSFUL)
 
-                Log.d("PARKINGS", uiState.value.state.toString())
+
+                if(response.isSuccessful){
+                    val estacionamiento = response.body()
+
+                    estacionamiento?.let {
+                        _uiState.value = _uiState.value.copy(parkingList = it, message = "Información cargada con exito.", state = ParkingState.SUCCESSFUL)
+                    }
+
+                    Log.d("PARKINGS", "SI JALO")
+                } else {
+                    _uiState.value = _uiState.value.copy(state = ParkingState.FAILURE, message = "Error en la solicitud: ${response.message()}")
+                    Log.d("PARKINGS", "NO JALO")
+                }
             } catch (e: Exception) {
                 val errorMessage = when (e) {
                     is java.net.UnknownHostException -> "No hay conexión a Internet."
@@ -53,11 +65,44 @@ class HomePkViewModel(
                     else -> "Error al cargar la información."
                 }
 
-                Log.d("STATE", e.message.toString())
+                Log.d("PARKINGS", e.message.toString())
                 _uiState.value = _uiState.value.copy(state = ParkingState.FAILURE, message = errorMessage, error = e.message.toString())
             }
         }
     }
+
+    fun fetchBestRoute(start: String, end: String) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(state = ParkingState.LOADING, message = "Cargando mejor ruta...")
+            try {
+                Log.d("ROUTES", "$start, $end")
+                val response = withContext(Dispatchers.IO) {
+                    remoteRepository.getBestRoute(start, end)
+                }
+
+                if (response.isSuccessful) {
+                    val ruta = response.body()
+                    ruta?.let {
+                        _uiState.value = _uiState.value.copy(rutaEstacionamiento = it, message = "Información cargada con éxito.", state = ParkingState.SUCCESSFUL)
+                    }
+                    Log.d("ROUTES", "SI JALO/ ${uiState.value.rutaEstacionamiento.features.last().properties.segments.last().steps}")
+                } else {
+                    _uiState.value = _uiState.value.copy(state = ParkingState.FAILURE, message = "Error en la solicitud: ${response.message()}")
+                    Log.d("ROUTES", "NO JALO ${response.message()},")
+                }
+            } catch (e: Exception) {
+                val errorMessage = when (e) {
+                    is java.net.UnknownHostException -> "No hay conexión a Internet."
+                    is java.net.SocketTimeoutException -> "La solicitud ha tardado demasiado en responder."
+                    else -> "Error al cargar la información."
+                }
+
+                Log.d("ROUTES", e.message.toString())
+                _uiState.value = _uiState.value.copy(state = ParkingState.FAILURE, message = errorMessage, error = e.message.toString())
+            }
+        }
+    }
+
 
     fun updateVehiculoSeleccionado(selection: Vehiculo) {
         _uiState.value = _uiState.value.copy(vehiculoSeleccionado = selection)
@@ -88,7 +133,7 @@ class HomePkViewModel(
         }
     }
 
-    fun updateRutaEstacionamiento(ruta: MutableList<LatLng>) {
+    fun updateRutaEstacionamiento(ruta: RouteResult) {
         _uiState.value = _uiState.value.copy(rutaEstacionamiento = ruta)
     }
 
@@ -109,16 +154,19 @@ class HomePkViewModel(
 }
 
 data class HomePkUiState(
+    // peticion remota
     val parkingList: ParkingResult = ParkingResult(),
+    val rutaEstacionamiento: RouteResult = RouteResult(),
     val state: ParkingState = ParkingState.NONE,
     val message: String = "",
     val error: String = "",
+
+    // local
     val vehiculoSeleccionado: Vehiculo = Vehiculo("PRA46G",TipoVehiculo.NINGUNO, "","","",ColorVehiculo.BLANCO),
     val verTodo: Boolean = false,
     val iniciarRecorrido: Boolean = false,
     val estacionamientoSeleccionado: ParkingResultItem = ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),
     val verEstacionamiento: Boolean = false,
-    val rutaEstacionamiento: MutableList<LatLng> = mutableListOf(),
     val currentLocation: LatLng = LatLng(0.0,0.0),
     val leerQR: Boolean = false
 )

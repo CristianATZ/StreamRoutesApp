@@ -65,9 +65,9 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.data.model.Location
-import net.streamroutes.sreamroutesapp.data.model.Opinion
-import net.streamroutes.sreamroutesapp.data.model.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.Opinion
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
@@ -230,12 +230,12 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            /*items(uiState.parkingList.size) { index ->
+            items(uiState.parkingList.size) { index ->
                 SpotItem(uiState.parkingList[index], homePkViewModel)
-            }*/
-            items(parkingList.size) { index ->
-                SpotItem(parkingList[index], homePkViewModel)
             }
+            /*items(parkingList.size) { index ->
+                SpotItem(parkingList[index], homePkViewModel)
+            }*/
         }
     }
 }

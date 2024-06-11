@@ -18,4 +18,9 @@ object Constants {
     object ParkingApi {
         val BASE_URL = "https://rumapp.free.beeceptor.com/api/"
     }
+
+    object ORsApi {
+        val BASE_URL = "https://api.openrouteservice.org/"
+        val apiKey = "5b3ce3597851110001cf6248cf096e9bff7543a9b65bfeea90be20ac"
+    }
 }
