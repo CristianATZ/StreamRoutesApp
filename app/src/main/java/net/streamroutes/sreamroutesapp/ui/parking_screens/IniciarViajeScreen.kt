@@ -13,6 +13,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,14 +27,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.LocalParking
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.Workspaces
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.SheetState
@@ -49,6 +55,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -255,16 +262,6 @@ private fun CancelarViaje(
 ) {
     val scope = rememberCoroutineScope()
 
-    /*var openDialog by remember {
-        mutableStateOf(false)
-    }
-
-    if(openDialog){
-        DialogCancelarRecorrido(homePkViewModel){
-            openDialog = !openDialog
-        }
-    }*/
-
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -279,8 +276,8 @@ private fun CancelarViaje(
             },
             shape = RoundedCornerShape(8.dp),
             colors = ButtonColors(
-                containerColor = colorScheme.primary,
-                contentColor = colorScheme.tertiary,
+                containerColor = colorScheme.tertiary,
+                contentColor = colorScheme.onTertiary,
                 disabledContentColor = Color.White,
                 disabledContainerColor = Color.White
             ),
@@ -288,116 +285,15 @@ private fun CancelarViaje(
                 .fillMaxWidth(0.95f)
                 .height(50.dp)
         ) {
-            Text(text = stringResource(id = R.string.lblYaLlegue))
+            Text(text = stringResource(id = R.string.lblYaLlegue), style = typography.titleMedium, fontWeight = FontWeight.SemiBold)
         }
 
         Spacer(modifier = Modifier.size(8.dp))
-
-        Button(
-            onClick = {
-                //openDialog = !openDialog
-                homePkViewModel.updateIniciarRecorrido(false)
-                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),)
-            },
-            shape = RoundedCornerShape(8.dp),
-            colors = ButtonColors(
-                containerColor = colorScheme.primary,
-                contentColor = colorScheme.onPrimary,
-                disabledContentColor = Color.White,
-                disabledContainerColor = Color.White
-            ),
-            modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .height(50.dp)
-        ) {
-            Text(text = stringResource(id = R.string.btnCancelarViaje))
-        }
-
-        Spacer(modifier = Modifier.size(8.dp))
-    }
-}
-
-@Composable
-private fun DialogCancelarRecorrido(
-    homePkViewModel: HomePkViewModel,
-    onDismiss: () -> Unit
-) {
-    Dialog(onDismissRequest = { onDismiss() }) {
-        Card {
-            // nombre stacionamiento y pregunta
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // nombre estacionamiento
-                Spacer(modifier = Modifier.size(16.dp))
-
-                Icon(
-                    imageVector = Icons.Filled.Cancel,
-                    contentDescription = null,
-                    tint = colorScheme.error,
-                    modifier = Modifier
-                        .size(50.dp)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                // titulo
-                Text(
-                    text = stringResource(id = R.string.lblSeguroCancelarViaje),
-                    textAlign = TextAlign.Center,
-                    style = typography.titleMedium,
-                    fontWeight = FontWeight.Bold
-                )
-            }
-
-            Spacer(modifier = Modifier.size(32.dp))
-
-            // boton comenzar
-            Button(
-                onClick = {
-                    homePkViewModel.updateIniciarRecorrido(false)
-                    homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),)
-                },
-                shape = RoundedCornerShape(0.dp),
-                colors = ButtonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = colorScheme.onPrimaryContainer,
-                    disabledContainerColor = Color.Transparent,
-                    disabledContentColor = Color.Transparent
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(text = stringResource(id = R.string.lblAceptar))
-            }
-
-            // boton cancelar
-            Button(
-                onClick = { onDismiss() },
-                shape = RoundedCornerShape(0.dp),
-                colors = ButtonColors(
-                    containerColor = colorScheme.error,
-                    contentColor = colorScheme.onError,
-                    disabledContainerColor = colorScheme.error,
-                    disabledContentColor = colorScheme.onError
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp)
-            ) {
-                Text(text = stringResource(id = R.string.lblCancelar))
-            }
-        }
     }
 }
 
 @Composable
 private fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
-    val uiState by homePkViewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -409,150 +305,60 @@ private fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        SpotItem(
-            spot = uiState.estacionamientoSeleccionado,
-            homePkViewModel = homePkViewModel
-        )
-
-        Spacer(modifier = Modifier.size(16.dp))
+        ParkingInfo(homePkViewModel)
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun SpotItem(
-    spot: ParkingResultItem,
-    homePkViewModel: HomePkViewModel
-) {
+fun ParkingInfo(homePkViewModel: HomePkViewModel) {
     val uiState by homePkViewModel.uiState.collectAsState()
-
-    val scope = rememberCoroutineScope()
-    val waves = colorScheme.secondary
-
-    var openBottomSheet by remember {
-        mutableStateOf(false)
-    }
-
-    val sheetState = SheetState(
-        skipPartiallyExpanded = true,
-        density = LocalDensity.current,
-        initialValue = SheetValue.Hidden
-    )
-
-    if(openBottomSheet){
-        BottomSheetInfo(sheetState, spot, homePkViewModel){
-            scope.launch {
-                sheetState.hide()
-            }.invokeOnCompletion { openBottomSheet = false }
-        }
-    }
-
-    val modifier = if(uiState.verEstacionamiento || uiState.iniciarRecorrido){
-        Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(0.9f)
-    } else {
-        Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth(0.9f)
-            .clickable {
-                openBottomSheet = !openBottomSheet
-            }
-    }
-
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 4.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = colorScheme.secondaryContainer,
-            contentColor = colorScheme.onSecondaryContainer
-        ),
-        modifier = modifier
+    
+    Row(
+        modifier = Modifier
+            .padding(vertical = 16.dp)
     ) {
-        Column {
-            Spacer(modifier = Modifier.size(16.dp))
-
-            Row(
+        Column(
+            modifier = Modifier
+                .background(colorScheme.tertiary, RoundedCornerShape(16.dp))
+                .clickable {
+                    homePkViewModel.updateIniciarRecorrido(false)
+                    homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),)
+                }
+        ) {
+            Icon(
+                imageVector = Icons.Filled.ArrowBack,
+                tint = colorScheme.onTertiary,
+                contentDescription = null,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Spacer(modifier = Modifier.size(16.dp))
-
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                ) {
-                    Spacer(modifier = Modifier.size(8.dp))
-
-                    Text(
-                        text = "${spot.address}, ${spot.zipcode}",
-                        style =typography.bodyLarge,
-                        //letterSpacing = 2.sp,
-                        modifier = Modifier
-                            .padding(vertical = 4.dp)
-                    )
-                }
-
-                Spacer(modifier = Modifier.size(16.dp))
-            }
+                    .size(50.dp)
+                    .padding(8.dp)
+            )
+        }
+        
+        Spacer(modifier = Modifier.size(32.dp))
+        
+        Column {
+            Text(
+                text = uiState.estacionamientoSeleccionado.name,
+                color = colorScheme.onPrimary,
+                style = typography.titleLarge,
+                fontWeight = FontWeight.Bold
+            )
+            Text(
+                text = uiState.estacionamientoSeleccionado.address,
+                color = colorScheme.onPrimary,
+                style = typography.titleMedium,
+                fontWeight = FontWeight.Normal
+            )
 
             Spacer(modifier = Modifier.size(16.dp))
 
-            // importante
-            Box(modifier = Modifier.fillMaxWidth()) {
-                Canvas(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp)
-                ) {
-                    val path = Path().apply {
-                        moveTo(0f, 0f)
-                        cubicTo(
-                            size.width * 0.25f, 40f,
-                            size.width * 0.75f, -40f,
-                            size.width, 0f
-                        )
-                        lineTo(size.width, size.height)
-                        lineTo(0f, size.height)
-                        close()
-                    }
-                    drawPath(path, color = waves)
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Spacer(modifier = Modifier.size(16.dp))
-
-                    Icon(
-                        imageVector = Icons.Filled.Star,
-                        contentDescription = null,
-                        tint = colorScheme.tertiary,
-                        modifier = Modifier
-                            .size(25.dp)
-                    )
-                    Text(
-                        text = "${spot.calification}",
-                        style = typography.titleMedium,
-                        color = colorScheme.onSecondary
-                    )
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Text(
-                        text = "$${spot.price}",
-                        style = typography.headlineSmall,
-                        fontWeight = FontWeight.Bold,
-                        color = colorScheme.tertiary
-                    )
-
-                    Spacer(modifier = Modifier.size(16.dp))
-                }
-            }
+            Text(
+                text = "X Minutos para llegar",
+                color = colorScheme.onPrimary,
+                style = typography.titleMedium,
+                fontWeight = FontWeight.Normal
+            )
         }
     }
 }

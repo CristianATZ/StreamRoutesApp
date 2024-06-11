@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
@@ -23,6 +24,7 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -51,6 +53,8 @@ fun MainParking(
     accountPkViewModel: AccountPkViewModel,
     parkingPkViewModel: ParkingPkViewModel
 ) {
+    val uiState by homePkViewModel.uiState.collectAsState()
+
     var parkingScreen by remember {
         mutableIntStateOf(0)
     }
@@ -71,8 +75,10 @@ fun MainParking(
 
     Scaffold(
         bottomBar = {
-            ParkingBottomBar(selectedScreen = parkingScreen, items = navigationItems){ item ->
-                parkingScreen = item
+            AnimatedVisibility(visible = !uiState.iniciarRecorrido) {
+                ParkingBottomBar(selectedScreen = parkingScreen, items = navigationItems){ item ->
+                    parkingScreen = item
+                }
             }
         }
     ) { paddingValues ->
