@@ -211,10 +211,12 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
         }
          */
         Log.d("ANTES", "si")
-        homePkViewModel.fetchBestRoute("8.681495,49.41461", "8.687872,49.420318")
+        homePkViewModel.fetchBestRoute("-101.150515,20.140496", "-101.149840,20.143444")
+        //Log.d("VIAJE SCREEN", uiState.rutaEstacionamiento.features.last().geometry.coordinates.toString())
     }
 
-    /*GoogleMap(
+    /*
+    GoogleMap(
         cameraPositionState = cameraPosition,
         uiSettings = MapUiSettings(zoomControlsEnabled = false),
         properties = MapProperties(
@@ -237,6 +239,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
                 icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
             )
             Polyline(
+                // uiState.value.rutaEstacionamiento.features.last().geometry.coordinates.map { doubles -> LatLng(doubles.first(), doubles.last()) }
                 points = uiState.rutaEstacionamiento,
                 color = Color.Black,
                 jointType = JointType.ROUND,
