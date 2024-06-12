@@ -230,12 +230,12 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(uiState.parkingList.size) { index ->
+            /*items(uiState.parkingList.size) { index ->
                 SpotItem(uiState.parkingList[index], homePkViewModel)
-            }
-            /*items(parkingList.size) { index ->
-                SpotItem(parkingList[index], homePkViewModel)
             }*/
+            items(parkingList.size) { index ->
+                SpotItem(parkingList[index], homePkViewModel)
+            }
         }
     }
 }

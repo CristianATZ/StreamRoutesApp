@@ -84,8 +84,9 @@ class HomePkViewModel(
                     val ruta = response.body()
                     ruta?.let {
                         _uiState.value = _uiState.value.copy(rutaEstacionamiento = it, message = "Información cargada con éxito.", state = ParkingState.SUCCESSFUL)
+                        //_uiState.value = _uiState.value.copy(coordenadas = it.features.last().geometry.coordinates.map { x -> LatLng(x.last(), x.first()) })
                     }
-                    Log.d("ROUTES", "SI JALO/ ${uiState.value.rutaEstacionamiento.features.last().properties.segments.last().steps}")
+                    Log.d("ROUTES", "SI JALO/ ${uiState.value.rutaEstacionamiento!!.features.last().properties.segments.last().steps}")
                     //Log.d("ROUTES", uiState.value.rutaEstacionamiento.features.last().geometry.coordinates.map { doubles -> LatLng(doubles.first(), doubles.last()) }.toString())
                 } else {
                     _uiState.value = _uiState.value.copy(state = ParkingState.FAILURE, message = "Error en la solicitud: ${response.message()}")
@@ -157,7 +158,7 @@ class HomePkViewModel(
 data class HomePkUiState(
     // peticion remota
     val parkingList: ParkingResult = ParkingResult(),
-    val rutaEstacionamiento: RouteResult = RouteResult(),
+    val rutaEstacionamiento: RouteResult? = null,
     val state: ParkingState = ParkingState.NONE,
     val message: String = "",
     val error: String = "",

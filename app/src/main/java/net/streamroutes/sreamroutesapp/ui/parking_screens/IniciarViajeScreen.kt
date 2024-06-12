@@ -183,39 +183,12 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
 
     var mapLoaded by remember { mutableStateOf(false) }
 
-    /*if (mapLoaded) {
+    if (mapLoaded) {
         LaunchedEffect(ubicacion, estacionamiento) {
-            *//*calcularRuta(ubicacion, estacionamiento) { ruta ->
-                val listaPuntos = mutableListOf<LatLng>()
-                for (i in ruta.indices step 2) {
-                    val latitud = ruta[i]
-                    val longitud = ruta[i + 1]
-                    listaPuntos.add(LatLng(latitud, longitud))
-                }
-                homePkViewModel.updateRutaEstacionamiento(listaPuntos)
-            }
-             *//*
-
-            homePkViewModel.fetchBestRoute(ubicacion.toString(), estacionamiento.toString())
+            homePkViewModel.fetchBestRoute("${ubicacion.longitude},${ubicacion.latitude}", "${estacionamiento.longitude},${estacionamiento.latitude}")
         }
-    }*/
-    LaunchedEffect(ubicacion, estacionamiento) {
-        /*calcularRuta(ubicacion, estacionamiento) { ruta ->
-            val listaPuntos = mutableListOf<LatLng>()
-            for (i in ruta.indices step 2) {
-                val latitud = ruta[i]
-                val longitud = ruta[i + 1]
-                listaPuntos.add(LatLng(latitud, longitud))
-            }
-            homePkViewModel.updateRutaEstacionamiento(listaPuntos)
-        }
-         */
-        Log.d("ANTES", "si")
-        homePkViewModel.fetchBestRoute("-101.150515,20.140496", "-101.149840,20.143444")
-        //Log.d("VIAJE SCREEN", uiState.rutaEstacionamiento.features.last().geometry.coordinates.toString())
     }
 
-    /*
     GoogleMap(
         cameraPositionState = cameraPosition,
         uiSettings = MapUiSettings(zoomControlsEnabled = false),
@@ -227,34 +200,36 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
         modifier = Modifier.fillMaxSize(),
         onMapLoaded = { mapLoaded = true }
     ) {
-        if (!uiState.verEstacionamiento) {
-            Marker(
-                state = MarkerState(position = ubicacion),
-                title = "Aquí estás",
-                icon = BitmapDescriptorFactory.fromResource(R.drawable.coche_izq)
-            )
-            Marker(
-                state = MarkerState(position = estacionamiento),
-                title = "Estacionamiento",
-                icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
-            )
-            Polyline(
-                // uiState.value.rutaEstacionamiento.features.last().geometry.coordinates.map { doubles -> LatLng(doubles.first(), doubles.last()) }
-                points = uiState.rutaEstacionamiento,
-                color = Color.Black,
-                jointType = JointType.ROUND,
-                startCap = RoundCap(),
-                endCap = RoundCap()
-            )
-        } else {
-            Marker(
-                state = MarkerState(position = LatLng(20.13961981092977, -101.15076362059153)),
-                title = "Estacionamiento",
-                icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking),
-                anchor = Offset(0.5f, 0.5f)
-            )
+        if (uiState.rutaEstacionamiento != null) {
+            if (!uiState.verEstacionamiento) {
+                Marker(
+                    state = MarkerState(position = ubicacion),
+                    title = "Aquí estás",
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.coche_izq)
+                )
+                Marker(
+                    state = MarkerState(position = estacionamiento),
+                    title = "Estacionamiento",
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
+                )
+
+                Polyline(
+                    points = uiState.rutaEstacionamiento!!.features.last().geometry.coordinates.map { LatLng(it.last(), it.first()) },
+                    color = Color.Black,
+                    jointType = JointType.ROUND,
+                    startCap = RoundCap(),
+                    endCap = RoundCap()
+                )
+            } else {
+                Marker(
+                    state = MarkerState(position = LatLng(20.13961981092977, -101.15076362059153)),
+                    title = "Estacionamiento",
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking),
+                    anchor = Offset(0.5f, 0.5f)
+                )
+            }
         }
-    }*/
+    }
 }
 
 @Composable

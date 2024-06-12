@@ -70,10 +70,10 @@ fun MainParking(
 
     val systemUiController = rememberSystemUiController()
 
-    LaunchedEffect(key1 = Unit) {
+    /*LaunchedEffect(key1 = Unit) {
         homePkViewModel.fetchParkings()
         Log.d("PARKINS", homePkViewModel.uiState.value.state.toString())
-    }
+    }*/
 
     Scaffold(
         bottomBar = {
