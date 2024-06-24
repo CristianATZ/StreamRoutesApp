@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.data
 
-import net.streamroutes.sreamroutesapp.data.model.Ruta
 import net.streamroutes.sreamroutesapp.data.model.bestRouteModel.RouteResult
 import net.streamroutes.sreamroutesapp.utils.Constants
 import retrofit2.Response
@@ -9,6 +8,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
+
+// https://api.openrouteservice.org/v2/directions/driving-car
 interface ORService {
     @GET("/v2/directions/driving-car")
     suspend fun getRuta(

@@ -2,9 +2,8 @@ package net.streamroutes.sreamroutesapp.data.repository
 
 import net.streamroutes.sreamroutesapp.data.ORService
 import net.streamroutes.sreamroutesapp.data.ParkingService
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResult
-import net.streamroutes.sreamroutesapp.data.model.Ruta
 import net.streamroutes.sreamroutesapp.data.model.bestRouteModel.RouteResult
+import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResult
 import net.streamroutes.sreamroutesapp.utils.Constants
 import retrofit2.Response
 

@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ExperimentalGetImage
@@ -29,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
@@ -64,20 +64,14 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
-import net.streamroutes.sreamroutesapp.data.model.Ruta
-import net.streamroutes.sreamroutesapp.data.ORService
 import net.streamroutes.sreamroutesapp.utils.BarcodeAnalyser
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.Executors
 
 @Composable
@@ -106,13 +100,17 @@ private fun IniciarViaje(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
+
+            // mapa
             MapaRecorrido(homePkViewModel)
+
+            // header con informacion
             HeaderIniciarViaje(homePkViewModel)
 
+
+            // botones llegue o regresar
             if (!uiState.verEstacionamiento) {
                 CancelarViaje(homePkViewModel)
-            } else {
-                RegresarViaje(homePkViewModel)
             }
         }
 
@@ -141,31 +139,6 @@ private fun IniciarViaje(
                 )
             }
         }
-    }
-}
-
-@Composable
-private fun RegresarViaje(homePkViewModel: HomePkViewModel) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Button(
-            onClick = {
-                homePkViewModel.updateVerEstacionamiento(false)
-                homePkViewModel.updateEstacionamientoSeleccionado(ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""))
-            },
-            shape = RoundedCornerShape(8.dp),
-            modifier = Modifier
-                .fillMaxWidth(0.95f)
-                .height(50.dp)
-        ) {
-            Text(text = stringResource(id = R.string.btnRegresarViaje))
-        }
-
-        Spacer(modifier = Modifier.size(8.dp))
     }
 }
 
@@ -288,32 +261,26 @@ private fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
 @Composable
 fun ParkingInfo(homePkViewModel: HomePkViewModel) {
     val uiState by homePkViewModel.uiState.collectAsState()
-    
+
+    val time = uiState.rutaEstacionamiento?.features?.lastOrNull()?.properties?.segments?.lastOrNull()?.duration ?: 0.0
+
+    val infoTime = "${if (time % 60 != 0.0) (time / 60).toInt() + 1 else (time / 60).toInt()} minuto(s)."
+
     Row(
         modifier = Modifier
             .padding(vertical = 16.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Start
     ) {
+
+        Spacer(modifier = Modifier.size(32.dp))
+
         Column(
             modifier = Modifier
                 .background(colorScheme.tertiary, RoundedCornerShape(16.dp))
                 .clickable {
-                    homePkViewModel.updateIniciarRecorrido(false)
-                    homePkViewModel.updateEstacionamientoSeleccionado(
-                        ParkingResultItem(
-                            0.0,
-                            0,
-                            "",
-                            "",
-                            Location(0.0, 0.0),
-                            0,
-                            "",
-                            emptyList(),
-                            "",
-                            0,
-                            "",
-                            ""
-                        ),
-                    )
+                    homePkViewModel.cancelarRecorrido()
                 }
         ) {
             Icon(
@@ -325,31 +292,38 @@ fun ParkingInfo(homePkViewModel: HomePkViewModel) {
                     .padding(8.dp)
             )
         }
-        
+
         Spacer(modifier = Modifier.size(32.dp))
-        
-        Column {
-            Text(
-                text = uiState.estacionamientoSeleccionado.name,
-                color = colorScheme.onPrimary,
-                style = typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
-            Text(
-                text = uiState.estacionamientoSeleccionado.address,
-                color = colorScheme.onPrimary,
-                style = typography.titleMedium,
-                fontWeight = FontWeight.Normal
-            )
 
-            Spacer(modifier = Modifier.size(16.dp))
+        if(time == 0.0){
+            Spacer(modifier = Modifier.size(32.dp))
+            CircularProgressIndicator(color = colorScheme.tertiary)
+        } else {
+            Column {
+                Text(
+                    text = uiState.estacionamientoSeleccionado.name,
+                    color = colorScheme.onPrimary,
+                    style = typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = uiState.estacionamientoSeleccionado.address,
+                    color = colorScheme.onPrimary,
+                    style = typography.titleMedium,
+                    fontWeight = FontWeight.Normal
+                )
 
-            Text(
-                text = "X Minutos para llegar",
-                color = colorScheme.onPrimary,
-                style = typography.titleMedium,
-                fontWeight = FontWeight.Normal
-            )
+                if(!uiState.verEstacionamiento){
+                    Spacer(modifier = Modifier.size(16.dp))
+
+                    Text(
+                        text = infoTime,
+                        color = colorScheme.onPrimary,
+                        style = typography.titleMedium,
+                        fontWeight = FontWeight.Normal
+                    )
+                }
+            }
         }
     }
 }

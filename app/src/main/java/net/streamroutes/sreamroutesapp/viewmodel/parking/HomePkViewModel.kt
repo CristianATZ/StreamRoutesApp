@@ -105,6 +105,20 @@ class HomePkViewModel(
         }
     }
 
+    fun cancelarRecorrido(){
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                iniciarRecorrido = false,
+                verEstacionamiento = false,
+                estacionamientoSeleccionado = ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),
+                rutaEstacionamiento = null,
+                state = ParkingState.NONE,
+                message = "",
+                error = ""
+            )
+        }
+    }
+
 
     fun updateVehiculoSeleccionado(selection: Vehiculo) {
         _uiState.value = _uiState.value.copy(vehiculoSeleccionado = selection)
@@ -133,14 +147,6 @@ class HomePkViewModel(
             delay(250)
             _uiState.value = _uiState.value.copy(verEstacionamiento = ver)
         }
-    }
-
-    fun updateRutaEstacionamiento(ruta: RouteResult) {
-        _uiState.value = _uiState.value.copy(rutaEstacionamiento = ruta)
-    }
-
-    fun updateCurrentLocation(current: LatLng) {
-        _uiState.value = _uiState.value.copy(currentLocation = current)
     }
 
     fun updateLeerQR(leer: Boolean) {

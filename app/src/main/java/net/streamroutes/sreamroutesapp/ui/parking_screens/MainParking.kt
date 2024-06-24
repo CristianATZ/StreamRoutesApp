@@ -77,7 +77,7 @@ fun MainParking(
 
     Scaffold(
         bottomBar = {
-            AnimatedVisibility(visible = !uiState.iniciarRecorrido) {
+            AnimatedVisibility(visible = !uiState.iniciarRecorrido && !uiState.verEstacionamiento) {
                 ParkingBottomBar(selectedScreen = parkingScreen, items = navigationItems){ item ->
                     parkingScreen = item
                 }
