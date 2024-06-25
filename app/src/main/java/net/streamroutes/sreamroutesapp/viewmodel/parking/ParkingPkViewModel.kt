@@ -2,9 +2,11 @@ package net.streamroutes.sreamroutesapp.viewmodel.parking
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
@@ -25,6 +27,17 @@ class ParkingPkViewModel(
 
     init {
         ParkingPkUiState()
+    }
+
+    fun agregarEstacionamiento(e: ParkingResultItem, t: Int, v: Vehiculo){
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                estacionamiento = e,
+                total = t,
+                vehiculo = v,
+                estacionado = true
+            )
+        }
     }
 
     fun updateVehiculo(vehiculo: Vehiculo) {

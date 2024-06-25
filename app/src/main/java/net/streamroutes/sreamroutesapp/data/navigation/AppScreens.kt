@@ -24,5 +24,9 @@ sealed class AppScreens (val route: String) {
 
     // apartado parking
     object MainParking: AppScreens("parking_screen")
+    object ViajeParking : AppScreens("viaje_screen")
+    object ParkingHome : AppScreens("home")
+    object ParkingEstacionamiento : AppScreens("estacionamiento_screen")
+    object ParkingAccount : AppScreens("account_screen")
 }
 

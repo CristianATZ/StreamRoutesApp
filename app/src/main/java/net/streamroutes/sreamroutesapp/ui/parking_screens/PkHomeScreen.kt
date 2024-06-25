@@ -61,55 +61,51 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.Opinion
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.TipoVehiculo
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Vehiculo
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 
 @Composable
 fun ParkingHomeScreen(
     homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel,
-    parkingPkViewModel: ParkingPkViewModel,
-    qrScanner: () -> Unit
+    navHostController: NavHostController,
+    viajePkViewModel: ViajePkViewModel,
 ) {
     val uiState by homePkViewModel.uiState.collectAsState()
 
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        AnimatedVisibility(visible = !uiState.iniciarRecorrido && !uiState.verEstacionamiento) {
-            Column {
-                Header(homePkViewModel)
+    Column {
+        Header(homePkViewModel)
 
-                AnimatedVisibility(visible = !uiState.verTodo) {
-                    Vehicle(homePkViewModel, accountPkViewModel)
-                }
-
-                Spots(homePkViewModel)
-            }
+        AnimatedVisibility(visible = !uiState.verTodo) {
+            Vehicle(homePkViewModel, accountPkViewModel)
         }
 
-        if (uiState.iniciarRecorrido || uiState.verEstacionamiento) {
-            IniciarViajeScreen(homePkViewModel, parkingPkViewModel) {
-                qrScanner()
-            }
-        }
+        Spots(homePkViewModel, viajePkViewModel, navHostController)
     }
 }
 
 
 @Composable
-private fun Spots(homePkViewModel: HomePkViewModel) {
+private fun Spots(
+    homePkViewModel: HomePkViewModel,
+    viajePkViewModel: ViajePkViewModel,
+    navHostController: NavHostController
+) {
     val uiState by homePkViewModel.uiState.collectAsState()
 
     // Hardcoded list of ParkingResultItem objects (replace with your actual data)
@@ -234,7 +230,7 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
                 SpotItem(uiState.parkingList[index], homePkViewModel)
             }*/
             items(parkingList.size) { index ->
-                SpotItem(parkingList[index], homePkViewModel)
+                SpotItem(parkingList[index], homePkViewModel, viajePkViewModel, navHostController)
             }
         }
     }
@@ -245,11 +241,10 @@ private fun Spots(homePkViewModel: HomePkViewModel) {
 @Composable
 private fun SpotItem(
     spot: ParkingResultItem,
-    homePkViewModel: HomePkViewModel
+    homePkViewModel: HomePkViewModel,
+    viajePkViewModel: ViajePkViewModel,
+    navHostController: NavHostController
 ) {
-
-    val uiState by homePkViewModel.uiState.collectAsState()
-
     val scope = rememberCoroutineScope()
 
     var openBottomSheet by remember {
@@ -263,24 +258,11 @@ private fun SpotItem(
     )
 
     if(openBottomSheet){
-        BottomSheetInfo(sheetState, spot, homePkViewModel){
+        BottomSheetInfo(sheetState, spot, homePkViewModel, navHostController, viajePkViewModel){
             scope.launch {
                 sheetState.hide()
             }.invokeOnCompletion { openBottomSheet = false }
         }
-    }
-
-    val modifier = if(uiState.verEstacionamiento || uiState.iniciarRecorrido){
-        Modifier
-            .padding(vertical = 4.dp)
-            .fillMaxWidth(0.9f)
-    } else {
-        Modifier
-            .padding(vertical = 4.dp)
-            .fillMaxWidth(0.95f)
-            .clickable {
-                openBottomSheet = !openBottomSheet
-            }
     }
 
     Card(
@@ -290,7 +272,12 @@ private fun SpotItem(
         colors = CardDefaults.cardColors(
             containerColor = Color.White
         ),
-        modifier = modifier
+        modifier = Modifier
+            .padding(vertical = 4.dp)
+            .fillMaxWidth(0.95f)
+            .clickable {
+                openBottomSheet = !openBottomSheet
+            }
     ) {
         Row(
             modifier = Modifier
@@ -380,8 +367,13 @@ fun BottomSheetInfo(
     sheetState: SheetState,
     spot: ParkingResultItem,
     homePkViewModel: HomePkViewModel,
+    navHostController: NavHostController,
+    viajePkViewModel: ViajePkViewModel,
     onDismiss: () -> Unit
 ) {
+    val homeUiState by homePkViewModel.uiState.collectAsState()
+    val viajeUiState by viajePkViewModel.uiState.collectAsState()
+
     val scope = rememberCoroutineScope()
 
     ModalBottomSheet(
@@ -451,12 +443,18 @@ fun BottomSheetInfo(
                 button1Text = stringResource(id = R.string.btnIniciarRecorrido),
                 button1OnClick = {
                     scope.launch {
-                        onDismiss()
-                        delay(200)
-                        onDismiss()
-                        homePkViewModel.updateIniciarRecorrido(true)
-                        Log.d("ESTACIONAMIENTO", spot.toString())
-                        homePkViewModel.updateEstacionamientoSeleccionado(spot)
+                        onDismiss().also {
+                            viajePkViewModel.updateVehiculo(
+                                homeUiState.vehiculoSeleccionado
+                            )
+                            viajePkViewModel.updateEstacionamiento(
+                                spot
+                            )
+                        }
+
+                        delay(150)
+
+                        navHostController.navigate(AppScreens.ViajeParking.route)
                     }
                 },
                 color1 = ButtonDefaults.buttonColors(
@@ -467,9 +465,18 @@ fun BottomSheetInfo(
                 button2Text = stringResource(id = R.string.btnVerMapa),
                 button2OnClick = {
                     scope.launch {
-                        onDismiss()
-                        homePkViewModel.updateEstacionamientoSeleccionado(spot)
-                        homePkViewModel.updateVerEstacionamiento(true)
+                        onDismiss().also {
+                            viajePkViewModel.updateEstacionamiento(
+                                spot
+                            )
+                            viajePkViewModel.updateVehiculo(
+                                null
+                            )
+                        }
+
+                        delay(150)
+
+                        navHostController.navigate(AppScreens.ViajeParking.route)
                     }
                 },
                 color2 = ButtonDefaults.buttonColors(
@@ -664,7 +671,7 @@ private fun Header(homePkViewModel: HomePkViewModel) {
         Spacer(modifier = Modifier.size(16.dp))
 
         // texto e imagen
-        AnimatedVisibility(visible = (!uiState.iniciarRecorrido && !uiState.verTodo)) {
+        AnimatedVisibility(visible = !uiState.verTodo) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center

@@ -6,10 +6,15 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import net.streamroutes.sreamroutesapp.ui.parking_screens.IniciarViajeScreen
 import net.streamroutes.sreamroutesapp.ui.parking_screens.MainParking
+import net.streamroutes.sreamroutesapp.ui.parking_screens.ParkingAccountScreen
+import net.streamroutes.sreamroutesapp.ui.parking_screens.ParkingEstacionamientoScreen
+import net.streamroutes.sreamroutesapp.ui.parking_screens.ParkingHomeScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.MainScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.ChangeScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.LanguageScreen
@@ -22,6 +27,7 @@ import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
@@ -31,6 +37,8 @@ import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
 fun AppNavigation(
+    navHostController: NavHostController,
+
     myViewModel: MyViewModel,
     mainViewModel: MainViewModel = viewModel(),
     changeViewModel: ChangeViewModel = viewModel(),
@@ -38,21 +46,18 @@ fun AppNavigation(
     configurationViewModel: ConfigurationViewModel = viewModel(),
     fastViewModel: FastViewModel = viewModel(),
 
-    homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel = viewModel(),
-    parkingPkViewModel: ParkingPkViewModel
+    homePkViewModel: HomePkViewModel,
+    parkingPkViewModel: ParkingPkViewModel,
+    viajePkViewModel: ViajePkViewModel
 ) {
-
-    val NavController = rememberNavController()
-
-
-    NavHost(navController = NavController, startDestination = AppScreens.SelectOptionScreen
+    NavHost(navController = navHostController, startDestination = AppScreens.SelectOptionScreen
         .route) {
         // splash screen
         composable(
             route = AppScreens.SplashScreen.route
         ){
-            SplashScreen(NavController,myViewModel)
+            SplashScreen(navHostController,myViewModel)
         }
         // pantalla principal
         composable(
@@ -72,7 +77,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            RegistrationScreen(myViewModel,NavController)
+            RegistrationScreen(myViewModel,navHostController)
         }
         // confirmar telefono pantalla
         composable(
@@ -82,7 +87,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            VerificationScreen(myViewModel,NavController)
+            VerificationScreen(myViewModel,navHostController)
         }
         // cambiar contraseña pantalla
         composable(
@@ -92,7 +97,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            ChangeScreen(changeViewModel, NavController)
+            ChangeScreen(changeViewModel, navHostController)
         }
         // inicio de sesion pantalla
         composable(
@@ -102,7 +107,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            LoginScreen(loginViewModel, NavController)
+            LoginScreen(loginViewModel, navHostController)
         }
 
         // LANGUAGE SCREEN
@@ -113,17 +118,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            LanguageScreen(myViewModel, NavController)
-        }
-
-        composable(
-            route = AppScreens.MainParking.route,
-            enterTransition = { slideInVertically(initialOffsetY = { it }) },
-            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
-            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
-            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
-        ){
-            MainParking(homePkViewModel, accountPkViewModel, parkingPkViewModel)
+            LanguageScreen(myViewModel, navHostController)
         }
 
         composable(
@@ -133,7 +128,59 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            SelectOptionScreen(NavController)
+            SelectOptionScreen(navHostController)
+        }
+
+
+        // estacionamiento
+        composable(
+            route = AppScreens.MainParking.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
+            MainParking(homePkViewModel, accountPkViewModel, parkingPkViewModel, viajePkViewModel)
+        }
+    }
+}
+
+@Composable
+fun ParkingNavigation(
+    navHostController: NavHostController,
+    accountPkViewModel: AccountPkViewModel,
+    homePkViewModel: HomePkViewModel,
+    parkingPkViewModel: ParkingPkViewModel,
+    viajePkViewModel: ViajePkViewModel,
+) {
+
+    NavHost(navController = navHostController, startDestination = AppScreens.ParkingHome.route) {
+        composable(AppScreens.ParkingHome.route) {
+            ParkingHomeScreen(
+                homePkViewModel,
+                accountPkViewModel,
+                navHostController,
+                viajePkViewModel)
+        }
+        composable(AppScreens.ParkingAccount.route) {
+            ParkingAccountScreen(accountPkViewModel)
+        }
+        composable(AppScreens.ParkingEstacionamiento.route) {
+            ParkingEstacionamientoScreen(parkingPkViewModel)
+        }
+
+        composable(
+            route = AppScreens.ViajeParking.route,
+            enterTransition = { slideInVertically(initialOffsetY = { it }) },
+            exitTransition = { slideOutVertically(targetOffsetY = { -it }) },
+            popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
+            popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
+        ){
+            IniciarViajeScreen(
+                viajePkViewModel = viajePkViewModel,
+                parkingPkViewModel = parkingPkViewModel,
+                navHostController = navHostController
+            )
         }
     }
 }

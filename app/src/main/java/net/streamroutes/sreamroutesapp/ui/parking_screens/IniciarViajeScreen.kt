@@ -26,10 +26,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -43,7 +45,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -51,6 +52,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.JointType
@@ -67,28 +69,28 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.utils.BarcodeAnalyser
-import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 import java.util.concurrent.Executors
 
 @Composable
-fun IniciarViajeScreen(homePkViewModel: HomePkViewModel, parkingPkViewModel: ParkingPkViewModel, qrScanner: () -> Unit) {
-    IniciarViaje(homePkViewModel, parkingPkViewModel){
-        qrScanner()
-    }
+fun IniciarViajeScreen(
+    viajePkViewModel: ViajePkViewModel,
+    parkingPkViewModel: ParkingPkViewModel,
+    navHostController: NavHostController
+) {
+    IniciarViaje(viajePkViewModel, parkingPkViewModel, navHostController)
 }
 
 @androidx.annotation.OptIn(ExperimentalGetImage::class)
 @Composable
 private fun IniciarViaje(
-    homePkViewModel: HomePkViewModel,
+    viajePkViewModel: ViajePkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
-    qrScanner: () -> Unit
+    navHostController: NavHostController
 ) {
-    val uiState by homePkViewModel.uiState.collectAsState()
+    val uiState by viajePkViewModel.uiState.collectAsState()
 
     Box(
         modifier = Modifier
@@ -102,15 +104,14 @@ private fun IniciarViaje(
         ) {
 
             // mapa
-            MapaRecorrido(homePkViewModel)
+            MapaRecorrido(viajePkViewModel)
 
             // header con informacion
-            HeaderIniciarViaje(homePkViewModel)
-
+            HeaderIniciarViaje(viajePkViewModel, navHostController)
 
             // botones llegue o regresar
-            if (!uiState.verEstacionamiento) {
-                CancelarViaje(homePkViewModel)
+            if (uiState.vehiculoSeleccionado != null) {
+                CancelarViaje(viajePkViewModel)
             }
         }
 
@@ -119,35 +120,59 @@ private fun IniciarViaje(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                BarCodeScanner(homePkViewModel, parkingPkViewModel){
-                    qrScanner()
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+            ){
+                // qr scanner y texto
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    BarCodeScanner(viajePkViewModel, parkingPkViewModel, navHostController)
+
+                    Spacer(modifier = Modifier.size(48.dp))
+
+                    Text(
+                        text = stringResource(id = R.string.lblAnalizaElCodigo),
+                        style = typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth(0.9f)
+                    )
                 }
 
-                Spacer(modifier = Modifier.size(48.dp))
-
-                Text(
-                    text = stringResource(id = R.string.lblAnalizaElCodigo),
-                    style = typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth(0.9f)
-                )
+                // boton para cerrar el scanner
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.Start,
+                    verticalArrangement = Arrangement.Top
+                ) {
+                    IconButton(onClick = { viajePkViewModel.updateLeerQR(false) }) {
+                        Icon(
+                            imageVector = Icons.Filled.Close,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(50.dp)
+                        )
+                    }
+                }
             }
         }
     }
 }
 
 @Composable
-private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
-    val uiState by homePkViewModel.uiState.collectAsState()
+private fun MapaRecorrido(
+    viajePkViewModel: ViajePkViewModel
+) {
+    val uiState by viajePkViewModel.uiState.collectAsState()
 
-    val estacionamiento = remember(uiState.estacionamientoSeleccionado.location) {
-        LatLng(uiState.estacionamientoSeleccionado.location.latitude, uiState.estacionamientoSeleccionado.location.longitude)
+    val estacionamiento = remember(uiState.estacionamientoSeleccionado!!.location) {
+        LatLng(uiState.estacionamientoSeleccionado!!.location.latitude, uiState.estacionamientoSeleccionado!!.location.longitude)
     }
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(estacionamiento, 15f)
@@ -158,7 +183,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
 
     if (mapLoaded) {
         LaunchedEffect(ubicacion, estacionamiento) {
-            homePkViewModel.fetchBestRoute("${ubicacion.longitude},${ubicacion.latitude}", "${estacionamiento.longitude},${estacionamiento.latitude}")
+            viajePkViewModel.fetchBestRoute("${ubicacion.longitude},${ubicacion.latitude}", "${estacionamiento.longitude},${estacionamiento.latitude}")
         }
     }
 
@@ -173,33 +198,30 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
         modifier = Modifier.fillMaxSize(),
         onMapLoaded = { mapLoaded = true }
     ) {
-        if (uiState.rutaEstacionamiento != null) {
-            if (!uiState.verEstacionamiento) {
+
+        if(mapLoaded){
+            Marker(
+                state = MarkerState(position = estacionamiento),
+                title = "Estacionamiento",
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
+            )
+
+            if(uiState.vehiculoSeleccionado != null){
                 Marker(
                     state = MarkerState(position = ubicacion),
                     title = "Aquí estás",
                     icon = BitmapDescriptorFactory.fromResource(R.drawable.coche_izq)
                 )
-                Marker(
-                    state = MarkerState(position = estacionamiento),
-                    title = "Estacionamiento",
-                    icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
-                )
 
-                Polyline(
-                    points = uiState.rutaEstacionamiento!!.features.last().geometry.coordinates.map { LatLng(it.last(), it.first()) },
-                    color = Color.Black,
-                    jointType = JointType.ROUND,
-                    startCap = RoundCap(),
-                    endCap = RoundCap()
-                )
-            } else {
-                Marker(
-                    state = MarkerState(position = LatLng(20.13961981092977, -101.15076362059153)),
-                    title = "Estacionamiento",
-                    icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking),
-                    anchor = Offset(0.5f, 0.5f)
-                )
+                if(uiState.rutaEstacionamiento != null){
+                    Polyline(
+                        points = uiState.rutaEstacionamiento!!.features.last().geometry.coordinates.map { LatLng(it.last(), it.first()) },
+                        color = Color.Black,
+                        jointType = JointType.ROUND,
+                        startCap = RoundCap(),
+                        endCap = RoundCap()
+                    )
+                }
             }
         }
     }
@@ -207,7 +229,7 @@ private fun MapaRecorrido(homePkViewModel: HomePkViewModel) {
 
 @Composable
 private fun CancelarViaje(
-    homePkViewModel: HomePkViewModel
+    viajePkViewModel: ViajePkViewModel
 ) {
     val scope = rememberCoroutineScope()
 
@@ -220,7 +242,7 @@ private fun CancelarViaje(
         Button(
             onClick = {
                 scope.launch {
-                    homePkViewModel.updateLeerQR(true)
+                    viajePkViewModel.updateLeerQR(true)
                 }
             },
             shape = RoundedCornerShape(8.dp),
@@ -234,7 +256,7 @@ private fun CancelarViaje(
                 .fillMaxWidth(0.95f)
                 .height(50.dp)
         ) {
-            Text(text = stringResource(id = R.string.lblYaLlegue), style = typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            Text(text = stringResource(id = R.string.btnLlegue), style = typography.titleMedium, fontWeight = FontWeight.SemiBold)
         }
 
         Spacer(modifier = Modifier.size(8.dp))
@@ -242,8 +264,10 @@ private fun CancelarViaje(
 }
 
 @Composable
-private fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
-
+private fun HeaderIniciarViaje(
+    viajePkViewModel: ViajePkViewModel,
+    navHostController: NavHostController
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -254,13 +278,13 @@ private fun HeaderIniciarViaje(homePkViewModel: HomePkViewModel) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        ParkingInfo(homePkViewModel)
+        ParkingInfo(viajePkViewModel, navHostController)
     }
 }
 
 @Composable
-fun ParkingInfo(homePkViewModel: HomePkViewModel) {
-    val uiState by homePkViewModel.uiState.collectAsState()
+fun ParkingInfo(viajePkViewModel: ViajePkViewModel, navHostController: NavHostController) {
+    val uiState by viajePkViewModel.uiState.collectAsState()
 
     val time = uiState.rutaEstacionamiento?.features?.lastOrNull()?.properties?.segments?.lastOrNull()?.duration ?: 0.0
 
@@ -280,7 +304,7 @@ fun ParkingInfo(homePkViewModel: HomePkViewModel) {
             modifier = Modifier
                 .background(colorScheme.tertiary, RoundedCornerShape(16.dp))
                 .clickable {
-                    homePkViewModel.cancelarRecorrido()
+                    navHostController.popBackStack()
                 }
         ) {
             Icon(
@@ -301,19 +325,19 @@ fun ParkingInfo(homePkViewModel: HomePkViewModel) {
         } else {
             Column {
                 Text(
-                    text = uiState.estacionamientoSeleccionado.name,
+                    text = uiState.estacionamientoSeleccionado!!.name,
                     color = colorScheme.onPrimary,
                     style = typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = uiState.estacionamientoSeleccionado.address,
+                    text = uiState.estacionamientoSeleccionado!!.address,
                     color = colorScheme.onPrimary,
                     style = typography.titleMedium,
                     fontWeight = FontWeight.Normal
                 )
 
-                if(!uiState.verEstacionamiento){
+                if(uiState.vehiculoSeleccionado != null){
                     Spacer(modifier = Modifier.size(16.dp))
 
                     Text(
@@ -331,12 +355,11 @@ fun ParkingInfo(homePkViewModel: HomePkViewModel) {
 @ExperimentalGetImage
 @Composable
 fun BarCodeScanner(
-    homePkViewModel: HomePkViewModel,
+    viajePkViewModel: ViajePkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
-    qrScanner: () -> Unit
+    navHostController: NavHostController
 ) {
-
-    val uiState by homePkViewModel.uiState.collectAsState()
+    val viajeUiState by viajePkViewModel.uiState.collectAsState()
 
     val scope = rememberCoroutineScope()
 
@@ -362,14 +385,18 @@ fun BarCodeScanner(
                 .also {
                     it.setAnalyzer(cameraExecutor, BarcodeAnalyser{
                         scope.launch {
-                            parkingPkViewModel.updateEstacionamiento(uiState.estacionamientoSeleccionado)
-                            parkingPkViewModel.updateTotal(uiState.estacionamientoSeleccionado.price)
-                            parkingPkViewModel.updateVehiculo(uiState.vehiculoSeleccionado)
-                            parkingPkViewModel.updateEstacionado(true)
-                            homePkViewModel.resetViewModel()
+                            parkingPkViewModel.agregarEstacionamiento(
+                                e = viajeUiState.estacionamientoSeleccionado!!,
+                                t = viajeUiState.estacionamientoSeleccionado!!.price,
+                                v = viajeUiState.vehiculoSeleccionado!!
+                            )
+
+                            viajePkViewModel.updateLeerQR(false)
+
                             delay(250)
+
+                            navHostController.popBackStack()
                         }
-                        qrScanner()
                     })
                 }
 
@@ -392,44 +419,3 @@ fun BarCodeScanner(
         modifier = Modifier
             .size(width = 250.dp, height = 250.dp))
 }
-
-/*
-private fun calcularRuta(
-    inicio: LatLng,
-    fin: LatLng,
-    callback: (List<Double>) -> Unit
-){
-    val retrofit = Retrofit.Builder()
-        .baseUrl("https://api.openrouteservice.org/")
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
-    val puntos = mutableListOf<LatLng>()
-    CoroutineScope(Dispatchers.IO).launch {
-        val response = retrofit.create(ORService::class.java)
-            .getRuta(
-                key = "5b3ce3597851110001cf6248cf096e9bff7543a9b65bfeea90be20ac",
-                start = "${inicio.longitude},${inicio.latitude}",
-                end = "${fin.longitude},${fin.latitude}"
-            )
-        if(response.isSuccessful){
-            // Log.d("SI SE PUDO", response.body().toString())
-            extraccionJSON(response.body(), puntos)
-            val listaPuntos = puntos.flatMap {
-                listOf(it.latitude, it.longitude)
-            }
-            callback(listaPuntos)
-        } else {
-            // Log.d("NO SE PUDO LOCO", "CHEQUELE PRIMO")
-        }
-    }
-}
-
-private fun extraccionJSON(
-    ruta: Ruta?,
-    puntos: MutableList<LatLng>
-) {
-    ruta?.features?.firstOrNull()?.geometry?.coordinates?.forEach {
-        val punto = LatLng(it[1], it[0])
-        puntos.add(punto)
-    }
-}*/

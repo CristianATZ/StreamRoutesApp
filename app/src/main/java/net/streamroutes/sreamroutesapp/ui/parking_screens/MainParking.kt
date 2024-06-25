@@ -1,13 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
-import android.util.Log
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -25,26 +18,27 @@ import androidx.compose.material3.NavigationBarItemColors
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
+import net.streamroutes.sreamroutesapp.data.navigation.ParkingNavigation
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.changeStatusBar
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 
 data class NavigationItem(
-    val option: Int,
-    val iconUnselected: ImageVector,
+    val route: String,
+    val icon: ImageVector,
     val iconSelected: ImageVector,
     val label: String
 )
@@ -53,19 +47,15 @@ data class NavigationItem(
 fun MainParking(
     homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel,
-    parkingPkViewModel: ParkingPkViewModel
+    parkingPkViewModel: ParkingPkViewModel,
+    viajePkViewModel: ViajePkViewModel,
 ) {
-    val uiState by homePkViewModel.uiState.collectAsState()
-
-    var parkingScreen by remember {
-        mutableIntStateOf(0)
-    }
-
+    val navHostController = rememberNavController()
     // lista de items
     val navigationItems = listOf(
-        NavigationItem(0, Icons.Outlined.Home, Icons.Filled.Home, stringResource(id = R.string.lblInicio)),
-        NavigationItem(1, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, stringResource(id = R.string.lblEstacionamiento)),
-        NavigationItem(2, Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, stringResource(id = R.string.lblCuenta))
+        NavigationItem(AppScreens.ParkingHome.route, Icons.Outlined.Home, Icons.Filled.Home, stringResource(id = R.string.lblInicio)),
+        NavigationItem(AppScreens.ParkingEstacionamiento.route, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, stringResource(id = R.string.lblEstacionamiento)),
+        NavigationItem(AppScreens.ParkingAccount.route, Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, stringResource(id = R.string.lblCuenta))
     )
 
     val systemUiController = rememberSystemUiController()
@@ -75,61 +65,52 @@ fun MainParking(
         Log.d("PARKINS", homePkViewModel.uiState.value.state.toString())
     }*/
 
+    val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+
     Scaffold(
         bottomBar = {
-            AnimatedVisibility(visible = !uiState.iniciarRecorrido && !uiState.verEstacionamiento) {
-                ParkingBottomBar(selectedScreen = parkingScreen, items = navigationItems){ item ->
-                    parkingScreen = item
-                }
+            AnimatedVisibility(
+                visible = navBackStackEntry?.destination?.route in listOf(
+                    AppScreens.ParkingHome.route,
+                    AppScreens.ParkingAccount.route,
+                    AppScreens.ParkingEstacionamiento.route
+                ),
+            ) {
+                ParkingBottomBar(navHostController = navHostController, navList = navigationItems)
             }
         }
     ) { paddingValues ->
-        Column(Modifier.padding(paddingValues)) {
-            changeStatusBar(systemUiController, Color.Black, Color(0xFF001A40))
-            AnimatedContent(
-                targetState = parkingScreen,
-                label = "",
-                transitionSpec = {
-                    if(parkingScreen > initialState )
-                        slideInHorizontally(initialOffsetX = { it }) + fadeIn() togetherWith
-                                slideOutHorizontally(targetOffsetX = {-it}) + fadeOut()
-                    else
-                        slideInHorizontally(initialOffsetX = { -it }) + fadeIn() togetherWith
-                                slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
-                }
-            ) {
-                when(it) {
-                    1 -> ParkingEstacionamientoScreen(parkingPkViewModel)
-                    2 -> ParkingAccountScreen(accountPkViewModel)
-                    else -> ParkingHomeScreen(
-                        homePkViewModel,
-                        accountPkViewModel,
-                        parkingPkViewModel
-                    ){
-                        parkingScreen = 1
-                    }
-                }
-            }
+        changeStatusBar(systemUiController, Color.Black, Color(0xFF001A40))
+        Column(modifier = Modifier.padding(paddingValues)) {
+            ParkingNavigation(
+                homePkViewModel = homePkViewModel,
+                accountPkViewModel = accountPkViewModel,
+                parkingPkViewModel = parkingPkViewModel,
+                viajePkViewModel = viajePkViewModel,
+                navHostController = navHostController
+            )
         }
     }
 }
 
 @Composable
 fun ParkingBottomBar(
-    selectedScreen: Int,
-    items: List<NavigationItem>,
-    onChangeScreen: (Int) -> Unit,
+    navHostController: NavHostController,
+    navList: List<NavigationItem>
 ) {
     NavigationBar(
         containerColor = colorScheme.primary
     ) {
-        items.forEach { item ->
+        val navBackStackEntry by navHostController.currentBackStackEntryAsState()
+        val currentRoute = navBackStackEntry?.destination?.route
+
+        navList.forEach { item ->
             NavigationBarItem(
-                selected = selectedScreen == item.option,
-                onClick = { onChangeScreen(item.option) },
+                selected = currentRoute == item.route,
+                onClick = { navHostController.navigate(item.route) },
                 icon = {
                     Icon(
-                        imageVector = if (selectedScreen == item.option) item.iconSelected else item.iconUnselected,
+                        imageVector = if(currentRoute == item.route) item.iconSelected else item.icon,
                         contentDescription = "icono de ${item.label}"
                     )
                 },
