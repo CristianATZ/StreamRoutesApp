@@ -18,6 +18,8 @@ import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.ui.Theme.RumaAppTheme
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
@@ -38,9 +40,12 @@ class MainActivity : ComponentActivity() {
             val parkingService = RetrofitParkingService.retrofitService
             val routesService = RetrofitOpenRouteService.retrofitService
             val repository by lazy { NetworkRemoteReposiroty(parkingService, routesService) }
+
+            // viewmodels de esatcionamiento
             val parkingPkViewModel: ParkingPkViewModel by viewModels { ParkingPkViewModelFactory(repository) }
             val homePkViewModel: HomePkViewModel by viewModels { HomePkViewModelFactory(repository) }
             val viajePkViewModel : ViajePkViewModel by viewModels { ViajePkViewModelFactory(repository) }
+            val apartarPkViewModel: ApartarPkViewModel by viewModels { ApartarPkViewModelFactory(repository) }
 
             RumaAppTheme (false){
                 // A surface container using the 'background' color from the theme
@@ -52,7 +57,8 @@ class MainActivity : ComponentActivity() {
                         myViewModel = myViewModel,
                         parkingPkViewModel = parkingPkViewModel,
                         homePkViewModel = homePkViewModel,
-                        viajePkViewModel = viajePkViewModel
+                        viajePkViewModel = viajePkViewModel,
+                        apartarPkViewModel = apartarPkViewModel
                     )
                 }
             }

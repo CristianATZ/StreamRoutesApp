@@ -385,4 +385,10 @@
     <string name="lblTu">Tu</string>
     <string name="lblEsta">Esta</string>
     <string name="lblAqui">Aqui.</string>
+    <string name="lblHrs">Hr(s)</string>
+    <string name="lblCuantoTiempo">¿Cuanto tiempo</string>
+    <string name="lblVasAQuedarte">vas a quedarte?</string>
+    <string name="lblHora">Hora</string>
+    <string name="lblHoraInicio">Hora inicio</string>
+    <string name="lblHoraFin">Hora fin</string>
 </resources>

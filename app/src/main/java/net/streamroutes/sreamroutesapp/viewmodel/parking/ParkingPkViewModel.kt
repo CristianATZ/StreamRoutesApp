@@ -13,8 +13,8 @@ import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
 
 data class HistorialItem(
-    val vehiculo: Vehiculo,
-    val estacionamiento: ParkingResultItem,
+    val vehiculo: Vehiculo?,
+    val estacionamiento: ParkingResultItem?,
     val tiempo: Int,
     val total: Int
 )
@@ -25,63 +25,44 @@ class ParkingPkViewModel(
     private val _uiState = MutableStateFlow(ParkingPkUiState())
     val uiState: StateFlow<ParkingPkUiState> = _uiState.asStateFlow()
 
-    init {
-        ParkingPkUiState()
-    }
-
     fun agregarEstacionamiento(e: ParkingResultItem, t: Int, v: Vehiculo){
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 estacionamiento = e,
                 total = t,
-                vehiculo = v,
-                estacionado = true
+                vehiculo = v
             )
         }
     }
 
-    fun updateVehiculo(vehiculo: Vehiculo) {
-        _uiState.value = _uiState.value.copy(vehiculo = vehiculo)
-    }
-
-    fun updateEstacionamiento(estacionamiento: ParkingResultItem) {
-        _uiState.value = _uiState.value.copy(estacionamiento = estacionamiento)
-    }
-
-    fun updateEstacionado(estacionado: Boolean) {
-        _uiState.value = _uiState.value.copy(estacionado = estacionado)
-    }
-
-    fun updateTotal(total: Int) {
-        _uiState.value = _uiState.value.copy(total = total)
-    }
-
-    fun updateTiempo(tiempo: Int) {
-        _uiState.value = _uiState.value.copy(tiempo = tiempo)
-    }
-
-    fun updatePagado(pagado: Boolean) {
-        _uiState.value = _uiState.value.copy(pagado = pagado)
-    }
-
-    fun updateHistorial(new: HistorialItem) {
-        _uiState.value = _uiState.value.copy(historial = _uiState.value.historial + new)
-    }
-
-    fun updateVerHistorial(ver: Boolean) {
-        _uiState.value = _uiState.value.copy(verHistorial = ver)
+    fun apartarLugar(a: Boolean, v: Vehiculo, e: ParkingResultItem, hi: Int, mi: Int, hf: Int, t: Int) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                apartado = a,
+                estacionamiento = e,
+                vehiculo = v,
+                horaInicio = hi,
+                minutoInicio = mi,
+                horaIFnal = hf,
+                total = t
+            )
+        }
     }
 }
 
 data class ParkingPkUiState(
-    val estacionado: Boolean = false,
-    val estacionamiento: ParkingResultItem = ParkingResultItem(0.0,0,"","", Location(0.0,0.0),0,"", emptyList(),"",0,"", ""),
-    val vehiculo: Vehiculo = Vehiculo("",TipoVehiculo.NINGUNO, "","","",ColorVehiculo.BLANCO),
+    val estacionamiento: ParkingResultItem? = null,
+    val vehiculo: Vehiculo? = null,
     val total: Int = 0,
     val tiempo: Int = 0,
     val pagado: Boolean = false,
-    val historial: List<HistorialItem> = emptyList(),
-    val verHistorial: Boolean = false
+
+    // apartar
+    val apartado: Boolean = false,
+    val tiempoApartado: Int = 0,
+    val horaInicio: Int = 0,
+    val minutoInicio: Int = 0,
+    val horaIFnal: Int = 0,
 )
 
 @Suppress("UNCHECKED_CAST")

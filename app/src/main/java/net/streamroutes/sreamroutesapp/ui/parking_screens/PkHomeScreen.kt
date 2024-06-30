@@ -1,6 +1,8 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
-import android.util.Log
+import android.annotation.SuppressLint
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -63,7 +65,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
@@ -73,18 +74,20 @@ import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.TipoVehiculo
 import net.streamroutes.sreamroutesapp.viewmodel.parking.Vehiculo
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
+import java.time.LocalTime
 
 @Composable
 fun ParkingHomeScreen(
     homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel,
-    navHostController: NavHostController,
+    apartarPkViewModel: ApartarPkViewModel,
     viajePkViewModel: ViajePkViewModel,
+    navHostController: NavHostController,
 ) {
     val uiState by homePkViewModel.uiState.collectAsState()
 
@@ -95,7 +98,7 @@ fun ParkingHomeScreen(
             Vehicle(homePkViewModel, accountPkViewModel)
         }
 
-        Spots(homePkViewModel, viajePkViewModel, navHostController)
+        Spots(homePkViewModel, viajePkViewModel, apartarPkViewModel, navHostController)
     }
 }
 
@@ -104,6 +107,7 @@ fun ParkingHomeScreen(
 private fun Spots(
     homePkViewModel: HomePkViewModel,
     viajePkViewModel: ViajePkViewModel,
+    apartarPkViewModel: ApartarPkViewModel,
     navHostController: NavHostController
 ) {
     val uiState by homePkViewModel.uiState.collectAsState()
@@ -230,19 +234,21 @@ private fun Spots(
                 SpotItem(uiState.parkingList[index], homePkViewModel)
             }*/
             items(parkingList.size) { index ->
-                SpotItem(parkingList[index], homePkViewModel, viajePkViewModel, navHostController)
+                SpotItem(parkingList[index], homePkViewModel, viajePkViewModel, apartarPkViewModel, navHostController)
             }
         }
     }
 }
 
 
+@SuppressLint("NewApi")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SpotItem(
     spot: ParkingResultItem,
     homePkViewModel: HomePkViewModel,
     viajePkViewModel: ViajePkViewModel,
+    apartarPkViewModel: ApartarPkViewModel,
     navHostController: NavHostController
 ) {
     val scope = rememberCoroutineScope()
@@ -258,7 +264,7 @@ private fun SpotItem(
     )
 
     if(openBottomSheet){
-        BottomSheetInfo(sheetState, spot, homePkViewModel, navHostController, viajePkViewModel){
+        BottomSheetInfo(sheetState, spot, homePkViewModel, navHostController, viajePkViewModel, apartarPkViewModel){
             scope.launch {
                 sheetState.hide()
             }.invokeOnCompletion { openBottomSheet = false }
@@ -361,6 +367,7 @@ private fun SpotItem(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetInfo(
@@ -369,6 +376,7 @@ fun BottomSheetInfo(
     homePkViewModel: HomePkViewModel,
     navHostController: NavHostController,
     viajePkViewModel: ViajePkViewModel,
+    apartarPkViewModel: ApartarPkViewModel,
     onDismiss: () -> Unit
 ) {
     val homeUiState by homePkViewModel.uiState.collectAsState()
@@ -381,7 +389,7 @@ fun BottomSheetInfo(
         sheetState = sheetState
     ) {
         Column(
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.Start
         ) {
             BeneficioItem(
                 icon = painterResource(id = R.drawable.estacionamiento),
@@ -409,83 +417,102 @@ fun BottomSheetInfo(
 
             Spacer(modifier = Modifier.size(32.dp))
 
-            CustomCard(
-                backgroundColor = colorScheme.background,
-                content = {
-                    BeneficioItem(
-                        icon = painterResource(id = R.drawable.hora_exacta),
-                        title = stringResource(id = R.string.lblTiempoAproxEspera),
-                        subtitle = spot.approxTime
-                    )
-                },
-                button1Text = stringResource(id = R.string.btnApartarEspacio),
-                button1OnClick = {
-                    // Acción del primer botón
-                },
-                color1 = ButtonDefaults.buttonColors(
-                    containerColor = Color(0f, 0f, 1f, 0.2f),
-                    contentColor = Color(0.2f, 0.3f, 1f)
-                ),
-                shape1 = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
-            )
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CustomCard(
+                    backgroundColor = colorScheme.background,
+                    content = {
+                        BeneficioItem(
+                            icon = painterResource(id = R.drawable.hora_exacta),
+                            title = stringResource(id = R.string.lblTiempoAproxEspera),
+                            subtitle = spot.approxTime
+                        )
+                    },
+                    button1Text = stringResource(id = R.string.btnApartarEspacio),
+                    button1OnClick = {
+                        // Acción del primer botón
+                        scope.launch {
+                            onDismiss().also {
+                                apartarPkViewModel.updateInfo(
+                                    v = homeUiState.vehiculoSeleccionado,
+                                    e = spot,
+                                    hi = LocalTime.now().hour,
+                                    mi = LocalTime.now().minute,
+                                    total = spot.price
+                                )
+                            }
 
-            Spacer(modifier = Modifier.size(32.dp))
+                            delay(200)
 
-            CustomCard(
-                backgroundColor = colorScheme.background,
-                content = {
-                    BeneficioItem(
-                        icon = painterResource(id = R.drawable.precio),
-                        title = stringResource(id = R.string.lblPrecioPorHora),
-                        subtitle = "$${spot.price}"
-                    )
-                },
-                button1Text = stringResource(id = R.string.btnIniciarRecorrido),
-                button1OnClick = {
-                    scope.launch {
-                        onDismiss().also {
-                            viajePkViewModel.updateVehiculo(
-                                homeUiState.vehiculoSeleccionado
-                            )
-                            viajePkViewModel.updateEstacionamiento(
-                                spot
-                            )
+                            navHostController.navigate(AppScreens.ApartarScreen.route)
                         }
+                    },
+                    color1 = ButtonDefaults.buttonColors(
+                        containerColor = Color(0f, 0f, 1f, 0.2f),
+                        contentColor = Color(0.2f, 0.3f, 1f)
+                    ),
+                    shape1 = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)
+                )
 
-                        delay(150)
+                Spacer(modifier = Modifier.size(32.dp))
 
-                        navHostController.navigate(AppScreens.ViajeParking.route)
-                    }
-                },
-                color1 = ButtonDefaults.buttonColors(
-                    containerColor = Color(0f, 0.5f, 0f, 0.2f),
-                    contentColor = Color(0f, 0.7f, 0f)
-                ),
-                shape1 = RoundedCornerShape(bottomStart = 16.dp),
-                button2Text = stringResource(id = R.string.btnVerMapa),
-                button2OnClick = {
-                    scope.launch {
-                        onDismiss().also {
-                            viajePkViewModel.updateEstacionamiento(
-                                spot
-                            )
-                            viajePkViewModel.updateVehiculo(
-                                null
-                            )
+                CustomCard(
+                    backgroundColor = colorScheme.background,
+                    content = {
+                        BeneficioItem(
+                            icon = painterResource(id = R.drawable.precio),
+                            title = stringResource(id = R.string.lblPrecioPorHora),
+                            subtitle = "$${spot.price}"
+                        )
+                    },
+                    button1Text = stringResource(id = R.string.btnIniciarRecorrido),
+                    button1OnClick = {
+                        scope.launch {
+                            onDismiss().also {
+                                viajePkViewModel.updateVehiculo(
+                                    homeUiState.vehiculoSeleccionado
+                                )
+                                viajePkViewModel.updateEstacionamiento(
+                                    spot
+                                )
+                            }
+
+                            delay(200)
+
+                            navHostController.navigate(AppScreens.ViajeParking.route)
                         }
+                    },
+                    color1 = ButtonDefaults.buttonColors(
+                        containerColor = Color(0f, 0.5f, 0f, 0.2f),
+                        contentColor = Color(0f, 0.7f, 0f)
+                    ),
+                    shape1 = RoundedCornerShape(bottomStart = 16.dp),
+                    button2Text = stringResource(id = R.string.btnVerMapa),
+                    button2OnClick = {
+                        scope.launch {
+                            onDismiss().also {
+                                viajePkViewModel.updateEstacionamiento(
+                                    spot
+                                )
+                                viajePkViewModel.updateVehiculo(
+                                    null
+                                )
+                            }
 
-                        delay(150)
+                            delay(200)
 
-                        navHostController.navigate(AppScreens.ViajeParking.route)
-                    }
-                },
-                color2 = ButtonDefaults.buttonColors(
-                    containerColor = Color(1f, 0.647f, 0f, 0.2f),
-                    contentColor = Color(1f, 0.55f, 0f)
-                ),
-                shape2 = RoundedCornerShape(bottomEnd = 16.dp)
-            )
-
+                            navHostController.navigate(AppScreens.ViajeParking.route)
+                        }
+                    },
+                    color2 = ButtonDefaults.buttonColors(
+                        containerColor = Color(1f, 0.647f, 0f, 0.2f),
+                        contentColor = Color(1f, 0.55f, 0f)
+                    ),
+                    shape2 = RoundedCornerShape(bottomEnd = 16.dp)
+                )
+            }
 
             Spacer(modifier = Modifier.size(64.dp))
         }

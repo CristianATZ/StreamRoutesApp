@@ -40,7 +40,7 @@ fun ParkingEstacionamientoScreen(parkingPkViewModel: ParkingPkViewModel) {
     val parkingState by parkingPkViewModel.uiState.collectAsState()
 
     Column {
-        if(parkingState.estacionado){
+        if(parkingState.estacionamiento != null){
             Header(parkingPkViewModel)
             VehiculoEstacionado(parkingPkViewModel)
         } else {
@@ -152,7 +152,7 @@ private fun VehiculoItem(historialItem: HistorialItem) {
 
                 Column {
                     Text(text = stringResource(id = R.string.lblVehiculo), style = typography.titleMedium)
-                    Text(text = historialItem.vehiculo.matricula, style = typography.bodyMedium)
+                    Text(text = historialItem.vehiculo!!.matricula, style = typography.bodyMedium)
                 }
             }
 
@@ -173,7 +173,7 @@ private fun VehiculoItem(historialItem: HistorialItem) {
 
                 Column {
                     Text(text = stringResource(id = R.string.lblEstacionamiento), style = typography.titleMedium)
-                    Text(text = historialItem.estacionamiento.name, style = typography.bodyMedium)
+                    Text(text = historialItem.estacionamiento!!.name, style = typography.bodyMedium)
                     Text(text = historialItem.estacionamiento.address, style = typography.bodyMedium)
                 }
             }

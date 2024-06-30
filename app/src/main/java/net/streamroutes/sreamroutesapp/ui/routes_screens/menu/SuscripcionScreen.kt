@@ -232,8 +232,6 @@ fun BeneficioItem(
         Spacer(modifier = Modifier.size(16.dp))
 
         Column(
-            modifier = Modifier
-                .fillMaxWidth(),
             verticalArrangement = Arrangement.Center
         ) {
             Text(text = title, style = typography.titleMedium)

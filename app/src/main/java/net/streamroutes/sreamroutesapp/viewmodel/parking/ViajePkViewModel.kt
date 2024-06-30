@@ -108,14 +108,14 @@ data class ViajePkUiState(
     var leerQR: Boolean = false
 )
 
-@Suppress("UNCHECKED_CAST")
-class ViajePkViewModelFactory(
-    private val remoteRepository: RemoteRepository
-): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ViajePkViewModel::class.java)) {
-            return ViajePkViewModel(remoteRepository) as T
+    @Suppress("UNCHECKED_CAST")
+    class ViajePkViewModelFactory(
+        private val remoteRepository: RemoteRepository
+    ): ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(ViajePkViewModel::class.java)) {
+                return ViajePkViewModel(remoteRepository) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
-}
