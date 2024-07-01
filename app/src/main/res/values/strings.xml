@@ -391,4 +391,7 @@
     <string name="lblHora">Hora</string>
     <string name="lblHoraInicio">Hora inicio</string>
     <string name="lblHoraFin">Hora fin</string>
+    <string name="lblTiempoRestante">Tiempo restante</string>
+    <string name="lblTiempoActual">Tiempo actual</string>
+    <string name="btnMostrarQR">Mostrar QR</string>
 </resources>

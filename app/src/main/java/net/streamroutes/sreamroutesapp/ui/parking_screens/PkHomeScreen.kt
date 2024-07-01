@@ -450,7 +450,7 @@ fun BottomSheetInfo(
                         }
                     },
                     color1 = ButtonDefaults.buttonColors(
-                        containerColor = Color(0f, 0f, 1f, 0.2f),
+                        containerColor = Color(0.373f, 0.373f, 1.0f, 0.2f),
                         contentColor = Color(0.2f, 0.3f, 1f)
                     ),
                     shape1 = RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp)

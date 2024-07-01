@@ -7,7 +7,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
@@ -43,7 +42,7 @@ class ParkingPkViewModel(
                 vehiculo = v,
                 horaInicio = hi,
                 minutoInicio = mi,
-                horaIFnal = hf,
+                horaFinal = hf,
                 total = t
             )
         }
@@ -62,7 +61,7 @@ data class ParkingPkUiState(
     val tiempoApartado: Int = 0,
     val horaInicio: Int = 0,
     val minutoInicio: Int = 0,
-    val horaIFnal: Int = 0,
+    val horaFinal: Int = 0,
 )
 
 @Suppress("UNCHECKED_CAST")
