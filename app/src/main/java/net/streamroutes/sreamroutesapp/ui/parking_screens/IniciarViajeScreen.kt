@@ -1,18 +1,14 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
-import androidx.activity.ComponentActivity
-import androidx.camera.core.CameraSelector
+import androidx.annotation.DrawableRes
 import androidx.camera.core.ExperimentalGetImage
-import androidx.camera.core.ImageAnalysis
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.camera.view.PreviewView
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,15 +19,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -45,13 +42,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -66,13 +63,10 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.utils.BarcodeAnalyser
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
-import java.util.concurrent.Executors
 
 @Composable
 fun IniciarViajeScreen(
@@ -111,7 +105,9 @@ private fun IniciarViaje(
 
             // botones llegue o regresar
             if (uiState.vehiculoSeleccionado != null) {
-                CancelarViaje(viajePkViewModel)
+                ViajeFinalizado(viajePkViewModel)
+            } else {
+                LugaresTuristicos()
             }
         }
 
@@ -120,50 +116,103 @@ private fun IniciarViaje(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-            ){
-                // qr scanner y texto
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    BarCodeScanner(viajePkViewModel, parkingPkViewModel, navHostController)
-
-                    Spacer(modifier = Modifier.size(48.dp))
-
-                    Text(
-                        text = stringResource(id = R.string.lblAnalizaElCodigo),
-                        style = typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth(0.9f)
-                    )
-                }
-
-                // boton para cerrar el scanner
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.Start,
-                    verticalArrangement = Arrangement.Top
-                ) {
-                    IconButton(onClick = { viajePkViewModel.updateLeerQR(false) }) {
-                        Icon(
-                            imageVector = Icons.Filled.Close,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(50.dp)
-                        )
-                    }
-                }
-            }
+            QRScreen(viajePkViewModel, parkingPkViewModel, navHostController)
         }
     }
 }
+
+@Composable
+fun LugaresTuristicos() {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp
+            )
+        ){
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.95f)
+                    .background(colorScheme.background, RoundedCornerShape(8.dp)),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = stringResource(id = R.string.lblLugaresTuristicos),
+                    style = typography.titleLarge,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(8.dp)
+                )
+
+                Row(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .horizontalScroll(rememberScrollState())
+                ) {
+                    LugarTuristicoItem(
+                        img = R.drawable.lugar_minas,
+                        name = "Minas"
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    LugarTuristicoItem(
+                        img = R.drawable.lugar_callejon_beso,
+                        name = "Callejón del Beso"
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    LugarTuristicoItem(
+                        img = R.drawable.lugar_alhondiga,
+                        name = "Alhóndiga de Granaditas"
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    LugarTuristicoItem(
+                        img = R.drawable.lugar_teatro_juarez,
+                        name = "Teatro Juárez"
+                    )
+                }
+            }
+        }
+        
+        Spacer(modifier = Modifier.size(16.dp))
+    }
+}
+
+@Composable
+fun LugarTuristicoItem(
+    @DrawableRes img: Int,
+    name: String
+) {
+    Box(
+        modifier = Modifier
+            .size(150.dp),
+        contentAlignment = Alignment.BottomStart
+    ){
+        Image(
+            painter = painterResource(id = img),
+            contentDescription = name,
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(RoundedCornerShape(8.dp)),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            text = name,
+            style = typography.bodyLarge,
+            color = Color.White,
+            modifier = Modifier
+                .padding(8.dp)
+        )
+    }
+}
+
 
 @Composable
 private fun MapaRecorrido(
@@ -228,7 +277,7 @@ private fun MapaRecorrido(
 }
 
 @Composable
-private fun CancelarViaje(
+private fun ViajeFinalizado(
     viajePkViewModel: ViajePkViewModel
 ) {
     val scope = rememberCoroutineScope()
@@ -350,72 +399,4 @@ fun ParkingInfo(viajePkViewModel: ViajePkViewModel, navHostController: NavHostCo
             }
         }
     }
-}
-
-@ExperimentalGetImage
-@Composable
-fun BarCodeScanner(
-    viajePkViewModel: ViajePkViewModel,
-    parkingPkViewModel: ParkingPkViewModel,
-    navHostController: NavHostController
-) {
-    val viajeUiState by viajePkViewModel.uiState.collectAsState()
-
-    val scope = rememberCoroutineScope()
-
-    AndroidView({ context ->
-        val cameraExecutor = Executors.newSingleThreadExecutor()
-        val previewView = PreviewView(context).also {
-            it.scaleType = PreviewView.ScaleType.FILL_CENTER
-        }
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(context)
-        cameraProviderFuture.addListener({
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(previewView.surfaceProvider)
-                }
-
-            val imageCapture = ImageCapture.Builder().build()
-
-            val imageAnalyzer = ImageAnalysis.Builder()
-                .build()
-                .also {
-                    it.setAnalyzer(cameraExecutor, BarcodeAnalyser{
-                        scope.launch {
-                            parkingPkViewModel.agregarEstacionamiento(
-                                e = viajeUiState.estacionamientoSeleccionado!!,
-                                t = viajeUiState.estacionamientoSeleccionado!!.price,
-                                v = viajeUiState.vehiculoSeleccionado!!
-                            )
-
-                            viajePkViewModel.updateLeerQR(false)
-
-                            delay(250)
-
-                            navHostController.popBackStack()
-                        }
-                    })
-                }
-
-            val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
-            try {
-                // Unbind use cases before rebinding
-                cameraProvider.unbindAll()
-
-                // Bind use cases to camera
-                cameraProvider.bindToLifecycle(
-                    context as ComponentActivity, cameraSelector, preview, imageCapture, imageAnalyzer)
-
-            } catch(exc: Exception) {
-                //Log.e("DEBUG", "Use case binding failed", exc)
-            }
-        }, ContextCompat.getMainExecutor(context))
-        previewView
-    },
-        modifier = Modifier
-            .size(width = 250.dp, height = 250.dp))
 }

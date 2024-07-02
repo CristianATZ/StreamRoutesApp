@@ -76,7 +76,7 @@ fun ApartarScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        HeaderApartarLugar(uiState)
+        HeaderApartarLugar(uiState, navHostController)
 
         CircularProgress(
             apartarPkViewModel = apartarPkViewModel
@@ -297,7 +297,7 @@ fun HeaderQuestion() {
 }
 
 @Composable
-fun HeaderApartarLugar(uiState: ApartarUiState) {
+fun HeaderApartarLugar(uiState: ApartarUiState, navHostController: NavHostController) {
 
     Row(
         modifier = Modifier
@@ -317,7 +317,7 @@ fun HeaderApartarLugar(uiState: ApartarUiState) {
                 modifier = Modifier
                     .background(colorScheme.tertiary, RoundedCornerShape(16.dp))
                     .clickable {
-                        //
+                        navHostController.popBackStack()
                     }
             ) {
                 Icon(
