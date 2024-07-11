@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data.model.bestRouteModel
+package net.streamroutes.sreamroutesapp.data.model.orsModel
 
 data class Feature(
     val bbox: List<Double>,

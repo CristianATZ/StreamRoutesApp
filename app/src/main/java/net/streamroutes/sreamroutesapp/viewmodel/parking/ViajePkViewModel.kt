@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.streamroutes.sreamroutesapp.data.model.bestRouteModel.RouteResult
+import net.streamroutes.sreamroutesapp.data.model.orsModel.RouteResult
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 

@@ -1,11 +1,11 @@
 package net.streamroutes.sreamroutesapp.data.navigation
 
+import FastViewModel
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,6 +25,7 @@ import net.streamroutes.sreamroutesapp.ui.start_screens.SelectOptionScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.SplashScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.VerificationScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
@@ -32,7 +33,6 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
 
@@ -52,7 +52,8 @@ fun AppNavigation(
     homePkViewModel: HomePkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
     viajePkViewModel: ViajePkViewModel,
-    apartarPkViewModel: ApartarPkViewModel
+    apartarPkViewModel: ApartarPkViewModel,
+    orsViewModel: OrsViewModel
 ) {
     NavHost(navController = navHostController, startDestination = AppScreens.SelectOptionScreen
         .route) {
@@ -143,7 +144,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            MainParking(homePkViewModel, accountPkViewModel, parkingPkViewModel, viajePkViewModel, apartarPkViewModel)
+            MainParking(homePkViewModel, accountPkViewModel, parkingPkViewModel, viajePkViewModel, apartarPkViewModel, orsViewModel)
         }
     }
 }
@@ -155,7 +156,8 @@ fun ParkingNavigation(
     homePkViewModel: HomePkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
     viajePkViewModel: ViajePkViewModel,
-    apartarPkViewModel: ApartarPkViewModel
+    apartarPkViewModel: ApartarPkViewModel,
+    orsViewModel: OrsViewModel
 ) {
 
     NavHost(navController = navHostController, startDestination = AppScreens.ParkingHome.route) {
@@ -165,7 +167,7 @@ fun ParkingNavigation(
                 accountPkViewModel,
                 apartarPkViewModel,
                 viajePkViewModel,
-                navHostController,
+                navHostController
             )
         }
         composable(AppScreens.ParkingAccount.route) {
@@ -185,6 +187,7 @@ fun ParkingNavigation(
             IniciarViajeScreen(
                 viajePkViewModel = viajePkViewModel,
                 parkingPkViewModel = parkingPkViewModel,
+                orsViewModel = orsViewModel,
                 navHostController = navHostController
             )
         }

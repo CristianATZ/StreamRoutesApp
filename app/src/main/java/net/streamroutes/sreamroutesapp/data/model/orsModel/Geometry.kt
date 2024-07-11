@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data.model.bestRouteModel
+package net.streamroutes.sreamroutesapp.data.model.orsModel
 
 data class Geometry(
     val coordinates: List<List<Double>>,

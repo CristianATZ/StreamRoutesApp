@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class FastViewModel : ViewModel() {
+class FastViewModel() : ViewModel() {
     private val _uiState = MutableStateFlow(FastUiState())
     val uiState: StateFlow<FastUiState> = _uiState.asStateFlow()
 

@@ -2,6 +2,7 @@
 
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
+import FastViewModel
 import android.annotation.SuppressLint
 import android.app.DownloadManager
 import android.content.Context
@@ -96,7 +97,6 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.utils.getAddressInfoFromCoordinates
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.Tema
 

@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
+import FastViewModel
 import android.Manifest
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +49,6 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
-import net.streamroutes.sreamroutesapp.viewmodel.routes.FastViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 

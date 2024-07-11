@@ -18,6 +18,8 @@ import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.ui.Theme.RumaAppTheme
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
@@ -47,6 +49,9 @@ class MainActivity : ComponentActivity() {
             val viajePkViewModel : ViajePkViewModel by viewModels { ViajePkViewModelFactory(repository) }
             val apartarPkViewModel: ApartarPkViewModel by viewModels { ApartarPkViewModelFactory(repository) }
 
+            // viewmodel encargado de manejar acerca de la peticion a ORS
+            val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
+
             RumaAppTheme (false){
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -58,7 +63,8 @@ class MainActivity : ComponentActivity() {
                         parkingPkViewModel = parkingPkViewModel,
                         homePkViewModel = homePkViewModel,
                         viajePkViewModel = viajePkViewModel,
-                        apartarPkViewModel = apartarPkViewModel
+                        apartarPkViewModel = apartarPkViewModel,
+                        orsViewModel = orsViewModel
                     )
                 }
             }

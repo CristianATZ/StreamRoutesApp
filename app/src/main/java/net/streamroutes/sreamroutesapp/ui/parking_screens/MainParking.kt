@@ -31,6 +31,7 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.data.navigation.ParkingNavigation
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.changeStatusBar
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HomePkViewModel
@@ -50,7 +51,8 @@ fun MainParking(
     accountPkViewModel: AccountPkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
     viajePkViewModel: ViajePkViewModel,
-    apartarPkViewModel: ApartarPkViewModel
+    apartarPkViewModel: ApartarPkViewModel,
+    orsViewModel: OrsViewModel
 ) {
     val navHostController = rememberNavController()
     // lista de items
@@ -90,6 +92,7 @@ fun MainParking(
                 parkingPkViewModel = parkingPkViewModel,
                 viajePkViewModel = viajePkViewModel,
                 apartarPkViewModel = apartarPkViewModel,
+                orsViewModel = orsViewModel,
                 navHostController = navHostController
             )
         }

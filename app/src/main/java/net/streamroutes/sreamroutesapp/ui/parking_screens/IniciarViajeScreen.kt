@@ -65,6 +65,7 @@ import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 
@@ -72,6 +73,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 fun IniciarViajeScreen(
     viajePkViewModel: ViajePkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
+    orsViewModel: OrsViewModel,
     navHostController: NavHostController
 ) {
     IniciarViaje(viajePkViewModel, parkingPkViewModel, navHostController)

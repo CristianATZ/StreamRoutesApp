@@ -1,6 +1,6 @@
 package net.streamroutes.sreamroutesapp.data
 
-import net.streamroutes.sreamroutesapp.data.model.bestRouteModel.RouteResult
+import net.streamroutes.sreamroutesapp.data.model.orsModel.RouteResult
 import net.streamroutes.sreamroutesapp.utils.Constants
 import retrofit2.Response
 import retrofit2.Retrofit
