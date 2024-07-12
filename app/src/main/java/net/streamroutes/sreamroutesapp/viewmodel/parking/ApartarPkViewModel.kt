@@ -1,8 +1,11 @@
 package net.streamroutes.sreamroutesapp.viewmodel.parking
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,11 +38,39 @@ class ApartarPkViewModel(
             )
         }
     }
+
+    fun udpateQrCode(mapa: Bitmap){
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                qrCode = mapa
+            )
+        }
+    }
+
+    fun generateQRCode(text: String){
+        val matrix = QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, 512, 512)
+
+        val bitmap = Bitmap.createBitmap(matrix.width, matrix.height, Bitmap.Config.RGB_565)
+
+        for (y in 0 until matrix.height) {
+            for (x in 0 until matrix.width) {
+                bitmap.setPixel(x, y,
+                    if(matrix.get(x, y))
+                        android.graphics.Color.BLACK
+                    else
+                        android.graphics.Color.WHITE
+                )
+            }
+        }
+
+        udpateQrCode(bitmap)
+    }
 }
 
 data class ApartarUiState(
     val vehiculo: Vehiculo? = null,
     val estacionamiento: ParkingResultItem? = null,
+    val qrCode: Bitmap? = null,
     val horaInicio: Int = 0,
     val minutoInicio: Int = 0,
     val horaFinal: Int = 0,

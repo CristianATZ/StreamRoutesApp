@@ -292,7 +292,7 @@ private fun SpotItem(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             AsyncImage(
-                model = "https://www.estacionamientos.net/wp-content/uploads/2020/07/Empresa-de-Diseno-de-Estacionamientos-Vehiculares-en-Mexico-v005-compressor.jpeg",
+                model = "https://th.bing.com/th/id/OIP.h0XwIOdLpQd7q--kDGMv8QHaHa?rs=1&pid=ImgDetMain",
                 contentDescription = null,
                 modifier = Modifier
                     .size(150.dp)

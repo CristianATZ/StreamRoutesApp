@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -42,6 +44,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.google.zxing.BarcodeFormat
@@ -50,17 +53,19 @@ import com.google.zxing.qrcode.encoder.QRCode
 import kotlinx.coroutines.runBlocking
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
+import net.streamroutes.sreamroutesapp.utils.brush
+import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HistorialItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 
 @Composable
-fun ParkingEstacionamientoScreen(parkingPkViewModel: ParkingPkViewModel) {
+fun ParkingEstacionamientoScreen(parkingPkViewModel: ParkingPkViewModel, apartarPkViewModel: ApartarPkViewModel) {
     val parkingState by parkingPkViewModel.uiState.collectAsState()
 
     Column {
         if(parkingState.estacionamiento != null){
             Header(parkingPkViewModel)
-            VehiculoEstacionado(parkingPkViewModel)
+            VehiculoEstacionado(parkingPkViewModel, apartarPkViewModel)
         } else {
             VehiculoNoEstacionado()
         }
@@ -105,17 +110,23 @@ fun VehiculoNoEstacionado() {
 }
 
 @Composable
-fun VehiculoEstacionado(parkingPkViewModel: ParkingPkViewModel) {
+fun VehiculoEstacionado(
+    parkingPkViewModel: ParkingPkViewModel,
+    apartarPkViewModel: ApartarPkViewModel
+) {
 
     Column {
         Spacer(modifier = Modifier.size(16.dp))
 
-        Estacionados(parkingPkViewModel)
+        Estacionados(parkingPkViewModel, apartarPkViewModel)
     }
 }
 
 @Composable
-private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
+private fun Estacionados(
+    parkingPkViewModel: ParkingPkViewModel,
+    apartarPkViewModel: ApartarPkViewModel
+) {
     val parkingState by parkingPkViewModel.uiState.collectAsState()
 
     var qrGenerado by remember {
@@ -127,9 +138,10 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
     }
 
     if(openDialog) {
-        Dialog(onDismissRequest = { openDialog = !openDialog }) {
-            Image(bitmap = qrGenerado!!.asImageBitmap(), contentDescription = null)
-        }
+        QrDialog(
+            apartarPkViewModel = apartarPkViewModel,
+            onDismiss = { openDialog = !openDialog }
+        )
     }
 
     Column(
@@ -178,9 +190,7 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
             Column {
                 Button(
                     onClick = {
-                        runBlocking {
-                            qrGenerado = generateQR("hola")
-                        }
+                        apartarPkViewModel.generateQRCode("idApartado:123|idEstacionamiento:1")
                         openDialog = !openDialog
                     },
                     shape = RectangleShape,
@@ -364,110 +374,50 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
     }
 }
 
-fun generateQR(text : String): Bitmap {
-    val matrix = QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, 512, 512)
 
-    val bitmap = Bitmap.createBitmap(matrix.width, matrix.height, Bitmap.Config.RGB_565)
-
-    for (y in 0 until matrix.height) {
-        for (x in 0 until matrix.width) {
-            bitmap.setPixel(x, y,
-                if(matrix.get(x, y))
-                    android.graphics.Color.BLACK
-                else
-                    android.graphics.Color.WHITE
-            )
-        }
-    }
-
-    return bitmap
-}
-
+@Suppress("PreviewAnnotationInFunctionWithParameters")
+@Preview
 @Composable
-private fun VehiculoItem(historialItem: HistorialItem) {
-    Card(
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 8.dp
-        ),
-        colors = CardDefaults.cardColors(
-            containerColor = colorScheme.background,
-            contentColor = colorScheme.onBackground
-        ),
-        modifier = Modifier
-            .fillMaxWidth(0.9f)
-    ) {
+private fun QrDialog(
+    apartarPkViewModel: ApartarPkViewModel,
+    onDismiss: () -> Unit = {}
+) {
+    val apartarUiState = apartarPkViewModel.uiState.collectAsState()
 
+    Dialog(onDismissRequest = { onDismiss() }) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .background(brush, RoundedCornerShape(16.dp)),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .background(Color.White, RoundedCornerShape(16.dp)),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.car),
-                    contentDescription = null,
-                    modifier = Modifier.size(50.dp)
-                )
-
-                Spacer(modifier = Modifier.size(16.dp))
-
-                Column {
-                    Text(text = stringResource(id = R.string.lblVehiculo), style = typography.titleMedium)
-                    Text(text = historialItem.vehiculo!!.matricula, style = typography.bodyMedium)
+                if(apartarUiState.value.qrCode != null ){
+                    Image(
+                        bitmap = apartarUiState.value.qrCode!!.asImageBitmap(),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(250.dp)
+                            .padding(8.dp)
+                    )
+                } else {
+                    CircularProgressIndicator()
                 }
             }
+
+            Text(
+                text = apartarUiState.value.estacionamiento!!.name,
+                fontWeight = FontWeight.Bold,
+                color = colorScheme.onTertiary,
+                style = typography.displaySmall
+            )
 
             Spacer(modifier = Modifier.size(16.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Image(
-                    painter = painterResource(id = R.drawable.marker_parking),
-                    contentDescription = null,
-                    modifier = Modifier.size(50.dp)
-                )
-
-                Spacer(modifier = Modifier.size(16.dp))
-
-                Column {
-                    Text(text = stringResource(id = R.string.lblEstacionamiento), style = typography.titleMedium)
-                    Text(text = historialItem.estacionamiento!!.name, style = typography.bodyMedium)
-                    Text(text = historialItem.estacionamiento.address, style = typography.bodyMedium)
-                }
-            }
-
-            Spacer(modifier = Modifier.size(32.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.size(16.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.hora_exacta),
-                    contentDescription = null,
-                    modifier = Modifier.size(25.dp)
-                )
-                Spacer(modifier = Modifier.size(16.dp))
-                Text(text = "1 minuto", style = typography.titleMedium)
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Image(
-                    painter = painterResource(id = R.drawable.precio),
-                    contentDescription = null,
-                    modifier = Modifier.size(25.dp)
-                )
-                Spacer(modifier = Modifier.size(16.dp))
-                Text(text = "$${historialItem.total}", style = typography.headlineSmall, fontWeight = FontWeight.Bold)
-                Spacer(modifier = Modifier.size(16.dp))
-            }
         }
     }
 }

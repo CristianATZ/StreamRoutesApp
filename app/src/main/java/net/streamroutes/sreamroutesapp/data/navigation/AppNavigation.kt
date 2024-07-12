@@ -174,7 +174,7 @@ fun ParkingNavigation(
             ParkingAccountScreen(accountPkViewModel)
         }
         composable(AppScreens.ParkingEstacionamiento.route) {
-            ParkingEstacionamientoScreen(parkingPkViewModel)
+            ParkingEstacionamientoScreen(parkingPkViewModel, apartarPkViewModel)
         }
 
         composable(

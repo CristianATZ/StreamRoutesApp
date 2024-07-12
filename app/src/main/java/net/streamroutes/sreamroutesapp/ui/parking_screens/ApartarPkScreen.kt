@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -314,30 +316,32 @@ fun HeaderApartarLugar(uiState: ApartarUiState, navHostController: NavHostContro
         ) {
             Spacer(modifier = Modifier.size(16.dp))
 
-            Column(
-                modifier = Modifier
-                    .background(colorScheme.tertiary, RoundedCornerShape(16.dp))
-                    .clickable {
-                        navHostController.popBackStack()
-                    }
+            IconButton(
+                onClick = { navHostController.popBackStack() },
             ) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowBack,
-                    tint = colorScheme.onTertiary,
+                    imageVector = Icons.Filled.ArrowBackIosNew,
+                    tint = colorScheme.onPrimary,
                     contentDescription = null,
-                    modifier = Modifier
-                        .size(50.dp)
-                        .padding(8.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.size(32.dp))
 
-            Text(
-                text = uiState.estacionamiento!!.name,
-                style = typography.titleLarge,
-                color = colorScheme.onPrimary
-            )
+            Column {
+                Text(
+                    text = stringResource(id = R.string.lblEstacionamiento),
+                    color = colorScheme.onPrimary,
+                    style = typography.titleLarge,
+                    fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = uiState.estacionamiento!!.name,
+                    color = colorScheme.onPrimary,
+                    style = typography.titleMedium,
+                    fontWeight = FontWeight.Normal
+                )
+            }
 
             Spacer(modifier = Modifier.size(16.dp))
         }

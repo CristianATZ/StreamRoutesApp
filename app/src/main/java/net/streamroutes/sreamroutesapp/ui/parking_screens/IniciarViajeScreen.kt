@@ -21,8 +21,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
@@ -351,20 +353,13 @@ fun ParkingInfo(viajePkViewModel: ViajePkViewModel, navHostController: NavHostCo
 
         Spacer(modifier = Modifier.size(16.dp))
 
-        Column(
-            modifier = Modifier
-                .background(colorScheme.tertiary, RoundedCornerShape(16.dp))
-                .clickable {
-                    navHostController.popBackStack()
-                }
+        IconButton(
+            onClick = { navHostController.popBackStack() },
         ) {
             Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                tint = colorScheme.onTertiary,
+                imageVector = Icons.Filled.ArrowBackIosNew,
+                tint = colorScheme.onPrimary,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .padding(8.dp)
             )
         }
 
@@ -372,7 +367,7 @@ fun ParkingInfo(viajePkViewModel: ViajePkViewModel, navHostController: NavHostCo
 
         if(time == 0.0){
             Spacer(modifier = Modifier.size(32.dp))
-            CircularProgressIndicator(color = colorScheme.tertiary)
+            CircularProgressIndicator(color = colorScheme.onPrimary)
         } else {
             Column {
                 Text(

@@ -23,6 +23,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -116,17 +118,28 @@ fun ParkingBottomBar(
                 onClick = { navHostController.navigate(item.route) },
                 icon = {
                     Icon(
-                        imageVector = if(currentRoute == item.route) item.iconSelected else item.icon,
+                        imageVector =
+                            if(currentRoute == item.route)
+                                item.iconSelected
+                            else
+                                item.icon,
                         contentDescription = "icono de ${item.label}"
                     )
                 },
                 label = {
-                    Text(text = item.label)
+                    Text(
+                        text = item.label,
+                        fontWeight =
+                            if (currentRoute == item.route)
+                                FontWeight.Bold
+                            else
+                                FontWeight.Normal
+                    )
                 },
                 colors = NavigationBarItemColors(
-                    selectedTextColor = colorScheme.tertiary,
-                    selectedIconColor = colorScheme.onTertiary,
-                    selectedIndicatorColor = colorScheme.tertiary,
+                    selectedTextColor = colorScheme.primaryContainer,
+                    selectedIconColor = colorScheme.onPrimaryContainer,
+                    selectedIndicatorColor = colorScheme.primaryContainer,
                     unselectedIconColor = colorScheme.onPrimary,
                     unselectedTextColor = colorScheme.onPrimary,
                     disabledIconColor = Color.Transparent,
