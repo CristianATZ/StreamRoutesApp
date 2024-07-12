@@ -76,6 +76,7 @@ fun ApartarScreen(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
+
         HeaderApartarLugar(uiState, navHostController)
 
         CircularProgress(

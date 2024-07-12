@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
+import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.scrollable
@@ -25,10 +26,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -38,6 +43,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import com.google.zxing.BarcodeFormat
+import com.google.zxing.qrcode.QRCodeWriter
+import com.google.zxing.qrcode.encoder.QRCode
+import kotlinx.coroutines.runBlocking
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.HistorialItem
@@ -108,22 +118,19 @@ fun VehiculoEstacionado(parkingPkViewModel: ParkingPkViewModel) {
 private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
     val parkingState by parkingPkViewModel.uiState.collectAsState()
 
-    /*LazyColumn(
-        modifier = Modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        item {
-            VehiculoItem(
-                HistorialItem(
-                    parkingState.vehiculo,
-                    parkingState.estacionamiento,
-                    parkingState.tiempo,
-                    parkingState.total
-                )
-            )
+    var qrGenerado by remember {
+        mutableStateOf<Bitmap?>(null)
+    }
+
+    var openDialog by remember {
+        mutableStateOf(false)
+    }
+
+    if(openDialog) {
+        Dialog(onDismissRequest = { openDialog = !openDialog }) {
+            Image(bitmap = qrGenerado!!.asImageBitmap(), contentDescription = null)
         }
-    }*/
+    }
 
     Column(
         modifier = Modifier
@@ -170,7 +177,12 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
 
             Column {
                 Button(
-                    onClick = { /*TODO*/ },
+                    onClick = {
+                        runBlocking {
+                            qrGenerado = generateQR("hola")
+                        }
+                        openDialog = !openDialog
+                    },
                     shape = RectangleShape,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Color(0.682f, 0.753f, 1.0f),
@@ -205,7 +217,10 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
                             modifier = Modifier
                                 .fillMaxWidth(0.6f)
                                 .height(75.dp)
-                                .background(colorScheme.tertiary, RoundedCornerShape(bottomStart = 8.dp)),
+                                .background(
+                                    colorScheme.tertiary,
+                                    RoundedCornerShape(bottomStart = 8.dp)
+                                ),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
@@ -298,7 +313,10 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
                         modifier = Modifier
                             .fillMaxWidth(0.6f)
                             .height(75.dp)
-                            .background(colorScheme.tertiary, RoundedCornerShape(bottomStart = 8.dp)),
+                            .background(
+                                colorScheme.tertiary,
+                                RoundedCornerShape(bottomStart = 8.dp)
+                            ),
                         verticalArrangement = Arrangement.Center,
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
@@ -344,6 +362,25 @@ private fun Estacionados(parkingPkViewModel: ParkingPkViewModel) {
             }
         }
     }
+}
+
+fun generateQR(text : String): Bitmap {
+    val matrix = QRCodeWriter().encode(text, BarcodeFormat.QR_CODE, 512, 512)
+
+    val bitmap = Bitmap.createBitmap(matrix.width, matrix.height, Bitmap.Config.RGB_565)
+
+    for (y in 0 until matrix.height) {
+        for (x in 0 until matrix.width) {
+            bitmap.setPixel(x, y,
+                if(matrix.get(x, y))
+                    android.graphics.Color.BLACK
+                else
+                    android.graphics.Color.WHITE
+            )
+        }
+    }
+
+    return bitmap
 }
 
 @Composable
