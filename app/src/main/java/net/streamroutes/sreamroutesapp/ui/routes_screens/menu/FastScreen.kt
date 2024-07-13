@@ -3,55 +3,29 @@ package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 import FastViewModel
 import android.Manifest
 import androidx.annotation.RequiresPermission
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MapStyleOptions
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.MapProperties
-import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.*
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
-
+import net.streamroutes.sreamroutesapp.viewmodel.OrsState
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 
 @RequiresPermission(
     anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION],
@@ -59,29 +33,9 @@ import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 @Composable
 fun FastScreen(
     fastViewModel: FastViewModel,
+    orsViewModel: OrsViewModel,
     onBack: () -> Unit
 ) {
-    /*scope.launch(Dispatchers.IO) {
-        val priority = if (true) {
-            Priority.PRIORITY_HIGH_ACCURACY
-        } else {
-            Priority.PRIORITY_BALANCED_POWER_ACCURACY
-        }
-        val result = locationClient.getCurrentLocation(
-            priority,
-            CancellationTokenSource().token,
-        ).await()
-        result?.let { fetchedLocation ->
-            locationInfo =
-                "Current location is \n" + "lat : ${fetchedLocation.latitude}\n" +
-                        "long : ${fetchedLocation.longitude}\n" + "fetched at ${System.currentTimeMillis()}"
-            Log.d("GIVOX", locationInfo)
-            cameraState.geoPoint = GeoPoint(fetchedLocation.latitude, fetchedLocation.longitude)
-            cameraState.zoom = 17.0
-
-        }
-    }*/
-
     val systemUiController = rememberSystemUiController()
     LaunchedEffect(true) {
         systemUiController.setNavigationBarColor(Color.Black)
@@ -95,17 +49,21 @@ fun FastScreen(
             modifier = Modifier
                 .padding(paddingValues)
         ) {
-            MapBodyFast(fastViewModel){ it ->
-                fastViewModel.updateSelectedLocation(com.google.maps.model.LatLng(it.longitude, it.longitude))
+            MapBodyFast(fastViewModel, orsViewModel) { latLng ->
+                fastViewModel.updateSelectedLocation(com.google.maps.model.LatLng(latLng.latitude, latLng.longitude))
             }
 
-            CalcularDestino()
+            CalcularDestino(fastViewModel, orsViewModel)
         }
     }
 }
 
+//Falla
 @Composable
-fun CalcularDestino() {
+fun CalcularDestino(
+    fastViewModel: FastViewModel,
+    orsViewModel: OrsViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -115,7 +73,12 @@ fun CalcularDestino() {
 
         Button(
             onClick = {
-                //navController.navigate(AppScreens.SelectOptionScreen.route)
+                val currentLocation = fastViewModel.currentLocation
+                val selectedLocation = fastViewModel.selectedLocation
+                orsViewModel.fetchRouteInfo(
+                    "${currentLocation.lat},${currentLocation.lng}",
+                    "${selectedLocation.lat},${selectedLocation.lng}"
+                )
             },
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
@@ -140,11 +103,16 @@ fun CalcularDestino() {
 }
 
 @Composable
-fun MapBodyFast(fastViewModel: FastViewModel, onMapClick: (LatLng) -> Unit) {
+fun MapBodyFast(
+    fastViewModel: FastViewModel,
+    orsViewModel: OrsViewModel,
+    onMapClick: (LatLng) -> Unit
+) {
     val itsur = LatLng(20.139539228288044, -101.15073143400946)
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(itsur, 15f)
     }
+    val orsUiState by orsViewModel.uiState.collectAsState()
 
     GoogleMap(
         cameraPositionState = cameraPosition,
@@ -156,18 +124,42 @@ fun MapBodyFast(fastViewModel: FastViewModel, onMapClick: (LatLng) -> Unit) {
             maxZoomPreference = 18f,
             minZoomPreference = 15f
         ),
-        onMapClick = {
-            onMapClick(it)
-        },
+        onMapClick = { onMapClick(it) },
         modifier = Modifier
             .fillMaxSize()
     ) {
-        fastViewModel.selectedLocation.let {
-            Marker(
-                state = MarkerState(
-                    position = LatLng(it.lat,it.lng)
-                )
+        val selectedLocation = fastViewModel.selectedLocation
+        Marker(
+            state = MarkerState(
+                position = LatLng(selectedLocation.lat, selectedLocation.lng)
             )
+        )
+
+        orsUiState.geometry?.coordinates?.let { coordinates ->
+            Polyline(
+                points = coordinates.map { LatLng(it[1], it[0]) },
+                color = Color.Blue,
+                width = 5f
+            )
+        }
+
+        // Maneja el estado de la solicitud y muestra mensajes según sea necesario
+        when (orsUiState.state) {
+            OrsState.LOADING -> {
+                // Mostrar indicador de carga
+            }
+            OrsState.SUCCESSFUL -> {
+                // Mostrar ruta en el mapa (ya lo haces con la Polyline)
+            }
+            OrsState.FAILURE -> {
+                // Mostrar mensaje de error
+                orsUiState.message?.let {
+                    Text(text = it, color = Color.Red, modifier = Modifier.padding(16.dp))
+                }
+            }
+            else -> {
+                // No hacer nada
+            }
         }
     }
 }
@@ -197,7 +189,7 @@ private fun TopBar(
 
             CustomOutlinedTextField(
                 value = destino,
-                onValueChange = {destino = it},
+                onValueChange = { destino = it },
                 placeholderText = stringResource(id = R.string.txtDestino),
                 leadingIcon = Icons.Filled.Search,
                 ancho = 0.9f

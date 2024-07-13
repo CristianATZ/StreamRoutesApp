@@ -96,6 +96,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.utils.getAddressInfoFromCoordinates
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.Tema
@@ -127,9 +128,10 @@ data class RoutesNavigationItem(
 fun MainScreen(
     mainViewModel: MainViewModel,
     configurationViewModel: ConfigurationViewModel,
-    fastViewModel: FastViewModel
+    fastViewModel: FastViewModel,
+    orsViewModel: OrsViewModel
 ) {
-    Main(configurationViewModel, fastViewModel)
+    Main(configurationViewModel, fastViewModel, orsViewModel)
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -138,7 +140,8 @@ fun MainScreen(
 @Composable
 fun Main(
     configurationViewModel: ConfigurationViewModel,
-    fastViewModel: FastViewModel
+    fastViewModel: FastViewModel,
+    orsViewModel: OrsViewModel
 ){
     val context = LocalContext.current
 
@@ -215,7 +218,7 @@ fun Main(
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
 
-                    RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel){
+                    RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel, orsViewModel){
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
                     RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen {
