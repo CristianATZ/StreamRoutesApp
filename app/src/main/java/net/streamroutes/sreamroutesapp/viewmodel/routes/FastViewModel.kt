@@ -16,27 +16,16 @@ class FastViewModel() : ViewModel() {
     private val _uiState = MutableStateFlow(FastUiState())
     val uiState: StateFlow<FastUiState> = _uiState.asStateFlow()
 
-    var currentLocation by mutableStateOf(LatLng(0.0, 0.0))
-        private set
-
-    var selectedLocation by mutableStateOf(LatLng(0.0, 0.0))
-        private set
-
-    init {
-        _uiState.value = FastUiState(
-            currentLocation = currentLocation,
-            selectedLocation = selectedLocation
-        )
-    }
-
     fun updateCurrentLocation(_current: LatLng) {
-        currentLocation = _current
-        _uiState.value = _uiState.value.copy(currentLocation = _current)
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(currentLocation = _current)
+        }
     }
 
     fun updateSelectedLocation(_selected: LatLng) {
-        selectedLocation = _selected
-        _uiState.value = _uiState.value.copy(selectedLocation = _selected)
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(selectedLocation = _selected)
+        }
     }
 
     fun fetchLocations() {
@@ -66,7 +55,7 @@ class FastViewModel() : ViewModel() {
 }
 
 data class FastUiState(
-    val currentLocation: LatLng = LatLng(0.0, 0.0),
+    val currentLocation: LatLng = LatLng(20.139539228288044, -101.15073143400946),
     val selectedLocation: LatLng = LatLng(0.0, 0.0)
 )
 

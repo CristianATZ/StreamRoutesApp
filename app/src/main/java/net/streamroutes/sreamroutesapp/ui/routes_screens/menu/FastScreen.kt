@@ -64,6 +64,9 @@ fun CalcularDestino(
     fastViewModel: FastViewModel,
     orsViewModel: OrsViewModel
 ) {
+
+    val fastState by fastViewModel.uiState.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth(),
@@ -73,11 +76,11 @@ fun CalcularDestino(
 
         Button(
             onClick = {
-                val currentLocation = fastViewModel.currentLocation
-                val selectedLocation = fastViewModel.selectedLocation
+                val currentLocation = fastState.currentLocation
+                val selectedLocation = fastState.selectedLocation
                 orsViewModel.fetchRouteInfo(
-                    "${currentLocation.lat},${currentLocation.lng}",
-                    "${selectedLocation.lat},${selectedLocation.lng}"
+                    "${currentLocation.lng},${currentLocation.lat}",
+                    "${selectedLocation.lng},${selectedLocation.lat}"
                 )
             },
             shape = CircleShape,
@@ -112,7 +115,9 @@ fun MapBodyFast(
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(itsur, 15f)
     }
+
     val orsUiState by orsViewModel.uiState.collectAsState()
+    val fastState by fastViewModel.uiState.collectAsState()
 
     GoogleMap(
         cameraPositionState = cameraPosition,
@@ -128,7 +133,8 @@ fun MapBodyFast(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        val selectedLocation = fastViewModel.selectedLocation
+        val selectedLocation = fastState.selectedLocation
+
         Marker(
             state = MarkerState(
                 position = LatLng(selectedLocation.lat, selectedLocation.lng)
@@ -153,9 +159,7 @@ fun MapBodyFast(
             }
             OrsState.FAILURE -> {
                 // Mostrar mensaje de error
-                orsUiState.message?.let {
-                    Text(text = it, color = Color.Red, modifier = Modifier.padding(16.dp))
-                }
+                Text(text = orsUiState.message, color = Color.Red, modifier = Modifier.padding(16.dp))
             }
             else -> {
                 // No hacer nada

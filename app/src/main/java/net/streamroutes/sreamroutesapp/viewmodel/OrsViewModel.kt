@@ -24,11 +24,14 @@ class OrsViewModel(
     private val _uiState = MutableStateFlow(OrsUiState())
     val uiState : StateFlow<OrsUiState> = _uiState.asStateFlow()
 
+
+    // funcion para traer los datos de la API Open Routes Service
+    // formato: Longitud,Latitud
     fun fetchRouteInfo(start: String, end: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(state = OrsState.LOADING, message = "Cargando mejor ruta...")
             try {
-                Log.d("ROUTES", "$start, $end")
+                Log.d("ROUTES", "INICIOS: $start, $end")
                 val response = withContext(Dispatchers.IO) {
                     remoteRepository.getBestRoute(start, end)
                 }
@@ -56,7 +59,7 @@ class OrsViewModel(
                     else -> "Error al cargar la información."
                 }
 
-                Log.d("ROUTES", e.message.toString())
+                Log.d("ROUTES", "MENSAJE ERROR " + e.message.toString())
                 _uiState.value = _uiState.value.copy(state = OrsState.FAILURE, message = errorMessage, error = e.message.toString())
             }
         }
