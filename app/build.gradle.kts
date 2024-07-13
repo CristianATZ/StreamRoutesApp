@@ -85,6 +85,7 @@ dependencies {
     implementation(libs.maps.compose)
     implementation(libs.osmdroid.android)
     implementation(libs.osm.androd.compose)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -100,4 +101,10 @@ dependencies {
 
     // workmanager
     implementation(libs.work.runtime)
+
+    // viewmodel
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+
+    // okhttp3
+    implementation(libs.squareup.okhttp3)
 }

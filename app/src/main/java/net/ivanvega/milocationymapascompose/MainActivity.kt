@@ -12,19 +12,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
 import net.ivanvega.milocationymapascompose.network.NetworkRemoteReposiroty
 import net.ivanvega.milocationymapascompose.network.RetrofitOpenRouteService
+import net.ivanvega.milocationymapascompose.network.WebSocketViewModel
 import net.ivanvega.milocationymapascompose.ui.location.CurrentLocationScreen
 import net.ivanvega.milocationymapascompose.ui.theme.MiLocationYMapasComposeTheme
-
-import java.util.concurrent.TimeUnit
 
 class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -36,6 +28,8 @@ class MainActivity : ComponentActivity() {
                 val apiService = RetrofitOpenRouteService.retrofitService
                 val repo by lazy { NetworkRemoteReposiroty(apiService) }
 
+                val wsViewModel = WebSocketViewModel()
+
 
                 // A surface container using the 'background' color from the theme
                 Surface(
@@ -44,7 +38,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     //Greeting("Android")
                     //LocationPermissionScreen()
-                    CurrentLocationScreen(repo)
+                    CurrentLocationScreen(repo, wsViewModel)
                     //LocationUpdatesScreen()
                     //MiMapa() //Google
                     //MiMapaOSMDroidCompose() //Open Street Map

@@ -26,11 +26,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,23 +44,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.Priority
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
-import com.google.maps.android.compose.CameraPositionState
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.tasks.await
 import net.ivanvega.milocationymapascompose.network.LocationRequest
 import net.ivanvega.milocationymapascompose.network.NetworkRemoteReposiroty
+import net.ivanvega.milocationymapascompose.network.WebSocketViewModel
 import net.ivanvega.milocationymapascompose.permission.ui.PermissionBox
 
 @SuppressLint("MissingPermission")
 @Composable
-fun CurrentLocationScreen(repo: NetworkRemoteReposiroty) {
+fun CurrentLocationScreen(repo: NetworkRemoteReposiroty, wsViewModel: WebSocketViewModel) {
 
 
     val permissions = listOf(
@@ -71,7 +68,8 @@ fun CurrentLocationScreen(repo: NetworkRemoteReposiroty) {
         onGranted = {
             CurrentLocationContent(
                 usePreciseLocation = it.contains(Manifest.permission.ACCESS_FINE_LOCATION),
-                repo = repo
+                repo = repo,
+                wsViewModel = wsViewModel
             )
         },
     )
@@ -81,7 +79,17 @@ fun CurrentLocationScreen(repo: NetworkRemoteReposiroty) {
     anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION],
 )
 @Composable
-fun CurrentLocationContent(usePreciseLocation: Boolean, repo: NetworkRemoteReposiroty) {
+fun CurrentLocationContent(
+    usePreciseLocation: Boolean,
+    repo: NetworkRemoteReposiroty,
+    wsViewModel: WebSocketViewModel
+) {
+    val uiState by wsViewModel.socketStatus.collectAsState()
+    val messages by wsViewModel.messages.collectAsState(emptyList())
+    var text by remember {
+        mutableStateOf("")
+    }
+
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
     val locationClient = remember {
@@ -104,12 +112,12 @@ fun CurrentLocationContent(usePreciseLocation: Boolean, repo: NetworkRemoteRepos
         mutableStateOf(false)
     }
 
-    LaunchedEffect(startGPS) {
+    /*LaunchedEffect(startGPS) {
        while (startGPS) {
            delay(3000)
            val petition = locationClient.getCurrentLocation(Priority.PRIORITY_HIGH_ACCURACY, CancellationTokenSource().token).await()
 
-           /*val petition = locationClient.lastLocation.await()*/
+           *//*val petition = locationClient.lastLocation.await()*//*
 
            Log.d("ENTRO", "Envio")
            petition.let { location ->
@@ -130,7 +138,7 @@ fun CurrentLocationContent(usePreciseLocation: Boolean, repo: NetworkRemoteRepos
 
             locationInfo = userLocation.toString()
         }
-    }
+    }*/
 
     Column(
         Modifier
@@ -140,7 +148,7 @@ fun CurrentLocationContent(usePreciseLocation: Boolean, repo: NetworkRemoteRepos
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Button(onClick = { startGPS = !startGPS }) {
+        /*Button(onClick = { startGPS = !startGPS }) {
             Text(text = if(startGPS) "Cancelar envios" else "Empezar envios")
         }
 
@@ -161,6 +169,34 @@ fun CurrentLocationContent(usePreciseLocation: Boolean, repo: NetworkRemoteRepos
                     position = userLocation
                 )
             )
+        }*/
+
+        Button(onClick = { wsViewModel.connect() }) {
+            Text(text = "Conectar")
+        }
+
+        Button(onClick = { wsViewModel.disconnect() }) {
+            Text(text = "Desconectar")
+        }
+
+        Text(text = if(uiState) "CONECTADO" else "DESCONECTADO")
+        
+        TextField(value = text, onValueChange = {text = it})
+        Button(
+            onClick = {
+                wsViewModel.sendText(text)
+                text = ""
+            }
+        ) {
+            Text(text = "Enviar")
+        }
+
+        Column(Modifier.fillMaxSize()) {
+            LazyColumn(Modifier.weight(1f).fillMaxWidth()) {
+                items(messages.size) { index ->
+                    MessageItem(item = messages[index])
+                }
+            }
         }
     }
 
@@ -168,3 +204,11 @@ fun CurrentLocationContent(usePreciseLocation: Boolean, repo: NetworkRemoteRepos
 
 }
 
+@Composable
+private fun MessageItem(item: Pair<Boolean, String>) {
+    val (iAmTheSender, message) = item
+    Text(
+        text = "${if (iAmTheSender) "You: " else "Other: "} $message",
+        modifier = Modifier.padding(8.dp)
+    )
+}
