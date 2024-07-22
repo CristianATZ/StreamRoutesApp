@@ -64,6 +64,20 @@ class OrsViewModel(
             }
         }
     }
+
+
+    // funcion para limpiar los datos
+    fun clear(){
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(
+                geometry = null,
+                properties = null,
+                state = OrsState.NONE,
+                message = "",
+                error = ""
+            )
+        }
+    }
 }
 
 data class OrsUiState(

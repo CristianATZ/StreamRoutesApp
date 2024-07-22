@@ -22,47 +22,9 @@ class ViajePkViewModel(
     private val _uiState = MutableStateFlow(ViajePkUiState())
     val uiState : StateFlow<ViajePkUiState> = _uiState.asStateFlow()
 
-    fun fetchBestRoute(start: String, end: String) {
-        viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(state = ServiceState.LOADING, message = "Cargando mejor ruta...")
-            try {
-                Log.d("ROUTES", "$start, $end")
-                val response = withContext(Dispatchers.IO) {
-                    remoteRepository.getBestRoute(start, end)
-                }
-
-                if (response.isSuccessful) {
-                    val ruta = response.body()
-                    ruta?.let {
-                        _uiState.value = _uiState.value.copy(rutaEstacionamiento = it, message = "Información cargada con éxito.", state = ServiceState.SUCCESSFUL)
-                        //_uiState.value = _uiState.value.copy(coordenadas = it.features.last().geometry.coordinates.map { x -> LatLng(x.last(), x.first()) })
-                    }
-                    Log.d("ROUTES", "SI JALO/ ${uiState.value.rutaEstacionamiento!!.features.last().properties.segments.last().steps}")
-                    //Log.d("ROUTES", uiState.value.rutaEstacionamiento.features.last().geometry.coordinates.map { doubles -> LatLng(doubles.first(), doubles.last()) }.toString())
-                } else {
-                    _uiState.value = _uiState.value.copy(state = ServiceState.FAILURE, message = "Error en la solicitud: ${response.message()}")
-                    Log.d("ROUTES", "NO JALO ${response.message()},")
-                }
-            } catch (e: Exception) {
-                val errorMessage = when (e) {
-                    is java.net.UnknownHostException -> "No hay conexión a Internet."
-                    is java.net.SocketTimeoutException -> "La solicitud ha tardado demasiado en responder."
-                    else -> "Error al cargar la información."
-                }
-
-                Log.d("ROUTES", e.message.toString())
-                _uiState.value = _uiState.value.copy(state = ServiceState.FAILURE, message = errorMessage, error = e.message.toString())
-            }
-        }
-    }
-
     fun cancelarRecorrido(){
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
-                rutaEstacionamiento = null,
-                state = ServiceState.NONE,
-                message = "",
-                error = "",
                 vehiculoSeleccionado = null,
                 estacionamientoSeleccionado = null,
                 leerQR = false
@@ -96,12 +58,6 @@ class ViajePkViewModel(
 }
 
 data class ViajePkUiState(
-    // peticion
-    val rutaEstacionamiento: RouteResult? = null,
-    val state: ServiceState = ServiceState.NONE,
-    val message: String = "",
-    val error: String = "",
-
     // local
     val vehiculoSeleccionado: Vehiculo? = null,
     val estacionamientoSeleccionado: ParkingResultItem? = null,

@@ -7,7 +7,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,9 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.IconButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
@@ -67,6 +65,7 @@ import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
@@ -78,7 +77,7 @@ fun IniciarViajeScreen(
     orsViewModel: OrsViewModel,
     navHostController: NavHostController
 ) {
-    IniciarViaje(viajePkViewModel, parkingPkViewModel, navHostController)
+    IniciarViaje(viajePkViewModel, parkingPkViewModel, orsViewModel, navHostController)
 }
 
 @androidx.annotation.OptIn(ExperimentalGetImage::class)
@@ -86,6 +85,7 @@ fun IniciarViajeScreen(
 private fun IniciarViaje(
     viajePkViewModel: ViajePkViewModel,
     parkingPkViewModel: ParkingPkViewModel,
+    orsViewModel: OrsViewModel,
     navHostController: NavHostController
 ) {
     val uiState by viajePkViewModel.uiState.collectAsState()
@@ -102,14 +102,14 @@ private fun IniciarViaje(
         ) {
 
             // mapa
-            MapaRecorrido(viajePkViewModel)
+            MapaRecorrido(viajePkViewModel, orsViewModel)
 
             // header con informacion
-            HeaderIniciarViaje(viajePkViewModel, navHostController)
+            HeaderIniciarViaje(viajePkViewModel, orsViewModel, navHostController)
 
             // botones llegue o regresar
             if (uiState.vehiculoSeleccionado != null) {
-                ViajeFinalizado(viajePkViewModel)
+                ViajeFinalizado(viajePkViewModel, orsViewModel)
             } else {
                 LugaresTuristicos()
             }
@@ -220,12 +220,14 @@ fun LugarTuristicoItem(
 
 @Composable
 private fun MapaRecorrido(
-    viajePkViewModel: ViajePkViewModel
+    viajePkViewModel: ViajePkViewModel,
+    orsViewModel: OrsViewModel
 ) {
-    val uiState by viajePkViewModel.uiState.collectAsState()
+    val viajeState by viajePkViewModel.uiState.collectAsState()
+    val orsState by orsViewModel.uiState.collectAsState()
 
-    val estacionamiento = remember(uiState.estacionamientoSeleccionado!!.location) {
-        LatLng(uiState.estacionamientoSeleccionado!!.location.latitude, uiState.estacionamientoSeleccionado!!.location.longitude)
+    val estacionamiento = remember(viajeState.estacionamientoSeleccionado!!.location) {
+        LatLng(viajeState.estacionamientoSeleccionado!!.location.latitude, viajeState.estacionamientoSeleccionado!!.location.longitude)
     }
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(estacionamiento, 15f)
@@ -236,7 +238,7 @@ private fun MapaRecorrido(
 
     if (mapLoaded) {
         LaunchedEffect(ubicacion, estacionamiento) {
-            viajePkViewModel.fetchBestRoute("${ubicacion.longitude},${ubicacion.latitude}", "${estacionamiento.longitude},${estacionamiento.latitude}")
+            orsViewModel.fetchRouteInfo("${ubicacion.longitude},${ubicacion.latitude}", "${estacionamiento.longitude},${estacionamiento.latitude}")
         }
     }
 
@@ -259,16 +261,16 @@ private fun MapaRecorrido(
                 icon = BitmapDescriptorFactory.fromResource(R.drawable.marker_parking)
             )
 
-            if(uiState.vehiculoSeleccionado != null){
+            if(viajeState.vehiculoSeleccionado != null){
                 Marker(
                     state = MarkerState(position = ubicacion),
                     title = "Aquí estás",
                     icon = BitmapDescriptorFactory.fromResource(R.drawable.coche_izq)
                 )
 
-                if(uiState.rutaEstacionamiento != null){
+                if(orsState.state == OrsState.SUCCESSFUL){
                     Polyline(
-                        points = uiState.rutaEstacionamiento!!.features.last().geometry.coordinates.map { LatLng(it.last(), it.first()) },
+                        points = orsState.geometry!!.coordinates.map { LatLng(it.last(), it.first()) },
                         color = Color.Black,
                         jointType = JointType.ROUND,
                         startCap = RoundCap(),
@@ -282,7 +284,8 @@ private fun MapaRecorrido(
 
 @Composable
 private fun ViajeFinalizado(
-    viajePkViewModel: ViajePkViewModel
+    viajePkViewModel: ViajePkViewModel,
+    orsViewModel: OrsViewModel
 ) {
     val scope = rememberCoroutineScope()
 
@@ -296,6 +299,7 @@ private fun ViajeFinalizado(
             onClick = {
                 scope.launch {
                     viajePkViewModel.updateLeerQR(true)
+                    orsViewModel.clear()
                 }
             },
             shape = RoundedCornerShape(8.dp),
@@ -319,6 +323,7 @@ private fun ViajeFinalizado(
 @Composable
 private fun HeaderIniciarViaje(
     viajePkViewModel: ViajePkViewModel,
+    orsViewModel: OrsViewModel,
     navHostController: NavHostController
 ) {
     Column(
@@ -331,15 +336,21 @@ private fun HeaderIniciarViaje(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        ParkingInfo(viajePkViewModel, navHostController)
+        ParkingInfo(viajePkViewModel, orsViewModel, navHostController)
     }
 }
 
 @Composable
-fun ParkingInfo(viajePkViewModel: ViajePkViewModel, navHostController: NavHostController) {
-    val uiState by viajePkViewModel.uiState.collectAsState()
+fun ParkingInfo(
+    viajePkViewModel: ViajePkViewModel,
+    orsViewModel: OrsViewModel,
+    navHostController: NavHostController
+) {
+    val viajeState by viajePkViewModel.uiState.collectAsState()
+    val orsState by orsViewModel.uiState.collectAsState()
 
-    val time = uiState.rutaEstacionamiento?.features?.lastOrNull()?.properties?.segments?.lastOrNull()?.duration ?: 0.0
+    val time = orsState.properties?.summary?.duration ?: 0.0
+
 
     val infoTime = "${if (time % 60 != 0.0) (time / 60).toInt() + 1 else (time / 60).toInt()} minuto(s)."
 
@@ -354,7 +365,10 @@ fun ParkingInfo(viajePkViewModel: ViajePkViewModel, navHostController: NavHostCo
         Spacer(modifier = Modifier.size(16.dp))
 
         IconButton(
-            onClick = { navHostController.popBackStack() },
+            onClick = {
+                navHostController.popBackStack()
+                orsViewModel.clear()
+            },
         ) {
             Icon(
                 imageVector = Icons.Filled.ArrowBackIosNew,
@@ -371,19 +385,19 @@ fun ParkingInfo(viajePkViewModel: ViajePkViewModel, navHostController: NavHostCo
         } else {
             Column {
                 Text(
-                    text = uiState.estacionamientoSeleccionado!!.name,
+                    text = viajeState.estacionamientoSeleccionado!!.name,
                     color = colorScheme.onPrimary,
                     style = typography.titleLarge,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = uiState.estacionamientoSeleccionado!!.address,
+                    text = viajeState.estacionamientoSeleccionado!!.address,
                     color = colorScheme.onPrimary,
                     style = typography.titleMedium,
                     fontWeight = FontWeight.Normal
                 )
 
-                if(uiState.vehiculoSeleccionado != null){
+                if(viajeState.vehiculoSeleccionado != null){
                     Spacer(modifier = Modifier.size(16.dp))
 
                     Text(
