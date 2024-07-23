@@ -50,7 +50,7 @@ fun FastScreen(
                 .padding(paddingValues)
         ) {
             MapBodyFast(fastViewModel, orsViewModel) { latLng ->
-                fastViewModel.updateSelectedLocation(com.google.maps.model.LatLng(latLng.latitude, latLng.longitude))
+                fastViewModel.updateSelectedLocation(LatLng(latLng.latitude, latLng.longitude))
             }
 
             CalcularDestino(fastViewModel, orsViewModel)
@@ -79,8 +79,8 @@ fun CalcularDestino(
                 val currentLocation = fastState.currentLocation
                 val selectedLocation = fastState.selectedLocation
                 orsViewModel.fetchRouteInfo(
-                    "${currentLocation.lng},${currentLocation.lat}",
-                    "${selectedLocation.lng},${selectedLocation.lat}"
+                    "${currentLocation.longitude},${currentLocation.latitude}",
+                    "${selectedLocation.longitude},${selectedLocation.latitude}"
                 )
             },
             shape = CircleShape,
@@ -137,7 +137,7 @@ fun MapBodyFast(
 
         Marker(
             state = MarkerState(
-                position = LatLng(selectedLocation.lat, selectedLocation.lng)
+                position = LatLng(selectedLocation.latitude, selectedLocation.longitude)
             )
         )
 
