@@ -2,6 +2,8 @@ package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
 import FastViewModel
 import android.Manifest
+import android.annotation.SuppressLint
+import android.location.Location
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
@@ -15,9 +17,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -26,6 +31,7 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
+
 
 @RequiresPermission(
     anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION],
@@ -76,20 +82,26 @@ fun CalcularDestino(
 
         Button(
             onClick = {
-                val currentLocation = fastState.currentLocation
-                val selectedLocation = fastState.selectedLocation
-                orsViewModel.fetchRouteInfo(
-                    "${currentLocation.longitude},${currentLocation.latitude}",
-                    "${selectedLocation.longitude},${selectedLocation.latitude}"
-                )
+                try {
+                    val currentLocation = fastState.currentLocation
+                    val selectedLocation = fastState.selectedLocation
+                    orsViewModel.fetchRouteInfo(
+                        "${currentLocation.longitude},${currentLocation.latitude}",
+                        "${selectedLocation.longitude},${selectedLocation.latitude}"
+                    )
+                } catch (e: Exception) {
+                    // Manejar la excepción aquí, por ejemplo, mostrar un mensaje de error
+                    // Puedes usar un estado para mostrar un mensaje de error en la UI
+                    println("Error al calcular la ruta: ${e.message}")
+                }
             },
-            shape = CircleShape,
+            shape = CircleShape, // Mantener el border radius
             colors = ButtonDefaults.buttonColors(
-                containerColor = colorScheme.tertiaryContainer,
-                contentColor = colorScheme.onTertiaryContainer
+                containerColor = colorScheme.tertiaryContainer, // Mantener el color de fondo
+                contentColor = colorScheme.onTertiaryContainer // Mantener el color del texto
             ),
             elevation = ButtonDefaults.elevatedButtonElevation(
-                defaultElevation = 4.dp
+                defaultElevation = 11.dp // Aumentar la elevación para mayor resalte
             ),
             modifier = Modifier
                 .fillMaxWidth(0.9f)
@@ -98,9 +110,12 @@ fun CalcularDestino(
         ) {
             Text(
                 text = stringResource(id = R.string.btnCalcularDestino),
-                style = typography.bodyLarge
+                style = typography.bodyLarge.copy(
+                    fontSize = 20.sp // Ajustar el tamaño del texto aquí
+                )
             )
         }
+
 
     }
 }
@@ -118,6 +133,28 @@ fun MapBodyFast(
 
     val orsUiState by orsViewModel.uiState.collectAsState()
     val fastState by fastViewModel.uiState.collectAsState()
+    val context = LocalContext.current
+    // Obtener la ubicación actual y actualizar el estado
+    LaunchedEffect(Unit) {
+        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+        try {
+            @SuppressLint("MissingPermission")
+            val locationResult = fusedLocationClient.lastLocation
+            locationResult.addOnSuccessListener { location: Location? ->
+                location?.let {
+                    fastViewModel.updateCurrentLocation(LatLng(it.latitude, it.longitude))
+                }
+            }.addOnFailureListener { e ->
+                // Manejar la excepción aquí
+                println("Error al obtener la ubicación: ${e.message}")
+            }
+        } catch (e: Exception) {
+            // Manejar cualquier excepción general
+            println("Error al obtener la ubicación: ${e.message}")
+        }
+
+    }
+
 
     GoogleMap(
         cameraPositionState = cameraPosition,
@@ -134,18 +171,29 @@ fun MapBodyFast(
             .fillMaxSize()
     ) {
         val selectedLocation = fastState.selectedLocation
+        val currentLocation = fastState.currentLocation
 
         Marker(
             state = MarkerState(
-                position = LatLng(selectedLocation.latitude, selectedLocation.longitude)
-            )
+                position = selectedLocation
+            ),
+            title = "Destino"
         )
+
+        currentLocation?.let {
+            Marker(
+                state = MarkerState(
+                    position = it
+                ),
+                title = "Mi localización"
+            )
+        }
 
         orsUiState.geometry?.coordinates?.let { coordinates ->
             Polyline(
                 points = coordinates.map { LatLng(it[1], it[0]) },
-                color = Color.Blue,
-                width = 5f
+                color = Color.Black,  // Cambiar a color negro
+                width = 8f  // Hacer la línea más gruesa
             )
         }
 

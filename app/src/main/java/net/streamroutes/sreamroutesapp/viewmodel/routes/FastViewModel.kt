@@ -52,6 +52,13 @@ class FastViewModel() : ViewModel() {
             LatLng(34.0522, -118.2437) // Ejemplo: Los Ángeles
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        // Aquí puedes realizar la limpieza necesaria
+        _uiState.value = FastUiState() // Restablecer el estado
+        // También puedes cancelar corutinas si es necesario
+    }
 }
 
 data class FastUiState(
