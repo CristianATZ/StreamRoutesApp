@@ -1,14 +1,11 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
-import android.graphics.Bitmap
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -17,8 +14,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -47,15 +44,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.qrcode.QRCodeWriter
-import com.google.zxing.qrcode.encoder.QRCode
-import kotlinx.coroutines.runBlocking
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
+import net.streamroutes.sreamroutesapp.utils.EstacionadoItem
+import net.streamroutes.sreamroutesapp.utils.ReservacionItem
 import net.streamroutes.sreamroutesapp.utils.brush
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ApartarPkViewModel
-import net.streamroutes.sreamroutesapp.viewmodel.parking.HistorialItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 
 @Composable
@@ -129,10 +123,6 @@ private fun Estacionados(
 ) {
     val parkingState by parkingPkViewModel.uiState.collectAsState()
 
-    var qrGenerado by remember {
-        mutableStateOf<Bitmap?>(null)
-    }
-
     var openDialog by remember {
         mutableStateOf(false)
     }
@@ -148,164 +138,201 @@ private fun Estacionados(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Card(
-                elevation = CardDefaults.cardElevation(
-                    defaultElevation = 8.dp
-                ),
-                shape = RoundedCornerShape(topEnd = 8.dp, topStart = 8.dp)
+
+        if(parkingState.apartado){
+            ReservacionObject(
+                reservacionItem = ReservacionItem(
+                    matricula = parkingState.vehiculo?.matricula ?: "",
+                    estacionamientoNombre = parkingState.estacionamiento?.name ?: "",
+                    horaInicio = parkingState.horaInicio,
+                    minutoInicio = parkingState.minutoInicio,
+                    horaFInal = parkingState.horaFinal,
+                    total = parkingState.total
+                )
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .background(colorScheme.background)
-                        .padding(8.dp)
-                ) {
-                    BeneficioItem(
-                        icon = painterResource(id = R.drawable.car),
-                        title = stringResource(id = R.string.lblVehiculo),
-                        subtitle = parkingState.vehiculo!!.matricula
-                    )
-
-                    BeneficioItem(
-                        icon = painterResource(id = R.drawable.marker_parking),
-                        title = stringResource(id = R.string.lblEstacionamiento),
-                        subtitle = parkingState.estacionamiento!!.name
-                    )
-
-                    BeneficioItem(
-                        icon = painterResource(id = R.drawable.hora_exacta),
-                        title = stringResource(id = R.string.lblHoraInicio),
-                        subtitle = "${parkingState.horaInicio}:${parkingState.minutoInicio}"
-                    )
-                }
+                apartarPkViewModel.generateQRCode("idApartado:123|idEstacionamiento:1")
+                openDialog = !openDialog
             }
+        } else {
+            EstacionadoObject(
+                estacionadoItem = EstacionadoItem(
+                    matricula = parkingState.vehiculo?.matricula ?: "",
+                    estacionamientoNombre = parkingState.estacionamiento?.name ?: "",
+                    tiempo = parkingState.tiempo,
+                    total = parkingState.total
+                )
+            )
+        }
+    }
+}
 
-            Spacer(modifier = Modifier.size(8.dp))
+@Composable
+fun EstacionadoObject(
+    estacionadoItem: EstacionadoItem
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp
+            ),
+            shape = RoundedCornerShape(topEnd = 8.dp, topStart = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .background(colorScheme.background)
+                    .padding(8.dp)
+            ) {
+                BeneficioItem(
+                    icon = painterResource(id = R.drawable.car),
+                    title = stringResource(id = R.string.lblVehiculo),
+                    subtitle = estacionadoItem.matricula
+                )
 
-            Column {
-                Button(
-                    onClick = {
-                        apartarPkViewModel.generateQRCode("idApartado:123|idEstacionamiento:1")
-                        openDialog = !openDialog
-                    },
-                    shape = RectangleShape,
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = Color(0.682f, 0.753f, 1.0f),
-                        contentColor = Color(0.0f, 0.082f, 0.667f, 1.0f)
-                    ),
-                    elevation = ButtonDefaults.elevatedButtonElevation(
-                        defaultElevation = 8.dp
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .height(50.dp),
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.btnMostrarQR),
-                        style = typography.bodyLarge,
-                        fontWeight = FontWeight.W500
-                    )
-                }
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(0.9f)
-                ) {
-                    Card(
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 8.dp
-                        ),
-                        shape = RoundedCornerShape(bottomStart = 8.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(0.6f)
-                                .height(75.dp)
-                                .background(
-                                    colorScheme.tertiary,
-                                    RoundedCornerShape(bottomStart = 8.dp)
-                                ),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            // intercambiar textos entre ESTACIONADOS y APARTADOS
-                            Text(
-                                text = stringResource(id = R.string.lblTiempoRestante),
-                                style = typography.bodyLarge,
-                                fontWeight = FontWeight.Bold,
-                                color = colorScheme.onTertiary
-                            )
-                            Text(
-                                text = "${parkingState.horaFinal-parkingState.horaInicio} hora(s)",
-                                style = typography.bodyLarge,
-                                color = colorScheme.onTertiary
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.weight(1f))
-
-                    Card(
-                        elevation = CardDefaults.cardElevation(
-                            defaultElevation = 8.dp
-                        ),
-                        shape = RoundedCornerShape(bottomEnd = 8.dp)
-                    ) {
-                        Column(
-                            modifier = Modifier
-                                .fillMaxWidth(0.95f)
-                                .height(75.dp)
-                                .background(colorScheme.inverseSurface),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "$${parkingState.total}",
-                                style = typography.headlineLarge,
-                                color = colorScheme.tertiary,
-                                fontWeight = FontWeight.W500
-                            )
-                        }
-                    }
-                }
+                BeneficioItem(
+                    icon = painterResource(id = R.drawable.marker_parking),
+                    title = stringResource(id = R.string.lblEstacionamiento),
+                    subtitle = estacionadoItem.estacionamientoNombre
+                )
             }
         }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(0.9f)
         ) {
             Card(
                 elevation = CardDefaults.cardElevation(
                     defaultElevation = 8.dp
                 ),
-                shape = RoundedCornerShape(topEnd = 8.dp, topStart = 8.dp)
+                shape = RoundedCornerShape(bottomStart = 8.dp)
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(0.9f)
-                        .background(colorScheme.background)
-                        .padding(8.dp)
+                        .fillMaxWidth(0.6f)
+                        .height(75.dp)
+                        .background(
+                            colorScheme.tertiary,
+                            RoundedCornerShape(bottomStart = 8.dp)
+                        ),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    BeneficioItem(
-                        icon = painterResource(id = R.drawable.car),
-                        title = stringResource(id = R.string.lblVehiculo),
-                        subtitle = parkingState.vehiculo!!.matricula
+                    // intercambiar textos entre ESTACIONADOS y APARTADOS
+                    Text(
+                        text = stringResource(id = R.string.lblTiempoActual),
+                        style = typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = colorScheme.onTertiary
                     )
-
-                    BeneficioItem(
-                        icon = painterResource(id = R.drawable.marker_parking),
-                        title = stringResource(id = R.string.lblEstacionamiento),
-                        subtitle = parkingState.estacionamiento!!.name
+                    Text(
+                        text = "${estacionadoItem.tiempo} minutos",
+                        style = typography.bodyLarge,
+                        color = colorScheme.onTertiary
                     )
                 }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            Card(
+                elevation = CardDefaults.cardElevation(
+                    defaultElevation = 8.dp
+                ),
+                shape = RoundedCornerShape(bottomEnd = 8.dp)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth(0.95f)
+                        .height(75.dp)
+                        .background(colorScheme.inverseSurface),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "$${estacionadoItem.total}",
+                        style = typography.headlineLarge,
+                        color = colorScheme.tertiary,
+                        fontWeight = FontWeight.W500
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ReservacionObject(
+    reservacionItem: ReservacionItem,
+    showQR: () -> Unit
+) {
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Card(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp
+            ),
+            shape = RoundedCornerShape(topEnd = 8.dp, topStart = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .background(colorScheme.background)
+                    .padding(8.dp)
+            ) {
+                BeneficioItem(
+                    icon = painterResource(id = R.drawable.car),
+                    title = stringResource(id = R.string.lblVehiculo),
+                    subtitle = reservacionItem.matricula
+                )
+
+                BeneficioItem(
+                    icon = painterResource(id = R.drawable.marker_parking),
+                    title = stringResource(id = R.string.lblEstacionamiento),
+                    subtitle = reservacionItem.estacionamientoNombre
+                )
+
+                BeneficioItem(
+                    icon = painterResource(id = R.drawable.hora_exacta),
+                    title = stringResource(id = R.string.lblHoraInicio),
+                    subtitle = "${reservacionItem.horaInicio}:${reservacionItem.minutoInicio}"
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.size(8.dp))
+
+        Column {
+            Button(
+                onClick = {
+                    showQR()
+                },
+                shape = RectangleShape,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color(0.682f, 0.753f, 1.0f),
+                    contentColor = Color(0.0f, 0.082f, 0.667f, 1.0f)
+                ),
+                elevation = ButtonDefaults.elevatedButtonElevation(
+                    defaultElevation = 8.dp
+                ),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .height(50.dp),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.btnMostrarQR),
+                    style = typography.bodyLarge,
+                    fontWeight = FontWeight.W500
+                )
             }
 
             Spacer(modifier = Modifier.size(8.dp))
@@ -332,13 +359,13 @@ private fun Estacionados(
                     ) {
                         // intercambiar textos entre ESTACIONADOS y APARTADOS
                         Text(
-                            text = stringResource(id = R.string.lblTiempoActual),
+                            text = stringResource(id = R.string.lblTiempoRestante),
                             style = typography.bodyLarge,
                             fontWeight = FontWeight.Bold,
                             color = colorScheme.onTertiary
                         )
                         Text(
-                            text = "${parkingState.tiempo} minutos",
+                            text = "${reservacionItem.horaFInal-reservacionItem.horaInicio} hora(s)",
                             style = typography.bodyLarge,
                             color = colorScheme.onTertiary
                         )
@@ -362,7 +389,7 @@ private fun Estacionados(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "$${parkingState.total}",
+                            text = "$${reservacionItem.total}",
                             style = typography.headlineLarge,
                             color = colorScheme.tertiary,
                             fontWeight = FontWeight.W500

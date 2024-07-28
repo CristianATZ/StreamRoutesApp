@@ -24,3 +24,19 @@ object Constants {
         val apiKey = "5b3ce3597851110001cf6248cf096e9bff7543a9b65bfeea90be20ac"
     }
 }
+
+data class ReservacionItem(
+    val matricula: String,
+    val estacionamientoNombre: String,
+    val horaInicio: Int,
+    val minutoInicio: Int,
+    val horaFInal: Int,
+    val total: Int
+)
+
+data class EstacionadoItem(
+    val matricula: String,
+    val estacionamientoNombre: String,
+    val tiempo: Int,
+    val total: Int
+)

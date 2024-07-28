@@ -60,7 +60,7 @@ fun MainParking(
     // lista de items
     val navigationItems = listOf(
         NavigationItem(AppScreens.ParkingHome.route, Icons.Outlined.Home, Icons.Filled.Home, stringResource(id = R.string.lblInicio)),
-        NavigationItem(AppScreens.ParkingEstacionamiento.route, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, stringResource(id = R.string.lblEstacionamiento)),
+        NavigationItem(AppScreens.ParkingEstacionamiento.route, Icons.Outlined.DirectionsCar, Icons.Filled.DirectionsCar, stringResource(id = R.string.lblReservaciones)),
         NavigationItem(AppScreens.ParkingAccount.route, Icons.Outlined.AccountCircle, Icons.Filled.AccountCircle, stringResource(id = R.string.lblCuenta))
     )
 
