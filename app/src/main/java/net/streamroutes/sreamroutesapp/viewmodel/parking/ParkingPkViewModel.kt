@@ -10,14 +10,6 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
-
-data class HistorialItem(
-    val vehiculo: Vehiculo?,
-    val estacionamiento: ParkingResultItem?,
-    val tiempo: Int,
-    val total: Int
-)
-
 class ParkingPkViewModel(
     private val remoteRepository: RemoteRepository
 ) : ViewModel() {
@@ -27,6 +19,7 @@ class ParkingPkViewModel(
     fun agregarEstacionamiento(e: ParkingResultItem, t: Int, v: Vehiculo){
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
+                apartado = false,
                 estacionamiento = e,
                 total = t,
                 vehiculo = v
@@ -50,6 +43,7 @@ class ParkingPkViewModel(
 }
 
 data class ParkingPkUiState(
+    // estacionado
     val estacionamiento: ParkingResultItem? = null,
     val vehiculo: Vehiculo? = null,
     val total: Int = 0,
