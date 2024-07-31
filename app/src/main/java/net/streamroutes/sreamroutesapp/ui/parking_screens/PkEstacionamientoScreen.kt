@@ -138,6 +138,7 @@ private fun Estacionados(
         modifier = Modifier
             .verticalScroll(rememberScrollState())
     ) {
+        Spacer(modifier = Modifier.size(16.dp))
 
         if(parkingState.apartado){
             ReservacionObject(
