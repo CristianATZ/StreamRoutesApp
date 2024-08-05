@@ -3,6 +3,10 @@ package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 import FastViewModel
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.location.Location
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.*
@@ -18,11 +22,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -31,6 +37,7 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
 
 @RequiresPermission(
@@ -126,6 +133,7 @@ fun MapBodyFast(
     orsViewModel: OrsViewModel,
     onMapClick: (LatLng) -> Unit
 ) {
+
     //20.139539228288044, -101.15073143400946 ITSUR
     val itsur = LatLng(19.645925, -101.230075)
     val cameraPosition = rememberCameraPositionState {
@@ -186,7 +194,8 @@ fun MapBodyFast(
                 state = MarkerState(
                     position = it
                 ),
-                title = "Mi localización"
+                title = "Mi localización",
+                icon = BitmapDescriptorFactory.fromResource(R.drawable.ubicacion)
             )
         }
 
@@ -249,4 +258,19 @@ private fun TopBar(
             )
         }
     }
+}
+
+
+fun getResizedBitmap(context: Context, resId: Int, newWidth: Int, newHeight: Int): BitmapDescriptor {
+    // Obtener el drawable
+    val drawable: Drawable = context.getDrawable(resId) ?: return BitmapDescriptorFactory.defaultMarker()
+
+    // Convertir drawable a bitmap
+    val bitmap = (drawable as BitmapDrawable).bitmap
+
+    // Redimensionar bitmap
+    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, newWidth, newHeight, true)
+
+    // Convertir bitmap redimensionado a BitmapDescriptor
+    return BitmapDescriptorFactory.fromBitmap(resizedBitmap)
 }
