@@ -9,6 +9,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.location.Location
 import androidx.annotation.RequiresPermission
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -38,8 +39,11 @@ import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresPermission(
     anyOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION],
 )
@@ -55,27 +59,55 @@ fun FastScreen(
         systemUiController.setStatusBarColor(Color(0xFFFEFBFF))
     }
 
-    Scaffold(
-        topBar = { TopBar(onBack) }
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .padding(paddingValues)
-        ) {
-            MapBodyFast(fastViewModel, orsViewModel) { latLng ->
-                fastViewModel.updateSelectedLocation(LatLng(latLng.latitude, latLng.longitude))
-            }
+    val bottomSheetState = rememberBottomSheetScaffoldState()
+    val coroutineScope = rememberCoroutineScope()
 
-            CalcularDestino(fastViewModel, orsViewModel)
+    BottomSheetScaffold(
+        scaffoldState = bottomSheetState,
+        sheetContent = {
+            PanelContent()//Contenido
+        },
+        sheetPeekHeight = 0.dp, //Altura del panel cuando esta contraido
+    ) { paddingValues ->
+        Scaffold (
+            topBar = { TopBar(onBack) }
+        ){paddingValues ->
+            Box(
+                modifier = Modifier
+                    .padding(paddingValues)
+            ) {
+                MapBodyFast(fastViewModel, orsViewModel) { latLng ->
+                    fastViewModel.updateSelectedLocation(LatLng(latLng.latitude, latLng.longitude))
+                }
+
+                CalcularDestino(fastViewModel, orsViewModel,bottomSheetState, coroutineScope)
+            }
         }
     }
 }
 
-//Falla
+@Composable
+fun PanelContent() {
+    // Contenido del panel deslizante
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = "Este es el contenido del panel deslizante")
+        // Agrega más contenido según tus necesidades
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CalcularDestino(
     fastViewModel: FastViewModel,
-    orsViewModel: OrsViewModel
+    orsViewModel: OrsViewModel,
+    bottomSheetState: BottomSheetScaffoldState,
+    coroutineScope: CoroutineScope
 ) {
 
     val fastState by fastViewModel.uiState.collectAsState()
@@ -86,6 +118,26 @@ fun CalcularDestino(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.weight(1f))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            Button(
+                onClick = {
+                    coroutineScope.launch {
+                        bottomSheetState.bottomSheetState.expand()
+                    }
+                },
+                modifier = Modifier.padding(end = 16.dp)
+            ) {
+                Image(painter = painterResource(id = R.drawable.reloj),
+                    contentDescription = "Datos",
+                    modifier = Modifier
+                        .size(25.dp)
+                )
+            }
+        }
 
         Button(
             onClick = {
@@ -122,8 +174,6 @@ fun CalcularDestino(
                 )
             )
         }
-
-
     }
 }
 
@@ -133,7 +183,6 @@ fun MapBodyFast(
     orsViewModel: OrsViewModel,
     onMapClick: (LatLng) -> Unit
 ) {
-
     //20.139539228288044, -101.15073143400946 ITSUR
     val itsur = LatLng(19.645925, -101.230075)
     val cameraPosition = rememberCameraPositionState {
@@ -163,7 +212,6 @@ fun MapBodyFast(
         }
 
     }
-
 
     GoogleMap(
         cameraPositionState = cameraPosition,
@@ -245,7 +293,7 @@ private fun TopBar(
             IconButton(onClick = { onBack() }) {
                 Icon(
                     imageVector = Icons.Outlined.ArrowBackIosNew,
-                    contentDescription = "Te enviara al menu de opciones",
+                    contentDescription = "Te enviará al menú de opciones",
                 )
             }
 
@@ -259,7 +307,6 @@ private fun TopBar(
         }
     }
 }
-
 
 fun getResizedBitmap(context: Context, resId: Int, newWidth: Int, newHeight: Int): BitmapDescriptor {
     // Obtener el drawable
