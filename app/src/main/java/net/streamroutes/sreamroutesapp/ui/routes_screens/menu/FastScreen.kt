@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -62,10 +63,21 @@ fun FastScreen(
     val bottomSheetState = rememberBottomSheetScaffoldState()
     val coroutineScope = rememberCoroutineScope()
 
+    val orsUiState by orsViewModel.uiState.collectAsState()
+    val time = orsUiState.time ?: "N/A"
+    val distance = orsUiState.distance ?: "N/A"
+
     BottomSheetScaffold(
         scaffoldState = bottomSheetState,
         sheetContent = {
-            PanelContent()//Contenido
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xFFFFFACD)) // Fondo amarillo mostaza
+                    .padding(16.dp)
+            ) {
+                PanelContent(time = time, distance = distance) // Contenido
+            }
         },
         sheetPeekHeight = 0.dp, //Altura del panel cuando esta contraido
     ) { paddingValues ->
@@ -87,16 +99,27 @@ fun FastScreen(
 }
 
 @Composable
-fun PanelContent() {
-    // Contenido del panel deslizante
+fun PanelContent(time: String, distance: String) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp), // Color amarillo mostaza
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Text(text = "Este es el contenido del panel deslizante")
-        // Agrega más contenido según tus necesidades
+        Text(
+            text = "Tiempo: $time",
+            style = typography.bodyLarge.copy(
+                fontSize = 24.sp // Tamaño de letra más grande
+            ),
+            color = Color.Black // Color del texto
+        )
+        Text(
+            text = "Distancia: $distance",
+            style = typography.bodyLarge.copy(
+                fontSize = 24.sp // Tamaño de letra más grande
+            ),
+            color = Color.Black // Color del texto
+        )
     }
 }
 
@@ -109,8 +132,12 @@ fun CalcularDestino(
     bottomSheetState: BottomSheetScaffoldState,
     coroutineScope: CoroutineScope
 ) {
-
     val fastState by fastViewModel.uiState.collectAsState()
+    val orsUiState by orsViewModel.uiState.collectAsState()
+
+    // Asume que `orsUiState` tiene propiedades `time` y `distance` que se actualizan después de la solicitud
+    val time = orsUiState.time ?: "N/A"
+    val distance = orsUiState.distance ?: "N/A"
 
     Column(
         modifier = Modifier
@@ -131,7 +158,8 @@ fun CalcularDestino(
                 },
                 modifier = Modifier.padding(end = 16.dp)
             ) {
-                Image(painter = painterResource(id = R.drawable.reloj),
+                Image(
+                    painter = painterResource(id = R.drawable.reloj),
                     contentDescription = "Datos",
                     modifier = Modifier
                         .size(25.dp)
@@ -175,6 +203,8 @@ fun CalcularDestino(
             )
         }
     }
+
+
 }
 
 @Composable

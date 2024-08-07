@@ -20,12 +20,11 @@ enum class OrsState {
 
 class OrsViewModel(
     private val remoteRepository: RemoteRepository
-) : ViewModel(){
+) : ViewModel() {
     private val _uiState = MutableStateFlow(OrsUiState())
-    val uiState : StateFlow<OrsUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<OrsUiState> = _uiState.asStateFlow()
 
-
-    // funcion para traer los datos de la API Open Routes Service
+    // función para traer los datos de la API Open Routes Service
     // formato: Longitud,Latitud
     fun fetchRouteInfo(start: String, end: String) {
         viewModelScope.launch {
@@ -39,18 +38,26 @@ class OrsViewModel(
                 if (response.isSuccessful) {
                     val ruta = response.body()
                     ruta?.let {
+                        val properties = it.features.last().properties
                         _uiState.value = _uiState.value.copy(
                             geometry = it.features.last().geometry,
-                            properties = it.features.last().properties,
+                            properties = properties,
                             message = "Información cargada con éxito.",
-                            state = OrsState.SUCCESSFUL
+                            state = OrsState.SUCCESSFUL,
+                            time = properties.segments.firstOrNull()?.duration?.let { duration ->
+                                // Convertir segundos a formato hh:mm:ss
+                                String.format("%02d:%02d:%02d", duration.toInt() / 3600, (duration.toInt() % 3600) / 60, duration.toInt() % 60)
+                            },
+                            distance = properties.segments.firstOrNull()?.distance?.let { distance ->
+                                // Convertir metros a kilómetros con dos decimales
+                                String.format("%.2f km", distance / 1000)
+                            }
                         )
                     }
                     Log.d("ROUTES", "SI JALO/ ${uiState.value.geometry}")
-                    //Log.d("ROUTES", uiState.value.rutaEstacionamiento.features.last().geometry.coordinates.map { doubles -> LatLng(doubles.first(), doubles.last()) }.toString())
                 } else {
                     _uiState.value = _uiState.value.copy(state = OrsState.FAILURE, message = "Error en la solicitud: ${response.message()}")
-                    Log.d("ROUTES", "NO JALO ${response.message()},")
+                    Log.d("ROUTES", "NO JALO ${response.message()}")
                 }
             } catch (e: Exception) {
                 val errorMessage = when (e) {
@@ -65,16 +72,17 @@ class OrsViewModel(
         }
     }
 
-
-    // funcion para limpiar los datos
-    fun clear(){
+    // función para limpiar los datos
+    fun clear() {
         viewModelScope.launch {
             _uiState.value = _uiState.value.copy(
                 geometry = null,
                 properties = null,
                 state = OrsState.NONE,
                 message = "",
-                error = ""
+                error = "",
+                time = null,
+                distance = null
             )
         }
     }
@@ -86,6 +94,8 @@ data class OrsUiState(
     val state: OrsState = OrsState.NONE,
     val message: String = "",
     val error: String = "",
+    val time: String? = null,
+    val distance: String? = null,
 )
 
 
