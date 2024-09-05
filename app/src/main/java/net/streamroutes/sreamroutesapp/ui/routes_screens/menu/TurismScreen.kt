@@ -503,7 +503,7 @@ fun ReversoTarjeta(
 
         Button(
             onClick = {
-                uriHandler.openUri("http://streamroutes.com/tourism.html#$url")
+                uriHandler.openUri("https://rumapp.org/tourism.html#$url")
             },
             shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
