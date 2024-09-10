@@ -43,6 +43,8 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,25 +64,33 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.RoundCap
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.OrsState
+import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 
 
 @Composable
 fun RoutesScreen(
-    myViewModel: MyViewModel = MyViewModel(),
+    orsViewModel: OrsViewModel,
     onBack: () -> Unit
 ){
-    RoutesScreenView(onBack)
+    RoutesScreenView(orsViewModel, onBack)
 }
 
 enum class DrawerValue {
@@ -90,6 +100,7 @@ enum class DrawerValue {
 
 @Composable
 fun RoutesScreenView(
+    orsViewModel: OrsViewModel,
     onBack: () -> Unit
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
@@ -115,7 +126,7 @@ fun RoutesScreenView(
                 .padding(paddingValues)
                 .fillMaxSize()
         ){
-            MainContent()
+            MainContent(orsViewModel)
 
             AnimatedVisibility(
                 visible = sidePanelVisible
@@ -511,10 +522,24 @@ fun RouteInfo(
 }
 
 @Composable
-fun MainContent() {
+fun MainContent(
+    orsViewModel: OrsViewModel
+) {
     val itsur = LatLng(20.139539228288044, -101.15073143400946)
+    val centro = LatLng(20.145374041281077, -101.14670957880247)
+    val camera = LatLng(20.143072409784665, -101.14840107502803)
+    val orsState by orsViewModel.uiState.collectAsState()
+
     val cameraState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(itsur, 17f)
+        position = CameraPosition.fromLatLngZoom(camera, 5f)
+    }
+
+    var mapLoaded by remember { mutableStateOf(false) }
+
+    if (mapLoaded) {
+        LaunchedEffect(itsur, centro) {
+            orsViewModel.fetchRouteInfo("${itsur.longitude},${itsur.latitude}", "${centro.longitude},${centro.latitude}")
+        }
     }
 
     Column(
@@ -532,9 +557,33 @@ fun MainContent() {
                 minZoomPreference = 15f
             ),
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
+            onMapLoaded = { mapLoaded = true }
         ) {
+            if(mapLoaded){
+                Marker(
+                    state = MarkerState(position = itsur),
+                    title = "itsur",
+                    icon = BitmapDescriptorFactory.fromResource(R.drawable.bus_2)
+                )
 
+                Marker(
+                    state = MarkerState(position = centro),
+                    title = "Aquí estás",
+                    //icon = BitmapDescriptorFactory.fromResource(R.drawable.autobus)
+                )
+
+                if(orsState.state == OrsState.SUCCESSFUL){
+                    Polyline(
+                        points = orsState.geometry!!.coordinates.map { LatLng(it.last(), it.first()) },
+                        color = Color.Black,
+                        jointType = JointType.ROUND,
+                        startCap = RoundCap(),
+                        endCap = RoundCap()
+                    )
+                }
+
+            }
         }
     }
 }
