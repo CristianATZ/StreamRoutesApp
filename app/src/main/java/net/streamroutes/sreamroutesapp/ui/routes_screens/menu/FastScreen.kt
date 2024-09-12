@@ -214,7 +214,7 @@ fun MapBodyFast(
     onMapClick: (LatLng) -> Unit
 ) {
     //20.139539228288044, -101.15073143400946 ITSUR
-    val itsur = LatLng(19.645925, -101.230075)
+    val itsur = LatLng(20.08311316364202, -98.77385045129488)
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(itsur, 15f)
     }
