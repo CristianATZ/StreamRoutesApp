@@ -6,6 +6,7 @@ class TurismViewModel() : ViewModel() {
 
 }
 
+/*
 data class TurismState(
     val route : Route
-)
+)*/

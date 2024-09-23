@@ -99,6 +99,7 @@ import net.streamroutes.sreamroutesapp.utils.getAddressInfoFromCoordinates
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.Tema
 
 enum class RoutesNavigationOptions{
@@ -129,9 +130,10 @@ fun MainScreen(
     mainViewModel: MainViewModel,
     configurationViewModel: ConfigurationViewModel,
     fastViewModel: FastViewModel,
-    orsViewModel: OrsViewModel
+    orsViewModel: OrsViewModel,
+    routesViewModel: RoutesViewModel
 ) {
-    Main(configurationViewModel, fastViewModel, orsViewModel)
+    Main(configurationViewModel, fastViewModel, orsViewModel, routesViewModel)
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
@@ -141,7 +143,8 @@ fun MainScreen(
 fun Main(
     configurationViewModel: ConfigurationViewModel,
     fastViewModel: FastViewModel,
-    orsViewModel: OrsViewModel
+    orsViewModel: OrsViewModel,
+    routesViewModel: RoutesViewModel
 ){
     val context = LocalContext.current
 
@@ -221,7 +224,7 @@ fun Main(
                     RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel, orsViewModel){
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
-                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen(orsViewModel) {
+                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen(orsViewModel, routesViewModel) {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
                     RoutesNavigationOptions.TRIP_SCREEN -> TripScreen {

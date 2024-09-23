@@ -35,6 +35,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.routes.ChangeViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.ConfigurationViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.MainViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
 
 @RequiresApi(Build.VERSION_CODES.Q)
 @Composable
@@ -53,7 +54,8 @@ fun AppNavigation(
     parkingPkViewModel: ParkingPkViewModel,
     viajePkViewModel: ViajePkViewModel,
     apartarPkViewModel: ApartarPkViewModel,
-    orsViewModel: OrsViewModel
+    orsViewModel: OrsViewModel,
+    routesViewModel: RoutesViewModel
 ) {
     NavHost(navController = navHostController, startDestination = AppScreens.SelectOptionScreen
         .route) {
@@ -71,7 +73,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            MainScreen(mainViewModel, configurationViewModel, fastViewModel, orsViewModel)
+            MainScreen(mainViewModel, configurationViewModel, fastViewModel, orsViewModel, routesViewModel)
         }
         // registrar pantalla
         composable(

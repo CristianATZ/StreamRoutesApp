@@ -12,9 +12,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.FirebaseApp
 import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
+import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.ui.Theme.RumaAppTheme
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
@@ -28,12 +30,16 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ParkingPkViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModelFactory
+import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModelFactory
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // Inicialización de Firebase
+        FirebaseApp.initializeApp(this)
         setContent {
             val navHostController = rememberNavController()
 
@@ -42,6 +48,10 @@ class MainActivity : ComponentActivity() {
             val parkingService = RetrofitParkingService.retrofitService
             val routesService = RetrofitOpenRouteService.retrofitService
             val repository by lazy { NetworkRemoteReposiroty(parkingService, routesService) }
+            val firebaseRepository by lazy { FirebaseRepository() }
+
+            // viewmodel de rutas
+            val routesViewModel: RoutesViewModel by viewModels { RoutesViewModelFactory(firebaseRepository) }
 
             // viewmodels de esatcionamiento
             val parkingPkViewModel: ParkingPkViewModel by viewModels { ParkingPkViewModelFactory(repository) }
@@ -64,7 +74,8 @@ class MainActivity : ComponentActivity() {
                         homePkViewModel = homePkViewModel,
                         viajePkViewModel = viajePkViewModel,
                         apartarPkViewModel = apartarPkViewModel,
-                        orsViewModel = orsViewModel
+                        orsViewModel = orsViewModel,
+                        routesViewModel = routesViewModel
                     )
                 }
             }

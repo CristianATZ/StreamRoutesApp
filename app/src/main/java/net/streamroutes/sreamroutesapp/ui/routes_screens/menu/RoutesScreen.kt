@@ -2,6 +2,7 @@
 
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -46,6 +48,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -79,18 +82,20 @@ import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.data.model.routeModel.Route
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
-import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
+import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
 
 
 @Composable
 fun RoutesScreen(
     orsViewModel: OrsViewModel,
+    routesViewModel: RoutesViewModel,
     onBack: () -> Unit
 ){
-    RoutesScreenView(orsViewModel, onBack)
+    RoutesScreenView(orsViewModel, routesViewModel, onBack)
 }
 
 enum class DrawerValue {
@@ -101,9 +106,15 @@ enum class DrawerValue {
 @Composable
 fun RoutesScreenView(
     orsViewModel: OrsViewModel,
+    routesViewModel: RoutesViewModel,
     onBack: () -> Unit
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
+
+    val rutas by routesViewModel.routeList.observeAsState(emptyList())
+    LaunchedEffect(Unit) {
+        routesViewModel.getLocation()
+    }
 
     Scaffold(
         topBar = {
@@ -131,7 +142,7 @@ fun RoutesScreenView(
             AnimatedVisibility(
                 visible = sidePanelVisible
             ) {
-                SidePanel()
+                SidePanel(rutas)
             }
         }
     }    
@@ -147,7 +158,7 @@ data class RutaView(
 )
 
 @Composable
-fun SidePanel() {
+fun SidePanel(rutas: List<Route>) {
 
     Column(
         Modifier
@@ -158,8 +169,17 @@ fun SidePanel() {
     ) {
         BarraFiltrado()
 
+        LazyColumn {
+            items(rutas) { ruta ->
+                Text("ID: ${ruta.id}, Latitud: ${ruta.latitud}, Longitud: ${ruta.longitud}")
+            }
+            Log.d("RUTAS", rutas.toString())
+        }
+
         // lista de rutas de transporte publico
         ListaRutas()
+
+
     }
 }
 
