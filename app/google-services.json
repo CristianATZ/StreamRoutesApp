@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "211070438559",
+    "firebase_url": "https://rumapp-api-default-rtdb.firebaseio.com",
+    "project_id": "rumapp-api",
+    "storage_bucket": "rumapp-api.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:211070438559:android:143d098f1f3c773c4826aa",
+        "android_client_info": {
+          "package_name": "net.streamroutes.sreamroutesapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLpnhGo0mQwXYK4vDJThQSEZ4JgNBaQfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
