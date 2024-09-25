@@ -124,6 +124,7 @@ dependencies {
 
     // FOR QR CODER
     implementation(libs.zxing.core)
+    implementation(libs.guava)
     // END FOR QR CODER
 
     // FOR IMAGES
@@ -135,6 +136,7 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.firestore)
     // END FOR FIREBASE
 
     testImplementation(libs.junit)

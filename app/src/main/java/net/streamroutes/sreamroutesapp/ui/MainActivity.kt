@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.FirebaseFirestore
 import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
@@ -32,6 +33,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModelFactory
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
     @SuppressLint("NewApi")
@@ -40,6 +42,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         // Inicialización de Firebase
         FirebaseApp.initializeApp(this)
+        FirebaseFirestore.getInstance()
         setContent {
             val navHostController = rememberNavController()
 

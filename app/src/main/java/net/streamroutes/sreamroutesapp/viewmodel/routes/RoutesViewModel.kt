@@ -1,11 +1,14 @@
 package net.streamroutes.sreamroutesapp.viewmodel.routes
 
 import android.media.Image
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
 import net.streamroutes.sreamroutesapp.data.model.routeModel.Route
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
@@ -29,6 +32,28 @@ class RoutesViewModel(private val repository: FirebaseRepository) : ViewModel() 
         repository.getLocation { rutas ->
             _routeList.value = rutas
         }
+    }
+
+    fun getStaticRoutes() {
+        val routeList = mutableListOf<Route>()
+        val db = Firebase.firestore
+
+        db.collection("routes")
+            .get()
+            .addOnSuccessListener { result ->
+                for (document in result) {
+                    val dato = document.toObject(Route::class.java)
+                    routeList.add(dato)
+                    //Log.d("VIEWMODELRUTAS", dato.toString())
+                }
+
+                // Actualiza _routeList solo después de que los datos se hayan recuperado
+                Log.d("VIEWMODELRUTASSSSS", routeList.toString())
+                _routeList.value = routeList
+            }
+            .addOnFailureListener { exception ->
+                Log.d("VIEWMODELRUTAS", "Error getting documents: ", exception)
+            }
     }
 }
 

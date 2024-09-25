@@ -1,16 +1,19 @@
 package net.streamroutes.sreamroutesapp.data.repository
 
 import android.util.Log
+import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.firestore.firestore
 import net.streamroutes.sreamroutesapp.data.model.routeModel.Route
 
 class FirebaseRepository {
+    // TIEMPO REAL
     private val database = FirebaseDatabase
         .getInstance("https://rumapp-api-default-rtdb.firebaseio.com/")
-        .getReference("coordenadas")
+        .getReference("coordinates")
 
     fun insertLocation(data: Route, onSuccess: () -> Unit, onFailure: (Exception) -> Unit){
         database.push().setValue(data)

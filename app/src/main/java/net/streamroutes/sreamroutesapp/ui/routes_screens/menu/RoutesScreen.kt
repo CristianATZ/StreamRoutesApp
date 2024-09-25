@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
@@ -73,6 +74,9 @@ import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.RoundCap
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.toObject
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
@@ -111,10 +115,10 @@ fun RoutesScreenView(
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
 
-    val rutas by routesViewModel.routeList.observeAsState(emptyList())
     LaunchedEffect(Unit) {
-        routesViewModel.getLocation()
+        routesViewModel.getStaticRoutes()
     }
+    val rutas by routesViewModel.routeList.observeAsState(emptyList())
 
     Scaffold(
         topBar = {
@@ -169,17 +173,45 @@ fun SidePanel(rutas: List<Route>) {
     ) {
         BarraFiltrado()
 
+        Log.d("RUTAS", rutas.toString())
+
         LazyColumn {
             items(rutas) { ruta ->
-                Text("ID: ${ruta.id}, Latitud: ${ruta.latitud}, Longitud: ${ruta.longitud}")
+                RutaCard(ruta)
+                Divider()
             }
-            Log.d("RUTAS", rutas.toString())
+
         }
 
         // lista de rutas de transporte publico
         ListaRutas()
 
 
+    }
+}
+
+@Composable
+fun RutaCard(ruta: Route) {
+    Column(modifier = Modifier.padding(16.dp)) {
+        Text(text = "Ruta: ${ruta.name}")
+        Text(text = "Número de paradas: ${ruta.noStops}")
+        Text(text = "Tiempo de llegada: ${ruta.arriveTime} minutos")
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(text = "Inicio:")
+        Text(text = "Lugar: ${ruta.start.place}")
+        Text(text = "Latitud: ${ruta.start.latitude}, Longitud: ${ruta.start.longitude}")
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(text = "Fin:")
+        Text(text = "Lugar: ${ruta.end.place}")
+        Text(text = "Latitud: ${ruta.end.latitude}, Longitud: ${ruta.end.longitude}")
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(text = "Duración del viaje: ${ruta.time} minutos")
     }
 }
 
