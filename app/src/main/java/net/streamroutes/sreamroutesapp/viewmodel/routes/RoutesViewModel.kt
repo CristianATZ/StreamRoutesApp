@@ -48,7 +48,7 @@ class RoutesViewModel(private val repository: FirebaseRepository) : ViewModel() 
                 }
 
                 // Actualiza _routeList solo después de que los datos se hayan recuperado
-                Log.d("VIEWMODELRUTASSSSS", routeList.toString())
+                Log.d("VIEWMODELRUTAS", routeList.toString())
                 _routeList.value = routeList
             }
             .addOnFailureListener { exception ->

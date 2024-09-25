@@ -186,7 +186,6 @@ fun SidePanel(rutas: List<Route>) {
         // lista de rutas de transporte publico
         ListaRutas()
 
-
     }
 }
 
