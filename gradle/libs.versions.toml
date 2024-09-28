@@ -33,7 +33,9 @@ viewmodel-version = "2.6.2"
 guava = "31.1-android"
 ksp = "1.9.23-1.0.20"
 hiltAndroid = "2.50"
-
+room = "2.6.1"
+googleServices = "4.4.2"
+colorPicker = "1.1.2"
 
 
 [libraries]
@@ -57,8 +59,6 @@ play-services-maps = { group = "com.google.android.gms", name = "play-services-m
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "maps-compose" }
 pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "pager-indicators" }
 runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "livedata" }
-maps-services = { group = "com.google.maps", name = "google-maps-services", version.ref = "google-maps-servides" }
-scenefrom-filament = { group = "com.google.ar.sceneform", name = "filament-android", version.ref = "scene-filament-from" }
 kotlinx-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
 systemuicontroller = { group = "com.google.accompanist", name = "accompanist-systemuicontroller", version.ref = "systemiucontroller" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist-permissions" }
@@ -80,10 +80,15 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore-ktx" }
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroid" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
+compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorPicker" }
 
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin-plugin" }
-google-services = { id = "com.google.gms.google-services", version = "4.4.2" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
 google-devtools-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp"}
+dagger-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid"}

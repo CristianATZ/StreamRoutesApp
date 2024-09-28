@@ -60,6 +60,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    // FOR COLORPICKER (skydoves)
+    implementation(libs.compose.colorpicker)
+    // END FOR COLORPICKER
+
     // FOR LIVE DATA
     implementation(libs.runtime.livedata)
     // END FOR LIVEDATA
@@ -98,7 +102,9 @@ dependencies {
     // END FOR COROUTINES
 
     // FOR ROOM
-
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
     // END FOR ROOM
 
     // FOR EXTENDED ICONS
@@ -109,7 +115,6 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter.gson)
     // END FOR RETROFIT
-
 
     // FOR SYSTEM CONTROLLER
     implementation(libs.systemuicontroller)
