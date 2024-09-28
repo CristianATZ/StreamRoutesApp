@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.ui.Theme
+package net.streamroutes.sreamroutesapp.app.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

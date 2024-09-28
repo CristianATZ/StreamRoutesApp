@@ -1,7 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.devtools.ksp)
     id("com.google.gms.google-services")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -10,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId "net.streamroutes.sreamroutesapp"
-        minSdk 24
+        minSdk 26
         targetSdk 33
         versionCode 1
         versionName "1.0"
@@ -28,17 +30,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_17
-        targetCompatibility JavaVersion.VERSION_17
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = '17'
+        jvmTarget = '1.8'
     }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.7'
+        kotlinCompilerExtensionVersion '1.5.13'
     }
     packagingOptions {
         resources {
@@ -108,6 +110,7 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     // END FOR RETROFIT
 
+
     // FOR SYSTEM CONTROLLER
     implementation(libs.systemuicontroller)
     // END FOR SYSTEM CONTROLLER
@@ -131,6 +134,10 @@ dependencies {
     implementation(libs.coil.compose)
     // END FOR IMAGES
 
+    // FOR DAGGER HILT
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    // END FOR DAGGER HILT
 
     // FOR FIREBASE
     implementation(platform(libs.firebase.bom))

@@ -395,4 +395,7 @@
     <string name="lblTiempoActual">Tiempo actual</string>
     <string name="btnMostrarQR">Mostrar QR</string>
     <string name="lblReservaciones">Reservaciones</string>
+    <string name="title_activity_parking">ParkingActivity</string>
+    <string name="title_activity_transport">TransportActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
 </resources>

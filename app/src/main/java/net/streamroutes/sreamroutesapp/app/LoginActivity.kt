@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.ui
+package net.streamroutes.sreamroutesapp.app
 
 import android.annotation.SuppressLint
 import android.os.Build
@@ -19,7 +19,7 @@ import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
-import net.streamroutes.sreamroutesapp.ui.Theme.RumaAppTheme
+import net.streamroutes.sreamroutesapp.app.ui.theme.RumaAppTheme
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -33,9 +33,8 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModelFactory
-import com.google.firebase.ktx.Firebase
 
-class MainActivity : ComponentActivity() {
+class LoginActivity : ComponentActivity() {
     @SuppressLint("NewApi")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
