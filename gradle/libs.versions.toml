@@ -34,6 +34,7 @@ hiltAndroid = "2.50"
 room = "2.6.1"
 googleServices = "4.4.2"
 colorPicker = "1.1.2"
+uiTextGoogleFonts = "1.7.2"
 
 
 [libraries]
@@ -82,6 +83,7 @@ androidx-room-compiler = { group = "androidx.room", name = "room-compiler", vers
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorPicker" }
+androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 
 
 [plugins]

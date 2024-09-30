@@ -151,6 +151,10 @@ dependencies {
     implementation(libs.firebase.firestore)
     // END FOR FIREBASE
 
+    // FOR GOOGLE FONTS
+    implementation libs.androidx.ui.text.google.fonts
+    // ENF FOR GOOGLE FONTS
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

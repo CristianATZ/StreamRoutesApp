@@ -1,17 +1,16 @@
 package net.streamroutes.sreamroutesapp.app
 
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.compose.RumappAppTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
@@ -19,7 +18,6 @@ import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
-import net.streamroutes.sreamroutesapp.app.ui.theme.RumaAppTheme
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -36,7 +34,6 @@ import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModelFactory
 
 class LoginActivity : ComponentActivity() {
     @SuppressLint("NewApi")
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Inicialización de Firebase
@@ -64,7 +61,7 @@ class LoginActivity : ComponentActivity() {
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
 
-            RumaAppTheme (false){
+            RumappAppTheme (false){
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize()
