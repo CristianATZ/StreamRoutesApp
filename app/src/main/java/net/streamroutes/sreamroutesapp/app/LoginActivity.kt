@@ -18,6 +18,7 @@ import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.choose.ChooseScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
@@ -66,7 +67,7 @@ class LoginActivity : ComponentActivity() {
 
             RumappAppTheme (false){
                 // A surface container using the 'background' color from the theme
-                Surface(
+                /*Surface(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     AppNavigation(
@@ -79,7 +80,8 @@ class LoginActivity : ComponentActivity() {
                         orsViewModel = orsViewModel,
                         routesViewModel = routesViewModel
                     )
-                }
+                }*/
+
             }
         }
     }

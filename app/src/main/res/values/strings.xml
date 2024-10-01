@@ -417,4 +417,8 @@
     <string name="txtUser">Usuario</string>
     <string name="txtConfirmPassword">Confirmar contrasenia</string>
     <string name="btnRegister">Crear cuenta</string>
+    <string name="lblExplore">Expolora</string>
+    <string name="lblSelect">Selecciona</string>
+    <string name="lblPublictransport">Transporte publico</string>
+    <string name="lblParkings">Estacionamientos</string>
 </resources>
