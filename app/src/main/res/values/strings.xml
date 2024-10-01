@@ -398,4 +398,23 @@
     <string name="title_activity_parking">ParkingActivity</string>
     <string name="title_activity_transport">TransportActivity</string>
     <string name="title_activity_login">LoginActivity</string>
+    <string name="lblLogin">Iniciar Sesion</string>
+    <string name="btnForgot">Olvide mi contrasenia</string>
+    <string name="btnLogin">Ingresar</string>
+    <string name="btnNoAccount">¿No tienes cuenta? Registrate</string>
+    <string name="txtEmail">Correo electronico</string>
+    <string name="lblLog">Iniciar</string>
+    <string name="lblIn">Sesion</string>
+    <string name="iconClearEmail">Eliminar correo</string>
+    <string name="iconHidePassword">Ocultar contrasenia</string>
+    <string name="iconShowPassword">Mostrar contrasenia</string>
+    <string name="lblChange">Cambiar</string>
+    <string name="lblPassword">Contrasenia</string>
+    <string name="btnSendEmail">Enviar correo</string>
+    <string name="btnBack">Regresar</string>
+    <string name="lblCreate">Crear</string>
+    <string name="lblAccount">Cuenta</string>
+    <string name="txtUser">Usuario</string>
+    <string name="txtConfirmPassword">Confirmar contrasenia</string>
+    <string name="btnRegister">Crear cuenta</string>
 </resources>

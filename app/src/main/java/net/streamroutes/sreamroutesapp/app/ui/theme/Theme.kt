@@ -1,18 +1,11 @@
 package com.example.compose
-import android.app.Activity
-import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.Typography
+import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.platform.LocalContext
 import net.streamroutes.sreamroutesapp.app.ui.theme.AppTypography
 
 private val lightScheme = lightColorScheme(
@@ -254,6 +247,13 @@ data class ColorFamily(
 val unspecified_scheme = ColorFamily(
     Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
 )
+
+val primary = Color(0xff193355)
+val secondary = Color(0xff8C919B)
+val tertiary = Color(0xffB9DE21)
+
+val orange = Color(0xffE8AA42)
+val yellow = Color(0xffEACE43)
 
 @Composable
 fun RumappAppTheme(
