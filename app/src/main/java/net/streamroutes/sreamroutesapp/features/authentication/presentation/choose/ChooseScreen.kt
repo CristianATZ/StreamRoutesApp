@@ -18,7 +18,7 @@ import com.example.compose.RumappAppTheme
 import com.example.compose.orange
 import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.features.authentication.components.CardOption
+import net.streamroutes.sreamroutesapp.features.components.CardOption
 import net.streamroutes.sreamroutesapp.features.authentication.components.DisplayText
 
 @Preview

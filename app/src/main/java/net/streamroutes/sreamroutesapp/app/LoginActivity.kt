@@ -22,6 +22,7 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.choo
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
+import net.streamroutes.sreamroutesapp.features.transportApp.presentation.transportApp.TransportApp
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -81,7 +82,7 @@ class LoginActivity : ComponentActivity() {
                         routesViewModel = routesViewModel
                     )
                 }*/
-
+                TransportApp()
             }
         }
     }

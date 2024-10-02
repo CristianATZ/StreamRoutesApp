@@ -395,6 +395,7 @@
     <string name="lblTiempoActual">Tiempo actual</string>
     <string name="btnMostrarQR">Mostrar QR</string>
     <string name="lblReservaciones">Reservaciones</string>
+
     <string name="title_activity_parking">ParkingActivity</string>
     <string name="title_activity_transport">TransportActivity</string>
     <string name="title_activity_login">LoginActivity</string>
@@ -421,4 +422,24 @@
     <string name="lblSelect">Selecciona</string>
     <string name="lblPublictransport">Transporte publico</string>
     <string name="lblParkings">Estacionamientos</string>
+    <string name="lblHello">"Hola, "</string>
+    <string name="lblGreet">Buenas tardes, bienvenido de nuevo.</string>
+    <string name="lblPublicTransportRoutes">Rutas de transporte publico</string>
+    <string name="lblPlan">Planifica tu viaje</string>
+    <string name="lblForum">Foro</string>
+    <string name="iconMenu">Abrir menu lateral</string>
+    <string name="iconProfile">Abrir perfil</string>
+    <string name="iconOpenSettings">Abrir configuracion</string>
+    <string name="lblRumapp">Rumapp</string>
+    <string name="iconHome">Inicio</string>
+    <string name="lblPremium">Paquetes</string>
+    <string name="iconPremium">Paquetes</string>
+    <string name="lblMaps">Mapas</string>
+    <string name="iconMaps">Mapas</string>
+    <string name="iconTurism">Turismo</string>
+    <string name="iconForum">Foro</string>
+    <string name="lblSettings">Configuracion</string>
+    <string name="iconSettings">Configuracion</string>
+    <string name="lblLogout">Cerrar sesion</string>
+    <string name="iconLogout">Cerrar sesion</string>
 </resources>

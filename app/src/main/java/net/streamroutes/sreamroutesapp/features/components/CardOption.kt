@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.authentication.components
+package net.streamroutes.sreamroutesapp.features.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,6 +35,7 @@ fun CardOption(
         Column(
             modifier = modifier
                 .clip(shapes.large)
+                .background(Color.White)
         ) {
 
         }
