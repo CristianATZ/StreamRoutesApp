@@ -464,4 +464,13 @@
     <string name="lblRoutes">Rutas</string>
     <string name="lblHistory">Historial</string>
     <string name="lblHistoryDescription">Gastos de estacionamiento</string>
+    <string name="lblPlacelholderUser">Escribe un usuario</string>
+    <string name="iconClearUser">Borrar usuario</string>
+    <string name="txtPhone">Telefono</string>
+    <string name="lblPlacelholderPhone">123-456-78-90</string>
+    <string name="iconClearPhone">Borrar telefono</string>
+    <string name="lblPlaceholderEmail">example@dominio.com</string>
+    <string name="lblPlacelholderPassword">Escribe una contrasenia</string>
+    <string name="lblPlacelholderConfirmPassword">Confirmar contrasenia</string>
+    <string name="btnSave">Guardar</string>
 </resources>

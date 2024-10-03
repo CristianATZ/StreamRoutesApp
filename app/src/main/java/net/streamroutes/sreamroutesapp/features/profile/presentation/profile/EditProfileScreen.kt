@@ -24,6 +24,7 @@ fun EditProfileScreen(
         modifier = Modifier.fillMaxSize()
     ) {
         ProfileSmallTopAppBar(
+            title = stringResource(id = R.string.lblEditProfile),
             onBackPressed = { }
         )
 
