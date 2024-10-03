@@ -224,9 +224,7 @@ fun Main(
                     RoutesNavigationOptions.FAST_SCREEN -> FastScreen(fastViewModel, orsViewModel){
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }
-                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen(orsViewModel, routesViewModel) {
-                        routeScreen = RoutesNavigationOptions.HOME_SCREEN
-                    }
+                    RoutesNavigationOptions.ROUTES_SCREEN -> RoutesScreen(orsViewModel, routesViewModel)
                     RoutesNavigationOptions.TRIP_SCREEN -> TripScreen {
                         routeScreen = RoutesNavigationOptions.HOME_SCREEN
                     }

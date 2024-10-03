@@ -48,6 +48,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
@@ -66,6 +67,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -96,10 +98,9 @@ import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
 @Composable
 fun RoutesScreen(
     orsViewModel: OrsViewModel,
-    routesViewModel: RoutesViewModel,
-    onBack: () -> Unit
+    routesViewModel: RoutesViewModel
 ){
-    RoutesScreenView(orsViewModel, routesViewModel, onBack)
+    RoutesScreenView(orsViewModel, routesViewModel)
 }
 
 enum class DrawerValue {
@@ -110,8 +111,7 @@ enum class DrawerValue {
 @Composable
 fun RoutesScreenView(
     orsViewModel: OrsViewModel,
-    routesViewModel: RoutesViewModel,
-    onBack: () -> Unit
+    routesViewModel: RoutesViewModel
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
 
@@ -129,8 +129,7 @@ fun RoutesScreenView(
                     } else {
                         drawerState.value = DrawerValue.Closed
                     }
-                },
-                onBack = onBack
+                }
             ) },
     ) { paddingValues ->
 
@@ -141,12 +140,12 @@ fun RoutesScreenView(
                 .padding(paddingValues)
                 .fillMaxSize()
         ){
-            MainContent(orsViewModel)
+            MainContent(orsViewModel, rutas)
 
             AnimatedVisibility(
                 visible = sidePanelVisible
             ) {
-                SidePanel(rutas)
+                SidePanel()
             }
         }
     }    
@@ -162,7 +161,7 @@ data class RutaView(
 )
 
 @Composable
-fun SidePanel(rutas: List<Route>) {
+fun SidePanel() {
 
     Column(
         Modifier
@@ -172,16 +171,6 @@ fun SidePanel(rutas: List<Route>) {
             .background(colorScheme.background)
     ) {
         BarraFiltrado()
-
-        Log.d("RUTAS", rutas.toString())
-
-        LazyColumn {
-            items(rutas) { ruta ->
-                RutaCard(ruta)
-                Divider()
-            }
-
-        }
 
         // lista de rutas de transporte publico
         ListaRutas()
@@ -572,59 +561,67 @@ fun RouteInfo(
     }
 }
 
+
 @Composable
 fun MainContent(
-    orsViewModel: OrsViewModel
+    orsViewModel: OrsViewModel,
+    rutas: List<Route>
 ) {
-    val itsur = LatLng(20.139539228288044, -101.15073143400946)
-    val centro = LatLng(20.145374041281077, -101.14670957880247)
-    val camera = LatLng(20.143072409784665, -101.14840107502803)
+    val index = remember { mutableStateOf(0) }
+    val camera = LatLng(21.001793271283407, -101.27624380641946)
     val orsState by orsViewModel.uiState.collectAsState()
 
     val cameraState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(camera, 5f)
+        position = CameraPosition.fromLatLngZoom(camera, -5f)
     }
 
     var mapLoaded by remember { mutableStateOf(false) }
 
-    if (mapLoaded) {
-        LaunchedEffect(itsur, centro) {
-            orsViewModel.fetchRouteInfo("${itsur.longitude},${itsur.latitude}", "${centro.longitude},${centro.latitude}")
-        }
-    }
-
-    Column(
+    Box(
         Modifier.fillMaxSize()
     ) {
-
         GoogleMap(
             cameraPositionState = cameraState,
             uiSettings = MapUiSettings(
-                zoomControlsEnabled = false,
+                zoomControlsEnabled = true,
             ),
             properties = MapProperties(
                 mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
                 maxZoomPreference = 18f,
-                minZoomPreference = 15f
+                minZoomPreference = 13f
             ),
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
             onMapLoaded = { mapLoaded = true }
         ) {
-            if(mapLoaded){
+            if (mapLoaded) {
+                // cálculo de  punto A y punto B
+                val currentRoute = rutas.getOrNull(index.value)
+                val puntoA = LatLng(
+                    currentRoute?.start?.latitude?.toDoubleOrNull() ?: 0.0,
+                    currentRoute?.start?.longitude?.toDoubleOrNull() ?: 0.0
+                )
+                val puntoB = LatLng(
+                    currentRoute?.end?.latitude?.toDoubleOrNull() ?: 0.0,
+                    currentRoute?.end?.longitude?.toDoubleOrNull() ?: 0.0
+                )
+
+                // Actualizar ruta
+                LaunchedEffect(puntoA, puntoB) {
+                    orsViewModel.fetchRouteInfo("${puntoA.longitude},${puntoA.latitude}", "${puntoB.longitude},${puntoB.latitude}")
+                }
+
                 Marker(
-                    state = MarkerState(position = itsur),
-                    title = "itsur",
+                    state = MarkerState(position = puntoA),
+                    title = "Inicio: ${rutas.getOrNull(index.value)?.start?.place ?: "Desconocido"}",
                     icon = BitmapDescriptorFactory.fromResource(R.drawable.bus_2)
                 )
 
                 Marker(
-                    state = MarkerState(position = centro),
-                    title = "Aquí estás",
-                    //icon = BitmapDescriptorFactory.fromResource(R.drawable.autobus)
+                    state = MarkerState(position = puntoB),
+                    title = "Fin: ${rutas.getOrNull(index.value)?.end?.place ?: "Desconocido"}"
                 )
 
-                if(orsState.state == OrsState.SUCCESSFUL){
+                if (orsState.state == OrsState.SUCCESSFUL) {
                     Polyline(
                         points = orsState.geometry!!.coordinates.map { LatLng(it.last(), it.first()) },
                         color = Color.Black,
@@ -633,16 +630,84 @@ fun MainContent(
                         endCap = RoundCap()
                     )
                 }
+            }
+        }
 
+        if (rutas.isNotEmpty()) {
+            val puntoA by remember {
+                derivedStateOf {
+                    LatLng(
+                        rutas.getOrNull(index.value)?.start?.latitude?.toDoubleOrNull() ?: 0.0,
+                        rutas.getOrNull(index.value)?.start?.longitude?.toDoubleOrNull() ?: 0.0
+                        // rutas[index.value].start.latitude.toDouble(),
+                        // rutas[index.value].start.longitude.toDouble()
+                    )
+                }
+            }
+
+            val puntoB by remember {
+                derivedStateOf {
+                    LatLng(
+                        rutas.getOrNull(index.value)?.end?.latitude?.toDoubleOrNull() ?: 0.0,
+                        rutas.getOrNull(index.value)?.end?.longitude?.toDoubleOrNull() ?: 0.0
+                        // rutas[index.value].end.latitude.toDouble(),
+                        // rutas[index.value].end.longitude.toDouble()
+                    )
+                }
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    // text = rutas[index.value].name,
+                    text = rutas[index.value].name + "\n" + puntoA.toString() + " - " + puntoB.toString(),
+                    modifier = Modifier.padding(bottom = 8.dp),
+                    color = Color.Black
+                )
+
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Button(
+                        onClick = {
+                            if (index.value > 0) {
+                                index.value -= 1
+                            }
+                        },
+                        modifier = Modifier.weight(1f).padding(end = 8.dp)
+                    ) {
+                        Text("Ruta Anterior")
+                    }
+
+                    Button(
+                        onClick = {
+                            if (index.value < rutas.size - 1) {
+                                index.value += 1
+                            }
+                        },
+                        modifier = Modifier.weight(1f).padding(start = 8.dp)
+                    ) {
+                        Text("Siguiente ruta")
+                    }
+                }
             }
         }
     }
 }
 
+
+
+
+
 @Composable
 private fun TopBar(
-    openPanel: () -> Unit,
-    onBack: () -> Unit
+    openPanel: () -> Unit
 ) {
     CenterAlignedTopAppBar(
         title = {
@@ -681,7 +746,7 @@ private fun TopBar(
             }
         },
         navigationIcon = {
-            IconButton(onClick = { onBack() }) {
+            IconButton(onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = Icons.Outlined.ArrowBackIosNew,
                     contentDescription = "Te enviara al menu de opciones",

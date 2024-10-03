@@ -25,6 +25,7 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.regi
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.transportApp.TransportApp
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -84,7 +85,8 @@ class LoginActivity : ComponentActivity() {
                         routesViewModel = routesViewModel
                     )
                 }*/
-                EditProfileScreen()
+                // EditProfileScreen()
+                RoutesScreen(orsViewModel, routesViewModel)
             }
         }
     }
