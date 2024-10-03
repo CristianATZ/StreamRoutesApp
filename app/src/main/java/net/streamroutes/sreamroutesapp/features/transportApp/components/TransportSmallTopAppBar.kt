@@ -2,78 +2,53 @@ package net.streamroutes.sreamroutesapp.features.transportApp.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.height
-import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Menu
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme.colorScheme
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
+import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-fun TransportAppTopAppBar(
+fun TransportSmallTopAppBar(
     modifier: Modifier = Modifier,
     onOpenMenu: () -> Unit = {}
 ) {
     Column {
-        TopAppBar(
+        CustomTopAppBar(
             title = { /*TODO*/ },
             navigationIcon = {
-                MenuButtonTransportApp(
-                    onOpenMenu = onOpenMenu
+                NavigationButton(
+                    onButtonPressed = onOpenMenu
                 )
             },
             actions = {
-                ActionsTopBarTransportApp()
+                ActionsTopBar()
             },
-            modifier = Modifier.height(50.dp)
+            modifier = modifier
         )
 
-        Divider(
-            color = colorScheme.outline, // El color del borde
-            thickness = 1.dp // El grosor del borde
-        )
+        HorizontalDivider()
     }
 }
 
 @Preview
 @Composable
-fun MenuButtonTransportApp(
-    modifier: Modifier = Modifier,
-    onOpenMenu: () -> Unit = {}
-) {
-    IconButton(
-        onClick = onOpenMenu
-    ) {
-        Icon(
-            imageVector = Icons.Outlined.Menu,
-            contentDescription = stringResource(id = R.string.iconMenu)
-        )
-    }
-}
-
-@Preview
-@Composable
-fun ActionsTopBarTransportApp(
-    modifier: Modifier = Modifier
+private fun ActionsTopBar(
+    onProfilePressed: () -> Unit = {},
+    onSettingsPressed: () -> Unit = {}
 ) {
     Row {
         IconButton(
-            onClick = {
-                // ACCION PARA ABRIR EL PERFIL
-            }
+            onClick = onProfilePressed
         ) {
             Icon(
                 imageVector = Icons.Filled.AccountCircle,
@@ -82,9 +57,7 @@ fun ActionsTopBarTransportApp(
         }
 
         IconButton(
-            onClick = {
-                // ACCION PARA ABRIR EL PERFIL
-            }
+            onClick = onSettingsPressed
         ) {
             Icon(
                 imageVector = Icons.Filled.Settings,

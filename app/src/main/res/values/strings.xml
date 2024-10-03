@@ -442,4 +442,16 @@
     <string name="iconSettings">Configuracion</string>
     <string name="lblLogout">Cerrar sesion</string>
     <string name="iconLogout">Cerrar sesion</string>
+    <string name="iconBackProfile">Regresar al inicio</string>
+    <string name="lblUser">Usuario</string>
+    <string name="iconUser">Icono de usuario</string>
+    <string name="lblDescription">Descripcion</string>
+    <string name="iconInformation">Icono de informacion</string>
+    <string name="lblEmail">Correo electronico</string>
+    <string name="iconEmail">Icono de correo electronico</string>
+    <string name="lblPhone">Telefono</string>
+    <string name="iconPhone">Icono de telefono</string>
+    <string name="btnEditProfile">Editar perfil</string>
+    <string name="iconBackEditProfile">Regresar a perfil</string>
+    <string name="lblEditProfile">Editar perfil</string>
 </resources>
