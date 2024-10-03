@@ -225,7 +225,7 @@
     <string name="lblHome">Inicio</string>
     <string name="lblSuscription">Paquetes</string>
     <string name="lblFast">Ruta más rápida</string>
-    <string name="lblRoutes">Rutas de transporte</string>
+    <string name="lblTransportRoutes">Rutas de transporte</string>
     <string name="lblTrip">Planifica tu viaje</string>
     <string name="lblTurism">Turismo</string>
     <string name="lblChat">Chat</string>
@@ -454,4 +454,14 @@
     <string name="btnEditProfile">Editar perfil</string>
     <string name="iconBackEditProfile">Regresar a perfil</string>
     <string name="lblEditProfile">Editar perfil</string>
+    <string name="lblEditAccount">Editar cuenta</string>
+    <string name="lblEditAccountDescription">Usuario, correo, telefono, etc</string>
+    <string name="lblEditPersonalInformation">Editar informacion personal</string>
+    <string name="lblEditPersonalInformationDescription">Nombre, descripcion, fecha de nacimiento</string>
+    <string name="lblPosts">Publicaciones</string>
+    <string name="lblPostsDescription">Publicaciones guardadas</string>
+    <string name="lblRoutesDescription">Rutas guardadas</string>
+    <string name="lblRoutes">Rutas</string>
+    <string name="lblHistory">Historial</string>
+    <string name="lblHistoryDescription">Gastos de estacionamiento</string>
 </resources>

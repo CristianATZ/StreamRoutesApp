@@ -30,6 +30,8 @@ import net.streamroutes.sreamroutesapp.features.profile.components.ProfileTopBar
 fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
+    // no pasar el modifier, solo en caso de que no se coloree
+    // si no se colorea, usar scaffold para encapsular las cosas
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

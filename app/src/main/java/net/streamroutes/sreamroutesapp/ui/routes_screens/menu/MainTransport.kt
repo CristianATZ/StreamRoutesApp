@@ -170,7 +170,7 @@ fun Main(
         RoutesNavigationItem(RoutesNavigationOptions.HOME_SCREEN, Icons.Filled.Home, Icons.Outlined.Home, R.string.lblHome),
         RoutesNavigationItem(RoutesNavigationOptions.PREMIUM_SCREEN, Icons.Filled.MonetizationOn, Icons.Outlined.MonetizationOn, R.string.lblSuscription),
         RoutesNavigationItem(RoutesNavigationOptions.FAST_SCREEN, Icons.Filled.FlashOn, Icons.Outlined.FlashOn, R.string.lblFast),
-        RoutesNavigationItem(RoutesNavigationOptions.ROUTES_SCREEN, Icons.Filled.DirectionsBus, Icons.Outlined.DirectionsBus, R.string.lblRoutes),
+        RoutesNavigationItem(RoutesNavigationOptions.ROUTES_SCREEN, Icons.Filled.DirectionsBus, Icons.Outlined.DirectionsBus, R.string.lblTransportRoutes),
         RoutesNavigationItem(RoutesNavigationOptions.TRIP_SCREEN, Icons.Filled.Bookmark, Icons.Outlined.Bookmark, R.string.lblTrip),
         RoutesNavigationItem(RoutesNavigationOptions.TURISM_SCREEN, Icons.Filled.Museum, Icons.Outlined.Museum, R.string.lblTurism),
         RoutesNavigationItem(RoutesNavigationOptions.CHAT_SCREEN, Icons.Filled.ChatBubble, Icons.Outlined.ChatBubble, R.string.lblChat),
