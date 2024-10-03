@@ -5,9 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Surface
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.compose.RumappAppTheme
@@ -15,18 +12,9 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
-import net.streamroutes.sreamroutesapp.data.navigation.AppNavigation
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.choose.ChooseScreen
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordScreen
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
-import net.streamroutes.sreamroutesapp.features.transportApp.presentation.transportApp.TransportApp
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -88,7 +76,7 @@ class LoginActivity : ComponentActivity() {
                 }*/
                 // EditProfileScreen()
                 //RoutesScreen(orsViewModel, routesViewModel)
-                EditAccountScreen()
+                //EditInformation()
             }
         }
     }
