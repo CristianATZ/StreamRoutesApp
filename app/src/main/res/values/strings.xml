@@ -504,4 +504,11 @@
     <string name="txtBirthday">Fecha de nacimiento</string>
     <string name="txtGender">Genero</string>
     <string name="iconOpenGenderList">Abrir lista de generos</string>
+    <string name="iconMorePost">Opciones de publicacion</string>
+    <string name="lblLikes">me gusta</string>
+    <string name="lblComments">comentarios</string>
+    <string name="btnLike">Me gusta</string>
+    <string name="iconLikePost">Icono de me gusta la publicacion</string>
+    <string name="iconCommentPost">Icono de comentar publicacion</string>
+    <string name="btnComment">Comentar</string>
 </resources>

@@ -19,7 +19,6 @@ fun CustomTopAppBar(
         title = title, // Paso el parámetro recibido
         navigationIcon = navigationIcon, // Ícono de navegación
         actions = actions, // Acciones
-        scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(),
         modifier = modifier
     )
 }
