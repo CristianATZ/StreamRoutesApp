@@ -76,7 +76,7 @@ class LoginActivity : ComponentActivity() {
                 }*/
                 // EditProfileScreen()
                 //RoutesScreen(orsViewModel, routesViewModel)
-                //EditInformation()
+                EditInformation()
             }
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -18,6 +19,7 @@ fun CustomTopAppBar(
         title = title, // Paso el parámetro recibido
         navigationIcon = navigationIcon, // Ícono de navegación
         actions = actions, // Acciones
+        scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(),
         modifier = modifier
     )
 }
