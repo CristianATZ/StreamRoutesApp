@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.OutlinedButton
@@ -56,126 +57,131 @@ fun EditAccountScreen(
         mutableStateOf("")
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-    ) {
-        ProfileSmallTopAppBar(
-            title = stringResource(id = R.string.lblEditAccount),
-            onBackPressed = {
-
-            }
-        )
-
-        Spacer(modifier = Modifier.size(16.dp))
-
-        // usuario
-        OutlinedTitleTextField(
-            title = stringResource(id = R.string.txtUser),
-            placeholder = stringResource(id = R.string.lblPlacelholderUser),
-            value = user,
-            onValueChange = {
-                user = it
-            },
-            iconClear = stringResource(id = R.string.iconClearUser),
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        // telefono
-        OutlinedTitleTextField(
-            title = stringResource(id = R.string.txtPhone),
-            placeholder = stringResource(id = R.string.lblPlacelholderPhone),
-            value = phone,
-            onValueChange = {
-                phone = it
-            },
-            keyboardType = KeyboardType.Number,
-            iconClear = stringResource(id = R.string.iconClearPhone),
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        // correo electronico
-        OutlinedTitleTextField(
-            title = stringResource(id = R.string.txtEmail),
-            placeholder = stringResource(id = R.string.lblPlaceholderEmail),
-            value = email,
-            onValueChange = {
-                email = it
-            },
-            iconClear = stringResource(id = R.string.iconClearEmail),
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        // contrasenia
-        OutlinedTitleTextField(
-            title = stringResource(id = R.string.txtPassword),
-            placeholder = stringResource(id = R.string.lblPlacelholderPassword),
-            value = password,
-            onValueChange = {
-                password = it
-            },
-            iconClear = stringResource(id = R.string.iconHidePassword),
-            keyboardType = KeyboardType.Password,
-            isPasswordField = true,
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        // confirmar contrasenia
-        OutlinedTitleTextField(
-            title = stringResource(id = R.string.txtConfirmPassword),
-            placeholder = stringResource(id = R.string.lblPlacelholderConfirmPassword),
-            value = confirmPassword,
-            onValueChange = {
-                confirmPassword = it
-            },
-            iconClear = stringResource(id = R.string.iconHidePassword),
-            keyboardType = KeyboardType.Password,
-            isPasswordField = true,
-            imeAction = ImeAction.Done,
-            onDone = {
-                // ACTUALIZAR DATOS EN FIREBASE
-            },
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .align(Alignment.CenterHorizontally)
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        // regresar a reditar perfil
-        OutlinedButton(
-            onClick = {
-                // REGRESAR A EDITAR PERFIL
-            },
-            shape = shapes.small,
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(0.9f)
-        ) {
-            Text(text = stringResource(id = R.string.btnBack))
+    Scaffold(
+        topBar = {
+            ProfileSmallTopAppBar(
+                title = stringResource(id = R.string.lblEditAccount),
+                onBackPressed = {
+                    // REGRESAR A EDITAR PERFIL
+                }
+            )
         }
-
-        // guardar informacion
-        Button(
-            onClick = {
-                // ACTUALIZAR DATOS EN FIREBASE
-            },
-            shape = shapes.small,
+    ) {
+        Column(
             modifier = Modifier
-                .padding(bottom = 16.dp)
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth(0.9f)
+                .padding(it)
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
-            Text(text = stringResource(id = R.string.btnSave))
+            Spacer(modifier = Modifier.size(16.dp))
+
+            // usuario
+            OutlinedTitleTextField(
+                title = stringResource(id = R.string.txtUser),
+                placeholder = stringResource(id = R.string.lblPlacelholderUser),
+                value = user,
+                onValueChange = { u ->
+                    user = u
+                },
+                iconClear = stringResource(id = R.string.iconClearUser),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            // telefono
+            OutlinedTitleTextField(
+                title = stringResource(id = R.string.txtPhone),
+                placeholder = stringResource(id = R.string.lblPlacelholderPhone),
+                value = phone,
+                onValueChange = { p ->
+                    phone = p
+                },
+                keyboardType = KeyboardType.Number,
+                iconClear = stringResource(id = R.string.iconClearPhone),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            // correo electronico
+            OutlinedTitleTextField(
+                title = stringResource(id = R.string.txtEmail),
+                placeholder = stringResource(id = R.string.lblPlaceholderEmail),
+                value = email,
+                onValueChange = { e ->
+                    email = e
+                },
+                iconClear = stringResource(id = R.string.iconClearEmail),
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            // contrasenia
+            OutlinedTitleTextField(
+                title = stringResource(id = R.string.txtPassword),
+                placeholder = stringResource(id = R.string.lblPlacelholderPassword),
+                value = password,
+                onValueChange = { p ->
+                    password = p
+                },
+                iconClear = stringResource(id = R.string.iconHidePassword),
+                keyboardType = KeyboardType.Password,
+                isPasswordField = true,
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            // confirmar contrasenia
+            OutlinedTitleTextField(
+                title = stringResource(id = R.string.txtConfirmPassword),
+                placeholder = stringResource(id = R.string.lblPlacelholderConfirmPassword),
+                value = confirmPassword,
+                onValueChange = { c ->
+                    confirmPassword = c
+                },
+                iconClear = stringResource(id = R.string.iconHidePassword),
+                keyboardType = KeyboardType.Password,
+                isPasswordField = true,
+                imeAction = ImeAction.Done,
+                onDone = {
+                    // ACTUALIZAR DATOS EN FIREBASE
+                },
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            // regresar a reditar perfil
+            OutlinedButton(
+                onClick = {
+                    // REGRESAR A EDITAR PERFIL
+                },
+                shape = shapes.small,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(0.9f)
+            ) {
+                Text(text = stringResource(id = R.string.btnBack))
+            }
+
+            // guardar informacion
+            Button(
+                onClick = {
+                    // ACTUALIZAR DATOS EN FIREBASE
+                },
+                shape = shapes.small,
+                modifier = Modifier
+                    .padding(bottom = 16.dp)
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth(0.9f)
+            ) {
+                Text(text = stringResource(id = R.string.btnSave))
+            }
         }
     }
 }
