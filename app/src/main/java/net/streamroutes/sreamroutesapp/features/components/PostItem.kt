@@ -10,9 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.MoreHoriz
 import androidx.compose.material.icons.outlined.ThumbUp
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -22,7 +22,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,6 +36,8 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.utils.TextUtils.convertTextToOrange
+import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
+import net.streamroutes.sreamroutesapp.utils.fullDateFormat
 import java.time.LocalDateTime
 
 @Preview(showBackground = true)
@@ -50,20 +51,57 @@ fun PostItem(
         likes = 512,
         comments = emptyList()
     ),
+    isSaved: Boolean = false,
     onLikePressed: () -> Unit = {},
-    onCommentPressed: () -> Unit = {}
+    onCommentPressed: () -> Unit = {},
+    onDeletePost: () -> Unit = {}
 ) {
-    
-    // esconder dependiendo si es guardado o no
-
     var isExpanded by remember { mutableStateOf(false) } // Solo se necesita este estado
+
+    val publicationDate = if(isSaved) {
+        fullDateFormat(postDateTime = post.publicationDate)
+    } else {
+        formatPostDateTime(postDateTime = post.publicationDate)
+    }
+
+    // checar cual icono dependiendo si es guardado o no
+    val icon = @Composable {
+        if(isSaved) {
+            Icon(
+                imageVector = Icons.Outlined.Delete,
+                contentDescription = stringResource(id = R.string.iconDeletePost)
+            )
+        } else {
+            Icon(
+                imageVector = Icons.Outlined.MoreHoriz,
+                contentDescription = stringResource(id = R.string.iconMorePost)
+            )
+        }
+    }
+
+    val onIconClicked = {
+        if(isSaved) {
+            onDeletePost()
+        } else {
+            // ABRIR BOTTOM SHEET PARA GUARDAR U OCULTAR
+        }
+    }
+
+    val descriptionModifier = if(post.description.length <= 150) {
+        Modifier
+    } else {
+        Modifier.clickable { isExpanded = !isExpanded }
+    }
 
     Column(
         modifier = Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth()
-            .background(colorScheme.surfaceContainerLow)
-            .clickable { onCommentPressed() }
+            .background(colorScheme.surfaceContainerHighest)
+            .clickable {
+                // ABRIR BOTTOM SHEET PARA COMENTAR
+                onCommentPressed()
+            }
     ) {
         Spacer(modifier = Modifier.size(16.dp))
 
@@ -81,7 +119,7 @@ fun PostItem(
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = post.publicationDate.toString(), // Acceso directo
+                    text = publicationDate,
                     style = typography.labelSmall,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
@@ -89,18 +127,14 @@ fun PostItem(
 
             Spacer(modifier = Modifier.weight(1f))
 
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    imageVector = Icons.Outlined.MoreHoriz,
-                    contentDescription = stringResource(id = R.string.iconMorePost)
-                )
+            IconButton(onClick = onIconClicked) {
+                icon()
             }
         }
 
         // descripción
         Row(
-            modifier = Modifier
-                .clickable { isExpanded = !isExpanded }
+            modifier = descriptionModifier
         ) {
             // Comprobar si la descripción es más corta que 150 caracteres
             if (post.description.length <= 150 || isExpanded) {
@@ -133,13 +167,15 @@ fun PostItem(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                text = "${post.likes} ${stringResource(id = R.string.lblLikes)}", // Acceso directo
-                style = typography.labelSmall,
-                modifier = Modifier.graphicsLayer(alpha = 0.5f)
-            )
+            if(!isSaved) {
+                Text(
+                    text = "${post.likes} ${stringResource(id = R.string.lblLikes)}", // Acceso directo
+                    style = typography.labelSmall,
+                    modifier = Modifier.graphicsLayer(alpha = 0.5f)
+                )
 
-            Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.weight(1f))
+            }
 
             Text(
                 text = "${post.comments.size} ${stringResource(id = R.string.lblComments)}", // Acceso directo
@@ -151,37 +187,42 @@ fun PostItem(
         Spacer(modifier = Modifier.size(8.dp))
 
         // botón de me gusta y comentario
-        Row(
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            TextButton(
-                onClick = onLikePressed,
-                shape = shapes.small,
-                modifier = Modifier.fillMaxWidth(0.5f)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.ThumbUp,
-                    contentDescription = stringResource(id = R.string.iconLikePost)
-                )
-
-                Spacer(modifier = Modifier.size(8.dp))
-
-                Text(text = stringResource(id = R.string.btnLike))
-            }
-
-            TextButton(
-                onClick = onCommentPressed,
-                shape = shapes.small,
+        if(!isSaved) {
+            Row(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Icon(
-                    imageVector = Icons.Outlined.ChatBubbleOutline,
-                    contentDescription = stringResource(id = R.string.iconCommentPost)
-                )
+                TextButton(
+                    onClick = onLikePressed,
+                    shape = shapes.small,
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.ThumbUp,
+                        contentDescription = stringResource(id = R.string.iconLikePost)
+                    )
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                Text(text = stringResource(id = R.string.btnComment))
+                    Text(text = stringResource(id = R.string.btnLike))
+                }
+
+                TextButton(
+                    onClick = {
+                        // ABRIR BOTTOM SHEET PARA COMENTAR
+                        onCommentPressed()
+                    },
+                    shape = shapes.small,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.ChatBubbleOutline,
+                        contentDescription = stringResource(id = R.string.iconCommentPost)
+                    )
+
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Text(text = stringResource(id = R.string.btnComment))
+                }
             }
         }
     }

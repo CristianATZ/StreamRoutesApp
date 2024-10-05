@@ -505,10 +505,23 @@
     <string name="txtGender">Genero</string>
     <string name="iconOpenGenderList">Abrir lista de generos</string>
     <string name="iconMorePost">Opciones de publicacion</string>
-    <string name="lblLikes">me gusta</string>
+    <string name="lblLikes">%1$d me gusta</string>
     <string name="lblComments">comentarios</string>
     <string name="btnLike">Me gusta</string>
     <string name="iconLikePost">Icono de me gusta la publicacion</string>
     <string name="iconCommentPost">Icono de comentar publicacion</string>
     <string name="btnComment">Comentar</string>
+    <string name="post_few_seconds_ago">hace unos segundos</string>
+    <string name="post_minutes_ago">hace %1$d minuto</string>
+    <string name="post_minutes_ago_plural">hace %1$d minutos</string>
+    <string name="post_hours_ago">hace %1$d hora</string>
+    <string name="post_hours_ago_plural">hace %1$d horas</string>
+    <string name="post_days_ago">hace %1$d día</string>
+    <string name="post_days_ago_plural">hace %1$d días</string>
+    <string name="iconDeletePost">Borrar publicacion guardada</string>
+    <string name="lblPostSavedAmount">%1$d publicacion(es) guardada(s)</string>
+    <string name="iconNextComments">Comentarios</string>
+    <string name="iconSendComment">Enviar comentario</string>
+    <string name="iconDeleteComment">Borrar comentario</string>
+    <string name="lblPlaceholderComment">Comenta algo</string>
 </resources>

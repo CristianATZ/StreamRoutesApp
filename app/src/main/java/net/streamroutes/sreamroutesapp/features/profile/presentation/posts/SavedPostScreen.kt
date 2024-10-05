@@ -1,21 +1,37 @@
 package net.streamroutes.sreamroutesapp.features.profile.presentation.posts
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.example.compose.RumappAppTheme
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
+import net.streamroutes.sreamroutesapp.features.components.CommentModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.components.PostItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
 import java.time.LocalDateTime
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun SavedPostScreen(
@@ -24,6 +40,8 @@ fun SavedPostScreen(
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
 
+
+    // ELIMINAR ESTAS LISTAS
     val samplePosts = listOf(
         Post(
             postId = "001",
@@ -82,6 +100,75 @@ fun SavedPostScreen(
         )
     )
 
+    val sampleComments = listOf(
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2024, 6, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 2, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 9, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Hola como estas amigo",
+            commentDate = LocalDateTime.of(2023, 7, 1, 12, 0),
+        )
+    )
+
+    var isOpen by remember {
+        mutableStateOf(false)
+    }
+
+    val openBottomSheet = {
+        isOpen = !isOpen
+    }
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+
+    if(isOpen) {
+        CommentModalBottomSheet(
+            sheetState = sheetState,
+            commentList = sampleComments,
+            likes = samplePosts[0].likes,
+            onDismiss = openBottomSheet,
+            isSaved = true
+        )
+    }
 
     Scaffold(
         topBar = {
@@ -96,17 +183,29 @@ fun SavedPostScreen(
         LazyColumn(
             modifier = Modifier
                 .padding(it)
-                .fillMaxSize()
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            item {
+                Text(
+                    text = stringResource(id = R.string.lblPostSavedAmount, sampleComments.size),
+                    style = typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth()
+                        .graphicsLayer(alpha = 0.5f)
+                )
+            }
+
             items(samplePosts) { post ->
                 PostItem(
                     post = post,
+                    isSaved = true,
                     onLikePressed = {
                         // ACTUALIZAR DATO EN FIRESTORE
                     },
-                    onCommentPressed = {
-                        // MOSTRAR COMENTARIOS
-                    }
+                    onCommentPressed = openBottomSheet
                 )
             }
         }
