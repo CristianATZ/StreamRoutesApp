@@ -528,4 +528,16 @@
     <string name="lblOfficialStops">%1$d parada(s) oficiale(s)</string>
     <string name="lblStartRoute">Inicio en %1$s</string>
     <string name="lblEndRoute">Termina en %1$s</string>
+    <string name="iconBooking">Icono de reservacion</string>
+    <string name="iconQrCode">Icono de codigo QR</string>
+    <string name="lblPrice">$ %1$s</string>
+    <string name="lblPricePerHour">$ %1$s/Hora</string>
+    <string name="lblBooking">R E S E R V A D O</string>
+    <string name="lblTimeHours">Por %1$s Hora(s)</string>
+    <string name="lblTimeMinutes">y %1$d minuto(s)</string>
+    <string name="lblParkingIn">Entrada</string>
+    <string name="lblParkingOut">Salida</string>
+    <string name="btnBill">Facturar</string>
+    <string name="lblParkinDetails">Detalles de aparcamiento</string>
+    <string name="lblParkingDate">Fecha</string>
 </resources>

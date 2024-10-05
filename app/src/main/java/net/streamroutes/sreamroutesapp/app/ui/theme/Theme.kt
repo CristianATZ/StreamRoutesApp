@@ -240,12 +240,10 @@ private val highContrastDarkColorScheme = darkColorScheme(
 data class ColorFamily(
     val color: Color,
     val onColor: Color,
-    val colorContainer: Color,
-    val onColorContainer: Color
 )
 
-val unspecified_scheme = ColorFamily(
-    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
+val green_scheme = ColorFamily(
+        Color(0xFFBEEAB6), Color(0xFF1FA704)
 )
 
 val primary = Color(0xff193355)
@@ -254,6 +252,7 @@ val tertiary = Color(0xffB9DE21)
 
 val orange = Color(0xffE8AA42)
 val yellow = Color(0xffEACE43)
+
 
 @Composable
 fun RumappAppTheme(
