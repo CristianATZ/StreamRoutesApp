@@ -8,7 +8,7 @@ import androidx.compose.ui.text.withStyle
 import com.example.compose.orange
 
 object TextUtils {
-    fun convertTextToOrange(text: String): AnnotatedString {
+    fun viewMoreTextOverflow(text: String): AnnotatedString {
         // Crear una AnnotatedString
         val annotatedString = buildAnnotatedString {
             // Texto normal (descripción)
@@ -22,4 +22,6 @@ object TextUtils {
 
         return annotatedString
     }
+
+
 }

@@ -524,4 +524,8 @@
     <string name="iconSendComment">Enviar comentario</string>
     <string name="iconDeleteComment">Borrar comentario</string>
     <string name="lblPlaceholderComment">Comenta algo</string>
+    <string name="lblRoutesSavedAmount">%1$d ruta(s) guardada(s)</string>
+    <string name="lblOfficialStops">%1$d parada(s) oficiale(s)</string>
+    <string name="lblStartRoute">Inicio en %1$s</string>
+    <string name="lblEndRoute">Termina en %1$s</string>
 </resources>

@@ -22,7 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
-import net.streamroutes.sreamroutesapp.utils.TextUtils.convertTextToOrange
+import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
 import java.time.LocalDateTime
 
@@ -69,7 +69,7 @@ fun CommentItem(
                     )
                 } else {
                     Text(
-                        text = convertTextToOrange(comment.description.take(200)), // Limitar la descripción y añadir "..."
+                        text = viewMoreTextOverflow(comment.description.take(200)), // Limitar la descripción y añadir "..."
                         style = typography.bodyMedium,
                         textAlign = TextAlign.Justify,
                         maxLines = 4, // Limitar a 4 líneas

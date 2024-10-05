@@ -35,7 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
-import net.streamroutes.sreamroutesapp.utils.TextUtils.convertTextToOrange
+import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
 import net.streamroutes.sreamroutesapp.utils.fullDateFormat
 import java.time.LocalDateTime
@@ -148,7 +148,7 @@ fun PostItem(
                 )
             } else {
                 Text(
-                    text = convertTextToOrange(post.description.take(150)), // Limitar la descripción y añadir "..."
+                    text = viewMoreTextOverflow(post.description.take(150)), // Limitar la descripción y añadir "..."
                     style = typography.bodyMedium,
                     textAlign = TextAlign.Justify,
                     maxLines = 4, // Limitar a 4 líneas

@@ -15,6 +15,7 @@ import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.features.profile.presentation.posts.SavedPostScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.routes.SavedRouteScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -79,7 +80,8 @@ class LoginActivity : ComponentActivity() {
                 //EditInformation()
                 //EditAccountScreen()
                 //EditProfileScreen()
-                SavedPostScreen()
+                //SavedPostScreen()
+                SavedRouteScreen()
             }
         }
     }
