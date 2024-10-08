@@ -226,7 +226,7 @@
     <string name="lblSuscription">Paquetes</string>
     <string name="lblFast">Ruta más rápida</string>
     <string name="lblTransportRoutes">Rutas de transporte</string>
-    <string name="lblTrip">Planifica tu viaje</string>
+    <string name="lblTrip">Planifica</string>
     <string name="lblTurism">Turismo</string>
     <string name="lblChat">Chat</string>
     <string name="lblShare">Compartir ubicación</string>
@@ -564,4 +564,6 @@
     <string name="iconBus">Transporte publico</string>
     <string name="iconLocation">Planifica tu viaje</string>
     <string name="iconFootWalking">Ruta mas rapida</string>
+    <string name="lblTransport">Transporte</string>
+    <string name="lblFastest">Camina</string>
 </resources>
