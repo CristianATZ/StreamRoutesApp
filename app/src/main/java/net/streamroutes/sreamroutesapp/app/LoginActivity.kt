@@ -14,6 +14,8 @@ import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
+import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
+import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.posts.SavedPostScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.routes.SavedRouteScreen
@@ -83,7 +85,9 @@ class LoginActivity : ComponentActivity() {
                 //EditProfileScreen()
                 //SavedPostScreen()
                 //SavedRouteScreen()
-                HistoryScreen()
+                //HistoryScreen()
+                //PremiumScreen()
+                MapsScreen()
             }
         }
     }

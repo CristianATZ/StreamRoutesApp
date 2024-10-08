@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.features.transportApp.presentation.transportApp
 
-import androidx.compose.foundation.layout.height
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -8,7 +7,6 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
@@ -33,7 +31,7 @@ fun TransportApp(
             topBar = {
                 // TOPAPPBAR, LLAMAR COMPONENTE TopAppBar
                 TransportSmallTopAppBar(
-                    onOpenMenu = {
+                    onNavigationPressed = {
                         coroutineScope.launch {
                             drawerState.open()
                         }

@@ -299,7 +299,7 @@
     <string name="lblPlanifica1">Organiza tus visitas turísticas.</string>
     <string name="lblDisponibilidad">Estacionamientos disponibles</string>
     <string name="lblDisponibilidad1">Espacios vacíos de los estacionamientos.</string>
-    <string name="lblFree">Free</string>
+    <string name="lblFree">Gratuito</string>
     <string name="lblFreePrecio">7 días gratis</string>
     <string name="lblEstandar">Estándar</string>
     <string name="lblEstandarPrecio">1 mes</string>
@@ -540,4 +540,28 @@
     <string name="btnBill">Facturar</string>
     <string name="lblParkinDetails">Detalles de aparcamiento</string>
     <string name="lblParkingDate">Fecha</string>
+    <string name="iconBackPremium">Regresar a inicio</string>
+    <string name="lblAdvantage_NoADS">Sin publicidad</string>
+    <string name="lblAdvantage_NoADS_description">Elimina anuncios por completo</string>
+    <string name="lblAdvantage_exactTime">Tiempo exacto</string>
+    <string name="lblAdvantage_exactTime_description">Seguimiento de tu autobus en tiempo real</string>
+    <string name="lblAdvantage_forum">Foro</string>
+    <string name="lblAdvantage_forum_description">Accede a publicaciones y recomendaciones de la comunidad</string>
+    <string name="lblAdvantage_availability">Disponibilidad de estacionamiento</string>
+    <string name="lblAdvantage_availability_description">Visualiza la disponibilidad de los estacionamientos de la zona</string>
+    <string name="btnSubscribe">Contratar</string>
+    <string name="lblFreeTime">7 dias gratis</string>
+    <string name="lblFreeDescription">Despues paga $%1$d por mes</string>
+    <string name="lblStandar">Estandar</string>
+    <string name="lblCommonTime">1 mes</string>
+    <string name="lblCommonPrice">Paga $%1$d por mes</string>
+    <string name="lblStudent">Estudiante</string>
+    <string name="lblTurist">Turista</string>
+    <string name="lblTuristTime">15 dias</string>
+    <string name="lblAnualTime">1 anio</string>
+    <string name="lblAnualDescription">Ahorra $60 por anio</string>
+    <string name="iconBackMaps">Regresar a inicio</string>
+    <string name="iconBus">Transporte publico</string>
+    <string name="iconLocation">Planifica tu viaje</string>
+    <string name="iconFootWalking">Ruta mas rapida</string>
 </resources>

@@ -20,14 +20,14 @@ import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 @Composable
 fun TransportSmallTopAppBar(
     modifier: Modifier = Modifier,
-    onOpenMenu: () -> Unit = {}
+    onNavigationPressed: () -> Unit = {}
 ) {
     Column {
         CustomTopAppBar(
             title = { /*TODO*/ },
             navigationIcon = {
                 NavigationButton(
-                    onButtonPressed = onOpenMenu
+                    onButtonPressed = onNavigationPressed
                 )
             },
             actions = {
