@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.components
+package net.streamroutes.sreamroutesapp.features.profile.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -6,8 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -29,13 +27,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.History
+import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.utils.formatTime
 import net.streamroutes.sreamroutesapp.utils.fullDateFormat
-import net.streamroutes.sreamroutesapp.utils.fullDateNameFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +42,9 @@ fun HistoryModalBottomSheet(
     onBillClicked: () -> Unit = {},
     history: History
 ) {
+    // CARGAR LA INFORMACION DEL ITEM
+    // EN LUGAR DE PASAR EL HISTORIAL ITEM
+
     val historyDate = fullDateFormat(postDateTime = history.parkingDate)
 
     val parkingIn = formatTime(localTime = history.timeIn)

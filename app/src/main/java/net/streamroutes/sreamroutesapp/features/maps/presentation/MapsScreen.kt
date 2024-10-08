@@ -1,31 +1,22 @@
 package net.streamroutes.sreamroutesapp.features.maps.presentation
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SearchBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Preview(showBackground = true)
 @Composable
 fun MapsScreen(
     modifier: Modifier = Modifier
 ) {
-
-    var query by remember {
-        mutableStateOf("")
-    }
 
     Scaffold(
         topBar = {
@@ -38,20 +29,8 @@ fun MapsScreen(
         // PARA MANEJAR LA RUTA Y EL MAPA COMPLETO
 
 
-        Column(
-            modifier = Modifier
-                .padding(innrPadding)
-                .fillMaxSize()
-        ) {
-            SearchBar(
-                query = query,
-                onQueryChange = { query = it },
-                onSearch = { query = it },
-                active = false,
-                onActiveChange = {}
-            ) {
-                
-            }
-        }
+        TransportScreen(
+            modifier = Modifier.padding(innrPadding)
+        )
     }
 }

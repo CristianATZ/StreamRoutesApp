@@ -16,8 +16,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.History
-import net.streamroutes.sreamroutesapp.features.components.HistoryItem
-import net.streamroutes.sreamroutesapp.features.components.HistoryModalBottomSheet
+import net.streamroutes.sreamroutesapp.features.profile.components.HistoryItem
+import net.streamroutes.sreamroutesapp.features.profile.components.HistoryModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
 import java.time.LocalDateTime
 import java.time.LocalTime
