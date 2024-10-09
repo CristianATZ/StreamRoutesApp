@@ -246,7 +246,7 @@ private fun MapaRecorrido(
         cameraPositionState = cameraPosition,
         uiSettings = MapUiSettings(zoomControlsEnabled = false),
         properties = MapProperties(
-            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight)),
+            mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleDark)),
             maxZoomPreference = 18f,
             minZoomPreference = 15f
         ),

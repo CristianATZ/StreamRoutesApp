@@ -29,11 +29,11 @@ fun MapFullSize(
             tiltGesturesEnabled = false,
         ),
         properties = MapProperties(
-            isTrafficEnabled = true,
+            isTrafficEnabled = false,
             isBuildingEnabled = false,
             isIndoorEnabled = false,
             isMyLocationEnabled = false,
-            maxZoomPreference = 16f,
+            maxZoomPreference = 18f,
             minZoomPreference = 14f,
             mapStyleOptions = MapStyleOptions(stringResource(id = R.string.mapStyleLight))
         ),

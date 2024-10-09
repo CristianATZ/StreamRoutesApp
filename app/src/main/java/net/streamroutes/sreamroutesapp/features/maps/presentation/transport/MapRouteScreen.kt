@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.compose.RumappAppTheme
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -41,7 +42,7 @@ fun MapRouteScreen(
     )
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 15f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
     }
 
     // MOVER SIN AFECTAR EL ZOOM
@@ -62,32 +63,34 @@ fun MapRouteScreen(
         )
     }*/
 
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        sheetContent = {
-            RouteBottomSheet(
-                // ACTUALIZAR INFORMACION EN BASE A LAS PREFERENCIAS
-                //
-            )
-        },
-        sheetShadowElevation = 8.dp
-        // CAMBIAR EL MAPA, CALLES BLANCAS
-        // CONSTRUCCIONES GRIS PARA QUE SE VEA
-    ) {
-        Box(
-            modifier = modifier.fillMaxSize()
-        ){
-            MapFullSize(
-                cameraPositionState = cameraPositionState,
-                onMapClick = { },
-                onMapLoaded = { /*TODO*/ }
-            ) {
-                // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
-            }
+    RumappAppTheme(false) {
+        BottomSheetScaffold(
+            scaffoldState = scaffoldState,
+            sheetContent = {
+                RouteBottomSheet(
+                    // ACTUALIZAR INFORMACION EN BASE A LAS PREFERENCIAS
+                    //
+                )
+            },
+            sheetShadowElevation = 8.dp
+            // CAMBIAR EL MAPA, CALLES BLANCAS
+            // CONSTRUCCIONES GRIS PARA QUE SE VEA
+        ) {
+            Box(
+                modifier = modifier.fillMaxSize()
+            ){
+                MapFullSize(
+                    cameraPositionState = cameraPositionState,
+                    onMapClick = { },
+                    onMapLoaded = { /*TODO*/ }
+                ) {
+                    // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
+                }
 
-            RouteDetails(
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
+                RouteDetails(
+                    modifier = Modifier.align(Alignment.TopCenter)
+                )
+            }
         }
     }
 }
