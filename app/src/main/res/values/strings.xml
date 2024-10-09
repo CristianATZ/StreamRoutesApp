@@ -525,9 +525,9 @@
     <string name="iconDeleteComment">Borrar comentario</string>
     <string name="lblPlaceholderComment">Comenta algo</string>
     <string name="lblRoutesSavedAmount">%1$d ruta(s) guardada(s)</string>
-    <string name="lblOfficialStops">%1$d parada(s) oficiale(s)</string>
-    <string name="lblStartRoute">Inicia en %1$s</string>
-    <string name="lblEndRoute">Termina en %1$s</string>
+    <string name="lblOfficialStops">• %1$d parada(s) oficiale(s)</string>
+    <string name="lblStartRoute">• Inicia en %1$s</string>
+    <string name="lblEndRoute">• Termina en %1$s</string>
     <string name="iconBooking">Icono de reservacion</string>
     <string name="iconQrCode">Icono de codigo QR</string>
     <string name="lblPrice">$ %1$s</string>
@@ -572,7 +572,9 @@
     <string name="lblFilterAll">Todos</string>
     <string name="iconSearch">Buscar</string>
     <string name="lblFilterRoute">Filtrar rutas</string>
-    <string name="lblAproxTime">Aprox. %1$d horas y %1$d minutos de viaje</string>
+    <string name="lblAproxTime">• %1$d horas y %1$d minutos de viaje</string>
     <string name="btnDownload">Descargar</string>
     <string name="btnSelect">Seleccionar</string>
+    <string name="lblRouteDetails">Detalles de la ruta</string>
+    <string name="iconDownload">Descargar ruta</string>
 </resources>

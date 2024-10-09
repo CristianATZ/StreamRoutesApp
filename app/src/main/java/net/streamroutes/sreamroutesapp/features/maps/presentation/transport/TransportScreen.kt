@@ -92,6 +92,7 @@ fun TransportScreen(
     ) {
         // barra de busqueda
         item {
+            // CAMBIAR COLORES
             SearchBar(
                 query = query,
                 onQueryChange = { query = it },
