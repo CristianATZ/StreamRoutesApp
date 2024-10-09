@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.app.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.googlefonts.Font
 import androidx.compose.ui.text.googlefonts.GoogleFont
 import net.streamroutes.sreamroutesapp.R
@@ -16,6 +17,47 @@ val bodyFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Open Sans"),
         fontProvider = provider,
+        weight = FontWeight.W100 // Thin
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W200 // ExtraLight
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W300 // Light
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W400 // Normal/Regular
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W500 // Medium
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W600 // SemiBold
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W700 // Bold
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W800 // ExtraBold
+    ),
+    Font(
+        googleFont = GoogleFont("Open Sans"),
+        fontProvider = provider,
+        weight = FontWeight.W900 // Black
     )
 )
 
@@ -23,8 +65,50 @@ val displayFontFamily = FontFamily(
     Font(
         googleFont = GoogleFont("Bebas Neue"),
         fontProvider = provider,
+        weight = FontWeight.W100 // Thin
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W200 // ExtraLight
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W300 // Light
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W400 // Normal/Regular
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W500 // Medium
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W600 // SemiBold
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W700 // Bold
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W800 // ExtraBold
+    ),
+    Font(
+        googleFont = GoogleFont("Bebas Neue"),
+        fontProvider = provider,
+        weight = FontWeight.W900 // Black
     )
 )
+
 
 // Default Material 3 typography values
 val baseline = Typography()

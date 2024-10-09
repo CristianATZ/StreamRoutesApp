@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapRouteScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 
 @Preview(showBackground = true)
@@ -29,7 +30,11 @@ fun MapsScreen(
         // PARA MANEJAR LA RUTA Y EL MAPA COMPLETO
 
 
-        TransportScreen(
+        /*TransportScreen(
+            modifier = Modifier.padding(innrPadding)
+        )*/
+
+        MapRouteScreen(
             modifier = Modifier.padding(innrPadding)
         )
     }
