@@ -1,13 +1,11 @@
 package net.streamroutes.sreamroutesapp.data.repository
 
 import android.util.Log
-import com.google.firebase.Firebase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.firestore
-import net.streamroutes.sreamroutesapp.data.model.routeModel.Route
+import net.streamroutes.sreamroutesapp.data.model.routes.Route
 
 class FirebaseRepository {
     // TIEMPO REAL

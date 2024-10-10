@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data.model.parkinModel
+package net.streamroutes.sreamroutesapp.data.model.parkings
 
 data class Opinion(
     val comment: String,

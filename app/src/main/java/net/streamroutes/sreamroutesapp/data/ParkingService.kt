@@ -1,6 +1,6 @@
 package net.streamroutes.sreamroutesapp.data
 
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResult
+import net.streamroutes.sreamroutesapp.data.model.parkings.ParkingResult
 import net.streamroutes.sreamroutesapp.utils.Constants
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -8,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 interface ParkingService {
-    @GET("parking")
+    @GET("parkings")
     suspend fun getParkings(): Response<ParkingResult>
 }
 

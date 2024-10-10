@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResult
+import net.streamroutes.sreamroutesapp.data.model.parkings.ParkingResult
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
 enum class TipoVehiculo {

@@ -1,17 +1,14 @@
 package net.streamroutes.sreamroutesapp.viewmodel.routes
 
-import android.media.Image
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import net.streamroutes.sreamroutesapp.data.model.routeModel.Route
+import net.streamroutes.sreamroutesapp.data.model.routes.Route
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
-import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
 class RoutesViewModel(private val repository: FirebaseRepository) : ViewModel() {
     private val _routeList = MutableLiveData<List<Route>>()

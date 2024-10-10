@@ -68,9 +68,9 @@ import coil.compose.AsyncImage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.Location
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.Opinion
-import net.streamroutes.sreamroutesapp.data.model.parkinModel.ParkingResultItem
+import net.streamroutes.sreamroutesapp.data.model.parkings.Location
+import net.streamroutes.sreamroutesapp.data.model.parkings.Opinion
+import net.streamroutes.sreamroutesapp.data.model.parkings.ParkingResultItem
 import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.BeneficioItem
 import net.streamroutes.sreamroutesapp.viewmodel.parking.AccountPkViewModel

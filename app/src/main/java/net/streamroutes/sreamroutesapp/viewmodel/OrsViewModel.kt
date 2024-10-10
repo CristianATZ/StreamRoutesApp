@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import net.streamroutes.sreamroutesapp.data.model.orsModel.Geometry
-import net.streamroutes.sreamroutesapp.data.model.orsModel.Properties
+import net.streamroutes.sreamroutesapp.data.model.ors.Geometry
+import net.streamroutes.sreamroutesapp.data.model.ors.Properties
 import net.streamroutes.sreamroutesapp.data.repository.RemoteRepository
 
 enum class OrsState {

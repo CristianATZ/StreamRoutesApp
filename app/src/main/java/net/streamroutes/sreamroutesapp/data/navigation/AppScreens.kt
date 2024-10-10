@@ -22,7 +22,7 @@ sealed class AppScreens (val route: String) {
     object ResenaScreen: AppScreens("resena_screen")
     object SelectOptionScreen: AppScreens("select_screen")
 
-    // apartado parking
+    // apartado parkings
     object MainParking: AppScreens("parking_screen")
     object ViajeParking : AppScreens("viaje_screen")
     object ParkingHome : AppScreens("home")

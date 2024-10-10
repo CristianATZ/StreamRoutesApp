@@ -2,7 +2,6 @@
 
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -21,10 +20,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Divider
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
@@ -67,7 +64,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
@@ -76,9 +72,6 @@ import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.RoundCap
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
-import com.google.firebase.firestore.toObject
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
@@ -88,7 +81,7 @@ import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.data.model.routeModel.Route
+import net.streamroutes.sreamroutesapp.data.model.routes.Route
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
@@ -188,14 +181,14 @@ fun RutaCard(ruta: Route) {
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(text = "Inicio:")
-        Text(text = "Lugar: ${ruta.start.place}")
-        Text(text = "Latitud: ${ruta.start.latitude}, Longitud: ${ruta.start.longitude}")
+        //Text(text = "Lugar: ${ruta.start.place}")
+        //Text(text = "Latitud: ${ruta.start.latitude}, Longitud: ${ruta.start.longitude}")
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Text(text = "Fin:")
-        Text(text = "Lugar: ${ruta.end.place}")
-        Text(text = "Latitud: ${ruta.end.latitude}, Longitud: ${ruta.end.longitude}")
+        //Text(text = "Lugar: ${ruta.end.place}")
+        //Text(text = "Latitud: ${ruta.end.latitude}, Longitud: ${ruta.end.longitude}")
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -596,13 +589,13 @@ fun MainContent(
             if (mapLoaded) {
                 // cálculo de  punto A y punto B
                 val currentRoute = rutas.getOrNull(index.value)
-                val puntoA = LatLng(
-                    currentRoute?.start?.latitude?.toDoubleOrNull() ?: 0.0,
-                    currentRoute?.start?.longitude?.toDoubleOrNull() ?: 0.0
+                val puntoA = LatLng(0.0,0.0
+                    //currentRoute?.start?.latitude?.toDoubleOrNull() ?: 0.0,
+                    //currentRoute?.start?.longitude?.toDoubleOrNull() ?: 0.0
                 )
-                val puntoB = LatLng(
-                    currentRoute?.end?.latitude?.toDoubleOrNull() ?: 0.0,
-                    currentRoute?.end?.longitude?.toDoubleOrNull() ?: 0.0
+                val puntoB = LatLng(0.0, 0.0
+                    //currentRoute?.end?.latitude?.toDoubleOrNull() ?: 0.0,
+                    //currentRoute?.end?.longitude?.toDoubleOrNull() ?: 0.0
                 )
 
                 // Actualizar ruta
@@ -610,6 +603,7 @@ fun MainContent(
                     orsViewModel.fetchRouteInfo("${puntoA.longitude},${puntoA.latitude}", "${puntoB.longitude},${puntoB.latitude}")
                 }
 
+                /*
                 Marker(
                     state = MarkerState(position = puntoA),
                     title = "Inicio: ${rutas.getOrNull(index.value)?.start?.place ?: "Desconocido"}",
@@ -619,7 +613,7 @@ fun MainContent(
                 Marker(
                     state = MarkerState(position = puntoB),
                     title = "Fin: ${rutas.getOrNull(index.value)?.end?.place ?: "Desconocido"}"
-                )
+                )*/
 
                 if (orsState.state == OrsState.SUCCESSFUL) {
                     Polyline(
@@ -636,9 +630,9 @@ fun MainContent(
         if (rutas.isNotEmpty()) {
             val puntoA by remember {
                 derivedStateOf {
-                    LatLng(
-                        rutas.getOrNull(index.value)?.start?.latitude?.toDoubleOrNull() ?: 0.0,
-                        rutas.getOrNull(index.value)?.start?.longitude?.toDoubleOrNull() ?: 0.0
+                    LatLng(0.0, 0.0
+                        //rutas.getOrNull(index.value)?.start?.latitude?.toDoubleOrNull() ?: 0.0,
+                        //rutas.getOrNull(index.value)?.start?.longitude?.toDoubleOrNull() ?: 0.0
                         // rutas[index.value].start.latitude.toDouble(),
                         // rutas[index.value].start.longitude.toDouble()
                     )
@@ -647,9 +641,9 @@ fun MainContent(
 
             val puntoB by remember {
                 derivedStateOf {
-                    LatLng(
-                        rutas.getOrNull(index.value)?.end?.latitude?.toDoubleOrNull() ?: 0.0,
-                        rutas.getOrNull(index.value)?.end?.longitude?.toDoubleOrNull() ?: 0.0
+                    LatLng(0.0, 0.0
+                        //rutas.getOrNull(index.value)?.end?.latitude?.toDoubleOrNull() ?: 0.0,
+                        //rutas.getOrNull(index.value)?.end?.longitude?.toDoubleOrNull() ?: 0.0
                         // rutas[index.value].end.latitude.toDouble(),
                         // rutas[index.value].end.longitude.toDouble()
                     )
