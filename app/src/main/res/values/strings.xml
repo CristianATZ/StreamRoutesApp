@@ -585,4 +585,7 @@
     <string name="lblNextStop">Siguiente parada</string>
     <string name="btnCancelRoute">Cancelar ruta (Mantener)</string>
     <string name="btnShareLocation">Compartir ubicacion actual</string>
+    <string name="lblBusStops">Paradas de autobuses</string>
+    <string name="lblStopsCount">Parada(s)</string>
+    <string name="btnClose">Cerrar</string>
 </resources>

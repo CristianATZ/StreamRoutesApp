@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapRouteScreen
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapStopScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 
 @Preview(showBackground = true)
@@ -34,7 +35,11 @@ fun MapsScreen(
             modifier = Modifier.padding(innrPadding)
         )*/
 
-        MapRouteScreen(
+        /*MapRouteScreen(
+            modifier = Modifier.padding(innrPadding)
+        )*/
+
+        MapStopScreen(
             modifier = Modifier.padding(innrPadding)
         )
     }

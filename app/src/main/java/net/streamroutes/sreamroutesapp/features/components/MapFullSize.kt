@@ -14,6 +14,7 @@ import net.streamroutes.sreamroutesapp.R
 
 @Composable
 fun MapFullSize(
+    modifier: Modifier = Modifier,
     cameraPositionState: CameraPositionState,
     onMapClick: (LatLng) -> Unit,
     onMapLoaded: () -> Unit,
@@ -41,7 +42,7 @@ fun MapFullSize(
             onMapClick(it)
         },
         onMapLoaded = onMapLoaded,
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) {
         content()
     }

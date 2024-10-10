@@ -44,7 +44,7 @@ fun RouteBottomSheet(
         // nombre de la ruta
         Text(
             text = routeName,
-            style = typography.headlineSmall,
+            style = typography.headlineSmall
         )
 
         Spacer(

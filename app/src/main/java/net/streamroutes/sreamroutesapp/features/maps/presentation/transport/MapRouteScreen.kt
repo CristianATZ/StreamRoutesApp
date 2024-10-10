@@ -63,34 +63,32 @@ fun MapRouteScreen(
         )
     }*/
 
-    RumappAppTheme(false) {
-        BottomSheetScaffold(
-            scaffoldState = scaffoldState,
-            sheetContent = {
-                RouteBottomSheet(
-                    // ACTUALIZAR INFORMACION EN BASE A LAS PREFERENCIAS
-                    //
-                )
-            },
-            sheetShadowElevation = 8.dp
-            // CAMBIAR EL MAPA, CALLES BLANCAS
-            // CONSTRUCCIONES GRIS PARA QUE SE VEA
-        ) {
-            Box(
-                modifier = modifier.fillMaxSize()
-            ){
-                MapFullSize(
-                    cameraPositionState = cameraPositionState,
-                    onMapClick = { },
-                    onMapLoaded = { /*TODO*/ }
-                ) {
-                    // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
-                }
-
-                RouteDetails(
-                    modifier = Modifier.align(Alignment.TopCenter)
-                )
+    BottomSheetScaffold(
+        scaffoldState = scaffoldState,
+        sheetContent = {
+            RouteBottomSheet(
+                // ACTUALIZAR INFORMACION EN BASE A LAS PREFERENCIAS
+                //
+            )
+        },
+        sheetShadowElevation = 8.dp
+        // CAMBIAR EL MAPA, CALLES BLANCAS
+        // CONSTRUCCIONES GRIS PARA QUE SE VEA
+    ) {
+        Box(
+            modifier = modifier.fillMaxSize()
+        ){
+            MapFullSize(
+                cameraPositionState = cameraPositionState,
+                onMapClick = { },
+                onMapLoaded = { /*TODO*/ }
+            ) {
+                // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
             }
+
+            RouteDetails(
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
         }
     }
 }
