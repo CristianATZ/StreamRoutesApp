@@ -81,17 +81,18 @@ fun MapsSmallTopAppBar(
             ActionBox(
                 onClick = onTransportPressed,
                 icon = Icons.Outlined.DirectionsBus,
-                isSelected = true,
+                isSelected = false,
                 title = stringResource(id = R.string.lblTransport),
                 contentDescription = stringResource(id = R.string.iconBus),
-                modifier = Modifier.weight(2f)
+                modifier = Modifier.weight(1f)
             )
             ActionBox(
                 onClick = onPlannerPressed,
                 icon = Icons.Outlined.LocationOn,
+                isSelected = true,
                 title = stringResource(id = R.string.lblTrip),
                 contentDescription = stringResource(id = R.string.iconLocation),
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(2f)
             )
             ActionBox(
                 onClick = onFastestPressed,

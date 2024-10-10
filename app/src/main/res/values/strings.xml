@@ -588,4 +588,13 @@
     <string name="lblBusStops">Paradas de autobuses</string>
     <string name="lblStopsCount">Parada(s)</string>
     <string name="btnClose">Cerrar</string>
+    <string name="iconMenuPlanner">Abrir lista de destinos</string>
+    <string name="iconAddDestination">Agregar destino a la lista</string>
+    <string name="iconMyLocation">Ubicar mi ubicacion actual</string>
+    <string name="lblMyList">Ver destinos</string>
+    <string name="btnCalculate">Calcular</string>
+    <string name="lblDestinationsSelected">Destinos seleccionados</string>
+    <string name="iconUpItem">Subur elmento</string>
+    <string name="iconDownItem">Bajar elemento</string>
+    <string name="iconDeleteItem">Borrar elemento</string>
 </resources>
