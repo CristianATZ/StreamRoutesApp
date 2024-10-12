@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.ExtendedFloatingActionButton
@@ -65,7 +66,7 @@ fun PlannerFloatingButtons(
                     contentColor = colorScheme.onErrorContainer
                 ) {
                     Icon(
-                        imageVector = Icons.Outlined.Delete,
+                        imageVector = Icons.Outlined.Cancel,
                         contentDescription = stringResource(id = R.string.iconCancelDestination),
                         modifier = Modifier.padding(12.dp)
                     )

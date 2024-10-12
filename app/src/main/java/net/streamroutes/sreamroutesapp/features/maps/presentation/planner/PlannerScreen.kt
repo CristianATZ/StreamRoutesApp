@@ -36,6 +36,9 @@ import net.streamroutes.sreamroutesapp.features.maps.components.PlannerFloatingB
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerInfoWindow
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerMenu
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerModalBottomSheet
+import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemDown
+import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemUp
+import net.streamroutes.sreamroutesapp.utils.ListUtils.removeItem
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,7 +67,6 @@ fun PlannerScreen(
         mutableStateOf(false)
     }
     val destinationsList = remember { mutableStateListOf<Destinations>() }
-
 
     // MOVER SIN AFECTAR EL ZOOM
     // CON ANIMACION INCLUIDA
@@ -105,6 +107,19 @@ fun PlannerScreen(
     val onCalculateRoute = {
         // CALCULAR RUTA
     }
+    val onMyLocation = {
+        // CAMBIAR CAMARA A MI UBICACION ACTUAL
+        //updateCameraPosition() 
+    }
+    val moveItemUp = { index: Int ->
+        moveItemUp(destinationsList, index)
+    }
+    val moveItemDown = { index: Int ->
+        moveItemDown(destinationsList, index)
+    }
+    val removeItem = { index: Int ->
+        removeItem(destinationsList, index)
+    }
 
     // HACER LISTA DE DESITNO
     // PROGRAMAR VIEW DEL PUNTO SELECCIONADO
@@ -115,7 +130,16 @@ fun PlannerScreen(
             destinationsList = destinationsList,
             sheetState = sheetState,
             onDismiss = openBottomSheet,
-            onCalculateRoute = onCalculateRoute
+            onCalculateRoute = onCalculateRoute,
+            onMoveItemUp = { index ->
+                moveItemUp(index)
+            },
+            onMoveItemDown = { index ->
+                moveItemDown(index)
+            },
+            onRemoveItem = { index ->
+                removeItem(index)
+            }
         )
     }
 

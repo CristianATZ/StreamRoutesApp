@@ -24,7 +24,10 @@ import net.streamroutes.sreamroutesapp.core.domain.model.Destinations
 
 @Composable
 fun DestinationItem(
-    destination: Destinations
+    destination: Destinations,
+    onMoveItemUp: () -> Unit,
+    onMoveItemDown: () -> Unit,
+    onRemoveItem: () -> Unit
 ) {
     ElevatedCard(
         modifier = Modifier
@@ -43,7 +46,7 @@ fun DestinationItem(
             )
 
             FilledIconButton(
-                onClick = { /*TODO*/ }
+                onClick = onMoveItemUp
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowUp,
@@ -52,7 +55,7 @@ fun DestinationItem(
             }
 
             FilledIconButton(
-                onClick = { /*TODO*/ }
+                onClick = onMoveItemDown
             ) {
                 Icon(
                     imageVector = Icons.Outlined.KeyboardArrowDown,
@@ -61,7 +64,7 @@ fun DestinationItem(
             }
 
             FilledIconButton(
-                onClick = { /*TODO*/ },
+                onClick = onRemoveItem,
                 colors = IconButtonDefaults.filledIconButtonColors(
                     containerColor = colorScheme.error,
                     contentColor = colorScheme.onError
