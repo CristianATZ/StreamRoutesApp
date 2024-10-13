@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -29,7 +30,11 @@ fun RouteDetails(
     currentStreet: String = "Padre Luis Gaytan",
     nextStreet: String = "Pedro Guzman"
 ) {
-    ElevatedCard(
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = colorScheme.surface,
+            contentColor = colorScheme.onSurface
+        ),
         modifier = modifier
             .padding(16.dp)
             .fillMaxWidth()

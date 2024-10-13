@@ -601,4 +601,12 @@
     <string name="btnAdd">Agregar</string>
     <string name="iconCancelDestination">Cancelar destino</string>
     <string name="lblNoDestinations">Elige tu primer destino</string>
+    <string name="iconDestination">Icono de destino</string>
+    <string name="lblDestination">Toca la ubicacion en el mapa</string>
+    <string name="lblEmptyCurrentAddress">Error al obtener ubicacion</string>
+    <string name="btnCalculateRoute">Calcular</string>
+    <string name="iconWalkingFoot">Icono de camianr</string>
+    <string name="iconDirectionsCar">Icono de carro</string>
+    <string name="icondirectionsBike">Icono de bicicleta</string>
+    <string name="iconAccesible">Persona en silla de ruedas</string>
 </resources>

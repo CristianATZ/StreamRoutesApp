@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.maps.components
 
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -20,23 +22,24 @@ import net.streamroutes.sreamroutesapp.R
 
 @Preview(showBackground = true)
 @Composable
-fun PlannerMenu(
+fun CardCurrentLocationWithIcon(
     modifier: Modifier = Modifier,
-    onSelectDestination: () -> Unit = {},
-    onOpenList: () -> Unit = {},
-    currentAddress: String = "Padre Luis Gaytan, San Isidro 38887"
+    currentAddress: String = "Padre Luis Gaytan, San Isidro 38887",
+    icon: ImageVector = Icons.Outlined.MyLocation,
+    iconDescription: String = stringResource(id = R.string.iconMyLocation)
 ) {
     ElevatedCard(
         modifier = modifier
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
             .fillMaxWidth()
     ) {
         Row(
+            modifier = Modifier.animateContentSize(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                imageVector = Icons.Outlined.MyLocation,
-                contentDescription = stringResource(id = R.string.iconMyLocation),
+                imageVector = icon,
+                contentDescription = iconDescription,
                 modifier = Modifier
                     .padding(start = 16.dp)
             )

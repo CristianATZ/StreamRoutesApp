@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.maps.presentation.fastest.FastestScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.planner.PlannerScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapRouteScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapStopScreen
@@ -44,7 +45,11 @@ fun MapsScreen(
             modifier = Modifier.padding(innrPadding)
         )*/
 
-        PlannerScreen(
+        /*PlannerScreen(
+            modifier = Modifier.padding(innrPadding)
+        )*/
+
+        FastestScreen(
             modifier = Modifier.padding(innrPadding)
         )
     }

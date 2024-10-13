@@ -2,12 +2,12 @@ package net.streamroutes.sreamroutesapp.features.maps.presentation.planner
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ElevatedCard
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.compose.RumappAppTheme
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -34,7 +33,7 @@ import net.streamroutes.sreamroutesapp.core.domain.model.Destinations
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerFloatingButtons
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerInfoWindow
-import net.streamroutes.sreamroutesapp.features.maps.components.PlannerMenu
+import net.streamroutes.sreamroutesapp.features.maps.components.CardCurrentLocationWithIcon
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerModalBottomSheet
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemDown
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemUp
@@ -109,7 +108,7 @@ fun PlannerScreen(
     }
     val onMyLocation = {
         // CAMBIAR CAMARA A MI UBICACION ACTUAL
-        //updateCameraPosition() 
+        //updateCameraPosition()
     }
     val moveItemUp = { index: Int ->
         moveItemUp(destinationsList, index)
@@ -164,9 +163,15 @@ fun PlannerScreen(
             }
         }
 
-        PlannerMenu(
-            modifier = Modifier.align(Alignment.TopCenter)
-        )
+        Column {
+            Spacer(modifier = Modifier.size(16.dp))
+
+            CardCurrentLocationWithIcon(
+                icon = Icons.Outlined.MyLocation,
+                iconDescription = stringResource(id = R.string.iconMyLocation),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+        }
 
         PlannerFloatingButtons(
             isVisible = markerVisible,

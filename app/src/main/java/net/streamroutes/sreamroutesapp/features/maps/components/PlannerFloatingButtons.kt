@@ -1,6 +1,9 @@
 package net.streamroutes.sreamroutesapp.features.maps.components
 
+import android.graphics.Paint.Align
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -12,6 +15,7 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
@@ -34,76 +38,80 @@ fun PlannerFloatingButtons(
     isVisible: Boolean,
     modifier: Modifier
 ) {
-    Column(
+    AnimatedVisibility(
+        visible = isVisible,
+        enter = fadeIn(),
+        exit = fadeOut(),
         modifier = modifier
-            .padding(16.dp),
-        horizontalAlignment = Alignment.End,
-        verticalArrangement = Arrangement.Bottom
     ) {
-        AnimatedVisibility(visible = isVisible) {
-            Column {
-                // AGREGAR ITEM A LA LISTA
-                SmallFloatingActionButton(
-                    onClick = onAddItem,
-                    shape = shapes.medium,
-                    containerColor = colorScheme.primaryContainer,
-                    contentColor = colorScheme.onPrimaryContainer
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Add,
-                        contentDescription = stringResource(id = R.string.iconAddDestination),
-                        modifier = Modifier.padding(12.dp)
-                    )
-                }
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            // AGREGAR ITEM A LA LISTA
+            FloatingActionButton(
+                onClick = onAddItem,
+                shape = shapes.medium,
+                containerColor = colorScheme.primaryContainer,
+                contentColor = colorScheme.onPrimaryContainer
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Add,
+                    contentDescription = stringResource(id = R.string.iconAddDestination)
+                )
+            }
 
-                Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
-                // cancelar item
-                SmallFloatingActionButton(
-                    onClick = onCancelItem,
-                    shape = shapes.medium,
-                    containerColor = colorScheme.errorContainer,
-                    contentColor = colorScheme.onErrorContainer
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Cancel,
-                        contentDescription = stringResource(id = R.string.iconCancelDestination),
-                        modifier = Modifier.padding(12.dp)
-                    )
-                }
+            // cancelar item
+            FloatingActionButton(
+                onClick = onCancelItem,
+                shape = shapes.medium,
+                containerColor = colorScheme.errorContainer,
+                contentColor = colorScheme.onErrorContainer
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Cancel,
+                    contentDescription = stringResource(id = R.string.iconCancelDestination)
+                )
             }
         }
+    }
 
-        AnimatedVisibility(visible = !isVisible) {
-            Column(
-                horizontalAlignment = Alignment.End
+    AnimatedVisibility(
+        visible = !isVisible,
+        enter = fadeIn(),
+        exit = fadeOut(),
+        modifier = modifier
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.End
+        ) {
+            // cambiar camara a mi ubicacion actual
+            FloatingActionButton(
+                onClick = {
+                    // OBTENER UBICACION ACTUAL Y PASAR EL PARAMETRO
+                    //onMyLocation()
+                },
+                shape = shapes.medium,
+                containerColor = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.onTertiaryContainer
             ) {
-                // cambiar camara a mi ubicacion actual
-                SmallFloatingActionButton(
-                    onClick = {
-                        // OBTENER UBICACION ACTUAL Y PASAR EL PARAMETRO
-                        //onMyLocation()
-                    },
-                    shape = shapes.medium,
-                    containerColor = colorScheme.tertiaryContainer,
-                    contentColor = colorScheme.onTertiaryContainer
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.MyLocation,
-                        contentDescription = stringResource(id = R.string.iconMyLocation),
-                        modifier = Modifier.padding(12.dp)
-                    )
-                }
+                Icon(
+                    imageVector = Icons.Outlined.MyLocation,
+                    contentDescription = stringResource(id = R.string.iconMyLocation)
+                )
+            }
 
-                Spacer(modifier = Modifier.size(8.dp))
+            Spacer(modifier = Modifier.size(8.dp))
 
-                // ver lista
-                ExtendedFloatingActionButton(
-                    onClick = onOpenList,
-                    shape = shapes.medium,
-                ) {
-                    Text(text = stringResource(id = R.string.lblMyList))
-                }
+            // ver lista
+            ExtendedFloatingActionButton(
+                onClick = onOpenList,
+                shape = shapes.medium,
+            ) {
+                Text(text = stringResource(id = R.string.lblMyList))
             }
         }
     }
