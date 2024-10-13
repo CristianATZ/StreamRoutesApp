@@ -32,8 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.ColorField
+import net.streamroutes.sreamroutesapp.features.components.ColorPickerDialog
 import net.streamroutes.sreamroutesapp.features.components.SliderField
 import net.streamroutes.sreamroutesapp.features.components.SwitchField
 
@@ -44,6 +46,8 @@ fun MapsModalBottomSheet(
     onDismiss: () -> Unit = {},
     onSave: () -> Unit = {}
 ) {
+    val colorState = rememberColorPickerController()
+
     var colorTransport by remember {
         mutableStateOf(Color.Black)
     }
@@ -68,6 +72,33 @@ fun MapsModalBottomSheet(
     val onSaveMapSettings = {
         // actualizar valores en el viewmodel
         onSave()
+    }
+
+    var showTransportColor by remember { mutableStateOf(false) }
+    val openTransportColor = { showTransportColor = !showTransportColor }
+    var showNearStopColor by remember { mutableStateOf(false) }
+    val openNearStopColor = { showNearStopColor = !showNearStopColor }
+
+    if(showTransportColor) {
+        ColorPickerDialog(
+            colorState = colorState,
+            initialColor = colorTransport,
+            onColorChange = { color: Color ->
+                colorTransport = color
+            },
+            onDismiss = openTransportColor
+        )
+    }
+
+    if(showNearStopColor) {
+        ColorPickerDialog(
+            colorState = colorState,
+            initialColor = colorNearStop,
+            onColorChange = { color: Color ->
+                colorNearStop = color
+            },
+            onDismiss = openNearStopColor
+        )
     }
 
     ModalBottomSheet(
@@ -112,9 +143,7 @@ fun MapsModalBottomSheet(
                 headerText = stringResource(id = R.string.lblTransportLineColor),
                 descriptionText = stringResource(id = R.string.lblTrasnportLineColorDescription),
                 colorTransport = colorTransport,
-                onOpenPickerColor = {
-
-                }
+                onOpenPickerColor = openTransportColor
             )
 
             Spacer(modifier = Modifier.size(16.dp))
@@ -123,9 +152,7 @@ fun MapsModalBottomSheet(
                 headerText = stringResource(id = R.string.lblNearStopLineColor),
                 descriptionText = stringResource(id = R.string.lblNearStopLineColorDescription),
                 colorTransport = colorNearStop,
-                onOpenPickerColor = {
-
-                }
+                onOpenPickerColor = openNearStopColor
             )
 
             Spacer(modifier = Modifier.size(16.dp))

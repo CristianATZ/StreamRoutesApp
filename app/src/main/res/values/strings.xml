@@ -620,4 +620,8 @@
     <string name="lblMapType">Tema del mapa</string>
     <string name="lblMapTypeDescription">Elige el tema del mapa</string>
     <string name="iconThemeMode">Icono del tema</string>
+    <string name="lblChoiceColor">Elige un color</string>
+    <string name="lblSelectedColor">Color seleccionado</string>
+    <string name="lblSelectedColorDescription">Este es el color que haz seleccionado.</string>
+    <string name="iconClose">Icono de cerrar</string>
 </resources>
