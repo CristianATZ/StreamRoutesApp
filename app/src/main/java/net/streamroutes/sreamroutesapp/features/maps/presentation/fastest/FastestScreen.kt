@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
@@ -65,6 +66,12 @@ fun FastestScreen(
         currentRoute = route
     }
 
+    // FASTEST ROUTE
+    val onCancelRoute = {
+        // CANCELAR RUTA
+        // ENVIAR AL INICIO
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -90,16 +97,16 @@ fun FastestScreen(
             // dibujar polilinea
         }
 
-        /*FastestSelectPoints(
-            current = "Padre Luis Gaytan, San Isidro 38887",
+        FastestSelectPoints(
+            currentRoute = "Padre Luis Gaytan, San Isidro 38887",
             dest = dest,
             onRestartLocation = restartLocation,
             onCalculateRoute = onCalculareRoute,
             onMyLocation = onMyLocation,
             modifier = Modifier.align(Alignment.TopCenter)
-        )*/
+        )
 
-        FastestRoutesInformation(
+        /*FastestRoutesInformation(
             currentRoute = currentRoute,
             onChangeRoute = { route ->
                 onChangeRoute(route)
@@ -107,14 +114,14 @@ fun FastestScreen(
             onSelectRoute = {
                 // SELECCIONAR LA RUTA SELECCIONADA EN BASE
                 // A LA RUTA ACTUAL SELECCIONADA
-            }
-        )
+            },
+            onMyLocation = onMyLocation
+        )*/
 
-        //FastestRoute()
+        /*FastestRoute(
+            currentRoute = "Padre Luis Gaytan",
+            onCancelRoute = onCancelRoute,
+
+        )*/
     }
-}
-
-@Composable
-fun FastestRoute() {
-    TODO("Not yet implemented")
 }

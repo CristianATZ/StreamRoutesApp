@@ -29,14 +29,14 @@ import net.streamroutes.sreamroutesapp.features.maps.components.CardCurrentLocat
 @Composable
 fun FastestSelectPoints(
     modifier: Modifier = Modifier,
-    current: String? = null,
+    currentRoute: String? = null,
     dest: String? = null,
     onRestartLocation: () -> Unit,
     onCalculateRoute: () -> Unit,
     onMyLocation: () -> Unit
 ) {
     val destination = if(dest.isNullOrEmpty()) stringResource(id = R.string.lblDestination) else dest
-    val currentAddress = if(current.isNullOrEmpty()) stringResource(id = R.string.lblEmptyCurrentAddress) else current
+    val currentAddress = if(currentRoute.isNullOrEmpty()) stringResource(id = R.string.lblEmptyCurrentAddress) else currentRoute
 
     Column(
         modifier = Modifier.fillMaxSize(),

@@ -7,12 +7,17 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Accessible
 import androidx.compose.material.icons.automirrored.outlined.DirectionsBike
 import androidx.compose.material.icons.automirrored.outlined.DirectionsWalk
 import androidx.compose.material.icons.outlined.DirectionsCar
+import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.ExtendedFloatingActionButton
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,9 +30,10 @@ import net.streamroutes.sreamroutesapp.features.maps.components.RouteType
 
 @Composable
 fun FastestRoutesInformation(
+    currentRoute: Int,
     onChangeRoute: (Int) -> Unit,
     onSelectRoute: () -> Unit,
-    currentRoute: Int
+    onMyLocation: () -> Unit
 ) {
 
 
@@ -41,7 +47,7 @@ fun FastestRoutesInformation(
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween
+            horizontalArrangement = Arrangement.SpaceAround
         ) {
             RouteType(
                 isSelected = currentRoute == 1,
@@ -82,13 +88,28 @@ fun FastestRoutesInformation(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        ExtendedFloatingActionButton(
-            onClick = onSelectRoute,
-            modifier = Modifier
-                .align(Alignment.End)
-                .padding(16.dp)
+        Column(
+            modifier = Modifier.padding(16.dp).fillMaxWidth(),
+            horizontalAlignment = Alignment.End
         ) {
-            Text(text = stringResource(id = R.string.btnSelect))
+            FloatingActionButton(
+                onClick = onMyLocation,
+                containerColor = colorScheme.tertiaryContainer,
+                contentColor = colorScheme.onTertiaryContainer
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.MyLocation,
+                    contentDescription = stringResource(id = R.string.iconMyLocation)
+                )
+            }
+            
+            Spacer(modifier = Modifier.size(8.dp))
+
+            ExtendedFloatingActionButton(
+                onClick = onSelectRoute
+            ) {
+                Text(text = stringResource(id = R.string.btnSelect))
+            }
         }
     }
 }

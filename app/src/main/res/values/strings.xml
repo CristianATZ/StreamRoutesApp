@@ -583,7 +583,7 @@
     <string name="lblBusTimeToStop">Siguiente parada</string>
     <string name="lblRouteColor">Ruta del transporte publico</string>
     <string name="lblNextStop">Siguiente parada</string>
-    <string name="btnCancelRoute">Cancelar ruta (Mantener)</string>
+    <string name="btnCancelRoute">Cancelar (Mantener)</string>
     <string name="btnShareLocation">Compartir ubicacion actual</string>
     <string name="lblBusStops">Paradas de autobuses</string>
     <string name="lblStopsCount">Parada(s)</string>
@@ -609,4 +609,15 @@
     <string name="iconDirectionsCar">Icono de carro</string>
     <string name="icondirectionsBike">Icono de bicicleta</string>
     <string name="iconAccesible">Persona en silla de ruedas</string>
+    <string name="lblMapSettings">Ajustes de mapa</string>
+    <string name="iconRestart">Restablecer valores</string>
+    <string name="lblTransportLineColor">Color de la ruta</string>
+    <string name="lblTrasnportLineColorDescription">Elige el color de la linea que indica la ruta</string>
+    <string name="lblNearStopLineColor">Color de la parada cercana</string>
+    <string name="lblNearStopLineColorDescription">Elige el color de la linea que indica la parada mas cercana</string>
+    <string name="lblWidthLine">Ancho de linea</string>
+    <string name="lblWidthLineDescription">Elige el grosor de las lineas</string>
+    <string name="lblMapType">Tema del mapa</string>
+    <string name="lblMapTypeDescription">Elige el tema del mapa</string>
+    <string name="iconThemeMode">Icono del tema</string>
 </resources>

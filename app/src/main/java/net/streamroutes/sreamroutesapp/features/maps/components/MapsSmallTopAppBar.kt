@@ -47,6 +47,7 @@ fun MapsSmallTopAppBar(
     onTransportPressed: () -> Unit = {},
     onPlannerPressed: () -> Unit = {},
     onFastestPressed: () -> Unit = {},
+    onSettingsPressed: () -> Unit = {}
 ) {
     Column {
         TopAppBar(
@@ -62,10 +63,7 @@ fun MapsSmallTopAppBar(
             },
             actions = {
                 ActionsTopBar(
-                    onSettingsPressed = {
-                        // ABRIR MODAL PARA MOSTRAR
-                        // LA CONFIGURACION DE LOS MAPAS
-                    }
+                    onSettingsPressed = onSettingsPressed
                 )
             }
         )

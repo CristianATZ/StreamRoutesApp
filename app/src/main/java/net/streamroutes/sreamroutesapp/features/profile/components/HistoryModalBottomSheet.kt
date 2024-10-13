@@ -172,12 +172,14 @@ fun HistoryModalBottomSheet(
                 onClick = onDismiss,
                 shape = shapes.small,
                 modifier = Modifier
-                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                    .padding(horizontal = 16.dp)
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
             ) {
                 Text(text = stringResource(id = R.string.btnBack))
             }
+
+            Spacer(modifier = Modifier.size(16.dp))
         }
     }
 }
