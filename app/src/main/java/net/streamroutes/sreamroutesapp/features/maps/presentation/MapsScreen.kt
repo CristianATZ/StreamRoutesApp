@@ -6,12 +6,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.compose.RumappAppTheme
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsSmallTopAppBar
@@ -27,6 +29,14 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.Tran
 fun MapsScreen(
     modifier: Modifier = Modifier
 ) {
+    var currentTab by remember {
+        mutableIntStateOf(0)
+    }
+
+    val onChangeTab = { index: Int ->
+        currentTab = index
+    }
+
     val coroutine = rememberCoroutineScope()
 
     var isOpen by remember {
@@ -64,34 +74,23 @@ fun MapsScreen(
     Scaffold(
         topBar = {
             MapsSmallTopAppBar(
-                onSettingsPressed = openBottomSheet
+                onSettingsPressed = openBottomSheet,
+                currentTab = currentTab,
+                onChangeTab = { index ->
+                    onChangeTab(index)
+                }
             )
         }
-    ) { innrPadding ->
+    ) { innerPadding ->
         // UTILIZAR UN NAVHOST EN ESTE SCAFFOLD
         // PARA MANEJAR TRANSPORTE, PLANIFICA Y CAMINA
         // DENTRO DE TRANSPORTE MANEJAR OTRO NAVHOST
         // PARA MANEJAR LA RUTA Y EL MAPA COMPLETO
 
-
-        /*TransportScreen(
-            modifier = Modifier.padding(innrPadding)
-        )*/
-
-        /*MapRouteScreen(
-            modifier = Modifier.padding(innrPadding)
-        )*/
-
-        /*MapStopScreen(
-            modifier = Modifier.padding(innrPadding)
-        )*/
-
-        /*PlannerScreen(
-            modifier = Modifier.padding(innrPadding)
-        )*/
-
-        FastestScreen(
-            modifier = Modifier.padding(innrPadding)
-        )
+        when(currentTab) {
+            0 -> TransportScreen(modifier = Modifier.padding(innerPadding))
+            1 -> PlannerScreen(modifier = Modifier.padding(innerPadding))
+            2 -> FastestScreen(modifier = Modifier.padding(innerPadding))
+        }
     }
 }

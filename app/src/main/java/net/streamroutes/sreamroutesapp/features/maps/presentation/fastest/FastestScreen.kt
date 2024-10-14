@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
@@ -80,18 +81,18 @@ fun FastestScreen(
             cameraPositionState = cameraPositionState,
             onMapClick = {  coords ->
                 // SELECTPOINTS SCREEN
-                /*markerDestinaton.position = coords
-                updateCameraPosition(coords)*/
+                markerDestinaton.position = coords
+                updateCameraPosition(coords)
             },
             onMapLoaded = { /*TODO */ }
         ) {
             // SELECTPOINTS SCREEN
-            /*Marker(
+            Marker(
                 state = markerMyLocation
             )
             Marker(
                 state = markerDestinaton
-            )*/
+            )
 
             // ROUTES INFORMATION
             // dibujar polilinea

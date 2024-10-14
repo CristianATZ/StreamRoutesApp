@@ -565,7 +565,7 @@
     <string name="iconLocation">Planifica tu viaje</string>
     <string name="iconFootWalking">Ruta mas rapida</string>
     <string name="lblTransport">Transporte</string>
-    <string name="lblFastest">Camina</string>
+    <string name="lblWalking">Camina</string>
     <string name="lblFilterOneWay">Viajes ida</string>
     <string name="lblFilterReturn">Viajes vuelta</string>
     <string name="lblViewMap">Consultar mapa</string>
@@ -624,4 +624,5 @@
     <string name="lblSelectedColor">Color seleccionado</string>
     <string name="lblSelectedColorDescription">Este es el color que haz seleccionado.</string>
     <string name="iconClose">Icono de cerrar</string>
+    <string name="lblPlanner">Planifica</string>
 </resources>
