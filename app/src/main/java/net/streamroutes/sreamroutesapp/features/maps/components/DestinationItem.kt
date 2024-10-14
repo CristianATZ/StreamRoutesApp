@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.maps
+package net.streamroutes.sreamroutesapp.features.maps.components
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

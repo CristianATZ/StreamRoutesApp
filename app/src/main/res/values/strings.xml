@@ -625,4 +625,17 @@
     <string name="lblSelectedColorDescription">Este es el color que haz seleccionado.</string>
     <string name="iconClose">Icono de cerrar</string>
     <string name="lblPlanner">Planifica</string>
+    <string name="iconBackTurism">Regresar a inicio</string>
+    <string name="lblJoseAlfredo">“No hay que llegar primero... pero hay que saber llegar”</string>
+    <string name="lblJoseAlfredoName">Jose Alfredo Jimenez</string>
+    <string name="lblTimeNextStop">Siguiente parada en %1$d minutos</string>
+    <string name="lblTurismDetails">Detalles del lugar</string>
+    <string name="lblTurismTotalRoutes">• %1$d rutas cercanas</string>
+    <string name="lblTurismMoreInformation">Saber mas</string>
+    <string name="lblTurismCalendar">• Horario de %1$s</string>
+    <string name="lblTurismPrice">• Costo: %1$s</string>
+    <string name="lblTurismFree">Sin costo</string>
+    <string name="iconMoreTurism">Visitar pagina</string>
+    <string name="lblTurismTotal">Lugares turisticos</string>
+    <string name="lblTurismCounts">Lugares turisticos</string>
 </resources>

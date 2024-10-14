@@ -367,7 +367,6 @@ private fun SpotItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetInfo(

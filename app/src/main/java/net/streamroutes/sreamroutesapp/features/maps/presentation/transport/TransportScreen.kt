@@ -29,9 +29,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.features.authentication.components.MapAllOptions
+import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.TransportModalBottomSheet
-import net.streamroutes.sreamroutesapp.features.maps.components.TransportOption
+import net.streamroutes.sreamroutesapp.features.maps.components.ElementOpion
 
 enum class TransportFilter {
     ALL, ONE_WAY, RETURN
@@ -187,7 +187,7 @@ fun TransportScreen(
 
         // estacionamientos
         items(10) {
-            TransportOption(
+            ElementOpion(
                 onClick = openBottomSheet,
             )
         }

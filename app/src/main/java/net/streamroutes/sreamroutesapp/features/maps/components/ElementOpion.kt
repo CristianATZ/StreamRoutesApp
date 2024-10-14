@@ -2,8 +2,6 @@ package net.streamroutes.sreamroutesapp.features.maps.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.indication
-import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +20,7 @@ import androidx.compose.ui.unit.dp
 
 @Preview(showBackground = true)
 @Composable
-fun TransportOption(
+fun ElementOpion(
     // imagen: aqui
     title: String = "Ruta 11 - El charco",
     description: String = "Siguiente parada en 7 minutos",
@@ -30,7 +28,8 @@ fun TransportOption(
 ) {
     Column(
         modifier = Modifier
-            .padding(bottom = 16.dp)
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
             .clickable(
                 indication = null,  // Eliminar efecto ripple
                 interactionSource = remember { MutableInteractionSource() }  // Fuente de interacción requerida
@@ -41,7 +40,7 @@ fun TransportOption(
         // CAMBIAR POR IMAGEN
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth()
                 .height(150.dp)
                 .background(colorScheme.surfaceContainerHighest, shapes.large)
         ) {

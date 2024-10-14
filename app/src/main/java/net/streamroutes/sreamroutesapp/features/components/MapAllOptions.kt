@@ -1,10 +1,11 @@
-package net.streamroutes.sreamroutesapp.features.authentication.components
+package net.streamroutes.sreamroutesapp.features.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
@@ -24,7 +25,8 @@ fun MapAllOptions(
     Box {
         Column(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
                 .height(100.dp)
                 .background(colorScheme.surfaceContainerHighest, shapes.large)
         ) {

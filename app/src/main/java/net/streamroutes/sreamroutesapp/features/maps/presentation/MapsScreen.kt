@@ -13,14 +13,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.compose.RumappAppTheme
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.MapsSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.maps.presentation.fastest.FastestScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.planner.PlannerScreen
-import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapRouteScreen
-import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapStopScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -37,7 +34,7 @@ fun MapsScreen(
         currentTab = index
     }
 
-    val coroutine = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     var isOpen by remember {
         mutableStateOf(false)
@@ -52,7 +49,7 @@ fun MapsScreen(
     )
 
     val onSaveMapSettings = {
-        coroutine.launch {
+        scope.launch {
             sheetState.hide()
         }.invokeOnCompletion {
             if(!sheetState.isVisible) {

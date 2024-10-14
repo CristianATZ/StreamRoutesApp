@@ -1,5 +1,6 @@
-package net.streamroutes.sreamroutesapp.features.maps.presentation.transport
+package net.streamroutes.sreamroutesapp.features.turism.presentation.turismMap
 
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
@@ -12,7 +13,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -21,15 +21,14 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.core.domain.model.RouteInformation
-import net.streamroutes.sreamroutesapp.data.model.routes.Route
+import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
-import net.streamroutes.sreamroutesapp.features.maps.components.StopBottomSheet
-import net.streamroutes.sreamroutesapp.features.maps.components.StopInformationBottomSheet
+import net.streamroutes.sreamroutesapp.features.turism.components.TurismBottomSheet
+import net.streamroutes.sreamroutesapp.features.turism.components.TurismInformationBottomSheet
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
-fun MapStopScreen(
+fun TurismMapScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit
 ) {
@@ -45,34 +44,14 @@ fun MapStopScreen(
         position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
     }
 
-    // MOVER SIN AFECTAR EL ZOOM
-    /*val updateCameraPosition = {
-        cameraPositionState.move(
-            CameraUpdateFactory.newLatLng(
-                LatLng(37.7749, -122.4194)
-            )
-        )
-    }*/
-
-    // MOVER AFECTANDO EL ZOOM
-    /*val updateCameraZoom = {
-        cameraPositionState.move(
-            CameraUpdateFactory.newLatLngZoom(
-                LatLng(37.7749, -122.4194), 10f
-            )
-        )
-    }*/
-
-    val stopList = listOf(
+    val turismList = listOf(
         Pair(
-            RouteInformation(
-                name = "Ruta 11 - El charco",
-                countTurism = 4,
-                hourAprox = 2,
-                minutesAprox = 30,
-                officialStops = 16,
-                start = "C. Pipila, Col. Ninios Herores",
-                end = "C. Francisco Marquez, Col. Zona Centro"
+            TurismInformation(
+                name = "Alhondiga de granaditas",
+                totalRoutes = 4,
+                calendar = "08:00 - 16:00",
+                price = "36 MXN",
+                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad"
             ),
             LatLng(20.126856880277188, -101.19127471960047)
         )
@@ -91,46 +70,49 @@ fun MapStopScreen(
         }
     }
 
-    var stopSelected by remember {
-        mutableStateOf<RouteInformation?>(null)
+    var turismSelected by remember {
+        mutableStateOf<TurismInformation?>(null)
     }
 
-    val updateStop = { stop: RouteInformation ->
-        stopSelected = stop
+    val updateTurism = { turism: TurismInformation ->
+        turismSelected = turism
     }
-    
+
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
             if(isMarkerPressed) {
-                stopSelected?.let {
-                    StopInformationBottomSheet(
-                        routeInformation = it,
+                turismSelected?.let {
+                    TurismInformationBottomSheet(
+                        turismInformation = it,
                         onClose = {
                             markerPressed()
+                        },
+                        onMore = {
+
                         }
                     )
                 }
             } else {
-                StopBottomSheet()
+                TurismBottomSheet()
             }
         },
         sheetShadowElevation = 8.dp
-        // CAMBIAR EL MAPA, CALLES BLANCAS
-        // CONSTRUCCIONES GRIS PARA QUE SE VEA
     ) {
         MapFullSize(
             cameraPositionState = cameraPositionState,
-            onMapClick = {},
-            onMapLoaded = {  },
+            onMapClick = {
+
+            },
+            onMapLoaded = { /*TODO*/ },
             modifier = modifier
         ) {
-            stopList.forEach { stop ->
+            turismList.forEach { turism ->
                 Marker(
-                    state = MarkerState(position = stop.second),
-                    onClick = {
-                        updateStop(
-                            stop.first
+                    state = MarkerState(position = turism.second),
+                    onClick = { _ ->
+                        updateTurism(
+                            turism.first
                         )
                         markerPressed()
                         true

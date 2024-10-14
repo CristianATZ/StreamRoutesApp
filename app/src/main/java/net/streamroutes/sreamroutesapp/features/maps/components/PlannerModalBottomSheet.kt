@@ -2,8 +2,6 @@ package net.streamroutes.sreamroutesapp.features.maps.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
@@ -32,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.LatLng
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Destinations
-import net.streamroutes.sreamroutesapp.features.maps.DestinationItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
