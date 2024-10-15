@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.features.turism.presentation.turismMap
 
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
@@ -26,7 +25,7 @@ import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismBottomSheet
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismInformationBottomSheet
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismMapScreen(
     modifier: Modifier = Modifier,
@@ -54,39 +53,45 @@ fun TurismMapScreen(
                 description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad"
             ),
             LatLng(20.126856880277188, -101.19127471960047)
+        ),
+        Pair(
+            TurismInformation(
+                name = "Pendejo no lo cambie",
+                totalRoutes = 4,
+                calendar = "08:00 - 16:00",
+                price = "36 MXN",
+                description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad"
+            ),
+            LatLng(20.13685688027719, -101.20127471960048)
         )
     )
-
-    var isMarkerPressed by remember {
-        mutableStateOf(false)
-    }
-
-    val markerPressed = {
-        scope.launch {
-            scaffoldState.bottomSheetState.hide()// esconder la hoja
-            delay(300) // esperar 300 milisegundos
-            isMarkerPressed = !isMarkerPressed // cambiar el valor para cambiar el contenido de la hoja
-            scaffoldState.bottomSheetState.expand() // expandir la hoja
-        }
-    }
 
     var turismSelected by remember {
         mutableStateOf<TurismInformation?>(null)
     }
 
-    val updateTurism = { turism: TurismInformation ->
+    val updateTurism = { turism: TurismInformation? ->
         turismSelected = turism
+    }
+
+    val markerPressed = { turism: TurismInformation? ->
+        scope.launch {
+            scaffoldState.bottomSheetState.hide()// esconder la hoja
+            delay(300) // esperar 300 milisegundos
+            updateTurism(turism) // actualizar valor junto con la animacion
+            scaffoldState.bottomSheetState.expand() // expandir la hoja
+        }
     }
 
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
-            if(isMarkerPressed) {
+            if(turismSelected != null) {
                 turismSelected?.let {
                     TurismInformationBottomSheet(
                         turismInformation = it,
                         onClose = {
-                            markerPressed()
+                            markerPressed(null)
                         },
                         onMore = {
 
@@ -111,10 +116,11 @@ fun TurismMapScreen(
                 Marker(
                     state = MarkerState(position = turism.second),
                     onClick = { _ ->
-                        updateTurism(
-                            turism.first
-                        )
-                        markerPressed()
+                        if(turismSelected != turism.first) {
+                            markerPressed(turism.first)
+                        } else {
+                            markerPressed(null)
+                        }
                         true
                     }
                 )

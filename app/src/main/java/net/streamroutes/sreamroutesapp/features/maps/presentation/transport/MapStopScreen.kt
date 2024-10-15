@@ -12,7 +12,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -22,7 +21,6 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.domain.model.RouteInformation
-import net.streamroutes.sreamroutesapp.data.model.routes.Route
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.StopBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.StopInformationBottomSheet
@@ -75,39 +73,47 @@ fun MapStopScreen(
                 end = "C. Francisco Marquez, Col. Zona Centro"
             ),
             LatLng(20.126856880277188, -101.19127471960047)
+        ),
+        Pair(
+            RouteInformation(
+                name = "Ruta 12 - Itsur",
+                countTurism = 4,
+                hourAprox = 2,
+                minutesAprox = 30,
+                officialStops = 16,
+                start = "C. Pipila, Col. Ninios Herores",
+                end = "C. Francisco Marquez, Col. Zona Centro"
+            ),
+            LatLng(20.13685688027719, -101.20127471960048)
         )
     )
-
-    var isMarkerPressed by remember {
-        mutableStateOf(false)
-    }
-
-    val markerPressed = {
-        scope.launch {
-            scaffoldState.bottomSheetState.hide()// esconder la hoja
-            delay(300) // esperar 300 milisegundos
-            isMarkerPressed = !isMarkerPressed // cambiar el valor para cambiar el contenido de la hoja
-            scaffoldState.bottomSheetState.expand() // expandir la hoja
-        }
-    }
 
     var stopSelected by remember {
         mutableStateOf<RouteInformation?>(null)
     }
 
-    val updateStop = { stop: RouteInformation ->
+    val updateStop = { stop: RouteInformation? ->
         stopSelected = stop
+    }
+
+    val markerPressed = { stop: RouteInformation? ->
+        scope.launch {
+            scaffoldState.bottomSheetState.hide()// esconder la hoja
+            delay(300) // esperar 300 milisegundos
+            updateStop(stop) // actualizar valor junto con la animacion
+            scaffoldState.bottomSheetState.expand() // expandir la hoja
+        }
     }
     
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
-            if(isMarkerPressed) {
+            if(stopSelected != null) {
                 stopSelected?.let {
                     StopInformationBottomSheet(
                         routeInformation = it,
                         onClose = {
-                            markerPressed()
+                            markerPressed(null)
                         }
                     )
                 }
@@ -129,10 +135,11 @@ fun MapStopScreen(
                 Marker(
                     state = MarkerState(position = stop.second),
                     onClick = {
-                        updateStop(
-                            stop.first
-                        )
-                        markerPressed()
+                        if(stopSelected != stop.first) {
+                            markerPressed(stop.first)
+                        } else {
+                            markerPressed(null)
+                        }
                         true
                     }
                 )
