@@ -33,7 +33,9 @@ fun RouteBottomSheet(
     timeToStop: String = "5 minutos",
     colorNearStop: Color = Color.Red, // este dato probablemente obtener del viewmodel
     colorRoute: Color = Color.Black, // este dato tambien del viewmodel
-    colorStop: Color = Color.Green
+    colorStop: Color = Color.Green,
+    onBackPressed: () -> Unit = {},
+    onShareLocation: () -> Unit = {}
 ) {
     Column(
         modifier = Modifier
@@ -105,9 +107,7 @@ fun RouteBottomSheet(
         Spacer(modifier = Modifier.size(16.dp))
 
         TextButton(
-            onClick = {
-                // ABRIR HOJA PARA COMPARTIR UBICAION
-            },
+            onClick = onShareLocation,
             shape = shapes.small,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
@@ -132,10 +132,7 @@ fun RouteBottomSheet(
                         // MANDAR INDICACION PARA MANTENER
                         // PARA CANCELAR
                     },
-                    onLongClick = {
-                        // CANCELAR RUTA
-                        // REGRESAR A RUTAS DE TRANSPORTE PUBLICO
-                    }
+                    onLongClick = onBackPressed
                 )
         ) {
             Text(text = stringResource(id = R.string.btnCancelRoute))
