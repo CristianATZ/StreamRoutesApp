@@ -54,7 +54,8 @@ fun PostItem(
     isSaved: Boolean = false,
     onLikePressed: () -> Unit = {},
     onCommentPressed: () -> Unit = {},
-    onDeletePost: () -> Unit = {}
+    onDeletePost: () -> Unit = {},
+    onMorePressed: () -> Unit = {}
 ) {
     var isExpanded by remember { mutableStateOf(false) } // Solo se necesita este estado
 
@@ -83,7 +84,7 @@ fun PostItem(
         if(isSaved) {
             onDeletePost()
         } else {
-            // ABRIR BOTTOM SHEET PARA GUARDAR U OCULTAR
+            onMorePressed()
         }
     }
 

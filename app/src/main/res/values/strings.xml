@@ -638,4 +638,8 @@
     <string name="iconMoreTurism">Visitar pagina</string>
     <string name="lblTurismTotal">Lugares turisticos</string>
     <string name="lblTurismCounts">Lugares turisticos</string>
+    <string name="iconBackForum">Regresar al inicio</string>
+    <string name="lblPublicationOf">Publicacion de %1$s</string>
+    <string name="btnHidePost">Ocultar publicacion</string>
+    <string name="btnSavePost">Guardar publicacion</string>
 </resources>

@@ -14,6 +14,7 @@ import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
+import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
 import net.streamroutes.sreamroutesapp.features.turism.presentation.TurismScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
@@ -84,7 +85,8 @@ class LoginActivity : ComponentActivity() {
                 //HistoryScreen()
                 //PremiumScreen()
                 //MapsScreen()
-                TurismScreen()
+                //TurismScreen()
+                ForumScreen()
             }
         }
     }
