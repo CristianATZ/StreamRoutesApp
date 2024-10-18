@@ -35,9 +35,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
+import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
-import net.streamroutes.sreamroutesapp.utils.fullDateFormat
 import java.time.LocalDateTime
 
 @Preview(showBackground = true)
@@ -170,7 +170,7 @@ fun PostItem(
         ) {
             if(!isSaved) {
                 Text(
-                    text = "${post.likes} ${stringResource(id = R.string.lblLikes)}", // Acceso directo
+                    text = stringResource(id = R.string.lblLikes, post.likes), // Acceso directo
                     style = typography.labelSmall,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
@@ -179,7 +179,7 @@ fun PostItem(
             }
 
             Text(
-                text = "${post.comments.size} ${stringResource(id = R.string.lblComments)}", // Acceso directo
+                text = stringResource(id = R.string.lblComments, post.comments.size), // Acceso directo
                 style = typography.labelSmall,
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )

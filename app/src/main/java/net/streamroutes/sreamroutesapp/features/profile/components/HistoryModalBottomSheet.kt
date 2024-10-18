@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
-import net.streamroutes.sreamroutesapp.utils.formatTime
-import net.streamroutes.sreamroutesapp.utils.fullDateFormat
+import net.streamroutes.sreamroutesapp.utils.DateUtils.formatTime
+import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

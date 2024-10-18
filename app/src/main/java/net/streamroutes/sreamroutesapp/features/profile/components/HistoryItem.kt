@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.sp
 import com.example.compose.orange
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.History
-import net.streamroutes.sreamroutesapp.utils.fullDateFormat
+import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import java.time.LocalDateTime
 import java.time.LocalTime
 

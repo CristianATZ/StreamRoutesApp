@@ -1,10 +1,18 @@
 package net.streamroutes.sreamroutesapp.features.forum.presentation
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -12,12 +20,17 @@ import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
+import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,8 +40,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.compose.RumappAppTheme
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
@@ -37,6 +54,10 @@ import net.streamroutes.sreamroutesapp.features.components.CommentModalBottomShe
 import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
 import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 import net.streamroutes.sreamroutesapp.features.components.PostItem
+import net.streamroutes.sreamroutesapp.features.forum.components.ForumSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.forum.components.MoreModalBottomSheet
+import net.streamroutes.sreamroutesapp.features.forum.components.PostModalBottomSheet
+import net.streamroutes.sreamroutesapp.utils.DateUtils
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -186,12 +207,12 @@ fun ForumScreen(
         mutableStateOf(false)
     }
     var postMoreSelect by remember {
-        mutableStateOf<Pair<String, String>?>(null)
+        mutableStateOf<Pair<String, LocalDateTime>?>(null)
     }
     val openMoreBottomSheet = {
         isOpenMoreSheet = !isOpenMoreSheet
     }
-    val updateMoreSelect = { info: Pair<String, String>? ->
+    val updateMoreSelect = { info: Pair<String, LocalDateTime>? ->
         postMoreSelect = info
     }
     val onSavePost = {
@@ -199,6 +220,33 @@ fun ForumScreen(
     }
     val onHidePost = {
         // OCULTAR EN FIREABSE
+    }
+
+    // hacer publicacion
+    val postSheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
+    )
+    var isOpenPostSheet by remember {
+        mutableStateOf(false)
+    }
+    val openPostBottomSheet = {
+        isOpenPostSheet = !isOpenPostSheet
+    }
+    val onMakePost = {
+
+    }
+    val onCloseMakePost = {
+
+    }
+
+    if(isOpenPostSheet) {
+        PostModalBottomSheet(
+            sheetState = postSheetState,
+            onDismiss = openPostBottomSheet,
+            onMakePost = onMakePost,
+            onCloseMakePost = onCloseMakePost,
+            info = Pair("Usuario", LocalDateTime.now())
+        )
     }
 
     if(isOpenMoreSheet) {
@@ -209,7 +257,7 @@ fun ForumScreen(
                 onSavePressed = onSavePost,
                 onHidePost = onHidePost,
                 info = it
-            )   
+            )
         }
     }
 
@@ -237,6 +285,48 @@ fun ForumScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    // CAMBIAR POR PRIMERA LETRA
+                    Box(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .background(colorScheme.tertiaryContainer, shapes.extraLarge)
+                            .size(40.dp),
+                        contentAlignment = Alignment.Center
+                    ){
+                        Text(
+                            text = "C",
+                            style = typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                    OutlinedCard(
+                        onClick = openPostBottomSheet,
+                        shape = shapes.extraLarge,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(modifier = Modifier.size(16.dp))
+
+                            Text(
+                                text = stringResource(id = R.string.lblPostSomething)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.size(16.dp))
+                }
+            }
+
             items(samplePosts) { post ->
                 PostItem(
                     post = post,
@@ -245,87 +335,11 @@ fun ForumScreen(
                     },
                     onCommentPressed = openCommentBottomSheet,
                     onMorePressed = {
-                        updateMoreSelect(Pair(post.authorName, post.publicationDate.toString()))
+                        updateMoreSelect(Pair(post.authorName, post.publicationDate))
                         openMoreBottomSheet()
                     }
                 )
             }
         }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MoreModalBottomSheet(
-    sheetState: SheetState,
-    onDismiss: () -> Unit,
-    onSavePressed: () -> Unit,
-    onHidePost: () -> Unit,
-    info: Pair<String, String>
-) {
-    ModalBottomSheet(
-        sheetState = sheetState,
-        onDismissRequest = onDismiss
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .navigationBarsPadding(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(text = stringResource(id = R.string.lblPublicationOf, info.first))
-            Text(text = info.second)
-
-            HorizontalDivider()
-
-            OutlinedButton(
-                onClick = onHidePost,
-                shape = shapes.small,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-            ) {
-                Text(text = stringResource(id = R.string.btnHidePost))
-            }
-
-            Button(
-                onClick = onSavePressed,
-                shape = shapes.small,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-            ) {
-                Text(text = stringResource(id = R.string.btnSavePost))
-            }
-        }
-    }
-}
-
-@Composable
-fun ForumSmallTopAppBar(
-    modifier: Modifier = Modifier,
-    title: String,
-    onBackPressed: () -> Unit
-) {
-    Column {
-        CustomTopAppBar(
-            title = {
-                Text(
-                    text = title
-                )
-            },
-            navigationIcon = {
-                NavigationButton(
-                    icon = Icons.Outlined.ArrowBackIosNew,
-                    iconDescription = stringResource(id = R.string.iconBackForum),
-                    onButtonPressed = onBackPressed
-                )
-            },
-            modifier = modifier
-        )
-
-        HorizontalDivider()
     }
 }
