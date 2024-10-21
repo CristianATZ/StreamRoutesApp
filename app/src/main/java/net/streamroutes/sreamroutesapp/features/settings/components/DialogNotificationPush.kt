@@ -1,12 +1,16 @@
 package net.streamroutes.sreamroutesapp.features.settings.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -20,28 +24,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.NotificationType
-import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.RadioField
 
 @Composable
 fun DialogNotificationPush(
     onDismiss: () -> Unit,
+    optionSelected: NotificationType,
     onSelect: (NotificationType) -> Unit
 ) {
-    var never by remember {
-        mutableStateOf(false)
-    }
-
-    var ever by remember {
-        mutableStateOf(true)
+    var option by remember {
+        mutableStateOf(optionSelected)
     }
 
     val radioPressed = {
-        ever = !ever
-        never = !never
-        onSelect(
-            if(ever) NotificationType.SIEMPRE
-            else NotificationType.NUNCA
-        )
+        option = when(option) {
+            NotificationType.NUNCA -> NotificationType.SIEMPRE
+            else -> NotificationType.NUNCA
+        }
     }
 
     Dialog(
@@ -63,7 +61,7 @@ fun DialogNotificationPush(
 
                 RadioField(
                     text = stringResource(R.string.lblEver),
-                    selected = ever,
+                    selected = option == NotificationType.SIEMPRE,
                     onSelect = radioPressed
                 )
 
@@ -71,11 +69,31 @@ fun DialogNotificationPush(
 
                 RadioField(
                     text = stringResource(R.string.lblNever),
-                    selected = never,
+                    selected = option == NotificationType.NUNCA,
                     onSelect = radioPressed
                 )
 
                 Spacer(modifier = Modifier.size(16.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TextButton(
+                        onClick = onDismiss
+                    ) {
+                        Text(text = stringResource(R.string.btnCancel))
+                    }
+
+                    TextButton(
+                        onClick = {
+                            onSelect(option)
+                            onDismiss()
+                        }
+                    ) {
+                        Text(text = stringResource(R.string.btnAccept))
+                    }
+                }
             }
         }
     }

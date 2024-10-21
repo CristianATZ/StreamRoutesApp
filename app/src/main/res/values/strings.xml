@@ -666,4 +666,6 @@
     <string name="lblAlertsDescription">Elige si quieres saber informacion de las rutas, estacionamientos y transito</string>
     <string name="lblEver">Siempre</string>
     <string name="lblNever">Nunca</string>
+    <string name="btnCancel">Cancelar</string>
+    <string name="btnAccept">Aceptar</string>
 </resources>

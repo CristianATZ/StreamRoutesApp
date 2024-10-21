@@ -91,7 +91,7 @@ class LoginActivity : ComponentActivity() {
                 //TurismScreen()
                 //ForumScreen()
                 //SettingsScreen()
-                //NotificationsScreen()
+                NotificationsScreen()
             }
         }
     }

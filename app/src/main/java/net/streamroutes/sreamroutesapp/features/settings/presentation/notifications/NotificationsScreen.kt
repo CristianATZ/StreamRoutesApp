@@ -72,6 +72,7 @@ fun NotificationsScreen(
 
         DialogNotificationPush(
             onDismiss = openDialog,
+            optionSelected = notificationType,
             onSelect = {
                 onUpdateNotificationType(it)
                 onPushPressed()
