@@ -39,12 +39,12 @@ fun RowField(
 
             Text(
                 text = title,
-                style = typography.bodyLarge
+                style = typography.labelLarge
             )
 
             Text(
                 text = description,
-                style = typography.bodySmall,
+                style = typography.labelMedium,
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )
 

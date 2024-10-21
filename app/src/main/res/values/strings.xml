@@ -188,7 +188,7 @@
     <string name="lblIdioma">Idioma</string>
     <string name="lblTema">Tema</string>
     <string name="lblAlerts">Alertas</string>
-    <string name="lblAlertsDescription">Cambios de horarios, rutas, etc.</string>
+    <string name="lblAlertDescription">Cambios de horarios, rutas, etc.</string>
     <string name="lblSuscriptionDescription">Expiración de suscripciones.</string>
     <string name="tituloPage">.</string>
 
@@ -646,4 +646,24 @@
     <string name="lblThinking">Que estas pensando?</string>
     <string name="lblComments">Comentarios</string>
     <string name="btnPost">Publicar</string>
+    <string name="lblSettingsNotificationTitle">Notificaciones</string>
+    <string name="lblSettingsNotificationDescription">Vibracion, prioridad</string>
+    <string name="lblSettingsMapsTitle">Mapas</string>
+    <string name="lblSettingsMapsDescription">Tipo de mapa, color de linea</string>
+    <string name="lblSettingsPrivacityTitle">Privacidad</string>
+    <string name="lblSettingsPrivacityDescription">Publicidad, pagos</string>
+    <string name="lblSettingsStorageTitle">Almacenamiento y datos</string>
+    <string name="lblSettingsStorageDescription">Espacio disponible, uso de red</string>
+    <string name="lblSettingsApparenceTitle">Apariencia</string>
+    <string name="lblSettingsApparenceDescription">Tema de la aplicacion</string>
+    <string name="lblNotifications">Notificaciones</string>
+    <string name="lblNotificationsPush">Notificaciones push</string>
+    <string name="lblNotificationPriority">Notificaciones de alta prioridad</string>
+    <string name="lblNotificationPriorityDescription">Muestra vistas previas en la parte superior de la pantalla</string>
+    <string name="iconDoneClose">Icono de prioridad alta</string>
+    <string name="lblVibration">Vibraciones</string>
+    <string name="lblVibrationDescription">Muestra vistas previas en la parte superior de la pantalla</string>
+    <string name="lblAlertsDescription">Elige si quieres saber informacion de las rutas, estacionamientos y transito</string>
+    <string name="lblEver">Siempre</string>
+    <string name="lblNever">Nunca</string>
 </resources>

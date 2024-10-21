@@ -48,7 +48,7 @@ fun NotificationsScreen(configurationViewModel: ConfigurationViewModel){
     val notification_items = listOf(
         NotificationItem(
             name = stringResource(id = R.string.lblAlerts),
-            desc = stringResource(id = R.string.lblAlertsDescription),
+            desc = stringResource(id = R.string.lblAlertDescription),
             value = configurationViewModel.alerts,
             action = { configurationViewModel.updateAlerts(!configurationViewModel.alerts) }
         ),

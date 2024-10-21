@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DarkMode
+import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material.icons.outlined.RestartAlt
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -172,6 +174,9 @@ fun MapsModalBottomSheet(
                 headerText = stringResource(id = R.string.lblMapType),
                 descriptionText = stringResource(id = R.string.lblMapTypeDescription),
                 value = mapType,
+                iconTrue = Icons.Outlined.DarkMode,
+                iconFalse = Icons.Outlined.LightMode,
+                iconDescription = stringResource(R.string.iconThemeMode),
                 onValueChange = { type ->
                     mapType = type
                 }
