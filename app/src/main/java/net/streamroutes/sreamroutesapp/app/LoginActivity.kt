@@ -16,7 +16,9 @@ import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsSettingsScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.NotificationsScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.privacity.PrivacityScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsScreen
 import net.streamroutes.sreamroutesapp.features.turism.presentation.TurismScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
@@ -91,7 +93,9 @@ class LoginActivity : ComponentActivity() {
                 //TurismScreen()
                 //ForumScreen()
                 //SettingsScreen()
-                NotificationsScreen()
+                //NotificationsScreen()
+                //MapsSettingsScreen()
+                PrivacityScreen()
             }
         }
     }

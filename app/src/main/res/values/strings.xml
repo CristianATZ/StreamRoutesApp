@@ -668,4 +668,11 @@
     <string name="lblNever">Nunca</string>
     <string name="btnCancel">Cancelar</string>
     <string name="btnAccept">Aceptar</string>
+    <string name="lblPrivacity">Privacidad</string>
+    <string name="lblCustomAds">Anuncios personalizados</string>
+    <string name="lblCustomAdsDescription">Usamos tus datos para mostrarte anuncios que podrian ser relevantes para ti. Si esta opcion no esta marcada se mostraran anuncios genericos</string>
+    <string name="lblPayment">Pago de suscripcion</string>
+    <string name="lblPaymentDescription">Permite el cobro automatico de la suscripcion cada mes</string>
+    <string name="lblLinksDescription">Para evitar que sitios web de terceros puedan deducir tu direccion IP, ya no se generaran vistas previas de los enlaces</string>
+    <string name="lblLinks">Desactibar vistas previas de enlaces</string>
 </resources>
