@@ -506,7 +506,7 @@
     <string name="iconOpenGenderList">Abrir lista de generos</string>
     <string name="iconMorePost">Opciones de publicacion</string>
     <string name="lblLikes">%1$d me gusta</string>
-    <string name="lblComments">%1$d comentarios</string>
+    <string name="lblCountComments">%1$d comentarios</string>
     <string name="btnLike">Me gusta</string>
     <string name="iconLikePost">Icono de me gusta la publicacion</string>
     <string name="iconCommentPost">Icono de comentar publicacion</string>
@@ -644,4 +644,6 @@
     <string name="btnSavePost">Guardar publicacion</string>
     <string name="lblPostSomething">Publica algo</string>
     <string name="lblThinking">Que estas pensando?</string>
+    <string name="lblComments">Comentarios</string>
+    <string name="btnPost">Publicar</string>
 </resources>

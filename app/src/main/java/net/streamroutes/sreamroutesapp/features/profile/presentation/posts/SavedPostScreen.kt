@@ -163,7 +163,6 @@ fun SavedPostScreen(
         CommentModalBottomSheet(
             sheetState = sheetState,
             commentList = sampleComments,
-            likes = samplePosts[0].likes,
             onDismiss = openBottomSheet,
             isSaved = true
         )

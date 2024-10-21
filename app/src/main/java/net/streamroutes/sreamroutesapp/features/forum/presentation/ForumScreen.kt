@@ -2,35 +2,21 @@ package net.streamroutes.sreamroutesapp.features.forum.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -40,24 +26,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.example.compose.RumappAppTheme
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.features.components.CommentModalBottomSheet
-import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
-import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 import net.streamroutes.sreamroutesapp.features.components.PostItem
 import net.streamroutes.sreamroutesapp.features.forum.components.ForumSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.forum.components.MoreModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.forum.components.PostModalBottomSheet
-import net.streamroutes.sreamroutesapp.utils.DateUtils
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -129,60 +109,50 @@ fun ForumScreen(
     val sampleComments = listOf(
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "¡Hola! ¿Cómo te va? Hace tiempo que no hablamos, espero que todo esté bien contigo y que las cosas estén marchando de maravilla. ¿Qué has estado haciendo últimamente?",
             commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
         ),
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "Espero que tengas un buen día lleno de éxitos y alegrías. Siempre es importante recordar que cada día es una nueva oportunidad para aprender algo nuevo y crecer.",
             commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
         ),
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "¿Qué planes tienes para hoy? Estoy pensando en salir a caminar un rato por el parque para despejarme y aprovechar el buen clima. Sería genial si te animas a venir también.",
             commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
         ),
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "¡Nos vemos luego! Estaré por la zona del centro en la tarde, así que si tienes tiempo libre podemos juntarnos para tomar un café y ponernos al día.",
             commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
         ),
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "Quería comentarte sobre ese proyecto en el que estás trabajando, he estado pensando en algunas ideas que podrían ser útiles y me encantaría compartirlas contigo pronto.",
             commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
         ),
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "No puedo creer que ya estemos en junio de 2024, el tiempo vuela. Parece que fue ayer cuando comenzamos este año, y ahora ya estamos a mitad de camino.",
             commentDate = LocalDateTime.of(2024, 6, 1, 12, 0),
         ),
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "El invierno de este año ha sido bastante frío, ¿no crees? Aunque a veces disfruto de los días frescos, estoy deseando que llegue la primavera para poder salir más.",
             commentDate = LocalDateTime.of(2023, 2, 1, 12, 0),
         ),
         Comment(
             commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            description = "Ya casi es septiembre, uno de mis meses favoritos. Me encanta cuando comienza el otoño, el clima es perfecto y los paisajes se ven impresionantes con los colores de las hojas.",
             commentDate = LocalDateTime.of(2023, 9, 1, 12, 0),
         ),
         Comment(
-            commenterName = "CristianToZa",
-            description = "Hola como estas amigo",
+            commenterName = "HOla",
+            description = "El verano ha sido bastante caluroso este año, pero he disfrutado de varias salidas a la playa. Me encanta la sensación de estar cerca del mar, es realmente relajante.",
             commentDate = LocalDateTime.of(2023, 7, 1, 12, 0),
         )
     )
-
-    val onCloseBottomSheet = {
-        scope.launch {
-            /*sheetState.hide()*/
-        }.invokeOnCompletion {
-            /*if(!sheetState.isVisible) {
-                isOpen = false
-            }*/
-        }
-    }
 
     val onBackPressed = {
 
@@ -236,7 +206,13 @@ fun ForumScreen(
 
     }
     val onCloseMakePost = {
-
+        scope.launch {
+            postSheetState.hide()
+        }.invokeOnCompletion {
+            if(!postSheetState.isVisible) {
+                isOpenPostSheet = false
+            }
+        }
     }
 
     if(isOpenPostSheet) {
@@ -244,7 +220,9 @@ fun ForumScreen(
             sheetState = postSheetState,
             onDismiss = openPostBottomSheet,
             onMakePost = onMakePost,
-            onCloseMakePost = onCloseMakePost,
+            onCloseMakePost = {
+                onCloseMakePost()
+            },
             info = Pair("Usuario", LocalDateTime.now())
         )
     }
@@ -267,7 +245,6 @@ fun ForumScreen(
         CommentModalBottomSheet(
             sheetState = commentSheetState,
             commentList = sampleComments,
-            likes = samplePosts[0].likes,
             onDismiss = openCommentBottomSheet
         )
     }
@@ -285,6 +262,7 @@ fun ForumScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            // letra y barra de busqueda
             item {
                 Row(
                     verticalAlignment = Alignment.CenterVertically

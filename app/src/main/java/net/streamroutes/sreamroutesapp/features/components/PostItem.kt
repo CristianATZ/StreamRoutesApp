@@ -98,7 +98,7 @@ fun PostItem(
         modifier = Modifier
             .padding(vertical = 8.dp)
             .fillMaxWidth()
-            .background(colorScheme.surfaceContainerHighest)
+            .background(colorScheme.surfaceContainer)
             .clickable {
                 // ABRIR BOTTOM SHEET PARA COMENTAR
                 onCommentPressed()
@@ -179,7 +179,7 @@ fun PostItem(
             }
 
             Text(
-                text = stringResource(id = R.string.lblComments, post.comments.size), // Acceso directo
+                text = stringResource(id = R.string.lblCountComments, post.comments.size), // Acceso directo
                 style = typography.labelSmall,
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )

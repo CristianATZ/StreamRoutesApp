@@ -54,7 +54,7 @@ fun MoreModalBottomSheet(
                 Box(
                     modifier = Modifier
                         .padding(start = 16.dp)
-                        .background(colorScheme.tertiaryContainer, shapes.extraLarge)
+                        .background(colorScheme.surfaceContainerHighest, shapes.extraLarge)
                         .size(40.dp),
                     contentAlignment = Alignment.Center
                 ){

@@ -8,28 +8,23 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
-import androidx.compose.material.icons.automirrored.outlined.NavigateNext
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.shapes
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -46,6 +41,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
@@ -55,7 +51,6 @@ import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 fun CommentModalBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit = {},
-    likes: Int = 0,
     isSaved: Boolean = false,
     commentList: List<Comment> = emptyList()
 ) {
@@ -72,25 +67,12 @@ fun CommentModalBottomSheet(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             // cantidad de likes e icono
-            Row(
-                modifier = Modifier
-                    .align(Alignment.Start)
-                    .height(50.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.size(16.dp))
+            Text(
+                text = stringResource(R.string.lblComments),
+                fontWeight = FontWeight.Bold
+            )
 
-                Text(
-                    text = stringResource(id = R.string.lblLikes, likes) ,
-                    style = typography.labelLarge,
-                    modifier = Modifier.graphicsLayer(alpha = 0.5f)
-                )
-
-                Icon(
-                    imageVector = Icons.AutoMirrored.Outlined.NavigateNext,
-                    contentDescription = stringResource(id = R.string.iconNextComments)
-                )
-            }
+            HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp).graphicsLayer(alpha = 0.5f))
 
             // lista de comentarios
             LazyColumn(
@@ -125,7 +107,7 @@ fun CommentInput() {
             .imePadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        HorizontalDivider(modifier = Modifier.padding(bottom = 8.dp))
+        HorizontalDivider(modifier = Modifier.padding(bottom = 8.dp).graphicsLayer(alpha = 0.5f))
 
         // Iconos de acción
         TextField(

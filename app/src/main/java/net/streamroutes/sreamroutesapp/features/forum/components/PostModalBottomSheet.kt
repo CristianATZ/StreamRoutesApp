@@ -58,7 +58,6 @@ fun PostModalBottomSheet(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(0.9f)
                 .navigationBarsPadding()
         ) {
             // letra, nombre y fecha
@@ -96,7 +95,7 @@ fun PostModalBottomSheet(
                 }
             }
 
-            Spacer(modifier = Modifier.size(64.dp))
+            Spacer(modifier = Modifier.size(32.dp))
 
             // descripcion publicacion
             TextField(
@@ -105,7 +104,8 @@ fun PostModalBottomSheet(
                 placeholder = {
                     Text(
                         text = stringResource(id = R.string.lblThinking),
-                        style = typography.headlineLarge
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.graphicsLayer(alpha = 0.5f)
                     )
                 },
                 colors = TextFieldDefaults.colors(
@@ -119,8 +119,6 @@ fun PostModalBottomSheet(
                     .height(200.dp)
             )
 
-            Spacer(modifier = Modifier.weight(1f))
-
             // regresar
             OutlinedButton(
                 onClick = onCloseMakePost,
@@ -130,7 +128,7 @@ fun PostModalBottomSheet(
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
             ) {
-                Text(text = stringResource(id = R.string.btnHidePost))
+                Text(text = stringResource(id = R.string.btnBack))
             }
 
             // publicar
@@ -142,7 +140,7 @@ fun PostModalBottomSheet(
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
             ) {
-                Text(text = stringResource(id = R.string.btnSavePost))
+                Text(text = stringResource(id = R.string.btnPost))
             }
         }
     }
