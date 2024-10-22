@@ -60,5 +60,7 @@ fun SliderField(
             },
             modifier = Modifier.padding(horizontal = 16.dp)
         )
+
+        Spacer(modifier = Modifier.size(16.dp))
     }
 }

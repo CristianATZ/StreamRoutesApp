@@ -148,16 +148,12 @@ fun MapsModalBottomSheet(
                 onOpenPickerColor = openTransportColor
             )
 
-            Spacer(modifier = Modifier.size(16.dp))
-
             ColorField(
                 headerText = stringResource(id = R.string.lblNearStopLineColor),
                 descriptionText = stringResource(id = R.string.lblNearStopLineColorDescription),
                 colorTransport = colorNearStop,
                 onOpenPickerColor = openNearStopColor
             )
-
-            Spacer(modifier = Modifier.size(16.dp))
 
             SliderField(
                 headerText = stringResource(id = R.string.lblWidthLine),
@@ -167,8 +163,6 @@ fun MapsModalBottomSheet(
                     onChangeProgress(it)
                 }
             )
-
-            Spacer(modifier = Modifier.size(16.dp))
 
             SwitchField(
                 headerText = stringResource(id = R.string.lblMapType),
@@ -181,8 +175,6 @@ fun MapsModalBottomSheet(
                     mapType = type
                 }
             )
-
-            Spacer(modifier = Modifier.size(16.dp))
 
             Button(
                 onClick = onSaveMapSettings,

@@ -97,7 +97,8 @@ class LoginActivity : ComponentActivity() {
                 //NotificationsScreen()
                 //MapsSettingsScreen()
                 //PrivacityScreen()
-                ApparenceScreen()
+                //ApparenceScreen()
+                MapsSettingsScreen()
             }
         }
     }

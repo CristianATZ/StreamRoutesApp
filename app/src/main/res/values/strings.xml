@@ -680,4 +680,12 @@
     <string name="lblThemeDescription">Claro u oscuro</string>
     <string name="lblDynamicTheme">Tema dinamico</string>
     <string name="lblDynamicThemeDescription">Colores en base a la configuracion del dispositivo</string>
+    <string name="lblLineSettings">Ajustes de linea</string>
+    <string name="lblMapsMarker">Marcadores de mapa</string>
+    <string name="lblBusTerminals">Terminales</string>
+    <string name="lblBusTerminalsDescription">Indica estaciones de autobuses</string>
+    <string name="lblFoodDescription">Restaurantes,  locales de comida, comida rapida, etc</string>
+    <string name="lblFood">Comida</string>
+    <string name="lblHealthy">Salud</string>
+    <string name="lblHealthyDescription">Hospitales, clinicas, farmacias, consultorios, etc</string>
 </resources>
