@@ -675,4 +675,9 @@
     <string name="lblPaymentDescription">Permite el cobro automatico de la suscripcion cada mes</string>
     <string name="lblLinksDescription">Para evitar que sitios web de terceros puedan deducir tu direccion IP, ya no se generaran vistas previas de los enlaces</string>
     <string name="lblLinks">Desactibar vistas previas de enlaces</string>
+    <string name="lblApparence">Apariencia</string>
+    <string name="lblTheme">Tema de la aplicacion</string>
+    <string name="lblThemeDescription">Claro u oscuro</string>
+    <string name="lblDynamicTheme">Tema dinamico</string>
+    <string name="lblDynamicThemeDescription">Colores en base a la configuracion del dispositivo</string>
 </resources>
