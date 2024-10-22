@@ -19,9 +19,8 @@ fun InfoRowField(
         // Texto de encabezado
         Text(
             text = title,
-            style = typography.labelLarge,
-
-            )
+            style = typography.labelLarge
+        )
 
         // Texto de descripción
         Text(

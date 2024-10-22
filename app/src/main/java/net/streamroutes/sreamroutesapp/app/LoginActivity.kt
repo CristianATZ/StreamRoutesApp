@@ -21,6 +21,7 @@ import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsS
 import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.NotificationsScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.privacity.PrivacityScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.storage.StorageScreen
 import net.streamroutes.sreamroutesapp.features.turism.presentation.TurismScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
@@ -98,7 +99,8 @@ class LoginActivity : ComponentActivity() {
                 //MapsSettingsScreen()
                 //PrivacityScreen()
                 //ApparenceScreen()
-                MapsSettingsScreen()
+                //MapsSettingsScreen()
+                StorageScreen()
             }
         }
     }

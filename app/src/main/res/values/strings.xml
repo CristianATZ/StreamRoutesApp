@@ -688,4 +688,12 @@
     <string name="lblFood">Comida</string>
     <string name="lblHealthy">Salud</string>
     <string name="lblHealthyDescription">Hospitales, clinicas, farmacias, consultorios, etc</string>
+    <string name="lblRedUse">Uso de red</string>
+    <string name="lblRestartStatistics">Reiniciar estadisticas de red</string>
+    <string name="lblRestartStatisticsDescription">Ultimo reinicio: %1$s</string>
+    <string name="lblUsing">En uso</string>
+    <string name="lblFreeStorage">Libres</string>
+    <string name="lblRumappSpaceUsed">Rumapp (%1$s)</string>
+    <string name="lblFreeUpSpace">Liberar espacio</string>
+    <string name="lblFreeUpSpaceDescription">Ultima liberacion: %1$s</string>
 </resources>
