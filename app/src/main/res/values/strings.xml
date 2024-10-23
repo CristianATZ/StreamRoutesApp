@@ -422,7 +422,7 @@
     <string name="lblSelect">Selecciona</string>
     <string name="lblPublictransport">Transporte publico</string>
     <string name="lblParkings">Estacionamientos</string>
-    <string name="lblHello">"Hola, "</string>
+    <string name="lblHello">Hola, %1$s !</string>
     <string name="lblGreet">Buenas tardes, bienvenido de nuevo.</string>
     <string name="lblPublicTransportRoutes">Rutas de transporte publico</string>
     <string name="lblPlan">Planifica tu viaje</string>
@@ -696,4 +696,7 @@
     <string name="lblRumappSpaceUsed">Rumapp (%1$s)</string>
     <string name="lblFreeUpSpace">Liberar espacio</string>
     <string name="lblFreeUpSpaceDescription">Ultima liberacion: %1$s</string>
+    <string name="lblParks">Parqueo</string>
+    <string name="iconPerson">Icono de cuenta</string>
+    <string name="iconFilter">Abrir filtros</string>
 </resources>

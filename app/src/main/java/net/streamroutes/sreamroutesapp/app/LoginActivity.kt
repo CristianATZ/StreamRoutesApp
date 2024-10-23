@@ -14,15 +14,9 @@ import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
-import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
-import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.apparence.ApparenceScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsSettingsScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.NotificationsScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.privacity.PrivacityScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.storage.StorageScreen
-import net.streamroutes.sreamroutesapp.features.turism.presentation.TurismScreen
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
+import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.HomeScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -100,7 +94,9 @@ class LoginActivity : ComponentActivity() {
                 //PrivacityScreen()
                 //ApparenceScreen()
                 //MapsSettingsScreen()
-                StorageScreen()
+                //StorageScreen()
+                //TransportApp()
+                ParkingApp()
             }
         }
     }

@@ -36,7 +36,7 @@ fun HomeScreen(
                 .padding(vertical = 16.dp, horizontal = 8.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.lblHello) + "usuario !",
+                text = stringResource(id = R.string.lblHello, "USUARIO"),
                 style = typography.displaySmall
             )
             Text(

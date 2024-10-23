@@ -1,16 +1,13 @@
-package net.streamroutes.sreamroutesapp.features.transportApp.components
+package net.streamroutes.sreamroutesapp.features.parkingApp.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
-import androidx.compose.material.icons.outlined.Forum
+import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Map
-import androidx.compose.material.icons.outlined.Navigation
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Settings
-import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.ModalDrawerSheet
@@ -25,7 +22,9 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.DrawerItem
 
 @Composable
-fun DrawerContent(
+fun ParkingDrawerContent(
+    selectedRoute: Int,
+    onChangeRoute: (Int) -> Unit,
     onLogOut: () -> Unit
 ) {
     ModalDrawerSheet(
@@ -48,9 +47,9 @@ fun DrawerContent(
             label = stringResource(id = R.string.lblProfile),
             icon = Icons.Outlined.Person,
             iconDescription = stringResource(id = R.string.iconProfile),
-            selected = false,
+            selected = selectedRoute == 0,
             onClick = {
-                // ENVIAR A INICIO
+                onChangeRoute(0)
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -60,69 +59,32 @@ fun DrawerContent(
             label = stringResource(id = R.string.lblHome),
             icon = Icons.Outlined.Home,
             iconDescription = stringResource(id = R.string.iconHome),
-            selected = false,
+            selected = selectedRoute == 1,
             onClick = {
-                // ENVIAR A INICIO
+                onChangeRoute(1)
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        // paquetes
+        // parqueos
         DrawerItem(
-            label = stringResource(id = R.string.lblPremium),
-            icon = Icons.Outlined.ShoppingCart,
-            iconDescription = stringResource(id = R.string.iconPremium),
-            selected = false,
+            label = stringResource(id = R.string.lblParks),
+            icon = Icons.Outlined.BookmarkBorder,
+            iconDescription = stringResource(id = R.string.iconBooking),
+            selected = selectedRoute == 2,
             onClick = {
-                // ENVIAR A PAQUETES
+                onChangeRoute(2)
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        // Mapas
-        DrawerItem(
-            label = stringResource(id = R.string.lblMaps),
-            icon = Icons.Outlined.Map,
-            iconDescription = stringResource(id = R.string.iconMaps),
-            selected = false,
-            onClick = {
-                // ENVIAR A MAPAS
-            },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        // Turismo
-        DrawerItem(
-            label = stringResource(id = R.string.lblTurism),
-            icon = Icons.Outlined.Navigation,
-            iconDescription = stringResource(id = R.string.iconTurism),
-            selected = false,
-            onClick = {
-                // ENVIAR A TURISMO
-            },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        // Turismo
-        DrawerItem(
-            label = stringResource(id = R.string.lblForum),
-            icon = Icons.Outlined.Forum,
-            iconDescription = stringResource(id = R.string.iconForum),
-            selected = false,
-            onClick = {
-                // ENVIAR A FORO
-            },
-            modifier = Modifier.align(Alignment.CenterHorizontally)
-        )
-
-        // Configuracion
         DrawerItem(
             label = stringResource(id = R.string.lblSettings),
             icon = Icons.Outlined.Settings,
             iconDescription = stringResource(id = R.string.iconSettings),
-            selected = false,
+            selected = selectedRoute == 3,
             onClick = {
-                // ENVIAR A CONFIGURACION
+                onChangeRoute(3)
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )

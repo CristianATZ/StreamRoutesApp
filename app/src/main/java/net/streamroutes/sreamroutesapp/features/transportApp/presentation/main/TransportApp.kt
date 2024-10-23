@@ -1,5 +1,6 @@
-package net.streamroutes.sreamroutesapp.features.transportApp.presentation.transportApp
+package net.streamroutes.sreamroutesapp.features.transportApp.presentation.main
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
@@ -11,12 +12,12 @@ import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
 import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
 
 @Composable
 fun TransportApp(
     modifier: Modifier = Modifier
 ) {
-    val navController = rememberNavController()
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
@@ -24,7 +25,11 @@ fun TransportApp(
         drawerState = drawerState,
         drawerContent = {
             // MENU, LLAMAR COMPONENTE DrawerContent
-            DrawerContent()
+            DrawerContent(
+                onLogOut = {
+                    // SALIR DE FIREBASE
+                }
+            )
         }
     ) {
         Scaffold(
@@ -40,7 +45,7 @@ fun TransportApp(
             }
         ) { innerPadding ->
             // LLAMAR COMPONENTE DE LA NAVEGACION
-            //HomeScreen(modifier = Modifier.padding(innerPadding))
+            HomeScreen(modifier = Modifier.padding(innerPadding))
         }
     }
 }
