@@ -34,7 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.domain.model.Post
+import net.streamroutes.sreamroutesapp.core.domain.model.PostTemp
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
@@ -43,7 +43,7 @@ import java.time.LocalDateTime
 @Preview(showBackground = true)
 @Composable
 fun PostItem(
-    post: Post = Post(
+    postTemp: PostTemp = PostTemp(
         postId = "000",
         authorName = "CristianToZa",
         publicationDate = LocalDateTime.now(),
@@ -60,9 +60,9 @@ fun PostItem(
     var isExpanded by remember { mutableStateOf(false) } // Solo se necesita este estado
 
     val publicationDate = if(isSaved) {
-        fullDateFormat(postDateTime = post.publicationDate)
+        fullDateFormat(postDateTime = postTemp.publicationDate)
     } else {
-        formatPostDateTime(postDateTime = post.publicationDate)
+        formatPostDateTime(postDateTime = postTemp.publicationDate)
     }
 
     // checar cual icono dependiendo si es guardado o no
@@ -88,7 +88,7 @@ fun PostItem(
         }
     }
 
-    val descriptionModifier = if(post.description.length <= 150) {
+    val descriptionModifier = if(postTemp.description.length <= 150) {
         Modifier
     } else {
         Modifier.clickable { isExpanded = !isExpanded }
@@ -115,7 +115,7 @@ fun PostItem(
         ) {
             Column {
                 Text(
-                    text = post.authorName, // Acceso directo
+                    text = postTemp.authorName, // Acceso directo
                     style = typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -138,9 +138,9 @@ fun PostItem(
             modifier = descriptionModifier
         ) {
             // Comprobar si la descripción es más corta que 150 caracteres
-            if (post.description.length <= 150 || isExpanded) {
+            if (postTemp.description.length <= 150 || isExpanded) {
                 Text(
-                    text = post.description,
+                    text = postTemp.description,
                     style = typography.bodyMedium,
                     textAlign = TextAlign.Justify,
                     modifier = Modifier
@@ -149,7 +149,7 @@ fun PostItem(
                 )
             } else {
                 Text(
-                    text = viewMoreTextOverflow(post.description.take(150)), // Limitar la descripción y añadir "..."
+                    text = viewMoreTextOverflow(postTemp.description.take(150)), // Limitar la descripción y añadir "..."
                     style = typography.bodyMedium,
                     textAlign = TextAlign.Justify,
                     maxLines = 4, // Limitar a 4 líneas
@@ -170,7 +170,7 @@ fun PostItem(
         ) {
             if(!isSaved) {
                 Text(
-                    text = stringResource(id = R.string.lblLikes, post.likes), // Acceso directo
+                    text = stringResource(id = R.string.lblLikes, postTemp.likes), // Acceso directo
                     style = typography.labelSmall,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
@@ -179,7 +179,7 @@ fun PostItem(
             }
 
             Text(
-                text = stringResource(id = R.string.lblCountComments, post.comments.size), // Acceso directo
+                text = stringResource(id = R.string.lblCountComments, postTemp.comments.size), // Acceso directo
                 style = typography.labelSmall,
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )

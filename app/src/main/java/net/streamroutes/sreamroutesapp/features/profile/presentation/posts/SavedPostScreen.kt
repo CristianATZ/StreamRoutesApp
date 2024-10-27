@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
-import net.streamroutes.sreamroutesapp.core.domain.model.Post
+import net.streamroutes.sreamroutesapp.core.domain.model.PostTemp
 import net.streamroutes.sreamroutesapp.features.components.CommentModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.components.PostItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
@@ -41,8 +41,8 @@ fun SavedPostScreen(
 
 
     // ELIMINAR ESTAS LISTAS
-    val samplePosts = listOf(
-        Post(
+    val samplePostTemps = listOf(
+        PostTemp(
             postId = "001",
             authorName = "CristianToZa",
             publicationDate = LocalDateTime.of(2023, 10, 1, 12, 0),
@@ -53,7 +53,7 @@ fun SavedPostScreen(
                 Comment("Usuario2", LocalDateTime.of(2023, 10, 1, 13, 0), "Estoy ansioso por verlo.")
             )
         ),
-        Post(
+        PostTemp(
             postId = "002",
             authorName = "DeveloperX",
             publicationDate = LocalDateTime.of(2023, 10, 2, 14, 0),
@@ -64,7 +64,7 @@ fun SavedPostScreen(
                 Comment("CristianToZa", LocalDateTime.of(2023, 10, 2, 15, 30), "Intenté reinstalarlo y funcionó.")
             )
         ),
-        Post(
+        PostTemp(
             postId = "003",
             authorName = "TechEnthusiast",
             publicationDate = LocalDateTime.of(2023, 10, 3, 16, 0),
@@ -75,7 +75,7 @@ fun SavedPostScreen(
                 Comment("DeveloperX", LocalDateTime.of(2023, 10, 3, 17, 0), "Me gustaría ver más tutoriales sobre esto.")
             )
         ),
-        Post(
+        PostTemp(
             postId = "004",
             authorName = "CodeMaster",
             publicationDate = LocalDateTime.of(2023, 10, 4, 18, 0),
@@ -86,7 +86,7 @@ fun SavedPostScreen(
                 Comment("Usuario5", LocalDateTime.of(2023, 10, 4, 19, 0), "Revisa la documentación de Android sobre optimización.")
             )
         ),
-        Post(
+        PostTemp(
             postId = "005",
             authorName = "AndroidFan",
             publicationDate = LocalDateTime.of(2023, 10, 5, 20, 0),
@@ -196,9 +196,9 @@ fun SavedPostScreen(
                 )
             }
 
-            items(samplePosts) { post ->
+            items(samplePostTemps) { post ->
                 PostItem(
-                    post = post,
+                    postTemp = post,
                     isSaved = true,
                     onCommentPressed = openBottomSheet
                 )

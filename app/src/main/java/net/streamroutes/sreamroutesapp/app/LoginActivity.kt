@@ -10,6 +10,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.RumappAppTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
+import net.streamroutes.sreamroutesapp.core.data.repository.ParkingRepository
+import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
+import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
@@ -17,6 +20,7 @@ import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.HomeScreen
+import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -47,9 +51,12 @@ class LoginActivity : ComponentActivity() {
             val routesService = RetrofitOpenRouteService.retrofitService
             val repository by lazy { NetworkRemoteReposiroty(parkingService, routesService) }
             val firebaseRepository by lazy { FirebaseRepository() }
+            val routesRepository by lazy { RouteRepository() }
+            val parkingRepository by lazy { ParkingRepository() }
+            val userRepository by lazy { UserRepository() }
 
             // viewmodel de rutas
-            val routesViewModel: RoutesViewModel by viewModels { RoutesViewModelFactory(firebaseRepository) }
+            val routesViewModel: RoutesViewModel by viewModels { RoutesViewModelFactory(routesRepository) }
 
             // viewmodels de esatcionamiento
             val parkingPkViewModel: ParkingPkViewModel by viewModels { ParkingPkViewModelFactory(repository) }
@@ -77,7 +84,7 @@ class LoginActivity : ComponentActivity() {
                     )
                 }*/
                 // EditProfileScreen()
-                //RoutesScreen(orsViewModel, routesViewModel)
+                RoutesScreen(orsViewModel, routesViewModel)
                 //EditInformation()
                 //EditAccountScreen()
                 //EditProfileScreen()
@@ -96,7 +103,7 @@ class LoginActivity : ComponentActivity() {
                 //MapsSettingsScreen()
                 //StorageScreen()
                 //TransportApp()
-                ParkingApp()
+                //ParkingApp()
             }
         }
     }

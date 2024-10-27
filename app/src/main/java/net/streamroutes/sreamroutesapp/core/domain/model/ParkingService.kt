@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data.model.parkings
+package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class Service(
     val description: String = ""    // Descripción del servicio

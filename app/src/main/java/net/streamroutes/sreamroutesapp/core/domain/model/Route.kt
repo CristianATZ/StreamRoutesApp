@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data.model.routes
+package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class Route(
     val idStartPlace: String = "",  // ID punto A

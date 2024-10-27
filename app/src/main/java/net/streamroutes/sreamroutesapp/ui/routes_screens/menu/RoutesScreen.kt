@@ -2,6 +2,7 @@
 
 package net.streamroutes.sreamroutesapp.ui.routes_screens.menu
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -66,7 +67,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
@@ -75,13 +75,11 @@ import com.google.android.gms.maps.model.RoundCap
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.MapUiSettings
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.data.model.routes.Route
+import net.streamroutes.sreamroutesapp.core.domain.model.Route
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
@@ -108,10 +106,8 @@ fun RoutesScreenView(
 ) {
     val drawerState = remember { mutableStateOf(DrawerValue.Open) }
 
-    LaunchedEffect(Unit) {
-        routesViewModel.getStaticRoutes()
-    }
-    val rutas by routesViewModel.routeList.observeAsState(emptyList())
+    val routes by routesViewModel.routes.collectAsState()
+    Log.d("RUTAAAAS", routes.toString())
 
     Scaffold(
         topBar = {
@@ -133,7 +129,7 @@ fun RoutesScreenView(
                 .padding(paddingValues)
                 .fillMaxSize()
         ){
-            MainContent(orsViewModel, rutas)
+            MainContent(orsViewModel, routes)
 
             AnimatedVisibility(
                 visible = sidePanelVisible

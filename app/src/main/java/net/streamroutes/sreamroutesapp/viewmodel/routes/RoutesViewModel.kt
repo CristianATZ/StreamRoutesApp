@@ -5,76 +5,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
-import net.streamroutes.sreamroutesapp.data.model.routes.Route
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
+import net.streamroutes.sreamroutesapp.core.domain.model.Route
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 
-class RoutesViewModel(private val repository: FirebaseRepository) : ViewModel() {
-    private val _routeList = MutableLiveData<List<Route>>()
-    val routeList: LiveData<List<Route>> = _routeList
+class RoutesViewModel(private val repository: RouteRepository) : ViewModel() {
+    private val _routes = MutableStateFlow<List<Route>>(emptyList())
+    val routes: StateFlow<List<Route>> get() = _routes
 
-    fun insertLocation(ruta: Route){
-        repository.insertLocation(ruta,
-            onSuccess = {
-
-            },
-            onFailure = {
-
+    init {
+        viewModelScope.launch {
+            repository.getAllRoutes().collect { routeList ->
+                _routes.value = routeList
             }
-        )
-    }
-
-    fun getLocation(){
-        repository.getLocation { rutas ->
-            _routeList.value = rutas
         }
-    }
-
-    fun getStaticRoutes() {
-        val routeList = mutableListOf<Route>()
-        val db = Firebase.firestore
-
-        db.collection("routes")
-            .get()
-            .addOnSuccessListener { result ->
-                for (document in result) {
-                    val dato = document.toObject(Route::class.java)
-                    routeList.add(dato)
-                    //Log.d("VIEWMODELRUTAS", dato.toString())
-                }
-
-                // Actualiza _routeList solo después de que los datos se hayan recuperado
-                Log.d("VIEWMODELRUTAS", routeList.toString())
-                _routeList.value = routeList
-            }
-            .addOnFailureListener { exception ->
-                Log.d("VIEWMODELRUTAS", "Error getting documents: ", exception)
-            }
     }
 }
 
 class RoutesViewModelFactory(
-    private val firebaseRepository: FirebaseRepository
+    private val routesRepository: RouteRepository
 ): ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(RoutesViewModel::class.java)){
-            return RoutesViewModel(firebaseRepository) as T
+            return RoutesViewModel(routesRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-/*
-data class Route(
-    val name : String,
-    val time : String,
-    val stops : List<Pair<String, LatLng>>,
-    val realTime : Boolean,
-    val imgs : List<Image>
-)
-
-data class RouteUiState(
-    val routes : List<Route>,
-    val filter : String,
-    val currentLocation : LatLng,
-)*/

@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data.model.general
+package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class User(
     val names: String = "",         // Nombres

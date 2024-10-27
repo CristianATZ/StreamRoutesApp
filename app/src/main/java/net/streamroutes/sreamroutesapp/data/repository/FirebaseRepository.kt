@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import net.streamroutes.sreamroutesapp.data.model.routes.Route
+import net.streamroutes.sreamroutesapp.core.domain.model.Route
 
 class FirebaseRepository {
     // TIEMPO REAL

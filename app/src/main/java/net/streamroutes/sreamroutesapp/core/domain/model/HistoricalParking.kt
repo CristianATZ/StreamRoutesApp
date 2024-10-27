@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.data.model.parkings
+package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class HistoricalParking(
     val idUser: String = "",            // ID del usuario
