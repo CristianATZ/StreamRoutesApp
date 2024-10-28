@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
@@ -31,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.TransportModalBottomSheet
-import net.streamroutes.sreamroutesapp.features.maps.components.ElementOpion
+import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
 
 enum class TransportFilter {
     ALL, ONE_WAY, RETURN
@@ -103,12 +102,6 @@ fun TransportScreen(
                 active = false,
                 onActiveChange = {
 
-                },
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Outlined.Menu,
-                        contentDescription = stringResource(id = R.string.iconMenu)
-                    )
                 },
                 trailingIcon = {
                     IconButton(
@@ -187,9 +180,11 @@ fun TransportScreen(
 
         // estacionamientos
         items(10) {
-            ElementOpion(
+            ElementOption(
                 onClick = openBottomSheet,
             )
+
+            Spacer(Modifier.size(16.dp))
         }
     }
 }

@@ -22,6 +22,7 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.logi
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.HomeScreen
@@ -112,8 +113,9 @@ class LoginActivity : ComponentActivity() {
                 //MapsSettingsScreen()
                 //StorageScreen()
                 //TransportApp()
-                //ParkingApp()
-                RegisterScreen(registerViewModel)
+                ParkingApp()
+                //TransportScreen()
+                //RegisterScreen(registerViewModel)
             }
         }
     }

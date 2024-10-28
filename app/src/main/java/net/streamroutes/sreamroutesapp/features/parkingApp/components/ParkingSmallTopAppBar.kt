@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.parkingApp.components
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -21,30 +22,31 @@ fun ParkingSmallTopAppBar(
     modifier: Modifier = Modifier,
     onNavigationPressed: () -> Unit,
     onProfilePressed: () -> Unit,
-    onSettingsPressed: () -> Unit
+    onSettingsPressed: () -> Unit,
+    onFilterPressed: () -> Unit
 ) {
-    CustomTopAppBar(
-        title = {
-            Text(text = stringResource(R.string.lblHello, "USUARIO"))
-        },
-        navigationIcon = {
-            NavigationButton(
-                onButtonPressed = onNavigationPressed
-            )
-        },
-        actions = {
-            ParkingActionsTopBar(
-                onProfilePressed = onProfilePressed,
-                onSettingsPressed = onSettingsPressed,
-                onFilterPressed = {
+    Column {
+        CustomTopAppBar(
+            title = {
+                Text(text = stringResource(R.string.lblHello, "USUARIO"))
+            },
+            navigationIcon = {
+                NavigationButton(
+                    onButtonPressed = onNavigationPressed
+                )
+            },
+            actions = {
+                ParkingActionsTopBar(
+                    onProfilePressed = onProfilePressed,
+                    onSettingsPressed = onSettingsPressed,
+                    onFilterPressed = onFilterPressed
+                )
+            },
+            modifier = modifier
+        )
 
-                }
-            )
-        },
-        modifier = modifier
-    )
-
-    HorizontalDivider()
+        HorizontalDivider()
+    }
 }
 
 @Composable

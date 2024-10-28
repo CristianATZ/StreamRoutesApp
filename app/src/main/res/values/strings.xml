@@ -699,4 +699,17 @@
     <string name="lblParks">Parqueo</string>
     <string name="iconPerson">Icono de cuenta</string>
     <string name="iconFilter">Abrir filtros</string>
+    <string name="lblSearch">Buscar estacionamiento</string>
+    <string name="lblCar">Carro</string>
+    <string name="lblBus">Bus</string>
+    <string name="lblMoto">Moto</string>
+    <string name="lblBike">Bicicleta</string>
+    <string name="lblNearSpace">Espacios cercanos</string>
+    <string name="lblViewAll">Ver todo</string>
+    <string name="lblParkingPrice">$ %1$s / Hora</string>
+    <string name="lblFilterFreeSpace">Disponibles</string>
+    <string name="lblFilterBusySpace">Ocupados</string>
+    <string name="lblFilterFreeCost">Gratis</string>
+    <string name="lblFilterCost">Por hora</string>
+    <string name="lblApply">Aplicar</string>
 </resources>

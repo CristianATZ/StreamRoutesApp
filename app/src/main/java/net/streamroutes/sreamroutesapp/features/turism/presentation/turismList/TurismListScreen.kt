@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
-import net.streamroutes.sreamroutesapp.features.maps.components.ElementOpion
+import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismModalBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -116,7 +116,7 @@ fun TurismListScreen(
         }
 
         items(10) {
-            ElementOpion(
+            ElementOption(
                 title = "Alhondiga de granaditas",
                 description = stringResource(id = R.string.lblTimeNextStop, 7),
                 onClick = openBottomSheet

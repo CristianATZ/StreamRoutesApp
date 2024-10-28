@@ -28,14 +28,14 @@ fun RouteType(
     // Animar el color de fondo
     val containerColor by animateColorAsState(
         targetValue = if (isSelected) orange else colorScheme.surface,
-        animationSpec = tween(1000),
+        animationSpec = tween(500),
         label = "" // Cambia el color según isSelected
     )
 
     // Animar el color del contenido
     val contentColor by animateColorAsState(
         targetValue = if (isSelected) primary else colorScheme.onSurface,
-        animationSpec = tween(1000),
+        animationSpec = tween(500),
         label = ""
     )
 
