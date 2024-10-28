@@ -45,7 +45,7 @@ fun AppNavigation(
     myViewModel: MyViewModel,
     mainViewModel: MainViewModel = viewModel(),
     changeViewModel: ChangeViewModel = viewModel(),
-    loginViewModel: LoginViewModel = viewModel(),
+    loginViewModel: LoginViewModel,
     configurationViewModel: ConfigurationViewModel = viewModel(),
     fastViewModel: FastViewModel = viewModel(),
 
@@ -83,7 +83,7 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            RegistrationScreen(myViewModel,navHostController)
+            RegistrationScreen(loginViewModel,navHostController)
         }
         // confirmar telefono pantalla
         composable(

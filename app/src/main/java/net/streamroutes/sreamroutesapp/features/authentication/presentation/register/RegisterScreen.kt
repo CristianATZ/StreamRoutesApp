@@ -16,10 +16,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.RumappAppTheme
 import com.example.compose.orange
 import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.features.authentication.components.DisplayText
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryOutlinedButton
@@ -27,8 +29,10 @@ import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteF
 
 @Composable
 fun RegisterScreen(
+    registerViewModel: RegisterViewModel,
     modifier: Modifier = Modifier
 ) {
+
     RumappAppTheme {
         val background = listOf(orange, yellow)
 
@@ -102,6 +106,15 @@ fun RegisterScreen(
                     text = stringResource(id = R.string.btnRegister),
                     onClick = {
                         // REGISTRAR USUARIO
+                        val user = User(
+                            names = "HENRY JOSUE",
+                            lastName1 = "MARTIN",
+                            lastName2 = "MEX",
+                            email = email,
+                            password = password,
+                            phoneNumber = "4381066909"
+                        )
+                        registerViewModel.signUpUser(user)
                     }
                 )
 

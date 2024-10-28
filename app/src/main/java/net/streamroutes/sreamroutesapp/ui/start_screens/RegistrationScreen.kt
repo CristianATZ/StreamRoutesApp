@@ -53,17 +53,19 @@ import androidx.navigation.NavController
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.data.navigation.AppScreens
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.utils.brush
+import net.streamroutes.sreamroutesapp.viewmodel.routes.LoginViewModel
 
 @Composable
-fun RegistrationScreen (myViewModel: MyViewModel, navController: NavController) {
-    Registration(myViewModel,navController)
+fun RegistrationScreen (loginViewModel: LoginViewModel, navController: NavController) {
+    Registration(loginViewModel, navController)
 }
 
 @SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Registration (myViewModel: MyViewModel, navController: NavController) {
+fun Registration (loginViewModel: LoginViewModel, navController: NavController) {
     var telefono by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordVisibility by remember { mutableStateOf(true) }
@@ -155,6 +157,7 @@ fun Registration (myViewModel: MyViewModel, navController: NavController) {
         // boton registgrar
         Button(
             onClick = {
+
                 navController.navigate(AppScreens.LoginScreen.route)
             },
             shape = CircleShape,

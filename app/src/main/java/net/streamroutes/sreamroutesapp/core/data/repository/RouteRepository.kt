@@ -11,6 +11,11 @@ class RouteRepository {
 
     private val db = FirebaseFirestore.getInstance()
 
+    /**
+     * Obtiene todas las rutas registradas en la base de datos
+     *
+     * @return Una lista con todas las rutas
+     */
     fun getAllRoutes(): Flow<List<Route>> = callbackFlow {
         val listener = db.collection("routes")
             .addSnapshotListener { snapshot, e ->
