@@ -107,12 +107,9 @@ fun RegisterScreen(
                     onClick = {
                         // REGISTRAR USUARIO
                         val user = User(
-                            names = "HENRY JOSUE",
-                            lastName1 = "MARTIN",
-                            lastName2 = "MEX",
+                            username = user,
                             email = email,
-                            password = password,
-                            phoneNumber = "4381066909"
+                            password = password
                         )
                         registerViewModel.signUpUser(user)
                     }

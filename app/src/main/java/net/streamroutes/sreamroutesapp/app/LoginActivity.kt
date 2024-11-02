@@ -17,6 +17,7 @@ import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModelFactory
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
@@ -73,6 +74,7 @@ class LoginActivity : ComponentActivity() {
             // viewModels de usuarios
             val userRepository by lazy { UserRepository() }
             val registerViewModel: RegisterViewModel by viewModels { RegisterViewModelFactory(userRepository) }
+            val loginViewModel: LoginViewModel by viewModels { LoginViewModelFactory(userRepository) }
 
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
@@ -113,9 +115,15 @@ class LoginActivity : ComponentActivity() {
                 //MapsSettingsScreen()
                 //StorageScreen()
                 //TransportApp()
-                ParkingApp()
+                //ParkingApp()
                 //TransportScreen()
+
+
+                /**
+                 * PANTALLAS VINCULADAS CON BACK
+                 */
                 //RegisterScreen(registerViewModel)
+                LoginScreen(loginViewModel)
             }
         }
     }

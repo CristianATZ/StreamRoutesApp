@@ -56,4 +56,31 @@ class UserRepository(
     fun signOut(){
         auth.signOut()
     }
+
+
+    /**
+     * Método usado para obtener la información del usuario autenticado (como modelo FirebasUser)
+     */
+    fun getCurrentUser(): FirebaseUser? {
+        return auth.currentUser
+    }
+
+
+    /**
+     * Método usado para obtener la información del usuario autenticado (como modelo User)
+     */
+    suspend fun getUserData(uid: String): Result<User> {
+        return try {
+            val snapshot = firestore.collection("users").document(uid).get().await()
+            val user = snapshot.toObject(User::class.java)
+            user?.let {
+                Result.success(it)
+            } ?: Result.failure(Exception("No se pudo obtener información del usuario"))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+
 }
