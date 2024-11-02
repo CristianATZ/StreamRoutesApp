@@ -13,5 +13,6 @@ data class User(
     val address: String = "",       // Dirección
     val country: String = "",       // País
     val state: String = "",         // Estado
-    val birthday: String = ""       // Fecha de Nacimiento
+    val birthday: String = "",      // Fecha de Nacimiento
+    val created_at: String = ""
 )

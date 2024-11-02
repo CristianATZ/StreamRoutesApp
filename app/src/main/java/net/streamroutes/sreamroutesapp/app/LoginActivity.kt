@@ -25,8 +25,10 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.regi
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
+import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
+import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.HomeScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.RegistrationScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
@@ -123,7 +125,8 @@ class LoginActivity : ComponentActivity() {
                  * PANTALLAS VINCULADAS CON BACK
                  */
                 //RegisterScreen(registerViewModel)
-                LoginScreen(loginViewModel)
+                //LoginScreen(loginViewModel)
+                ProfileScreen(loginViewModel)
             }
         }
     }
