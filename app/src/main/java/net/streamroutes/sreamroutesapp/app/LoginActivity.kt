@@ -27,6 +27,7 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.regi
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModelFactory
@@ -133,6 +134,7 @@ class LoginActivity : ComponentActivity() {
                 //LoginScreen(loginViewModel)
                 //ProfileScreen(profileViewModel)
                 EditAccountScreen(profileViewModel)
+                //EditInformation(profileViewModel)
             }
         }
     }

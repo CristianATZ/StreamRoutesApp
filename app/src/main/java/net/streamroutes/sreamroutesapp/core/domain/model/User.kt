@@ -1,9 +1,5 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-
 data class User(
     val names: String = "",         // Nombres
     val username: String = "",      // Nombre de usuario
@@ -15,6 +11,8 @@ data class User(
     val phoneNumber: String = "",   // Número de teléfono
     val gender: String = "",        // Género
     val address: String = "",       // Dirección
+    val neighborhood: String = "",  // Colonia
+    val numberAddress: String = "", // No. Exterior
     val country: String = "",       // País
     val state: String = "",         // Estado
     val birthday: String = "",      // Fecha de Nacimiento

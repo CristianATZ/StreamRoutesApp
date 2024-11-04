@@ -39,6 +39,7 @@ import net.streamroutes.sreamroutesapp.features.authentication.components.Displa
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryTextButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteFilledTextField
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.hashPassword
 import kotlin.math.log
 
 
@@ -139,7 +140,7 @@ fun LoginScreen(
                     // AUTENTICAR USUARIO CON FIREBASE
                     val user = User(
                         email = email,
-                        password = password
+                        password = hashPassword(password)
                     )
                     loginViewModel.loginUser(user)
                 }

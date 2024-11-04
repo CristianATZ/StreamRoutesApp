@@ -26,6 +26,7 @@ import net.streamroutes.sreamroutesapp.features.authentication.components.Displa
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryOutlinedButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteFilledTextField
+import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -112,7 +113,7 @@ fun RegisterScreen(
                         val user = User(
                             username = user,
                             email = email,
-                            password = password,
+                            password = hashPassword(password),
                             createdAt = getCurrentDate()
                         )
                         registerViewModel.signUpUser(user)
@@ -138,4 +139,14 @@ fun RegisterScreen(
 fun getCurrentDate(): String {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
     return dateFormat.format(Date())
+}
+
+
+/**
+ * Método usado para cifrar la contraseña a la hora de registrar un usuario
+ */
+fun hashPassword(password: String): String {
+    val md = MessageDigest.getInstance("SHA-256")
+    val hashedBytes = md.digest(password.toByteArray())
+    return hashedBytes.joinToString("") { "%02x".format(it) }
 }

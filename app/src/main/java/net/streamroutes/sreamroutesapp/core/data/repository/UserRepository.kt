@@ -86,14 +86,13 @@ class UserRepository(
     /**
      * Método usado para editar la información del usuario autenticado
      */
-    suspend fun updateUserData(uid: String, updatedUser: User): Result<Unit> {
+    suspend fun updateUserData(uid: String, updatedFields: Map<String, Any>): Result<Unit> {
         return try {
             firestore.collection("users").document(uid)
-                .set(updatedUser)
+                .update(updatedFields)
                 .await()
             Result.success(Unit)
         } catch (e: Exception) {
-            Log.d("UPDATE", e.toString())
             Result.failure(e)
         }
     }

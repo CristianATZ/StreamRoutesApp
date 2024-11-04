@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.hashPassword
 import net.streamroutes.sreamroutesapp.features.profile.components.OutlinedTitleTextField
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
 
@@ -67,6 +68,7 @@ fun EditAccountScreen(
         mutableStateOf("")
     }
 
+
     /**
      * Cambiar valor de las variables en base a userData
      */
@@ -79,6 +81,10 @@ fun EditAccountScreen(
     }
 
 
+    /**
+     * Cambio de estado de la vriable updateResult para indicar si se pudo o
+     * no realizar el cambio de información del usuario
+     */
     updateResult?.let { success ->
         LaunchedEffect(success) {
             if(success){
@@ -210,7 +216,7 @@ fun EditAccountScreen(
                         username = user,
                         phoneNumber = phone,
                         email = email,
-                        password = password
+                        password = hashPassword(password)
                     )
                     profileViewModel.updateUserData(updUser)
                 },
