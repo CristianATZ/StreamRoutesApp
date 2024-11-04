@@ -84,7 +84,8 @@ fun FastestScreen(
                 markerDestinaton.position = coords
                 updateCameraPosition(coords)
             },
-            onMapLoaded = { /*TODO */ }
+            onMapLoaded = { /*TODO */ },
+            modifier = Modifier.fillMaxSize()
         ) {
             // SELECTPOINTS SCREEN
             Marker(

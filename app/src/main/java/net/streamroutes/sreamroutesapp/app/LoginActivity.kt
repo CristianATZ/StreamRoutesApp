@@ -24,13 +24,19 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.logi
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
+import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
+import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModelFactory
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsSettingsScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
@@ -125,7 +131,9 @@ class LoginActivity : ComponentActivity() {
                 //TransportApp()
                 //ParkingApp()
                 //TransportScreen()
-
+                //ParkingInformationScreen()
+                //ParkingRouteScreen()
+                ParkingQrScreen()
 
                 /**
                  * PANTALLAS VINCULADAS CON BACK
@@ -133,7 +141,7 @@ class LoginActivity : ComponentActivity() {
                 //RegisterScreen(registerViewModel)
                 //LoginScreen(loginViewModel)
                 //ProfileScreen(profileViewModel)
-                EditAccountScreen(profileViewModel)
+                //EditAccountScreen(profileViewModel)
                 //EditInformation(profileViewModel)
             }
         }

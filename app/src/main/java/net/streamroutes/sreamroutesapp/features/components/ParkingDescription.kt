@@ -69,7 +69,7 @@ fun ParkingDescription(
 
             Text(
                 text = address,
-                style = typography.labelSmall,
+                style = typography.labelLarge,
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)

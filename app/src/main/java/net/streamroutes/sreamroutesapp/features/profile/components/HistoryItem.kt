@@ -103,7 +103,7 @@ fun HistoryItem(
 
                 Text(
                     text = parkingDate,
-                    style = typography.labelSmall,
+                    style = typography.labelLarge,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
             }

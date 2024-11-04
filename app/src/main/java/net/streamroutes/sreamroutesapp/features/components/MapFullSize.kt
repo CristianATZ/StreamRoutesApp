@@ -42,7 +42,7 @@ fun MapFullSize(
             onMapClick(it)
         },
         onMapLoaded = onMapLoaded,
-        modifier = modifier.fillMaxSize()
+        modifier = modifier
     ) {
         content()
     }

@@ -194,10 +194,10 @@ fun LineInformation(
         modifier = modifier
             .fillMaxWidth()
     ) {
-        Text(text = title)
+        Text(text = title, style = typography.labelLarge)
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(text = desc)
+        Text(text = desc, style = typography.labelLarge)
     }
 }

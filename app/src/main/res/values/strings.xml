@@ -577,7 +577,7 @@
     <string name="btnSelect">Seleccionar</string>
     <string name="lblRouteDetails">Detalles de la ruta</string>
     <string name="iconDownload">Descargar ruta</string>
-    <string name="lblDistance">Distancia</string>
+    <string name="lblDistance">Distancia %1$s</string>
     <string name="lblRouteDirection">En direccion a %1$s</string>
     <string name="lblGoNearStop">Dirigete a la parada mas cercana</string>
     <string name="lblBusTimeToStop">Siguiente parada</string>
@@ -712,4 +712,20 @@
     <string name="lblFilterFreeCost">Gratis</string>
     <string name="lblFilterCost">Por hora</string>
     <string name="lblApply">Aplicar</string>
+    <string name="lblOfferServices">Servicios que ofrecemos</string>
+    <string name="lblDout">• %1$s</string>
+    <string name="lblBookPlace">Apartar espacio</string>
+    <string name="lblStartParkingRoute">Iniciar viaje</string>
+    <string name="lblCapacity">Capacidad %1$s</string>
+    <string name="lblWaitPlace">Espera %1$s</string>
+    <string name="lblRating">Calificacion %1$s</string>
+    <string name="lblAllowPlaces">%1$s lugares disponibles</string>
+    <string name="lblSchedule">Horario de %1$s - %2$s</string>
+    <string name="lblDistanceLeft">%1$s restante(s)</string>
+    <string name="lblTimeLeft">%1$s aproximado</string>
+    <string name="lblPriceFull">$ %1$s por hora</string>
+    <string name="btnScanCode">Escanear QR</string>
+    <string name="lblScanQR">Escanea el QR</string>
+    <string name="lblConfirmation">Confirmacion</string>
+    <string name="lblConfirmationDescription">Escaneo completo. Tu ID de aparcamiento:</string>
 </resources>

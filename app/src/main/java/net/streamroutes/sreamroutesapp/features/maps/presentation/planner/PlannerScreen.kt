@@ -153,7 +153,8 @@ fun PlannerScreen(
             },
             onMapLoaded = {
 
-            }
+            },
+            modifier = Modifier.fillMaxSize()
         ) {
             MarkerInfoWindow(
                 state = markerState,
