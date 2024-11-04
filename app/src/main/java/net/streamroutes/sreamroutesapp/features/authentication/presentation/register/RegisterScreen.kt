@@ -26,6 +26,9 @@ import net.streamroutes.sreamroutesapp.features.authentication.components.Displa
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryOutlinedButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteFilledTextField
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun RegisterScreen(
@@ -109,7 +112,8 @@ fun RegisterScreen(
                         val user = User(
                             username = user,
                             email = email,
-                            password = password
+                            password = password,
+                            createdAt = getCurrentDate()
                         )
                         registerViewModel.signUpUser(user)
                     }
@@ -125,4 +129,13 @@ fun RegisterScreen(
             }
         }
     }
+}
+
+
+/**
+ * Método usado para obtener la fecha actual en formato "yyyy-MM-dd HH:mm:ss"
+ */
+fun getCurrentDate(): String {
+    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    return dateFormat.format(Date())
 }

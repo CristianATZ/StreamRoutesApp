@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.profile.presentation.profile
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,28 +15,37 @@ import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.domain.model.User
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.OutlinedTitleTextField
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
 
-@Preview(showBackground = true)
 @Composable
 fun EditAccountScreen(
+    profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
+
+    val context = LocalContext.current
+    val updateResult by profileViewModel.updateResult.collectAsState()
+    val userData by profileViewModel.userData.collectAsState()
 
     var user by remember {
         mutableStateOf("")
@@ -56,6 +66,29 @@ fun EditAccountScreen(
     var confirmPassword by remember {
         mutableStateOf("")
     }
+
+    /**
+     * Cambiar valor de las variables en base a userData
+     */
+    LaunchedEffect(userData) {
+        userData?.let {
+            user = it.username
+            phone = it.phoneNumber
+            email = it.email
+        }
+    }
+
+
+    updateResult?.let { success ->
+        LaunchedEffect(success) {
+            if(success){
+                Toast.makeText(context, "Información actualizada", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "No fue posible actualizar los datos del usuario", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 
     Scaffold(
         topBar = {
@@ -173,6 +206,13 @@ fun EditAccountScreen(
             Button(
                 onClick = {
                     // ACTUALIZAR DATOS EN FIREBASE
+                    val updUser = User(
+                        username = user,
+                        phoneNumber = phone,
+                        email = email,
+                        password = password
+                    )
+                    profileViewModel.updateUserData(updUser)
                 },
                 shape = shapes.small,
                 modifier = Modifier

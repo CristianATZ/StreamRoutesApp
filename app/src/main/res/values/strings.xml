@@ -467,7 +467,7 @@
     <string name="lblPlacelholderUser">Escribe un usuario</string>
     <string name="iconClearUser">Borrar usuario</string>
     <string name="txtPhone">Telefono</string>
-    <string name="lblPlacelholderPhone">123-456-78-90</string>
+    <string name="lblPlacelholderPhone">Escribe un número de teléfono</string>
     <string name="iconClearPhone">Borrar telefono</string>
     <string name="lblPlaceholderEmail">example@dominio.com</string>
     <string name="lblPlacelholderPassword">Escribe una contrasenia</string>

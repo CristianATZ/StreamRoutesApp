@@ -1,5 +1,9 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+
 data class User(
     val names: String = "",         // Nombres
     val username: String = "",      // Nombre de usuario
@@ -14,5 +18,5 @@ data class User(
     val country: String = "",       // País
     val state: String = "",         // Estado
     val birthday: String = "",      // Fecha de Nacimiento
-    val created_at: String = ""
+    val createdAt: String = ""      // Fecha de creación del usuario
 )

@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.core.data.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -81,6 +82,21 @@ class UserRepository(
         }
     }
 
+
+    /**
+     * Método usado para editar la información del usuario autenticado
+     */
+    suspend fun updateUserData(uid: String, updatedUser: User): Result<Unit> {
+        return try {
+            firestore.collection("users").document(uid)
+                .set(updatedUser)
+                .await()
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.d("UPDATE", e.toString())
+            Result.failure(e)
+        }
+    }
 
 
 }

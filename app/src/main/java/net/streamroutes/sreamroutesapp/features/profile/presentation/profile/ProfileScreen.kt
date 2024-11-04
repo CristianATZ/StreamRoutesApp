@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.profile.presentation.profile
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,21 +28,23 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileTopBar
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 @Composable
 fun ProfileScreen(
-    loginViewModel: LoginViewModel,
+    profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
-    val userData by loginViewModel.userData.collectAsState()
+    val userData by profileViewModel.userData.collectAsState()
 
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        ProfileTopBar(user = formatName(userData?.names, userData?.lastName1, userData?.lastName2))
+        ProfileTopBar(user = formatName(userData?.names, userData?.lastName1, userData?.lastName2), date = formatDate(userData?.createdAt))
 
         Spacer(modifier = Modifier.size(32.dp))
 
@@ -56,7 +59,10 @@ fun ProfileScreen(
 
         ProfileItem(
             title = stringResource(id = R.string.lblDescription),
-            description = userData?.description ?: "cargando...",
+            description =
+                if (userData?.description.equals("")) "Sin descripción agregada aún"
+                else userData?.description ?: "cargando..."
+            ,
             icon = Icons.Outlined.Info,
             iconDescription = stringResource(id = R.string.iconInformation),
             modifier = Modifier
@@ -98,11 +104,22 @@ fun ProfileScreen(
 
 
 fun formatPhoneNumber(phone: String?): String {
+    if(phone.equals("")) return "Sin número de teléfono registrado aún"
     if (phone.isNullOrEmpty()) return "cargando..."
     return "(+52) ${phone.substring(0, 3)} ${phone.substring(3, 6)} ${phone.substring(6, 10)}"
 }
 
 fun formatName(name: String?, lastName: String?, lastName2: String?): String {
+    if(name.equals("") or lastName.equals("") or lastName2.equals("")) return "Sin nombre registrado aún"
     if(name.isNullOrEmpty() or lastName.isNullOrEmpty() or lastName2.isNullOrEmpty()) return "cargando..."
     return "${name} ${lastName} ${lastName2}"
+}
+
+fun formatDate(dateString: String?): String {
+    if(dateString.isNullOrEmpty()) return "cargando..."
+    val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+    val outputFormat = SimpleDateFormat("d 'de' MMMM 'del' yyyy", Locale("es", "ES"))
+
+    val date = inputFormat.parse(dateString)
+    return outputFormat.format(date!!)
 }

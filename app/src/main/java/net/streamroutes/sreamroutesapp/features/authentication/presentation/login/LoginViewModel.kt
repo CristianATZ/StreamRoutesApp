@@ -21,24 +21,13 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     private val _loginResult = MutableStateFlow<Boolean?>(null)
     val loginResult: StateFlow<Boolean?> = _loginResult
 
-    // Variable usada para obtener el usuari actual (como modelo FirebaseUser)
+    // Variable usada para obtener el usuario actual (como modelo FirebaseUser)
     private val _currentUser = MutableStateFlow<FirebaseUser?>(null)
     val currentUser: StateFlow<FirebaseUser?> = _currentUser
 
     // Variable usada para obtener el usuari actual (como modelo User)
     private val _userData = MutableStateFlow<User?>(null)
     val userData: StateFlow<User?> = _userData
-
-
-    /**
-     * Inicializador del viewModel para obtener el usuario actual logueado si existe
-     */
-    init {
-        val currentUser = userRepository.getCurrentUser()
-        if(currentUser != null) {
-            loadUserData(currentUser.uid)
-        }
-    }
 
 
     /**
@@ -64,21 +53,6 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
      */
     fun signOut() {
         userRepository.signOut()
-    }
-
-
-    /**
-     * Método privado usado para cargar la información del usuario
-     */
-    private fun loadUserData(uid: String){
-        viewModelScope.launch {
-            val result = userRepository.getUserData(uid)
-            if(result.isSuccess){
-                _userData.value = result.getOrNull()
-            } else {
-                _userData.value = null
-            }
-        }
     }
 
 }

@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.provider.ContactsContract.Profile
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -25,7 +26,10 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.regi
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModelFactory
 import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
@@ -77,6 +81,7 @@ class LoginActivity : ComponentActivity() {
             val userRepository by lazy { UserRepository() }
             val registerViewModel: RegisterViewModel by viewModels { RegisterViewModelFactory(userRepository) }
             val loginViewModel: LoginViewModel by viewModels { LoginViewModelFactory(userRepository) }
+            val profileViewModel: ProfileViewModel by viewModels { ProfileViewModelFactory(userRepository) }
 
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
@@ -126,7 +131,8 @@ class LoginActivity : ComponentActivity() {
                  */
                 //RegisterScreen(registerViewModel)
                 //LoginScreen(loginViewModel)
-                ProfileScreen(loginViewModel)
+                //ProfileScreen(profileViewModel)
+                EditAccountScreen(profileViewModel)
             }
         }
     }
