@@ -21,6 +21,9 @@ import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModelFactory
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordScreen
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordViewModel
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordViewModelFactory
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
@@ -89,6 +92,7 @@ class LoginActivity : ComponentActivity() {
             val registerViewModel: RegisterViewModel by viewModels { RegisterViewModelFactory(userRepository) }
             val loginViewModel: LoginViewModel by viewModels { LoginViewModelFactory(userRepository) }
             val profileViewModel: ProfileViewModel by viewModels { ProfileViewModelFactory(userRepository) }
+            val passwordViewModel: PasswordViewModel by viewModels { PasswordViewModelFactory(userRepository) }
 
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
@@ -133,16 +137,18 @@ class LoginActivity : ComponentActivity() {
                 //TransportScreen()
                 //ParkingInformationScreen()
                 //ParkingRouteScreen()
-                ParkingQrScreen()
+                //ParkingQrScreen()
+
 
                 /**
                  * PANTALLAS VINCULADAS CON BACK
                  */
                 //RegisterScreen(registerViewModel)
-                //LoginScreen(loginViewModel)
+                LoginScreen(loginViewModel)
                 //ProfileScreen(profileViewModel)
                 //EditAccountScreen(profileViewModel)
                 //EditInformation(profileViewModel)
+                //PasswordScreen(passwordViewModel)
             }
         }
     }

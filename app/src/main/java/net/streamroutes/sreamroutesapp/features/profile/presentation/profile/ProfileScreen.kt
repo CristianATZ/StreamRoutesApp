@@ -30,6 +30,10 @@ import net.streamroutes.sreamroutesapp.features.profile.components.ProfileItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileTopBar
 import java.text.SimpleDateFormat
 import java.util.Locale
+import net.streamroutes.sreamroutesapp.utils.DateUtils
+import net.streamroutes.sreamroutesapp.utils.DateUtils.formatDate
+import net.streamroutes.sreamroutesapp.utils.DateUtils.formatName
+import net.streamroutes.sreamroutesapp.utils.DateUtils.formatPhoneNumber
 
 
 @Composable
@@ -103,23 +107,3 @@ fun ProfileScreen(
 }
 
 
-fun formatPhoneNumber(phone: String?): String {
-    if(phone.equals("")) return "Sin número de teléfono registrado aún"
-    if (phone.isNullOrEmpty()) return "cargando..."
-    return "(+52) ${phone.substring(0, 3)} ${phone.substring(3, 6)} ${phone.substring(6, 10)}"
-}
-
-fun formatName(name: String?, lastName: String?, lastName2: String?): String {
-    if(name.equals("") or lastName.equals("") or lastName2.equals("")) return "Sin nombre registrado aún"
-    if(name.isNullOrEmpty() or lastName.isNullOrEmpty() or lastName2.isNullOrEmpty()) return "cargando..."
-    return "${name} ${lastName} ${lastName2}"
-}
-
-fun formatDate(dateString: String?): String {
-    if(dateString.isNullOrEmpty()) return "cargando..."
-    val inputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    val outputFormat = SimpleDateFormat("d 'de' MMMM 'del' yyyy", Locale("es", "ES"))
-
-    val date = inputFormat.parse(dateString)
-    return outputFormat.format(date!!)
-}

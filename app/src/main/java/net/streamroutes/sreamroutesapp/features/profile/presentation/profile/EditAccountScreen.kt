@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.hashPassword
 import net.streamroutes.sreamroutesapp.features.profile.components.OutlinedTitleTextField
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
+import net.streamroutes.sreamroutesapp.utils.DateUtils.hashPassword
 
 @Composable
 fun EditAccountScreen(
@@ -215,10 +215,9 @@ fun EditAccountScreen(
                     val updUser = User(
                         username = user,
                         phoneNumber = phone,
-                        email = email,
-                        password = hashPassword(password)
+                        email = email
                     )
-                    profileViewModel.updateUserData(updUser)
+                    profileViewModel.updateUserData(updUser, password)
                 },
                 shape = shapes.small,
                 modifier = Modifier

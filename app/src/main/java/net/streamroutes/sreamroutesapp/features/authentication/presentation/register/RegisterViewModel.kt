@@ -18,9 +18,13 @@ class RegisterViewModel (private val userRepository: UserRepository): ViewModel(
     /**
      * Método usado para dar de alt a un usuario
      */
-    fun signUpUser(user: User){
+    fun signUpUser(
+        username: String,
+        email: String,
+        password: String
+    ){
         viewModelScope.launch {
-            val result = userRepository.signUpUser(user)
+            val result = userRepository.signUpUser(username, email, password)
             _authState.value = result
         }
     }
