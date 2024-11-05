@@ -11,6 +11,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -19,12 +21,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.CardOption
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 
-@Preview(showBackground = true)
 @Composable
 fun HomeScreen(
+    profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
+    val userData by profileViewModel.userData.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxSize(),
@@ -36,7 +41,7 @@ fun HomeScreen(
                 .padding(vertical = 16.dp, horizontal = 8.dp)
         ) {
             Text(
-                text = stringResource(id = R.string.lblHello, "USUARIO"),
+                text = stringResource(id = R.string.lblHello, userData?.username ?: "USUARIO"),
                 style = typography.displaySmall
             )
             Text(

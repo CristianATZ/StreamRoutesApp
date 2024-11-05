@@ -51,7 +51,6 @@ class UserRepository(
      * Método usaro para auenticar a un usuario mediante correo y contraseña
      */
     suspend fun loginUser(
-        //user: User
         email: String,
         password: String
     ): Result<FirebaseUser?> {

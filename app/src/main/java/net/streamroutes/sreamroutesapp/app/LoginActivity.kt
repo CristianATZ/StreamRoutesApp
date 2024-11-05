@@ -87,7 +87,7 @@ class LoginActivity : ComponentActivity() {
             val viajePkViewModel : ViajePkViewModel by viewModels { ViajePkViewModelFactory(repository) }
             val apartarPkViewModel: ApartarPkViewModel by viewModels { ApartarPkViewModelFactory(repository) }
 
-            // viewModels de usuarios
+            // viewModels de usuarios (ViewModels Chidos)
             val userRepository by lazy { UserRepository() }
             val registerViewModel: RegisterViewModel by viewModels { RegisterViewModelFactory(userRepository) }
             val loginViewModel: LoginViewModel by viewModels { LoginViewModelFactory(userRepository) }
@@ -144,11 +144,12 @@ class LoginActivity : ComponentActivity() {
                  * PANTALLAS VINCULADAS CON BACK
                  */
                 //RegisterScreen(registerViewModel)
-                LoginScreen(loginViewModel)
+                //LoginScreen(loginViewModel)
                 //ProfileScreen(profileViewModel)
                 //EditAccountScreen(profileViewModel)
                 //EditInformation(profileViewModel)
                 //PasswordScreen(passwordViewModel)
+                TransportApp(loginViewModel, profileViewModel)
             }
         }
     }
