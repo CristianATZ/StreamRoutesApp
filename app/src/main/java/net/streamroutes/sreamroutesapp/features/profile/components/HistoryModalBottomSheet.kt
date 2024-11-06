@@ -97,8 +97,8 @@ fun HistoryModalBottomSheet(
             // total y cantidad de horas
             Card(
                 colors = CardDefaults.cardColors(
-                    containerColor = colorScheme.surfaceContainerHighest,
-                    contentColor = colorScheme.onSurface
+                    containerColor = colorScheme.tertiaryContainer,
+                    contentColor = colorScheme.onTertiaryContainer
                 ),
                 modifier = Modifier
                     .padding(horizontal = 16.dp)

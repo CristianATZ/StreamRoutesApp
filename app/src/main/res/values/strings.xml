@@ -728,4 +728,12 @@
     <string name="lblScanQR">Escanea el QR</string>
     <string name="lblConfirmation">Confirmacion</string>
     <string name="lblConfirmationDescription">Escaneo completo. Tu ID de aparcamiento:</string>
+    <string name="btnBooking">Apartar</string>
+    <string name="lblHowMuchTime">¿Cuanto tiempo deseas apartar?</string>
+    <string name="lblExpirationDate">Alertas de vencimiento</string>
+    <string name="lblFiteenMinutes">15 minutos</string>
+    <string name="lblThirteenMinutes">30 minutos</string>
+    <string name="lblFortyFiveMinutes">45 minutos</string>
+    <string name="lblOneHour">1 hora</string>
+    <string name="lblTwoHours">2 horas</string>
 </resources>

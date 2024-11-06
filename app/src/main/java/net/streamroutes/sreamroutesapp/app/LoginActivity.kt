@@ -26,6 +26,7 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.regi
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
 import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.booking.BookingScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
@@ -133,7 +134,8 @@ class LoginActivity : ComponentActivity() {
                 //TransportScreen()
                 //ParkingInformationScreen()
                 //ParkingRouteScreen()
-                ParkingQrScreen()
+                //ParkingQrScreen()
+                BookingScreen()
 
                 /**
                  * PANTALLAS VINCULADAS CON BACK
