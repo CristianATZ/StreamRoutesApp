@@ -33,10 +33,10 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
     /**
      * Método usado para iniciar sesión
      */
-    fun loginUser(user: User) {
+    fun loginUser(email: String, password: String) {
         viewModelScope.launch {
             _loginResult.value = null
-            val result = userRepository.loginUser(user)
+            val result = userRepository.loginUser(email, password)
             if(result.isSuccess){
                 _loginResult.value = true
                 _currentUser.value = result.getOrNull()

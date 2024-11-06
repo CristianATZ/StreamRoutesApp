@@ -39,8 +39,9 @@ import net.streamroutes.sreamroutesapp.features.authentication.components.Displa
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryTextButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteFilledTextField
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.hashPassword
 import kotlin.math.log
+import net.streamroutes.sreamroutesapp.utils.DateUtils
+import net.streamroutes.sreamroutesapp.utils.DateUtils.hashPassword
 
 
 @Composable
@@ -69,8 +70,7 @@ fun LoginScreen(
     loginResult?.let { success ->
         LaunchedEffect(success) {
             if (success) {
-                Toast.makeText(context, "USUARIO AUTENTICADO ORA PINCHE PRRO", Toast.LENGTH_SHORT).show()
-                Toast.makeText(context, "DATOS DEL USUARIO: ${userData.toString()}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "USUARIO AUTENTICADO ORA VALEEEEE", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(context, "NO SE PUDO INICIAR SESION VALE", Toast.LENGTH_SHORT).show()
             }
@@ -137,11 +137,7 @@ fun LoginScreen(
             text = stringResource(id = R.string.btnLogin),
             onClick =  {
                 // AUTENTICAR USUARIO CON FIREBASE
-                val user = User(
-                    email = email,
-                    password = hashPassword(password)
-                )
-                loginViewModel.loginUser(user)
+                loginViewModel.loginUser(email, password)
             }
         )
 

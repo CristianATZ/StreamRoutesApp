@@ -177,7 +177,7 @@ fun BookingScreen(
 
                     },
                     track = {
-                        
+
                     },
                     modifier = Modifier
                         .padding(horizontal = 16.dp)

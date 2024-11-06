@@ -1,11 +1,14 @@
 package net.streamroutes.sreamroutesapp.features.authentication.presentation.password
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,6 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,17 +30,36 @@ import net.streamroutes.sreamroutesapp.features.authentication.components.Primar
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryOutlinedButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteFilledTextField
 
-@Preview
+
 @Composable
 fun PasswordScreen(
+    passwordViewModel: PasswordViewModel,
     modifier: Modifier = Modifier
 ) {
     RumappAppTheme {
         val background = listOf(orange, yellow)
+        val context = LocalContext.current
+        val resetPasswordResult by passwordViewModel.resetPasswordResult.collectAsState()
 
         var email by remember {
             mutableStateOf("")
         }
+
+
+        /**
+         * Mensaje de resultado de autenticación en respuesta
+         * al cambio de contraseña
+         */
+        resetPasswordResult?.let { success ->
+            LaunchedEffect(success) {
+                if (success) {
+                    Toast.makeText(context, "CORREO ENVIADO", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, "NO SE VA A PODER CAMBIAR LA PASS GALLO", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+
 
         Column(
             modifier = modifier
@@ -77,6 +100,7 @@ fun PasswordScreen(
                 text = stringResource(id = R.string.btnSendEmail),
                 onClick =  {
                     // ENVIAR CORREO DE FIREBASE
+                    passwordViewModel.resetPassword(email)
                 }
             )
 

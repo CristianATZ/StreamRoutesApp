@@ -30,6 +30,9 @@ import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import net.streamroutes.sreamroutesapp.utils.DateUtils
+import net.streamroutes.sreamroutesapp.utils.DateUtils.getCurrentDate
+import net.streamroutes.sreamroutesapp.utils.DateUtils.hashPassword
 
 @Composable
 fun RegisterScreen(
@@ -110,13 +113,12 @@ fun RegisterScreen(
                     text = stringResource(id = R.string.btnRegister),
                     onClick = {
                         // REGISTRAR USUARIO
-                        val user = User(
-                            username = user,
-                            email = email,
-                            password = hashPassword(password),
-                            createdAt = getCurrentDate()
-                        )
-                        registerViewModel.signUpUser(user)
+                        //val user = User(
+                        //    username = user,
+                        //    email = email,
+                        //    createdAt = getCurrentDate()
+                        //)
+                        registerViewModel.signUpUser(username = user, email = email, password = password)
                     }
                 )
 
@@ -133,20 +135,3 @@ fun RegisterScreen(
 }
 
 
-/**
- * Método usado para obtener la fecha actual en formato "yyyy-MM-dd HH:mm:ss"
- */
-fun getCurrentDate(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-    return dateFormat.format(Date())
-}
-
-
-/**
- * Método usado para cifrar la contraseña a la hora de registrar un usuario
- */
-fun hashPassword(password: String): String {
-    val md = MessageDigest.getInstance("SHA-256")
-    val hashedBytes = md.digest(password.toByteArray())
-    return hashedBytes.joinToString("") { "%02x".format(it) }
-}

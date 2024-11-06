@@ -10,12 +10,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
 import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
 
 @Composable
 fun TransportApp(
+    loginViewModel: LoginViewModel,
+    profileViewModel: ProfileViewModel,
     modifier: Modifier = Modifier
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -27,7 +31,7 @@ fun TransportApp(
             // MENU, LLAMAR COMPONENTE DrawerContent
             DrawerContent(
                 onLogOut = {
-                    // SALIR DE FIREBASE
+                    loginViewModel.signOut()
                 }
             )
         }
@@ -45,7 +49,7 @@ fun TransportApp(
             }
         ) { innerPadding ->
             // LLAMAR COMPONENTE DE LA NAVEGACION
-            HomeScreen(modifier = Modifier.padding(innerPadding))
+            HomeScreen(profileViewModel, modifier = Modifier.padding(innerPadding))
         }
     }
 }

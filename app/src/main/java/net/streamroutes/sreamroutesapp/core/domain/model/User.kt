@@ -6,7 +6,7 @@ data class User(
     val lastName1: String = "",     // Apellido paterno
     val lastName2: String = "",     // Apellido materno
     val email: String = "",         // Correo electrónico
-    val password: String = "",      // Contraseña
+    //val password: String = "",      // Contraseña
     val description: String = "",   // Descripción
     val phoneNumber: String = "",   // Número de teléfono
     val gender: String = "",        // Género

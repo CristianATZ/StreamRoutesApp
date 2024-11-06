@@ -6,6 +6,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.User
+import net.streamroutes.sreamroutesapp.utils.DateUtils
+import net.streamroutes.sreamroutesapp.utils.DateUtils.getCurrentDate
 
 class UserRepository(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
@@ -16,13 +18,22 @@ class UserRepository(
      * Método usado para dar de alta a un usuario
      */
     suspend fun signUpUser(
-        user: User,
+        //user: User
+        username: String,
+        email: String,
+        password: String,
     ): Result<User> {
         return try {
-            val result = auth.createUserWithEmailAndPassword(user.email, user.password).await()
+            val result = auth.createUserWithEmailAndPassword(email, password).await()
 
             result.user?.let { firebaseUser ->  
                 val userId = firebaseUser.uid
+
+                val user = User(
+                    username = username,
+                    email = email,
+                    createdAt = getCurrentDate()
+                )
 
                 firestore.collection("users").document(userId)
                     .set(user)
@@ -40,10 +51,11 @@ class UserRepository(
      * Método usaro para auenticar a un usuario mediante correo y contraseña
      */
     suspend fun loginUser(
-        user: User
+        email: String,
+        password: String
     ): Result<FirebaseUser?> {
         return try {
-            val result = auth.signInWithEmailAndPassword(user.email, user.password).await()
+            val result = auth.signInWithEmailAndPassword(email, password).await()
             Result.success(result.user)
         } catch (e: Exception) {
             Result.failure(e)
@@ -93,6 +105,35 @@ class UserRepository(
                 .await()
             Result.success(Unit)
         } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+    /**
+     * Método usado para cambiar solo la contraseña del usuario en firebase auth
+     */
+    suspend fun updateUserPassword(newPass: String): Result<Unit> {
+        return try {
+            val user = auth.currentUser
+            user?.let {
+                it.updatePassword(newPass).await()
+                Result.success(Unit)
+            } ?: Result.failure(Exception("Usuario no autenticado"))
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+
+    /**
+     * Método usado para enviar el correo de restablecimiento de contraseña de una cuenta
+     */
+    suspend fun resetPassword(email: String): Result<Unit> {
+        return try {
+            auth.sendPasswordResetEmail(email).await()
+            Result.success(Unit)
+        } catch (e: Exception){
             Result.failure(e)
         }
     }

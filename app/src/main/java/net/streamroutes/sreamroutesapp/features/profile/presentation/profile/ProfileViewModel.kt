@@ -53,13 +53,19 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
     /**
      * Método usado para editar la información de un usuario
      */
-    fun updateUserData(updUser: User) {
+    fun updateUserData(
+        updUser: User,
+        password: String = ""
+    ) {
         viewModelScope.launch {
             _updateResult.value = null
             val currentUser = userRepository.getCurrentUser()
             if (currentUser != null) {
                 val updateFields = createUpdateMap(updUser)
                 val result = userRepository.updateUserData(currentUser.uid, updateFields)
+                if(!password.equals("")){
+                    userRepository.updateUserPassword(password)
+                }
                 _updateResult.value = result.isSuccess
                 if (result.isSuccess) {
                     // Volver a actualizar la variable userData
@@ -70,7 +76,6 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
                         lastName2 = updUser.lastName2.ifEmpty { _userData.value?.lastName2 ?: "" },
                         email = updUser.email.ifEmpty { _userData.value?.email ?: "" },
                         phoneNumber = updUser.phoneNumber.ifEmpty { _userData.value?.phoneNumber ?: "" },
-                        password = updUser.password.ifEmpty { _userData.value?.password ?: "" },
                         description = updUser.description.ifEmpty { _userData.value?.description ?: "" },
                         gender = updUser.gender.ifEmpty { _userData.value?.gender ?: "" },
                         address = updUser.address.ifEmpty { _userData.value?.address ?: "" },
@@ -99,7 +104,6 @@ class ProfileViewModel(private val userRepository: UserRepository) : ViewModel()
             updUser.lastName1.takeIf { it.isNotEmpty() }?.let { updateMap["lastName1"] = it }
             updUser.lastName2.takeIf { it.isNotEmpty() }?.let { updateMap["lastName2"] = it }
             updUser.email.takeIf { it.isNotEmpty() }?.let { updateMap["email"] = it }
-            updUser.password.takeIf { it.isNotEmpty() }?.let { updateMap["password"] = it }
             updUser.phoneNumber.takeIf { it.isNotEmpty() }?.let { updateMap["phoneNumber"] = it }
             updUser.description.takeIf { it.isNotEmpty() }?.let { updateMap["description"] = it }
             updUser.gender.takeIf { it.isNotEmpty() }?.let { updateMap["gender"] = it }
