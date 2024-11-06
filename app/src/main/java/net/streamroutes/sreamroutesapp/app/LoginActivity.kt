@@ -43,6 +43,7 @@ import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsS
 import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TurismListScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.RegistrationScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
@@ -149,7 +150,9 @@ class LoginActivity : ComponentActivity() {
                 //EditAccountScreen(profileViewModel)
                 //EditInformation(profileViewModel)
                 //PasswordScreen(passwordViewModel)
-                TransportApp(loginViewModel, profileViewModel)
+                //TransportApp(loginViewModel, profileViewModel)
+
+                TurismListScreen()
             }
         }
     }
