@@ -31,6 +31,7 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModelFactory
+import net.streamroutes.sreamroutesapp.features.parking.presentation.booking.BookingScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
@@ -147,6 +148,7 @@ class LoginActivity : ComponentActivity() {
                 //ParkingInformationScreen()
                 //ParkingRouteScreen()
                 //ParkingQrScreen()
+                BookingScreen()
 
 
                 /**
@@ -160,7 +162,7 @@ class LoginActivity : ComponentActivity() {
                 //PasswordScreen(passwordViewModel)
                 //TransportApp(loginViewModel, profileViewModel)
 
-                TransportScreen(transportViewModel)
+                //TransportScreen(transportViewModel)
             }
         }
     }

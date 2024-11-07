@@ -736,4 +736,5 @@
     <string name="lblFortyFiveMinutes">45 minutos</string>
     <string name="lblOneHour">1 hora</string>
     <string name="lblTwoHours">2 horas</string>
+    <string name="lblForHour">%1$d Hr(s)</string>
 </resources>

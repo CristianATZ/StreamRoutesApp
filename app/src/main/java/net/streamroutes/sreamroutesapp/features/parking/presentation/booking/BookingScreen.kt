@@ -11,10 +11,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -29,6 +32,7 @@ import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -70,12 +74,8 @@ fun BookingScreen(
         position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
     }
 
-    val sliderPosition by remember {
-        mutableFloatStateOf(1f)
-    }
-
     val sliderState = SliderState(
-        value = sliderPosition,
+        value = 1f,
         steps = 10,
         valueRange = 1f..12f
     )
@@ -164,27 +164,49 @@ fun BookingScreen(
 
                 Spacer(Modifier.size(32.dp))
 
-                Text(
-                    text = stringResource(R.string.lblHowMuchTime),
-                    style = typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.graphicsLayer(alpha = 0.5f).padding(horizontal = 16.dp)
-                )
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    Text(
+                        text = stringResource(R.string.lblHowMuchTime),
+                        style = typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.graphicsLayer(alpha = 0.5f).weight(0.75f)
+                    )
+
+                    Card (
+                        colors = CardDefaults.cardColors(
+                            containerColor = colorScheme.tertiaryContainer,
+                            contentColor = colorScheme.onTertiaryContainer
+                        ),
+                        modifier = Modifier
+                            .weight(0.25f)
+                            .height(50.dp)
+                    ) {
+                        Box(
+                            modifier = Modifier.fillMaxSize(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.lblForHour, sliderState.value.toInt()),
+                                style = typography.headlineSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = colorScheme.onTertiaryContainer
+                            )
+                        }
+                    }
+                }
 
                 Slider(
                     state = sliderState,
-                    thumb = {
-
-                    },
-                    track = {
-
-                    },
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
                 )
 
-                Spacer(Modifier.size(32.dp))
+                Spacer(Modifier.size(16.dp))
 
                 Text(
                     text = stringResource(R.string.lblExpirationDate),
@@ -301,6 +323,8 @@ fun BookingScreen(
                     }
                 }
 
+                Spacer(Modifier.weight(1f))
+
                 TextButton(
                     onClick = onBackPressed,
                     shape = shapes.small,
@@ -323,6 +347,8 @@ fun BookingScreen(
                 ) {
                     Text(text = stringResource(R.string.btnBooking))
                 }
+
+                Spacer(Modifier.size(16.dp))
             }
         }
     }
