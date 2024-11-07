@@ -30,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.TransportModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
@@ -47,6 +48,7 @@ fun TransportScreen(
     // Obtiene el controlador del teclado
     val keyboardController = LocalSoftwareKeyboardController.current
     val routes by transportViewModel.routes.collectAsState()
+    var selectedRoute by remember { mutableStateOf<RouteWithPlaces?>(null) }
 
     var query by remember {
         mutableStateOf("")
@@ -65,7 +67,6 @@ fun TransportScreen(
         filterStatus = filter
     }
 
-
     var isOpen by remember {
         mutableStateOf(false)
     }
@@ -83,7 +84,8 @@ fun TransportScreen(
             sheetState = sheetState,
             onDismiss = openBottomSheet,
             onDownloadRoute = {},
-            onSelectRoute = {}
+            onSelectRoute = {},
+            selectedRoute = selectedRoute
         )
     }
 
@@ -181,11 +183,26 @@ fun TransportScreen(
             Spacer(modifier = Modifier.size(32.dp))
         }
 
+        // Despues eliminar este, solo lo dejé para saber si me estaba trayendo datos o no
+        item {
+            if(routes.isNullOrEmpty()){
+                Text(
+                    text = "cargando..."
+                )
+            }
+        }
+
         // estacionamientos
         items(routes ?: emptyList()) { route ->
+
             ElementOption(
-                onClick = openBottomSheet,
-                title = route.route.name
+                onClick = {
+                    //openBottomSheet
+                    selectedRoute = route
+                    isOpen = !isOpen
+                },
+                title = route.route.name,
+                time = route.route.arriveTime
             )
 
             Spacer(Modifier.size(16.dp))

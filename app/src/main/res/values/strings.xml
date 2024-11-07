@@ -572,7 +572,7 @@
     <string name="lblFilterAll">Todos</string>
     <string name="iconSearch">Buscar</string>
     <string name="lblFilterRoute">Filtrar rutas</string>
-    <string name="lblAproxTime">• %1$d horas y %1$d minutos de viaje</string>
+    <string name="lblAproxTime">• %1$d minutos de viaje</string>
     <string name="btnDownload">Descargar</string>
     <string name="btnSelect">Seleccionar</string>
     <string name="lblRouteDetails">Detalles de la ruta</string>

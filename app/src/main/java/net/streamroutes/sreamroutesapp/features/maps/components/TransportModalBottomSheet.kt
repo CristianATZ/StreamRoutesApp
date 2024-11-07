@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.compose.RumappAppTheme
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.core.domain.model.RouteInformation
 import net.streamroutes.sreamroutesapp.features.components.CardOption
 
@@ -50,7 +51,8 @@ fun TransportModalBottomSheet(
         officialStops = 16,
         start = "C. Pipila, Col. Ninios Herores",
         end = "C. Francisco Marquez, Col. Zona Centro"
-    )
+    ),
+    selectedRoute: RouteWithPlaces?
 ) {
     // CARGAR LA INFORMACION DEL ITEM
     // EN LUGAR DE PASAR EL HISTORIAL ITEM
@@ -71,7 +73,7 @@ fun TransportModalBottomSheet(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = routeInformation.name,
+                    text = selectedRoute?.route?.name ?: "cargando...",
                     style = typography.headlineSmall,
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -120,7 +122,7 @@ fun TransportModalBottomSheet(
 
                 // tiempo aproximado
                 Text(
-                    text = stringResource(id = R.string.lblAproxTime, routeInformation.hourAprox, routeInformation.minutesAprox),
+                    text = stringResource(id = R.string.lblAproxTime, selectedRoute?.route?.time ?: "cargando..."),
                     style = typography.labelLarge
                 )
 
@@ -130,7 +132,7 @@ fun TransportModalBottomSheet(
                 Text(
                     text = stringResource(
                         id = R.string.lblOfficialStops,
-                        routeInformation.officialStops
+                        selectedRoute?.route?.noStops ?: "cargando..."
                     ),
                     style = typography.labelLarge
                 )
@@ -139,7 +141,7 @@ fun TransportModalBottomSheet(
 
                 // inicio de ruta
                 Text(
-                    text = stringResource(id = R.string.lblStartRoute, routeInformation.start),
+                    text = stringResource(id = R.string.lblStartRoute, selectedRoute?.startPlace?.street + ", " +  selectedRoute?.startPlace?.suburb),
                     style = typography.labelLarge
                 )
 
@@ -147,7 +149,7 @@ fun TransportModalBottomSheet(
 
                 // fin de ruta
                 Text(
-                    text = stringResource(id = R.string.lblEndRoute, routeInformation.end),
+                    text = stringResource(id = R.string.lblEndRoute, selectedRoute?.endPlace?.street + ", " +  selectedRoute?.endPlace?.suburb),
                     style = typography.labelLarge
                 )
             }

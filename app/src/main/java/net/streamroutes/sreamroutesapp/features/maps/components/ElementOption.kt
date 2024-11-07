@@ -33,6 +33,7 @@ fun ElementOption(
     // imagen: aqui
     title: String = "Ruta 11 - El charco",
     description: String = "Siguiente parada en 7 minutos",
+    time: Int = 0,
     price: String? = null,
     calification: String? = null,
     onClick: () -> Unit = {}
@@ -67,7 +68,7 @@ fun ElementOption(
                     style = typography.titleLarge
                 )
                 Text(
-                    text = description,
+                    text = "Siguiente parada en ${time} minutos",
                     style = typography.bodyMedium,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
