@@ -34,7 +34,7 @@ import net.streamroutes.sreamroutesapp.R
 fun ParkingDescription(
     name: String = "Itsur",
     address: String = "Av. Educacion Superior, 38980",
-    price: Double = 39.0,
+    price: Double? = 39.0,
 
 ) {
     Row(
@@ -77,23 +77,25 @@ fun ParkingDescription(
         }
 
         // precio por hora
-        Card(
-            shape = shapes.extraLarge,
-            colors = CardDefaults.cardColors(
-                containerColor = green_scheme.color,
-                contentColor = green_scheme.onColor
-            ),
-            modifier = Modifier.padding(end = 16.dp)
-        ) {
-            Box {
-                Text(
-                    text = stringResource(id = R.string.lblPricePerHour, price.toString()),
-                    style = typography.titleSmall,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .align(Alignment.Center)
-                )
+        price?.let {
+            Card(
+                shape = shapes.extraLarge,
+                colors = CardDefaults.cardColors(
+                    containerColor = green_scheme.color,
+                    contentColor = green_scheme.onColor
+                ),
+                modifier = Modifier.padding(end = 16.dp)
+            ) {
+                Box {
+                    Text(
+                        text = stringResource(id = R.string.lblPricePerHour, price.toString()),
+                        style = typography.titleSmall,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .align(Alignment.Center)
+                    )
+                }
             }
         }
     }

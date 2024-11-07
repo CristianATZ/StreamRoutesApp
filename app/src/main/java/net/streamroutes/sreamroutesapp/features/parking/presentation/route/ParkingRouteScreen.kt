@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.features.parking.presentation.route
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
@@ -37,6 +40,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
+import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
 
 @Composable
@@ -118,32 +122,25 @@ fun ParkingRouteScreen(
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(16.dp)
                         .fillMaxSize()
                 ) {
-                    Text(
-                        text = stringResource(R.string.lblAllowPlaces, "5"),
-                        style = typography.titleLarge,
-                        fontWeight = FontWeight.Bold
+                    ParkingDescription(
+                        name = "EStacionamiento 1",
+                        address = "Padre Luis Gaytan #234",
+                        price = null
                     )
-
-                    Text(
-                        text = "Padre Luis Gaytan $234",
-                        style = typography.labelLarge,
-                        modifier = Modifier.graphicsLayer(alpha = 0.5f)
-                    )
-
-                    Spacer(Modifier.size(16.dp))
 
                     Text(
                         text = stringResource(R.string.lblSchedule, "07:00", "23:00"),
                         style = typography.labelLarge,
+                        modifier = Modifier.padding(horizontal = 16.dp).graphicsLayer(alpha = 0.5f)
                     )
 
                     Spacer(Modifier.size(8.dp))
 
                     Row(
                         modifier = Modifier
+                            .padding(horizontal = 16.dp)
                             .fillMaxWidth()
                             .horizontalScroll(rememberScrollState())
                     ) {
@@ -154,13 +151,44 @@ fun ParkingRouteScreen(
 
                         // tiempo faltante
                         InformationChip(
-                            text = stringResource(R.string.lblTimeLeft, "20 min")
+                            text = stringResource(R.string.lblTimeAprox, "20 min")
                         )
 
                         // precio
                         InformationChip(
                             text = stringResource(R.string.lblPriceFull, "31")
                         )
+                    }
+
+                    Spacer(Modifier.size(8.dp))
+
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = colorScheme.tertiaryContainer,
+                            contentColor = colorScheme.onTertiaryContainer
+                        ),
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            Text(
+                                text = "5",
+                                style = typography.displayMedium
+                            )
+
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            Text(
+                                text = stringResource(R.string.lblAvailableSpaces),
+                                style = typography.bodyLarge
+                            )
+                        }
                     }
 
                     Spacer(Modifier.weight(1f))
@@ -173,9 +201,12 @@ fun ParkingRouteScreen(
                         shape = shapes.small,
                         modifier = Modifier
                             .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                     ) {
                         Text(text = stringResource(R.string.btnScanCode))
                     }
+
+                    Spacer(Modifier.size(16.dp))
                 }
             }
         }

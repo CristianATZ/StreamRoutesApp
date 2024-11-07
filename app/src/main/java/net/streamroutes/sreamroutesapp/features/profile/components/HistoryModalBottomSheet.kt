@@ -27,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.History
@@ -84,7 +85,7 @@ fun HistoryModalBottomSheet(
                         .fillMaxWidth()
                 ) {
                     Text(
-                        text = stringResource(id = R.string.lblBooking),
+                        text = stringResource(id = R.string.lblReserved),
                         style = typography.displayMedium,
                         color = colorScheme.inverseOnSurface,
                         modifier = Modifier
@@ -198,6 +199,6 @@ fun LineInformation(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(text = desc, style = typography.labelLarge)
+        Text(text = desc, style = typography.labelLarge, fontWeight = FontWeight.Bold)
     }
 }

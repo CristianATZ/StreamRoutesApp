@@ -532,7 +532,7 @@
     <string name="iconQrCode">Icono de codigo QR</string>
     <string name="lblPrice">$ %1$s</string>
     <string name="lblPricePerHour">$ %1$s/Hora</string>
-    <string name="lblBooking">R E S E R V A D O</string>
+    <string name="lblReserved">R E S E R V A D O</string>
     <string name="lblTimeHours">Por %1$s Hora(s)</string>
     <string name="lblTimeMinutes">y %1$d minuto(s)</string>
     <string name="lblParkingIn">Entrada</string>
@@ -722,7 +722,7 @@
     <string name="lblAllowPlaces">%1$s lugares disponibles</string>
     <string name="lblSchedule">Horario de %1$s - %2$s</string>
     <string name="lblDistanceLeft">%1$s restante(s)</string>
-    <string name="lblTimeLeft">%1$s aproximado</string>
+    <string name="lblTimeAprox">%1$s aproximado</string>
     <string name="lblPriceFull">$ %1$s por hora</string>
     <string name="btnScanCode">Escanear QR</string>
     <string name="lblScanQR">Escanea el QR</string>
@@ -737,4 +737,21 @@
     <string name="lblOneHour">1 hora</string>
     <string name="lblTwoHours">2 horas</string>
     <string name="lblForHour">%1$d Hr(s)</string>
+    <string name="lblBookings">Reservaciones</string>
+    <string name="lblNoBookings">Sin pausas. Empieza de inmediato.</string>
+    <string name="lblTimeLeft">Restante %1$s Hr(s)</string>
+    <string name="lblTotalBooking">$ %1$s MXN</string>
+    <string name="lblReference">Referencia</string>
+    <string name="lblCategory">Categoria</string>
+    <string name="lblTimeReserved">Tiempo apartado</string>
+    <string name="lblDateIn">Entrada</string>
+    <string name="lblDateOut">Salida</string>
+    <string name="btnWathcRoute">Ver ruta</string>
+    <string name="btnWatchQR">Ver QR</string>
+    <string name="iconRoute">Ver camino al estacionamiento</string>
+    <string name="lblCurrentTime">Tiempo %1$s</string>
+    <string name="lblQrTimeFormat">%1$s - %2$s</string>
+    <string name="lblMetersLeft">%1$s m</string>
+    <string name="lblTimeTripAprox">%1$s minutos de viaje</string>
+    <string name="lblAvailableSpaces">Lugares disponibles</string>
 </resources>

@@ -25,11 +25,7 @@ fun ParkingQrScreen(
 ) {
     val background = listOf(orange, yellow)
 
-    var onScannSuccess by remember {
-        mutableStateOf(false)
-    }
-    val viewTransition = remember { MutableTransitionState(false) }
-    viewTransition.targetState = !onScannSuccess
+    var onScannSuccess by remember { mutableStateOf(false) }
 
     val onSuccess = {
         onScannSuccess = true

@@ -2,7 +2,6 @@ package net.streamroutes.sreamroutesapp.app
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.provider.ContactsContract.Profile
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -18,39 +17,21 @@ import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModelFactory
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordViewModelFactory
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModel
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
-import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
-import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
+import net.streamroutes.sreamroutesapp.features.booking.presentation.booking.BookingScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModelFactory
-import net.streamroutes.sreamroutesapp.features.parking.presentation.booking.BookingScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.booking.ParkingBookingScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
-import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
-import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.main.ParkingApp
 import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModelFactory
-import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsSettingsScreen
-import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
-import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
-import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
-import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TurismListScreen
-import net.streamroutes.sreamroutesapp.features.turism.presentation.turismMap.TurismMapScreen
-import net.streamroutes.sreamroutesapp.features.turism.presentation.turismRoute.TurismRouteScreen
-import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesScreen
-import net.streamroutes.sreamroutesapp.ui.start_screens.RegistrationScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -148,6 +129,7 @@ class LoginActivity : ComponentActivity() {
                 //ParkingInformationScreen()
                 //ParkingRouteScreen()
                 //ParkingQrScreen()
+                //ParkingBookingScreen()
                 BookingScreen()
 
 
