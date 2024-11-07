@@ -4,7 +4,6 @@ data class Place(
     val name: String = "",          // Nombre
     val latitude: String = "",      // Latitud
     val longitude: String = "",     // Longitud
-    val address: String = "",       // Dirección
     val state: String = "",         // Estado
     val street: String = "",        // Calle
     val suburb: String = "",        // Colonia

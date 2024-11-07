@@ -90,9 +90,18 @@ fun EditInformation(
     }
 
     // CAMBIAR POR SUS RESPECTIVAS LISTAS
-    val countryList = listOf("Mexico", "Canada", "United States", "Germany", "France")
+    val countryList = listOf("México")
     val genderList = listOf("Masculino", "Femenino", "Indefinido")
-    val stateList = listOf("Guanajuato", "Michoacán", "Triste", "aki andamos")
+    val stateList = listOf(
+        "Aguascalientes", "Baja California", "Baja California Sur",
+        "Campeche", "Chiapas", "Chihuahua", "Ciudad de México",
+        "Coahuila", "Colima", "Durango", "Guanajuato", "Guerrero",
+        "Hidalgo", "Jalisco", "Estado de México", "Michoacán",
+        "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla",
+        "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa",
+        "Sonora", "Tabasco", "Tamaulipas", "Tlaxcala", "Veracruz",
+        "Yucatán", "Zacatecas"
+    )
 
 
     /**
