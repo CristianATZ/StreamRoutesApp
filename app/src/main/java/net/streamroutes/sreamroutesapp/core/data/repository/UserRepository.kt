@@ -11,14 +11,13 @@ import net.streamroutes.sreamroutesapp.utils.DateUtils.getCurrentDate
 
 class UserRepository(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
 
     /**
      * Método usado para dar de alta a un usuario
      */
     suspend fun signUpUser(
-        //user: User
         username: String,
         email: String,
         password: String,
@@ -35,7 +34,7 @@ class UserRepository(
                     createdAt = getCurrentDate()
                 )
 
-                firestore.collection("users").document(userId)
+                db.collection("users").document(userId)
                     .set(user)
                     .await()
 
@@ -84,7 +83,7 @@ class UserRepository(
      */
     suspend fun getUserData(uid: String): Result<User> {
         return try {
-            val snapshot = firestore.collection("users").document(uid).get().await()
+            val snapshot = db.collection("users").document(uid).get().await()
             val user = snapshot.toObject(User::class.java)
             user?.let {
                 Result.success(it)
@@ -100,7 +99,7 @@ class UserRepository(
      */
     suspend fun updateUserData(uid: String, updatedFields: Map<String, Any>): Result<Unit> {
         return try {
-            firestore.collection("users").document(uid)
+            db.collection("users").document(uid)
                 .update(updatedFields)
                 .await()
             Result.success(Unit)

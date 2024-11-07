@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +18,7 @@ import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -36,14 +38,15 @@ enum class TransportFilter {
     ALL, ONE_WAY, RETURN
 }
 
-@Preview(showBackground = true)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransportScreen(
+    transportViewModel: TransportViewModel,
     modifier: Modifier = Modifier
 ) {
     // Obtiene el controlador del teclado
     val keyboardController = LocalSoftwareKeyboardController.current
+    val routes by transportViewModel.routes.collectAsState()
 
     var query by remember {
         mutableStateOf("")
@@ -179,9 +182,10 @@ fun TransportScreen(
         }
 
         // estacionamientos
-        items(10) {
+        items(routes ?: emptyList()) { route ->
             ElementOption(
                 onClick = openBottomSheet,
+                title = route.route.name
             )
 
             Spacer(Modifier.size(16.dp))

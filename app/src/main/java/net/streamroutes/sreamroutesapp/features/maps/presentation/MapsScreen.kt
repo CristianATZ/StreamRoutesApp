@@ -20,11 +20,12 @@ import net.streamroutes.sreamroutesapp.features.maps.components.MapsSmallTopAppB
 import net.streamroutes.sreamroutesapp.features.maps.presentation.fastest.FastestScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.planner.PlannerScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
 fun MapsScreen(
+    transportViewModel: TransportViewModel,
     modifier: Modifier = Modifier
 ) {
     var currentTab by remember {
@@ -86,7 +87,7 @@ fun MapsScreen(
         // PARA MANEJAR LA RUTA Y EL MAPA COMPLETO
 
         when(currentTab) {
-            0 -> TransportScreen(modifier = Modifier.padding(innerPadding))
+            0 -> TransportScreen(modifier = Modifier.padding(innerPadding), transportViewModel = transportViewModel)
             1 -> PlannerScreen(modifier = Modifier.padding(innerPadding))
             2 -> FastestScreen(modifier = Modifier.padding(innerPadding))
         }

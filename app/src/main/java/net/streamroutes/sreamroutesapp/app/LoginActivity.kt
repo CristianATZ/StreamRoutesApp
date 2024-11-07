@@ -29,6 +29,8 @@ import net.streamroutes.sreamroutesapp.features.authentication.presentation.regi
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
 import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModelFactory
 import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
@@ -44,6 +46,8 @@ import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerCo
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.main.TransportApp
 import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TurismListScreen
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismMap.TurismMapScreen
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismRoute.TurismRouteScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.RoutesScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.RegistrationScreen
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
@@ -78,6 +82,7 @@ class LoginActivity : ComponentActivity() {
             val firebaseRepository by lazy { FirebaseRepository() }
             val routesRepository by lazy { RouteRepository() }
             val parkingRepository by lazy { ParkingRepository() }
+            val userRepository by lazy { UserRepository() }
 
             // viewmodel de rutas
             val routesViewModel: RoutesViewModel by viewModels { RoutesViewModelFactory(routesRepository) }
@@ -88,12 +93,15 @@ class LoginActivity : ComponentActivity() {
             val viajePkViewModel : ViajePkViewModel by viewModels { ViajePkViewModelFactory(repository) }
             val apartarPkViewModel: ApartarPkViewModel by viewModels { ApartarPkViewModelFactory(repository) }
 
+
+
+            // ------------------------------------------------------------------
             // viewModels de usuarios (ViewModels Chidos)
-            val userRepository by lazy { UserRepository() }
             val registerViewModel: RegisterViewModel by viewModels { RegisterViewModelFactory(userRepository) }
             val loginViewModel: LoginViewModel by viewModels { LoginViewModelFactory(userRepository) }
             val profileViewModel: ProfileViewModel by viewModels { ProfileViewModelFactory(userRepository) }
             val passwordViewModel: PasswordViewModel by viewModels { PasswordViewModelFactory(userRepository) }
+            val transportViewModel: TransportViewModel by viewModels { TransportViewModelFactory(routesRepository) }
 
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
@@ -152,7 +160,7 @@ class LoginActivity : ComponentActivity() {
                 //PasswordScreen(passwordViewModel)
                 //TransportApp(loginViewModel, profileViewModel)
 
-                TurismListScreen()
+                TransportScreen(transportViewModel)
             }
         }
     }

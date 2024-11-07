@@ -19,13 +19,14 @@ class RoutesViewModel(private val repository: RouteRepository) : ViewModel() {
     private val _routes = MutableStateFlow<List<Route>>(emptyList())
     val routes: StateFlow<List<Route>> get() = _routes
 
+    /*
     init {
         viewModelScope.launch {
             repository.getAllRoutes().collect { routeList ->
                 _routes.value = routeList
             }
         }
-    }
+    }*/
 }
 
 class RoutesViewModelFactory(
