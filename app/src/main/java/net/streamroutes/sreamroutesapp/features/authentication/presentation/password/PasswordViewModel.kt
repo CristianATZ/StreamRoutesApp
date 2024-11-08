@@ -3,13 +3,19 @@ package net.streamroutes.sreamroutesapp.features.authentication.presentation.pas
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class PasswordViewModel(private val userRepository: UserRepository): ViewModel() {
+@HiltViewModel
+class PasswordViewModel @Inject constructor(
+    private val userRepository: UserRepository
+): ViewModel() {
     // Variable usada para guardar el resultado del cambio de contraseña
     private val _resetPasswordResult  = MutableStateFlow<Boolean?>(null)
     val resetPasswordResult: StateFlow<Boolean?> = _resetPasswordResult
@@ -24,16 +30,5 @@ class PasswordViewModel(private val userRepository: UserRepository): ViewModel()
                 _resetPasswordResult.value = false
             }
         }
-    }
-}
-
-class PasswordViewModelFactory(
-    private val userRepository: UserRepository
-): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(PasswordViewModel::class.java)){
-            return PasswordViewModel(userRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }

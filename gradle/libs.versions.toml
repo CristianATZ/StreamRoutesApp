@@ -35,6 +35,7 @@ room = "2.6.1"
 googleServices = "4.4.2"
 colorPicker = "1.1.2"
 uiTextGoogleFonts = "1.7.2"
+hiltNavigationCompose = "1.2.0"
 
 
 [libraries]
@@ -84,7 +85,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime", versio
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorPicker" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
-
+androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

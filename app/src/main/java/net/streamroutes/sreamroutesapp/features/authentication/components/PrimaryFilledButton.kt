@@ -27,7 +27,6 @@ fun PrimaryFilledButton(
             contentColor = Color.White
         ),
         modifier = modifier
-            .fillMaxWidth(0.9f)
     ) {
         Text(
             text = text,

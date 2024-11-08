@@ -1,22 +1,22 @@
 package net.streamroutes.sreamroutesapp.features.authentication.presentation.login
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import net.streamroutes.sreamroutesapp.core.domain.model.User
-import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
+import javax.inject.Inject
 
-class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
+
+@HiltViewModel
+class LoginViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ViewModel() {
     // Variable usada para guardar el resultado del inicio de sesión
     private val _loginResult = MutableStateFlow<Boolean?>(null)
     val loginResult: StateFlow<Boolean?> = _loginResult
@@ -55,16 +55,4 @@ class LoginViewModel(private val userRepository: UserRepository) : ViewModel() {
         userRepository.signOut()
     }
 
-}
-
-
-class LoginViewModelFactory(
-    private val userRepository: UserRepository
-): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(LoginViewModel::class.java)){
-            return LoginViewModel(userRepository) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
-    }
 }

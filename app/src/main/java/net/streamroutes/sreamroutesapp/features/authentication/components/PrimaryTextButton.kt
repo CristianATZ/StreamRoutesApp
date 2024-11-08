@@ -9,14 +9,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.compose.primary
 
-@Preview
 @Composable
 fun PrimaryTextButton(
     modifier: Modifier = Modifier,
     text: String = "",
+    onClick: () -> Unit = {}
 ) {
     TextButton(
-        onClick = { /*TODO*/ },
+        onClick = onClick,
         shape = shapes.small,
         modifier = modifier
     ) {

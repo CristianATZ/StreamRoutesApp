@@ -5,7 +5,14 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CardElevation
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -24,33 +31,30 @@ fun CardOption(
     text: String = "Texto prueba",
     onClick: () -> Unit = {}
 ) {
-    Box(
-        modifier = Modifier
-            .shadow(4.dp, shapes.large)
-            .clickable {
-                onClick()
-            }
+
+    ElevatedCard(
+        onClick = onClick,
+        modifier = modifier
     ) {
-        // remplazar por imagen
-        Column(
-            modifier = modifier
-                .clip(shapes.large)
-                .background(Color.White)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
+            // remplazar por imagen
 
-        }
 
-        Column(
-            modifier = modifier
-                .background(Color.Black.copy(0.25f), shapes.large),
-            verticalArrangement = Arrangement.Bottom
-        ) {
-            Text(
-                text = text,
-                style = typography.titleLarge,
-                color = Color.White,
-                modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
-            )
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(Color.Black.copy(0.25f), CardDefaults.shape),
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Text(
+                    text = text,
+                    style = typography.titleLarge,
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 8.dp, bottom = 8.dp)
+                )
+            }
         }
     }
 }

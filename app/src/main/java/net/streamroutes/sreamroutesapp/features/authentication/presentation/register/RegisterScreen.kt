@@ -1,10 +1,14 @@
 package net.streamroutes.sreamroutesapp.features.authentication.presentation.register
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,121 +20,106 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.compose.RumappAppTheme
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.orange
 import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.features.authentication.components.DisplayText
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryOutlinedButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteFilledTextField
-import java.security.MessageDigest
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
-import net.streamroutes.sreamroutesapp.utils.DateUtils
-import net.streamroutes.sreamroutesapp.utils.DateUtils.getCurrentDate
-import net.streamroutes.sreamroutesapp.utils.DateUtils.hashPassword
 
 @Composable
 fun RegisterScreen(
-    registerViewModel: RegisterViewModel,
-    modifier: Modifier = Modifier
+    registerViewModel: RegisterViewModel = hiltViewModel(),
+    onBackSignIn: () -> Unit
 ) {
+    val background = listOf(orange, yellow)
 
-    RumappAppTheme {
-        val background = listOf(orange, yellow)
+    var user by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
-        var user by remember { mutableStateOf("") }
-        var email by remember { mutableStateOf("") }
-        var password by remember { mutableStateOf("") }
-        var confirmPassword by remember { mutableStateOf("") }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+            .background(brush = Brush.verticalGradient(background)),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Spacer(modifier = Modifier.size(64.dp))
 
-        // Usar LazyColumn para permitir el desplazamiento
-        LazyColumn(
-            modifier = modifier
-                .fillMaxSize()
-                .background(Brush.verticalGradient(background)),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                Spacer(modifier = Modifier.size(64.dp))
+        // Encabezado crear
+        DisplayText(text = stringResource(id = R.string.lblCreate))
 
-                // Encabezado crear
-                DisplayText(text = stringResource(id = R.string.lblCreate))
+        // Encabezado cuenta
+        DisplayText(text = stringResource(id = R.string.lblAccount))
 
-                // Encabezado cuenta
-                DisplayText(text = stringResource(id = R.string.lblAccount))
+        Spacer(modifier = Modifier.size(64.dp))
 
-                Spacer(modifier = Modifier.size(64.dp))
+        // TextField usuario
+        WhiteFilledTextField(
+            value = user,
+            onValueChange = { user = it },
+            placeholder = stringResource(id = R.string.txtUser)
+        )
 
-                // TextField usuario
-                WhiteFilledTextField(
-                    value = user,
-                    onValueChange = { user = it },
-                    placeholder = stringResource(id = R.string.txtUser)
-                )
+        Spacer(modifier = Modifier.size(16.dp))
 
-                Spacer(modifier = Modifier.size(16.dp))
+        // TextField correo electrónico
+        WhiteFilledTextField(
+            value = email,
+            onValueChange = { email = it },
+            placeholder = stringResource(id = R.string.txtEmail)
+        )
 
-                // TextField correo electrónico
-                WhiteFilledTextField(
-                    value = email,
-                    onValueChange = { email = it },
-                    placeholder = stringResource(id = R.string.txtEmail)
-                )
+        Spacer(modifier = Modifier.size(16.dp))
 
-                Spacer(modifier = Modifier.size(16.dp))
+        // TextField contraseña
+        WhiteFilledTextField(
+            value = password,
+            onValueChange = { password = it },
+            placeholder = stringResource(id = R.string.txtPassword),
+            isPasswordField = true
+        )
 
-                // TextField contraseña
-                WhiteFilledTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    placeholder = stringResource(id = R.string.txtPassword),
-                    isPasswordField = true
-                )
+        Spacer(modifier = Modifier.size(16.dp))
 
-                Spacer(modifier = Modifier.size(16.dp))
-
-                // TextField confirmar contraseña
-                WhiteFilledTextField(
-                    value = confirmPassword,
-                    onValueChange = { confirmPassword = it },
-                    placeholder = stringResource(id = R.string.txtConfirmPassword),
-                    isPasswordField = true,
-                    imeAction = ImeAction.Done,
-                    onDone = {
-                        // REGISTRAR USUARIO
-                    }
-                )
-
-                Spacer(modifier = Modifier.size(32.dp))
-
-                // Botón registrar
-                PrimaryFilledButton(
-                    text = stringResource(id = R.string.btnRegister),
-                    onClick = {
-                        // REGISTRAR USUARIO
-                        //val user = User(
-                        //    username = user,
-                        //    email = email,
-                        //    createdAt = getCurrentDate()
-                        //)
-                        registerViewModel.signUpUser(username = user, email = email, password = password)
-                    }
-                )
-
-                // Botón regresar
-                PrimaryOutlinedButton(
-                    text = stringResource(id = R.string.btnBack),
-                    onClick = {
-                        // REGRESAR AL LOGIN
-                    }
-                )
+        // TextField confirmar contraseña
+        WhiteFilledTextField(
+            value = confirmPassword,
+            onValueChange = { confirmPassword = it },
+            placeholder = stringResource(id = R.string.txtConfirmPassword),
+            isPasswordField = true,
+            imeAction = ImeAction.Done,
+            onDone = {
+                // REGISTRAR USUARIO
             }
-        }
+        )
+
+        Spacer(modifier = Modifier.size(32.dp))
+
+        // Botón registrar
+        PrimaryFilledButton(
+            text = stringResource(id = R.string.btnRegister),
+            onClick = {
+                // REGISTRAR USUARIO
+                //val user = User(
+                //    username = user,
+                //    email = email,
+                //    createdAt = getCurrentDate()
+                //)
+                registerViewModel.signUpUser(username = user, email = email, password = password)
+            },
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
+        )
+
+        // Botón regresar
+        PrimaryOutlinedButton(
+            text = stringResource(id = R.string.btnBack),
+            onClick = onBackSignIn
+        )
     }
 }
 

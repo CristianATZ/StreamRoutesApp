@@ -10,28 +10,16 @@ import androidx.navigation.compose.rememberNavController
 import com.example.compose.RumappAppTheme
 import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
-import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
+import net.streamroutes.sreamroutesapp.core.navigation.LoginNavigation
 import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModelFactory
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordViewModel
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordViewModelFactory
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModel
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterViewModelFactory
-import net.streamroutes.sreamroutesapp.features.booking.presentation.booking.BookingScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModelFactory
-import net.streamroutes.sreamroutesapp.features.parking.presentation.booking.ParkingBookingScreen
-import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
-import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModelFactory
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModelFactory
@@ -46,13 +34,14 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModelFactory
 import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModel
 import net.streamroutes.sreamroutesapp.viewmodel.routes.RoutesViewModelFactory
 
+
+@AndroidEntryPoint
 class LoginActivity : ComponentActivity() {
     @SuppressLint("NewApi")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         // Inicialización de Firebase
-        FirebaseApp.initializeApp(this)
-        FirebaseFirestore.getInstance()
+
         setContent {
             val navHostController = rememberNavController()
 
@@ -64,7 +53,6 @@ class LoginActivity : ComponentActivity() {
             val firebaseRepository by lazy { FirebaseRepository() }
             val routesRepository by lazy { RouteRepository() }
             val parkingRepository by lazy { ParkingRepository() }
-            val userRepository by lazy { UserRepository() }
 
             // viewmodel de rutas
             val routesViewModel: RoutesViewModel by viewModels { RoutesViewModelFactory(routesRepository) }
@@ -79,16 +67,15 @@ class LoginActivity : ComponentActivity() {
 
             // ------------------------------------------------------------------
             // viewModels de usuarios (ViewModels Chidos)
-            val registerViewModel: RegisterViewModel by viewModels { RegisterViewModelFactory(userRepository) }
-            val loginViewModel: LoginViewModel by viewModels { LoginViewModelFactory(userRepository) }
-            val profileViewModel: ProfileViewModel by viewModels { ProfileViewModelFactory(userRepository) }
-            val passwordViewModel: PasswordViewModel by viewModels { PasswordViewModelFactory(userRepository) }
             val transportViewModel: TransportViewModel by viewModels { TransportViewModelFactory(routesRepository) }
 
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
 
             RumappAppTheme (false){
+                LoginNavigation(
+                    navHostController = navHostController
+                )
                 // A surface container using the 'background' color from the theme
                 /*Surface(
                     modifier = Modifier.fillMaxSize()
@@ -130,7 +117,7 @@ class LoginActivity : ComponentActivity() {
                 //ParkingRouteScreen()
                 //ParkingQrScreen()
                 //ParkingBookingScreen()
-                BookingScreen()
+                //BookingScreen()
 
 
                 /**

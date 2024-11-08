@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.features.authentication.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.OutlinedButton
@@ -25,7 +26,8 @@ fun PrimaryOutlinedButton(
         shape = shapes.small,
         border = BorderStroke(1.dp, primary),
         modifier = modifier
-            .fillMaxWidth(0.9f)
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
     ) {
         Text(
             text = text,

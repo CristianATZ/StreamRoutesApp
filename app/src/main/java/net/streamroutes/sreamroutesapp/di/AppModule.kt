@@ -11,7 +11,7 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-    /*@Provides
+    @Provides
     @Singleton
     fun provideFirebaseFirestore(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
@@ -22,10 +22,4 @@ object AppModule {
     fun provideFirebaseAuth(): FirebaseAuth {
         return FirebaseAuth.getInstance()
     }
-
-    @Provides
-    @Singleton
-    fun provideProfileRepository(firestore: FirebaseFirestore, firebaseAuth: FirebaseAuth): UserReposiroty {
-        return UserRepositoryImp(firestore, firebaseAuth)
-    }*/
 }

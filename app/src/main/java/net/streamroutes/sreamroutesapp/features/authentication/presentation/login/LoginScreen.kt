@@ -1,18 +1,15 @@
 package net.streamroutes.sreamroutesapp.features.authentication.presentation.login
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -23,31 +20,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import com.example.compose.RumappAppTheme
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.orange
 import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.features.authentication.components.DisplayText
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryTextButton
 import net.streamroutes.sreamroutesapp.features.authentication.components.WhiteFilledTextField
-import kotlin.math.log
-import net.streamroutes.sreamroutesapp.utils.DateUtils
-import net.streamroutes.sreamroutesapp.utils.DateUtils.hashPassword
 
 
 @Composable
 fun LoginScreen(
-    loginViewModel: LoginViewModel,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    onSignIn: () -> Unit,
+    onSignUp: () -> Unit,
+    onChangePassword: () -> Unit
 ) {
     val background = listOf(orange, yellow)
     val context = LocalContext.current
@@ -122,11 +115,12 @@ fun LoginScreen(
 
         // olvide mi contrasenia
         Row(
-            modifier = Modifier.fillMaxWidth(0.9f),
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
             horizontalArrangement = Arrangement.End
         ) {
             PrimaryTextButton(
                 text = stringResource(id = R.string.btnForgot),
+                onClick =  onChangePassword
             )
         }
 
@@ -137,14 +131,17 @@ fun LoginScreen(
             text = stringResource(id = R.string.btnLogin),
             onClick =  {
                 // AUTENTICAR USUARIO CON FIREBASE
-                loginViewModel.loginUser(email, password)
-            }
+                //loginViewModel.loginUser(email, password)
+                onSignIn()
+            },
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
         )
 
         // registrarse
         PrimaryTextButton(
             text = stringResource(id = R.string.btnNoAccount),
-            modifier = Modifier.fillMaxWidth(0.9f)
+            onClick = onSignUp,
+            modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
         )
 
 

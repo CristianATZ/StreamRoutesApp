@@ -1,17 +1,18 @@
 package net.streamroutes.sreamroutesapp.core.data.repository
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.User
-import net.streamroutes.sreamroutesapp.utils.DateUtils
 import net.streamroutes.sreamroutesapp.utils.DateUtils.getCurrentDate
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class UserRepository(
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+@Singleton
+class UserRepository @Inject constructor(
+    private val auth: FirebaseAuth,
+    private val db: FirebaseFirestore
 ) {
 
     /**

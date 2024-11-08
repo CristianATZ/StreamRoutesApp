@@ -113,7 +113,13 @@ fun AppNavigation(
             popEnterTransition = { slideInVertically(initialOffsetY = { -it }) },
             popExitTransition = { slideOutVertically(targetOffsetY = { it }) }
         ){
-            LoginScreen(loginViewModel, navHostController)
+            LoginScreen(loginViewModel, navHostController, {
+
+            }, {
+
+            }) {
+
+            }
         }
 
         // LANGUAGE SCREEN
