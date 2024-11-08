@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.features.profile.presentation.profile
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,7 +13,6 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme.shapes
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -22,15 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileTopBar
-import java.text.SimpleDateFormat
-import java.util.Locale
-import net.streamroutes.sreamroutesapp.utils.DateUtils
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatDate
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatName
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatPhoneNumber
@@ -38,8 +32,8 @@ import net.streamroutes.sreamroutesapp.utils.DateUtils.formatPhoneNumber
 
 @Composable
 fun ProfileScreen(
-    profileViewModel: ProfileViewModel,
-    modifier: Modifier = Modifier
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit,
 ) {
     val userData by profileViewModel.userData.collectAsState()
 
@@ -48,7 +42,11 @@ fun ProfileScreen(
     Column(
         modifier = Modifier.fillMaxSize()
     ) {
-        ProfileTopBar(user = formatName(userData?.names, userData?.lastName1, userData?.lastName2), date = formatDate(userData?.createdAt))
+        ProfileTopBar(
+            user = formatName(userData?.names, userData?.lastName1, userData?.lastName2),
+            date = formatDate(userData?.createdAt),
+            onBackPressed = onBackPressed
+        )
 
         Spacer(modifier = Modifier.size(32.dp))
 

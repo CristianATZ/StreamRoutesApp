@@ -51,11 +51,9 @@ class LoginActivity : ComponentActivity() {
             val routesService = RetrofitOpenRouteService.retrofitService
             val repository by lazy { NetworkRemoteReposiroty(parkingService, routesService) }
             val firebaseRepository by lazy { FirebaseRepository() }
-            val routesRepository by lazy { RouteRepository() }
             val parkingRepository by lazy { ParkingRepository() }
 
             // viewmodel de rutas
-            val routesViewModel: RoutesViewModel by viewModels { RoutesViewModelFactory(routesRepository) }
 
             // viewmodels de esatcionamiento
             val parkingPkViewModel: ParkingPkViewModel by viewModels { ParkingPkViewModelFactory(repository) }
@@ -67,7 +65,6 @@ class LoginActivity : ComponentActivity() {
 
             // ------------------------------------------------------------------
             // viewModels de usuarios (ViewModels Chidos)
-            val transportViewModel: TransportViewModel by viewModels { TransportViewModelFactory(routesRepository) }
 
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }

@@ -1,50 +1,39 @@
 package net.streamroutes.sreamroutesapp.features.settings.presentation.settings
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.ArrowBackIosNew
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
-import net.streamroutes.sreamroutesapp.features.components.NavigationButton
+import net.streamroutes.sreamroutesapp.core.navigation.SettingsNavigation
 import net.streamroutes.sreamroutesapp.features.profile.components.RowField
 import net.streamroutes.sreamroutesapp.features.settings.components.SettingsSmallTopAppBar
 
 @Composable
-fun SettingsScreen(
-    modifier: Modifier = Modifier
+fun SettingsMain(
+    onBackPressed: () -> Unit
 ) {
-    val onBackPressed = {
+    val settingsNavHostController = rememberNavController()
+    SettingsNavigation(
+        navHostController = settingsNavHostController,
+        onBackPressed = onBackPressed
+    )
+}
 
-    }
-
-    val onNotificationPressed = {
-
-    }
-
-    val onMapPressed = {
-
-    }
-
-    val onPrivacityPressed = {
-
-    }
-
-    val onStoragePressed = {
-
-    }
-
-    val onApparencePressed = {
-
-    }
-
+@Composable
+fun SettingsScreen(
+    onBackPressed: () -> Unit,
+    onNotificationPressed: () -> Unit,
+    onMapsPressed: () -> Unit,
+    onPrivacityPressed: () -> Unit,
+    onStoragePressed: () -> Unit,
+    onApparencePressed: () -> Unit
+) {
     Scaffold(
         topBar = {
             SettingsSmallTopAppBar(
@@ -54,7 +43,9 @@ fun SettingsScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
         ) {
             // notificaciones
             RowField(
@@ -67,7 +58,7 @@ fun SettingsScreen(
             RowField(
                 title = stringResource(R.string.lblSettingsMapsTitle),
                 description = stringResource(R.string.lblSettingsMapsDescription),
-                onClick = onMapPressed,
+                onClick = onMapsPressed,
                 modifier = Modifier.fillMaxWidth()
             )
             // privacidad

@@ -27,13 +27,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
-import net.streamroutes.sreamroutesapp.features.maps.components.TransportModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
+import net.streamroutes.sreamroutesapp.features.maps.components.TransportModalBottomSheet
 
 enum class TransportFilter {
     ALL, ONE_WAY, RETURN
@@ -42,7 +42,7 @@ enum class TransportFilter {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransportScreen(
-    transportViewModel: TransportViewModel,
+    transportViewModel: TransportViewModel = hiltViewModel(),
     modifier: Modifier = Modifier
 ) {
     // Obtiene el controlador del teclado
@@ -83,8 +83,12 @@ fun TransportScreen(
         TransportModalBottomSheet(
             sheetState = sheetState,
             onDismiss = openBottomSheet,
-            onDownloadRoute = {},
-            onSelectRoute = {},
+            onDownloadRoute = {
+
+            },
+            onSelectRoute = {
+
+            },
             selectedRoute = selectedRoute
         )
     }
@@ -95,7 +99,7 @@ fun TransportScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // barra de busqueda
-        item {
+        /*item {
             // CAMBIAR COLORES
             SearchBar(
                 query = query,
@@ -125,17 +129,17 @@ fun TransportScreen(
                 },
                 shadowElevation = 4.dp,
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .fillMaxWidth(0.9f)
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .fillMaxWidth()
             ) {
 
             }
-        }
+        }*/
 
         // filtros
         item {
             Row(
-                modifier = Modifier.fillMaxWidth(0.9f)
+                modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
             ) {
                 FilterChip(
                     selected = filterStatus == TransportFilter.ALL,

@@ -3,13 +3,18 @@ package net.streamroutes.sreamroutesapp.features.maps.presentation.transport
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
+import javax.inject.Inject
 
-class TransportViewModel(private val routeRepository: RouteRepository): ViewModel() {
+@HiltViewModel
+class TransportViewModel @Inject constructor(
+    private val routeRepository: RouteRepository
+) : ViewModel() {
     private val _routes = MutableStateFlow<List<RouteWithPlaces>?>(null)
     val routes: StateFlow<List<RouteWithPlaces>?> = _routes
 

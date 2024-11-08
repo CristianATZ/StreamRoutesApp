@@ -172,7 +172,7 @@ fun Main(
         RoutesNavigationItem(RoutesNavigationOptions.FAST_SCREEN, Icons.Filled.FlashOn, Icons.Outlined.FlashOn, R.string.lblFast),
         RoutesNavigationItem(RoutesNavigationOptions.ROUTES_SCREEN, Icons.Filled.DirectionsBus, Icons.Outlined.DirectionsBus, R.string.lblTransportRoutes),
         RoutesNavigationItem(RoutesNavigationOptions.TRIP_SCREEN, Icons.Filled.Bookmark, Icons.Outlined.Bookmark, R.string.lblTrip),
-        RoutesNavigationItem(RoutesNavigationOptions.TURISM_SCREEN, Icons.Filled.Museum, Icons.Outlined.Museum, R.string.lblTurism),
+        RoutesNavigationItem(RoutesNavigationOptions.TURISM_SCREEN, Icons.Filled.Museum, Icons.Outlined.Museum, R.string.lblTourism),
         RoutesNavigationItem(RoutesNavigationOptions.CHAT_SCREEN, Icons.Filled.ChatBubble, Icons.Outlined.ChatBubble, R.string.lblChat),
         RoutesNavigationItem(RoutesNavigationOptions.UBI_OPTION, Icons.Filled.EmergencyShare, Icons.Outlined.EmergencyShare, R.string.lblShare),
         RoutesNavigationItem(RoutesNavigationOptions.DOWNLOAD_OPTION, Icons.Filled.DownloadForOffline, Icons.Outlined.DownloadForOffline, R.string.lblDownload),

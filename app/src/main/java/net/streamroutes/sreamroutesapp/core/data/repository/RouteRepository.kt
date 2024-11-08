@@ -1,17 +1,15 @@
 package net.streamroutes.sreamroutesapp.core.data.repository
 
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.toObject
-import kotlinx.coroutines.channels.awaitClose
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.Route
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class RouteRepository(
-    private val db: FirebaseFirestore = FirebaseFirestore.getInstance()
+@Singleton
+class RouteRepository @Inject constructor(
+    private val db: FirebaseFirestore
 ) {
     /**
      * Método usado para obtener todas las rutas de transporte público

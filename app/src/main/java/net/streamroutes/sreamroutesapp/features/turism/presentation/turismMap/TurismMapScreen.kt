@@ -99,7 +99,9 @@ fun TurismMapScreen(
                     )
                 }
             } else {
-                TurismBottomSheet()
+                TurismBottomSheet(
+                    onBackPressed = onBackPressed
+                )
             }
         },
         sheetShadowElevation = 8.dp

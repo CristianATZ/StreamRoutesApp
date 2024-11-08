@@ -25,11 +25,9 @@ enum class NotificationType {
 }
 @Composable
 fun NotificationsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit
 ) {
-    val onBackPressed = {
-        // regresar a configuracion
-    }
 
     val onPushPressed = {
         // acutlaizar valor en viewmodel

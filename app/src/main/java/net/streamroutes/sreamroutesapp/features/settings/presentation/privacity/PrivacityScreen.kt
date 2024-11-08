@@ -19,7 +19,8 @@ import net.streamroutes.sreamroutesapp.features.settings.components.SettingsSmal
 
 @Composable
 fun PrivacityScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit
 ) {
     val onBackPressed = {
 

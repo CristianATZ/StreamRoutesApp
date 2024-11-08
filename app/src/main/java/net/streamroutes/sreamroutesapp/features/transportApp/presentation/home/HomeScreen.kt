@@ -2,13 +2,12 @@ package net.streamroutes.sreamroutesapp.features.transportApp.presentation.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,74 +16,83 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.CardOption
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
+import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportSmallTopAppBar
 
 @Composable
 fun HomeScreen(
-    profileViewModel: ProfileViewModel,
-    modifier: Modifier = Modifier
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    onMenuPressed: () -> Unit,
+    onMapsPressed: () -> Unit,
+    onTourismPressed: () -> Unit,
+    onForumPressed: () -> Unit
 ) {
     val userData by profileViewModel.userData.collectAsState()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .padding(vertical = 16.dp, horizontal = 8.dp)
-        ) {
-            Text(
-                text = stringResource(id = R.string.lblHello, userData?.username ?: "USUARIO"),
-                style = typography.displaySmall
-            )
-            Text(
-                text = stringResource(id = R.string.lblGreet),
-                style = typography.bodyMedium,
-                modifier = Modifier.graphicsLayer(alpha = 0.5f)
+    Scaffold(
+        topBar = {
+            TransportSmallTopAppBar(
+                onNavigationPressed = onMenuPressed
             )
         }
-
+    ) { innerPadding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(bottom = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceAround
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CardOption(
-                text = stringResource(id = R.string.lblPublicTransportRoutes),
-                onClick = {
-                    // ENVIAR A MAPAS
-                },
+            Column(
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(200.dp)
-            )
+                    .padding(16.dp)
+                    .fillMaxWidth()
+            ) {
+                Text(
+                    text = stringResource(id = R.string.lblHello, userData?.username ?: "USUARIO"),
+                    style = typography.displaySmall
+                )
+                Text(
+                    text = stringResource(id = R.string.lblGreet),
+                    style = typography.bodyMedium,
+                    modifier = Modifier.graphicsLayer(alpha = 0.5f)
+                )
+            }
 
-            CardOption(
-                text = stringResource(id = R.string.lblPlan),
-                onClick = {
-                    // ENVIAR A PLANIFICAR TU VIAJE
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(200.dp)
-            )
+            Column(
+                modifier = Modifier.fillMaxSize().padding(bottom = 16.dp),
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                CardOption(
+                    text = stringResource(id = R.string.lblMaps),
+                    onClick = onMapsPressed,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
 
-            CardOption(
-                text = stringResource(id = R.string.lblForum),
-                onClick = {
-                    // ENVIAR A FORO
-                },
-                modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .height(200.dp)
-            )
+                CardOption(
+                    text = stringResource(id = R.string.lblTourism),
+                    onClick = onTourismPressed,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
+
+                CardOption(
+                    text = stringResource(id = R.string.lblForum),
+                    onClick = onForumPressed,
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
+            }
         }
     }
 }

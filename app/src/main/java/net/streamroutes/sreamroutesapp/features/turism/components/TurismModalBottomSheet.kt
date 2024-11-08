@@ -51,11 +51,7 @@ fun TurismModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismiss
     ) {
-        Column(
-            modifier = Modifier
-                .navigationBarsPadding(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Column {
             // nombre y ver mas
             Box(
                 modifier = Modifier
@@ -148,12 +144,14 @@ fun TurismModalBottomSheet(
                 onClick = onSelectRoute,
                 shape = shapes.small,
                 modifier = Modifier
-                    .padding(bottom = 16.dp, start = 16.dp, end = 16.dp)
+                    .padding(horizontal = 16.dp)
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
             ) {
                 Text(text = stringResource(id = R.string.btnSelect))
             }
+
+            Spacer(modifier = Modifier.navigationBarsPadding())
         }
 
     }

@@ -43,7 +43,7 @@ import java.time.LocalDateTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForumScreen(
-    modifier: Modifier = Modifier
+    onBackPressed: () -> Unit
 ) {
 
     val scope = rememberCoroutineScope()
@@ -153,10 +153,6 @@ fun ForumScreen(
             commentDate = LocalDateTime.of(2023, 7, 1, 12, 0),
         )
     )
-
-    val onBackPressed = {
-
-    }
 
     // comentarios
     val commentSheetState = rememberModalBottomSheetState(

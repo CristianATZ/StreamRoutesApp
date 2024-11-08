@@ -18,48 +18,6 @@ import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
 
-// DEJAR EN DUDA SI DEJAR ESTE O USAR
-// MAPROUTESCREEN YA QUE SON LO MISMO
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismRouteScreen(

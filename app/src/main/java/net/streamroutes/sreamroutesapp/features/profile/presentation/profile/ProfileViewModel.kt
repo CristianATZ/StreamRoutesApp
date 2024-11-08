@@ -1,18 +1,23 @@
 package net.streamroutes.sreamroutesapp.features.profile.presentation.profile
 
-import androidx.compose.runtime.currentCompositionErrors
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import net.streamroutes.sreamroutesapp.core.domain.model.User
+import javax.inject.Inject
+import javax.inject.Singleton
 
 
-class ProfileViewModel(private val userRepository: UserRepository) : ViewModel() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val userRepository: UserRepository
+) : ViewModel() {
     // Variable usada para obtener el usuario actual (como modelo FirebaseUser)
     private val _currentUser = MutableStateFlow<FirebaseUser?>(null)
     val currentUser: StateFlow<FirebaseUser?> = _currentUser

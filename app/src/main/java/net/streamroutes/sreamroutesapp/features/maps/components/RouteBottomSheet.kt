@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
@@ -120,24 +121,15 @@ fun RouteBottomSheet(
         }
 
         Button(
-            onClick = {
-
-            },
+            onClick = onBackPressed,
             shape = shapes.small,
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth()
-                .combinedClickable(
-                    onClick = {
-                        // MANDAR INDICACION PARA MANTENER
-                        // PARA CANCELAR
-                    },
-                    onLongClick = onBackPressed
-                )
         ) {
             Text(text = stringResource(id = R.string.btnCancelRoute))
         }
 
-        Spacer(modifier = Modifier.size(16.dp))
+        Spacer(Modifier.navigationBarsPadding())
     }
 }

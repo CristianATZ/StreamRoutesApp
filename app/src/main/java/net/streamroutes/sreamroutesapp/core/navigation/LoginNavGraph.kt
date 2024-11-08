@@ -51,18 +51,23 @@ fun LoginNavigation(
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
-        ){
+        ) {
             LoginScreen(
                 onSignIn = {
                     navHostController.navigate(Destinations.Select.route) {
+                        launchSingleTop = true
                         popUpTo(0) { inclusive = true }
                     }
                 },
                 onSignUp = {
-                    navHostController.navigate(Destinations.SignUp.route)
+                    navHostController.navigate(Destinations.SignUp.route) {
+                        launchSingleTop = true
+                    }
                 },
                 onChangePassword = {
-                    navHostController.navigate(Destinations.ChangePassword.route)
+                    navHostController.navigate(Destinations.ChangePassword.route) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }

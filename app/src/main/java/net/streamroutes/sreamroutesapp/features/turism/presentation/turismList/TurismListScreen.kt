@@ -32,13 +32,11 @@ import net.streamroutes.sreamroutesapp.features.turism.components.TurismModalBot
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismListScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onViewMap: () -> Unit,
+    onSelectPoint: () -> Unit
 ) {
     val scope = rememberCoroutineScope()
-
-    val onMapPressed = {
-        // mostrar mapa con todas las opciones
-    }
 
     var isOpen by remember {
         mutableStateOf(false)
@@ -66,7 +64,7 @@ fun TurismListScreen(
             },
             onSelectRoute = {
                 closeSheet()
-                // cambiar pagina o lo que sea
+                onSelectPoint()
             },
             onMore = {
 
@@ -109,7 +107,7 @@ fun TurismListScreen(
         // opcion para el mapa
         item {
             MapAllOptions(
-                onClick = onMapPressed
+                onClick = onViewMap
             )
 
             Spacer(modifier = Modifier.size(16.dp))

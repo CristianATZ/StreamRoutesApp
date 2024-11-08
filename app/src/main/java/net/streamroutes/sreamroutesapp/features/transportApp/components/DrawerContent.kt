@@ -21,13 +21,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.navigation.Destinations
 import net.streamroutes.sreamroutesapp.features.components.DrawerItem
 
 @Composable
 fun DrawerContent(
-    onLogOut: () -> Unit
+    onLogOut: () -> Unit,
+    navHostController: NavHostController
 ) {
+    val currentbBackStackEntry = navHostController.currentBackStackEntryAsState()
+    val currentRoute = currentbBackStackEntry.value?.destination?.route
+
     ModalDrawerSheet(
         drawerShape = RectangleShape,
         modifier = Modifier
@@ -48,9 +55,11 @@ fun DrawerContent(
             label = stringResource(id = R.string.lblProfile),
             icon = Icons.Outlined.Person,
             iconDescription = stringResource(id = R.string.iconProfile),
-            selected = false,
+            selected = currentRoute == Destinations.Profile.route,
             onClick = {
-                // ENVIAR A INICIO
+                navHostController.navigate(Destinations.Profile.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -60,9 +69,12 @@ fun DrawerContent(
             label = stringResource(id = R.string.lblHome),
             icon = Icons.Outlined.Home,
             iconDescription = stringResource(id = R.string.iconHome),
-            selected = false,
+            selected = currentRoute == Destinations.HomeTransport.route,
             onClick = {
-                // ENVIAR A INICIO
+                navHostController.navigate(Destinations.HomeTransport.route) {
+                    launchSingleTop = true
+                    popUpTo(0) { inclusive = true }
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -72,9 +84,11 @@ fun DrawerContent(
             label = stringResource(id = R.string.lblPremium),
             icon = Icons.Outlined.ShoppingCart,
             iconDescription = stringResource(id = R.string.iconPremium),
-            selected = false,
+            selected = currentRoute == Destinations.Premium.route,
             onClick = {
-                // ENVIAR A PAQUETES
+                navHostController.navigate(Destinations.Premium.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -84,33 +98,39 @@ fun DrawerContent(
             label = stringResource(id = R.string.lblMaps),
             icon = Icons.Outlined.Map,
             iconDescription = stringResource(id = R.string.iconMaps),
-            selected = false,
+            selected = currentRoute == Destinations.Maps.route,
             onClick = {
-                // ENVIAR A MAPAS
+                navHostController.navigate(Destinations.Maps.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
         // Turismo
         DrawerItem(
-            label = stringResource(id = R.string.lblTurism),
+            label = stringResource(id = R.string.lblTourism),
             icon = Icons.Outlined.Navigation,
-            iconDescription = stringResource(id = R.string.iconTurism),
-            selected = false,
+            iconDescription = stringResource(id = R.string.iconTourism),
+            selected = currentRoute == Destinations.Tourism.route,
             onClick = {
-                // ENVIAR A TURISMO
+                navHostController.navigate(Destinations.Tourism.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        // Turismo
+        // Foro
         DrawerItem(
             label = stringResource(id = R.string.lblForum),
             icon = Icons.Outlined.Forum,
             iconDescription = stringResource(id = R.string.iconForum),
-            selected = false,
+            selected = currentRoute == Destinations.Forum.route,
             onClick = {
-                // ENVIAR A FORO
+                navHostController.navigate(Destinations.Forum.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -120,9 +140,11 @@ fun DrawerContent(
             label = stringResource(id = R.string.lblSettings),
             icon = Icons.Outlined.Settings,
             iconDescription = stringResource(id = R.string.iconSettings),
-            selected = false,
+            selected = currentRoute == Destinations.Settings.route,
             onClick = {
-                // ENVIAR A CONFIGURACION
+                navHostController.navigate(Destinations.Settings.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )

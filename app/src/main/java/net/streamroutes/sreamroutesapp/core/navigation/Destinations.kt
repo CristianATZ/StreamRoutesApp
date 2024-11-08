@@ -9,6 +9,22 @@ sealed class Destinations(val route: String) {
     data object Select : Destinations("select")
 
     // transport navgraph
+    data object Profile : Destinations("profile")
+    data object HomeTransport : Destinations("homeTransport")
+    data object Premium : Destinations("premium")
+    data object Maps : Destinations("maps")
+    data object Tourism : Destinations("tourism")
+    data object Forum : Destinations("forum")
+    data object Settings : Destinations("settings")
+
+    // settings navgraph
+    data object HomeSettings : Destinations("homeSettings")
+    data object NotificationsSettings : Destinations("notificationsSettings")
+    data object MapsSettings : Destinations("mapsSettings")
+    data object PrivacitySettings : Destinations("privacitySettings")
+    data object StorageSettings : Destinations("storageSettings")
+    data object ApparenceSettings : Destinations("apparenceSettings")
 
     // parking navgraph
+
 }
