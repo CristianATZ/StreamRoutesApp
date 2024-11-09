@@ -30,19 +30,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismModalBottomSheet(
+    turisticPoint: TuristicPointWithInfo?,
     sheetState: SheetState = rememberModalBottomSheetState(),
+    /*
     turismInformation: TurismInformation = TurismInformation(
         name = "Alhondiga de granaditas",
         totalRoutes = 4,
         calendar = "08:00 - 16:00",
         price = "36 MXN",
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim adLorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad"
-    ),
+    ),*/
     onDismiss: () -> Unit,
     onSelectRoute: () -> Unit = {},
     onMore: () -> Unit
@@ -59,7 +62,7 @@ fun TurismModalBottomSheet(
                     .fillMaxWidth()
             ) {
                 Text(
-                    text = turismInformation.name,
+                    text = turisticPoint?.place?.name ?: "cargando...",
                     style = typography.headlineSmall,
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -96,17 +99,17 @@ fun TurismModalBottomSheet(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.lblTurismTotalRoutes, turismInformation.totalRoutes),
+                    text = stringResource(id = R.string.lblTurismTotalRoutes, turisticPoint?.turisticPoint?.totalRoutes ?: "cargando..."),
                     style = typography.labelLarge
                 )
 
                 Text(
-                    text = stringResource(id = R.string.lblTurismCalendar, turismInformation.calendar),
+                    text = stringResource(id = R.string.lblTurismCalendar, turisticPoint?.turisticPoint?.days?.toString() ?: "cargando..."),
                     style = typography.labelLarge
                 )
 
                 Text(
-                    text = stringResource(id = R.string.lblTurismPrice, turismInformation.price ?: stringResource(id = R.string.lblTurismFree)),
+                    text = stringResource(id = R.string.lblTurismPrice, turisticPoint?.turisticPoint?.fee ?: stringResource(id = R.string.lblTurismFree)),
                     style = typography.labelLarge
                 )
 
@@ -119,7 +122,7 @@ fun TurismModalBottomSheet(
                 )
 
                 Text(
-                    text = turismInformation.description,
+                    text = turisticPoint?.turisticPoint?.description ?: "cargando...",
                     style = typography.labelLarge,
                     textAlign = TextAlign.Justify
                 )

@@ -60,13 +60,34 @@ class RouteRepository @Inject constructor(
     /**
      * Método usado para obtener todos los puntos turísticos registrados en la bd
      */
-    suspend fun getAllTuristicPoints(): List<Place> {
+    suspend fun getAllTuristicPoints(): List<TuristicPointWithInfo> {
         return try {
+            /*
             val turisticPoints = db.collection("places")
                 .whereEqualTo("type", 1)
                 .get()
                 .await()
             turisticPoints.documents.mapNotNull { it.toObject(Place::class.java) }
+             */
+            val turisticPoints = mutableListOf<TuristicPointWithInfo>()
+            val tpDocuments = db.collection("turisticPoints").get().await()
+
+            for(tpInfo in tpDocuments.documents){
+                val tp = tpInfo.toObject(TuristicPoint::class.java)
+
+                if(tp != null){
+                    val place = db.collection("places").document(tp.idPlace).get().await()
+                    val placeObj = place.toObject(Place::class.java)
+
+                    if(placeObj != null){
+                        turisticPoints.add(
+                            TuristicPointWithInfo(tp, placeObj)
+                        )
+                    }
+                }
+            }
+
+            return turisticPoints
         } catch (e: Exception) {
             println("Error: ${e.message}")
             emptyList()
@@ -74,10 +95,30 @@ class RouteRepository @Inject constructor(
     }
 }
 
-
+// Modelo usado para unir ruta con lugares
 data class RouteWithPlaces(
     val route: Route,
     val startPlace: Place,
     val endPlace: Place,
     val turisticPoint: List<Place>
+)
+
+// Modelo de turisticPoint
+data class TuristicPoint(
+    val idPlace: String = "",
+    val totalRoutes: Int = 0,
+    val fee: Int = 0,
+    val days: List<Day> = emptyList(),
+    val description: String = ""
+)
+
+data class Day(
+    val startTime: String = "",
+    val endTime: String = ""
+)
+
+
+data class TuristicPointWithInfo(
+    val turisticPoint: TuristicPoint,
+    val place: Place
 )

@@ -22,6 +22,7 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
@@ -75,14 +76,14 @@ fun TurismMapScreen(
      */
 
     var turismSelected by remember {
-        mutableStateOf<Place?>(null)
+        mutableStateOf<TuristicPointWithInfo?>(null)
     }
 
-    val updateTurism = { turism: Place? ->
+    val updateTurism = { turism: TuristicPointWithInfo? ->
         turismSelected = turism
     }
 
-    val markerPressed = { turism: Place? ->
+    val markerPressed = { turism: TuristicPointWithInfo? ->
         scope.launch {
             scaffoldState.bottomSheetState.hide()// esconder la hoja
             delay(300) // esperar 300 milisegundos
@@ -97,7 +98,7 @@ fun TurismMapScreen(
             if(turismSelected != null) {
                 turismSelected?.let {
                     TurismInformationBottomSheet(
-                        place = it,
+                        turisticPoint = it,
                         onClose = {
                             markerPressed(null)
                         },
@@ -137,14 +138,14 @@ fun TurismMapScreen(
                 )
             }
              */
-            turisticPoints?.forEach { place ->
+            turisticPoints?.forEach { tp ->
                 Marker(
                     state = MarkerState(
-                        position = LatLng(place.latitude.toDouble(), place.longitude.toDouble())
+                        position = LatLng(tp.place.latitude.toDouble(), tp.place.longitude.toDouble())
                     ),
                     onClick = { _ ->
-                        if(turismSelected != place) {
-                            markerPressed(place)
+                        if(turismSelected != tp) {
+                            markerPressed(tp)
                         } else {
                             markerPressed(null)
                         }

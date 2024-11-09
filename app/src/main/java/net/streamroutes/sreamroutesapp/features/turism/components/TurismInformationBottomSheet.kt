@@ -25,12 +25,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
 
 @Composable
 fun TurismInformationBottomSheet(
-    place: Place,
+    turisticPoint: TuristicPointWithInfo,
     onMore: () -> Unit,
     onClose: () -> Unit
 ) {
@@ -47,7 +48,7 @@ fun TurismInformationBottomSheet(
                 .fillMaxWidth()
         ) {
             Text(
-                text = place.name,
+                text = turisticPoint.place.name,
                 style = typography.headlineSmall,
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -83,22 +84,22 @@ fun TurismInformationBottomSheet(
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )
 
-            /*
+
             Text(
-                text = stringResource(id = R.string.lblTurismTotalRoutes, turismInformation.totalRoutes),
+                text = stringResource(id = R.string.lblTurismTotalRoutes, turisticPoint.turisticPoint.totalRoutes),
                 style = typography.labelLarge
             )
 
             Text(
-                text = stringResource(id = R.string.lblTurismCalendar, turismInformation.calendar),
+                text = stringResource(id = R.string.lblTurismCalendar, turisticPoint.turisticPoint.days.toString()),
                 style = typography.labelLarge
             )
 
             Text(
-                text = stringResource(id = R.string.lblTurismPrice, turismInformation.price ?: stringResource(id = R.string.lblTurismFree)),
+                text = stringResource(id = R.string.lblTurismPrice, turisticPoint.turisticPoint.fee ?: stringResource(id = R.string.lblTurismFree)),
                 style = typography.labelLarge
             )
-             */
+
 
             Spacer(modifier = Modifier.size(8.dp))
 
@@ -108,12 +109,12 @@ fun TurismInformationBottomSheet(
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )
 
-            /*
+
             Text(
-                text = turismInformation.description,
+                text = turisticPoint.turisticPoint.description,
                 style = typography.labelLarge,
                 textAlign = TextAlign.Justify
-            )*/
+            )
         }
 
         Spacer(modifier = Modifier.size(16.dp))

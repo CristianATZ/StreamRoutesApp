@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismModalBottomSheet
@@ -42,6 +43,7 @@ fun TurismListScreen(
 ) {
     val scope = rememberCoroutineScope()
     val turisticPoints by turismViewModel.turisticPoints.collectAsState()
+    var selectedTp by remember { mutableStateOf<TuristicPointWithInfo?>(null) }
 
     var isOpen by remember {
         mutableStateOf(false)
@@ -73,7 +75,8 @@ fun TurismListScreen(
             },
             onMore = {
 
-            }
+            },
+            turisticPoint = selectedTp
         )
     }
 
@@ -129,11 +132,15 @@ fun TurismListScreen(
         }
 
 
-        items(turisticPoints ?: emptyList()) { place ->
+        items(turisticPoints ?: emptyList()) { turisticPoint ->
             ElementOption(
-                title = place.name,
+                title = turisticPoint.place.name,
                 description = stringResource(id = R.string.lblTimeNextStop, 7),
-                onClick = openBottomSheet
+                //onClick = openBottomSheet
+                onClick = {
+                    selectedTp = turisticPoint
+                    isOpen = !isOpen
+                }
             )
 
             Spacer(modifier = Modifier.size(16.dp))
