@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -28,8 +27,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.features.profile.components.OutlinedTitleTextField
@@ -39,8 +38,8 @@ import net.streamroutes.sreamroutesapp.features.profile.components.TrailingIconW
 
 @Composable
 fun EditInformation(
-    profileViewModel: ProfileViewModel,
-    modifier: Modifier = Modifier
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
@@ -111,7 +110,7 @@ fun EditInformation(
         userData?.let {
             name = it.names
             lastName =
-                if(it.lastName1.equals("")) ""
+                if(it.lastName1 == "") ""
                 else it.lastName1 + " " + it.lastName2
             address = it.address
             neighborhood = it.neighborhood
@@ -144,9 +143,7 @@ fun EditInformation(
         topBar = {
             ProfileSmallTopAppBar(
                 title = stringResource(id = R.string.lblEditPersonalInformation),
-                onBackPressed = {
-                    // REGRESAR A EDITAR PERFIL
-                }
+                onBackPressed = onBackPressed
             )
         }
     ) {
@@ -168,8 +165,9 @@ fun EditInformation(
                     name = n
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // apellidos
@@ -182,8 +180,9 @@ fun EditInformation(
                     lastName = l
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // calle
@@ -197,8 +196,9 @@ fun EditInformation(
                     address = a
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // colonia
@@ -212,8 +212,9 @@ fun EditInformation(
                     neighborhood = n
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // numero exterior
@@ -228,8 +229,9 @@ fun EditInformation(
                 },
                 keyboardType = KeyboardType.Number,
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // pais
@@ -251,8 +253,9 @@ fun EditInformation(
                     }
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // estado
@@ -274,8 +277,9 @@ fun EditInformation(
                     }
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // fecha de nacimiento
@@ -295,8 +299,9 @@ fun EditInformation(
                     }
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // genero
@@ -318,8 +323,9 @@ fun EditInformation(
                     }
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // descripcion
@@ -337,22 +343,21 @@ fun EditInformation(
                     // ACTUALIAZR DATOS DE FIBREASE
                 },
                 modifier = Modifier
-                    .height(150.dp)
-                    .fillMaxWidth(0.9f)
                     .align(Alignment.CenterHorizontally)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.size(16.dp))
 
             // regresar a reditar perfil
             OutlinedButton(
-                onClick = {
-                    // REGRESAR A EDITAR PERFIL
-                },
+                onClick = onBackPressed,
                 shape = shapes.small,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.9f)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             ) {
                 Text(text = stringResource(id = R.string.btnBack))
             }
@@ -379,12 +384,14 @@ fun EditInformation(
                 },
                 shape = shapes.small,
                 modifier = Modifier
-                    .padding(bottom = 16.dp)
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.9f)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             ) {
                 Text(text = stringResource(id = R.string.btnSave))
             }
+
+            Spacer(Modifier.size(16.dp))
         }
     }
 }

@@ -22,10 +22,10 @@ import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallT
 import net.streamroutes.sreamroutesapp.features.profile.components.SavedRouteItem
 import java.time.LocalDateTime
 
-@Preview(showBackground = true)
 @Composable
 fun SavedRouteScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
@@ -73,9 +73,7 @@ fun SavedRouteScreen(
         topBar = {
             ProfileSmallTopAppBar(
                 title = stringResource(id = R.string.lblRoutes),
-                onBackPressed = {
-                    // REGRESAR A EDITAR PERFIL
-                }
+                onBackPressed = onBackPressed
             )
         }
     ) {

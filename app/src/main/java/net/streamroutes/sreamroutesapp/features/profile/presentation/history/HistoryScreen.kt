@@ -25,7 +25,7 @@ import java.time.LocalTime
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HistoryScreen(
-    modifier: Modifier = Modifier
+    onBackPressed: () -> Unit
 ) {
 
     var isOpen by remember {
@@ -65,9 +65,7 @@ fun HistoryScreen(
         topBar = {
             ProfileSmallTopAppBar(
                 title = stringResource(id = R.string.lblHistory),
-                onBackPressed = {
-                    // REGRESAR A EDITAR PERFIL
-                }
+                onBackPressed = onBackPressed
             )
         }
     ) {

@@ -32,10 +32,9 @@ data class Plan(
     val action: () -> Unit
 )
 
-@Preview(showBackground = true)
 @Composable
 fun PremiumScreen(
-    modifier: Modifier = Modifier
+    onBackPressed: () -> Unit
 ) {
     val plans = listOf(
         Plan(
@@ -84,9 +83,7 @@ fun PremiumScreen(
         topBar = {
             PremiumSmallTopAppBar(
                 title = "",
-                onBackPressed = {
-                    // REGRESAR A INICIO
-                }
+                onBackPressed = onBackPressed
             )
         }
     ) {

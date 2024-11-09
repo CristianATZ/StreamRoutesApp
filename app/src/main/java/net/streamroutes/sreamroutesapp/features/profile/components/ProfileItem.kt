@@ -2,10 +2,12 @@ package net.streamroutes.sreamroutesapp.features.profile.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Icon
@@ -31,8 +33,9 @@ fun ProfileItem(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth(0.8f)
-            .padding(bottom = 32.dp)
+            .padding(horizontal = 32.dp)
+            .fillMaxWidth()
+            .padding(bottom = 16.dp)
     ) {
         Icon(
             imageVector = icon,

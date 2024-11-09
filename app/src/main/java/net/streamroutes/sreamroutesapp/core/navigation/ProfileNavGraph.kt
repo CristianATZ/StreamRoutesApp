@@ -6,16 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.google.android.gms.auth.api.signin.internal.Storage
-import net.streamroutes.sreamroutesapp.features.settings.presentation.apparence.ApparenceScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsSettingsScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.NotificationsScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.privacity.PrivacityScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.storage.StorageScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.posts.SavedPostScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.routes.SavedRouteScreen
 
 @Composable
-fun SettingsNavigation(
+fun ProfileNavigation(
     navHostController: NavHostController,
     onBackPressed: () -> Unit
 ) {
@@ -37,115 +36,117 @@ fun SettingsNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Destinations.HomeSettings.route
+        startDestination = Destinations.HomeEditProfile.route
     ) {
-        // inicio ajustes
+
+
+        // editar perfil
         composable(
-            route = Destinations.HomeSettings.route,
-            enterTransition = { slideInFromLeft },
+            route = Destinations.HomeEditProfile.route,
+            enterTransition = { slideInFromRight },
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            SettingsScreen (
+            EditProfileScreen(
                 onBackPressed = onBackPressed,
-                onNotificationPressed = {
-                    navHostController.navigate(Destinations.NotificationsSettings.route) {
+                onEditAccount = {
+                    navHostController.navigate(Destinations.EditAccount.route) {
                         launchSingleTop = true
                     }
                 },
-                onMapsPressed = {
-                    navHostController.navigate(Destinations.MapsSettings.route) {
+                onEditPersonalInformation = {
+                    navHostController.navigate(Destinations.EditPersonalInformation.route) {
                         launchSingleTop = true
                     }
                 },
-                onPrivacityPressed = {
-                    navHostController.navigate(Destinations.PrivacitySettings.route) {
+                onPosts = {
+                    navHostController.navigate(Destinations.Posts.route) {
                         launchSingleTop = true
                     }
                 },
-                onStoragePressed = {
-                    navHostController.navigate(Destinations.StorageSettings.route) {
+                onRoutes = {
+                    navHostController.navigate(Destinations.Routes.route) {
                         launchSingleTop = true
                     }
                 },
-                onApparencePressed = {
-                    navHostController.navigate(Destinations.ApparenceSettings.route) {
+                onHistory = {
+                    navHostController.navigate(Destinations.History.route) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        // notificaciones
+        // edit account
         composable(
-            route = Destinations.NotificationsSettings.route,
+            route = Destinations.EditAccount.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            NotificationsScreen(
+            EditAccountScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // mapas
+        // edit personal information
         composable(
-            route = Destinations.MapsSettings.route,
+            route = Destinations.EditPersonalInformation.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            MapsSettingsScreen (
+            EditInformation(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // privacidad
+        // posts
         composable(
-            route = Destinations.PrivacitySettings.route,
+            route = Destinations.Posts.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            PrivacityScreen (
+            SavedPostScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // almacenamiento
+        // routes
         composable(
-            route = Destinations.StorageSettings.route,
+            route = Destinations.Routes.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            StorageScreen (
+            SavedRouteScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // apariencia
+        // history
         composable(
-            route = Destinations.ApparenceSettings.route,
+            route = Destinations.History.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            ApparenceScreen (
+            HistoryScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }

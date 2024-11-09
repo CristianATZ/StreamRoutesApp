@@ -10,6 +10,7 @@ sealed class Destinations(val route: String) {
 
     // transport navgraph
     data object Profile : Destinations("profile")
+    data object HomeEditProfile : Destinations("homeEditProfile")
     data object HomeTransport : Destinations("homeTransport")
     data object Premium : Destinations("premium")
     data object Maps : Destinations("maps")
@@ -24,6 +25,14 @@ sealed class Destinations(val route: String) {
     data object PrivacitySettings : Destinations("privacitySettings")
     data object StorageSettings : Destinations("storageSettings")
     data object ApparenceSettings : Destinations("apparenceSettings")
+
+    // profile navgraph
+    data object EditProfile : Destinations("editProfile")
+    data object EditAccount : Destinations("editAccount")
+    data object EditPersonalInformation : Destinations("editPersonalInformation")
+    data object Posts : Destinations("posts")
+    data object Routes : Destinations("routes")
+    data object History : Destinations("history")
 
     // parking navgraph
 

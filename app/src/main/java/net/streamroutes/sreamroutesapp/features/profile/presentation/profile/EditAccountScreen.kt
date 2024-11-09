@@ -27,19 +27,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.User
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.OutlinedTitleTextField
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
-import net.streamroutes.sreamroutesapp.utils.DateUtils.hashPassword
 
 @Composable
 fun EditAccountScreen(
-    profileViewModel: ProfileViewModel,
-    modifier: Modifier = Modifier
+    profileViewModel: ProfileViewModel = hiltViewModel(),
+    onBackPressed: () -> Unit
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
@@ -100,9 +98,7 @@ fun EditAccountScreen(
         topBar = {
             ProfileSmallTopAppBar(
                 title = stringResource(id = R.string.lblEditAccount),
-                onBackPressed = {
-                    // REGRESAR A EDITAR PERFIL
-                }
+                onBackPressed = onBackPressed
             )
         }
     ) {
@@ -124,8 +120,9 @@ fun EditAccountScreen(
                 },
                 iconClear = stringResource(id = R.string.iconClearUser),
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.Start)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // telefono
@@ -139,8 +136,9 @@ fun EditAccountScreen(
                 keyboardType = KeyboardType.Number,
                 iconClear = stringResource(id = R.string.iconClearPhone),
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.Start)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // correo electronico
@@ -153,8 +151,9 @@ fun EditAccountScreen(
                 },
                 iconClear = stringResource(id = R.string.iconClearEmail),
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.Start)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // contrasenia
@@ -169,8 +168,9 @@ fun EditAccountScreen(
                 keyboardType = KeyboardType.Password,
                 isPasswordField = true,
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.Start)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             // confirmar contrasenia
@@ -189,21 +189,21 @@ fun EditAccountScreen(
                     // ACTUALIZAR DATOS EN FIREBASE
                 },
                 modifier = Modifier
-                    .fillMaxWidth(0.9f)
-                    .align(Alignment.CenterHorizontally)
+                    .align(Alignment.Start)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
             // regresar a reditar perfil
             OutlinedButton(
-                onClick = {
-                    // REGRESAR A EDITAR PERFIL
-                },
+                onClick = onBackPressed,
                 shape = shapes.small,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.9f)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             ) {
                 Text(text = stringResource(id = R.string.btnBack))
             }
@@ -221,12 +221,14 @@ fun EditAccountScreen(
                 },
                 shape = shapes.small,
                 modifier = Modifier
-                    .padding(bottom = 16.dp)
                     .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth(0.9f)
+                    .padding(horizontal = 16.dp)
+                    .fillMaxWidth()
             ) {
                 Text(text = stringResource(id = R.string.btnSave))
             }
+
+            Spacer(Modifier.size(16.dp))
         }
     }
 }

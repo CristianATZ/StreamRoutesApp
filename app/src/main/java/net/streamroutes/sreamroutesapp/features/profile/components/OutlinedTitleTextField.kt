@@ -1,8 +1,10 @@
 package net.streamroutes.sreamroutesapp.features.profile.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -18,7 +20,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
@@ -80,18 +81,12 @@ fun OutlinedTitleTextField(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .padding(bottom = 16.dp)
-            .fillMaxWidth()
-    ) {
+    Column {
         Text(
             text = title,
             style = typography.labelLarge,
             fontWeight = FontWeight.SemiBold,
-            modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .align(Alignment.CenterHorizontally)
+            modifier = modifier
                 .padding(bottom = 8.dp)
         )
 
@@ -126,7 +121,8 @@ fun OutlinedTitleTextField(
                 }
             },
             modifier = modifier
-                .fillMaxWidth()
         )
+
+        Spacer(Modifier.size(16.dp))
     }
 }

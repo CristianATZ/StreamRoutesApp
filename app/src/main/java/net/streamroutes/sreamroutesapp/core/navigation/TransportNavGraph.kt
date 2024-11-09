@@ -6,9 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
+import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
@@ -45,15 +46,35 @@ fun TransportNavigation(
             route = Destinations.Profile.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
+            popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            ProfileScreen(
+            ProfileScreen (
                 onBackPressed = {
                     navHostController.navigate(Destinations.HomeTransport.route) {
                         launchSingleTop = true
                         popUpTo(0) { inclusive = true }
                     }
+                },
+                onEditProfile = {
+                    navHostController.navigate(Destinations.EditProfile.route) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        // edit profile
+        composable(
+            route = Destinations.EditProfile.route,
+            enterTransition = { slideInFromRight },
+            exitTransition = { slideOutToRight },
+            popEnterTransition = { slideInFromRight },
+            popExitTransition = { slideOutToRight }
+        ) {
+            EditProfileMain(
+                onBackPressed = {
+                    navHostController.popBackStack()
                 }
             )
         }
@@ -94,7 +115,14 @@ fun TransportNavigation(
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-
+            PremiumScreen(
+                onBackPressed = {
+                    navHostController.navigate(Destinations.HomeTransport.route) {
+                        launchSingleTop = true
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
         }
 
         // mapas

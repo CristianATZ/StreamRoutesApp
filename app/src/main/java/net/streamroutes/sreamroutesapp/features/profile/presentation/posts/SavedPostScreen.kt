@@ -31,10 +31,9 @@ import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallT
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showBackground = true)
 @Composable
 fun SavedPostScreen(
-    modifier: Modifier = Modifier
+    onBackPressed: () -> Unit
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
@@ -172,9 +171,7 @@ fun SavedPostScreen(
         topBar = {
             ProfileSmallTopAppBar(
                 title = stringResource(id = R.string.lblPosts),
-                onBackPressed = {
-                    // REGRESAR A EDITAR PERFIL
-                }
+                onBackPressed = onBackPressed
             )
         }
     ) {
