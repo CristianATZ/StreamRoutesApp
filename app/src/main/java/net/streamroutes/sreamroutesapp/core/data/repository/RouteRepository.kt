@@ -31,10 +31,19 @@ class RouteRepository @Inject constructor(
                 val startPlaceObj = startPlace.toObject(Place::class.java)
                 val endPlaceObj = endPlace.toObject(Place::class.java)
 
+                val turisticPlaces = mutableListOf<Place>()
+                for (turisticPointId in route.turisticPoints) {
+                    val turisticPlaceDoc = db.collection("places").document(turisticPointId).get().await()
+                    val turisticPlaceObj = turisticPlaceDoc.toObject(Place::class.java)
+                    if (turisticPlaceObj != null) {
+                        turisticPlaces.add(turisticPlaceObj)
+                    }
+                }
+
                 // guardar la ruta completa en el arreglo
                 if(startPlaceObj != null && endPlaceObj != null){
                     routes.add(
-                        RouteWithPlaces(route, startPlaceObj, endPlaceObj)
+                        RouteWithPlaces(route, startPlaceObj, endPlaceObj, turisticPlaces)
                     )
                 }
             }
@@ -48,5 +57,6 @@ class RouteRepository @Inject constructor(
 data class RouteWithPlaces(
     val route: Route,
     val startPlace: Place,
-    val endPlace: Place
+    val endPlace: Place,
+    val turisticPoint: List<Place>
 )

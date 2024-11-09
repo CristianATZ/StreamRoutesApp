@@ -18,6 +18,8 @@ import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
 import net.streamroutes.sreamroutesapp.data.repository.FirebaseRepository
 import net.streamroutes.sreamroutesapp.data.repository.NetworkRemoteReposiroty
+import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapRouteScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModelFactory
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
@@ -70,9 +72,11 @@ class LoginActivity : ComponentActivity() {
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
 
             RumappAppTheme (false){
+
                 LoginNavigation(
                     navHostController = navHostController
                 )
+
                 // A surface container using the 'background' color from the theme
                 /*Surface(
                     modifier = Modifier.fillMaxSize()
@@ -127,7 +131,6 @@ class LoginActivity : ComponentActivity() {
                 //EditInformation(profileViewModel)
                 //PasswordScreen(passwordViewModel)
                 //TransportApp(loginViewModel, profileViewModel)
-
                 //TransportScreen(transportViewModel)
             }
         }

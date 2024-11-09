@@ -196,9 +196,8 @@ fun TransportScreen(
             }
         }
 
-        // estacionamientos
+        // Rutas de transporte
         items(routes ?: emptyList()) { route ->
-
             ElementOption(
                 onClick = {
                     //openBottomSheet
@@ -208,7 +207,6 @@ fun TransportScreen(
                 title = route.route.name,
                 time = route.route.arriveTime
             )
-
             Spacer(Modifier.size(16.dp))
         }
     }
