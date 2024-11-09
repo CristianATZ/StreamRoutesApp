@@ -27,16 +27,14 @@ fun ColorField(
 ) {
     Row(
         modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp)
             .fillMaxWidth()
             .clickable(
                 indication = null,  // Elimina la animación de clic
                 interactionSource = remember { MutableInteractionSource() }  // Previene el manejo de estados de interacción
             ) {
                 onOpenPickerColor()  // Ejecuta la acción al hacer clic en toda la fila
-            },
-
+            }
+            .padding(16.dp)
     ) {
         InfoRowField(
             title = headerText,

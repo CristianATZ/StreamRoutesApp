@@ -1,7 +1,9 @@
 package net.streamroutes.sreamroutesapp.features.settings.presentation.privacity
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Done
@@ -13,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.SwitchField
 import net.streamroutes.sreamroutesapp.features.settings.components.SettingsSmallTopAppBar
@@ -22,10 +25,6 @@ fun PrivacityScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit
 ) {
-    val onBackPressed = {
-
-    }
-
     var ads by remember {
         mutableStateOf(true)
     }

@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.LightMode
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme.typography
@@ -34,6 +37,7 @@ import net.streamroutes.sreamroutesapp.features.components.ColorPickerDialog
 import net.streamroutes.sreamroutesapp.features.components.InfoRowField
 import net.streamroutes.sreamroutesapp.features.components.SliderField
 import net.streamroutes.sreamroutesapp.features.components.SwitchField
+import net.streamroutes.sreamroutesapp.features.settings.components.CheckBoxField
 import net.streamroutes.sreamroutesapp.features.settings.components.SettingsSmallTopAppBar
 
 @Composable
@@ -69,9 +73,6 @@ fun MapsSettingsScreen(
 
     val onChangeProgress = { progress: Float ->
         widthLine = progress
-    }
-    val onBackPressed = {
-
     }
 
     var showTransportColor by remember { mutableStateOf(false) }
@@ -110,8 +111,9 @@ fun MapsSettingsScreen(
         }
     ) { innerPadding ->
         Column(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding).verticalScroll(rememberScrollState())
         ) {
+
 
             Text(
                 text = stringResource(R.string.lblMap),
@@ -209,38 +211,5 @@ fun MapsSettingsScreen(
                 description = stringResource(R.string.lblHealthyDescription)
             )
         }
-    }
-}
-
-@Composable
-fun CheckBoxField(
-    checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    title: String,
-    description: String
-) {
-    Row(
-        modifier = Modifier
-            .padding(horizontal = 16.dp)
-            .padding(bottom = 16.dp)
-            .fillMaxWidth()
-            .clickable(
-                indication = null,  // Elimina la animación de clic
-                interactionSource = remember { MutableInteractionSource() }  // Previene el manejo de estados de interacción
-            ) {
-                onCheckedChange(!checked)  // Cambia el estado cuando se hace clic en la fila
-            },
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Checkbox(
-            checked = checked,
-            onCheckedChange = onCheckedChange
-        )
-
-        InfoRowField(
-            title = title,
-            descriptionText = description,
-            modifier = Modifier.weight(1f)
-        )
     }
 }

@@ -45,10 +45,6 @@ fun StorageScreen(
 ) {
     val context = LocalContext.current
 
-    val onBackPressed = {
-
-    }
-
     val gbps by remember {
         mutableDoubleStateOf(0.0)
     }
