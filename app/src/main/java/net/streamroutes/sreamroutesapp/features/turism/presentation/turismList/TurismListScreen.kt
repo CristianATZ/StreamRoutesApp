@@ -7,12 +7,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
@@ -34,9 +37,11 @@ import net.streamroutes.sreamroutesapp.features.turism.components.TurismModalBot
 fun TurismListScreen(
     modifier: Modifier = Modifier,
     onViewMap: () -> Unit,
-    onSelectPoint: () -> Unit
+    onSelectPoint: () -> Unit,
+    turismViewModel: TurismListViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
+    val turisticPoints by turismViewModel.turisticPoints.collectAsState()
 
     var isOpen by remember {
         mutableStateOf(false)
@@ -113,9 +118,20 @@ fun TurismListScreen(
             Spacer(modifier = Modifier.size(16.dp))
         }
 
-        items(10) {
+
+        // Despues eliminar este, solo lo dejé para saber si me estaba trayendo datos o no
+        item {
+            if(turisticPoints.isNullOrEmpty()){
+                Text(
+                    text = "cargando..."
+                )
+            }
+        }
+
+
+        items(turisticPoints ?: emptyList()) { place ->
             ElementOption(
-                title = "Alhondiga de granaditas",
+                title = place.name,
                 description = stringResource(id = R.string.lblTimeNextStop, 7),
                 onClick = openBottomSheet
             )

@@ -6,6 +6,7 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,6 +14,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Marker
@@ -20,16 +22,19 @@ import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismBottomSheet
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismInformationBottomSheet
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TurismListViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismMapScreen(
     modifier: Modifier = Modifier,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    turismViewModel: TurismListViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState(
@@ -38,11 +43,13 @@ fun TurismMapScreen(
             skipHiddenState = false
         )
     )
+    val turisticPoints by turismViewModel.turisticPoints.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(21.024836955368098, -101.25738698049604), 17f) // San Francisco como posición inicial
     }
 
+    /*
     val turismList = listOf(
         Pair(
             TurismInformation(
@@ -65,16 +72,17 @@ fun TurismMapScreen(
             LatLng(20.13685688027719, -101.20127471960048)
         )
     )
+     */
 
     var turismSelected by remember {
-        mutableStateOf<TurismInformation?>(null)
+        mutableStateOf<Place?>(null)
     }
 
-    val updateTurism = { turism: TurismInformation? ->
+    val updateTurism = { turism: Place? ->
         turismSelected = turism
     }
 
-    val markerPressed = { turism: TurismInformation? ->
+    val markerPressed = { turism: Place? ->
         scope.launch {
             scaffoldState.bottomSheetState.hide()// esconder la hoja
             delay(300) // esperar 300 milisegundos
@@ -89,7 +97,7 @@ fun TurismMapScreen(
             if(turismSelected != null) {
                 turismSelected?.let {
                     TurismInformationBottomSheet(
-                        turismInformation = it,
+                        place = it,
                         onClose = {
                             markerPressed(null)
                         },
@@ -114,12 +122,29 @@ fun TurismMapScreen(
             onMapLoaded = { /*TODO*/ },
             modifier = modifier
         ) {
+            /*
             turismList.forEach { turism ->
                 Marker(
                     state = MarkerState(position = turism.second),
                     onClick = { _ ->
                         if(turismSelected != turism.first) {
                             markerPressed(turism.first)
+                        } else {
+                            markerPressed(null)
+                        }
+                        true
+                    }
+                )
+            }
+             */
+            turisticPoints?.forEach { place ->
+                Marker(
+                    state = MarkerState(
+                        position = LatLng(place.latitude.toDouble(), place.longitude.toDouble())
+                    ),
+                    onClick = { _ ->
+                        if(turismSelected != place) {
+                            markerPressed(place)
                         } else {
                             markerPressed(null)
                         }

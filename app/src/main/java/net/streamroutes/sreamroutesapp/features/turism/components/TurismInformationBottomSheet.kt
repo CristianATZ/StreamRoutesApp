@@ -25,11 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
 
 @Composable
 fun TurismInformationBottomSheet(
-    turismInformation: TurismInformation,
+    place: Place,
     onMore: () -> Unit,
     onClose: () -> Unit
 ) {
@@ -46,7 +47,7 @@ fun TurismInformationBottomSheet(
                 .fillMaxWidth()
         ) {
             Text(
-                text = turismInformation.name,
+                text = place.name,
                 style = typography.headlineSmall,
                 modifier = Modifier
                     .align(Alignment.Center)
@@ -82,6 +83,7 @@ fun TurismInformationBottomSheet(
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )
 
+            /*
             Text(
                 text = stringResource(id = R.string.lblTurismTotalRoutes, turismInformation.totalRoutes),
                 style = typography.labelLarge
@@ -96,6 +98,7 @@ fun TurismInformationBottomSheet(
                 text = stringResource(id = R.string.lblTurismPrice, turismInformation.price ?: stringResource(id = R.string.lblTurismFree)),
                 style = typography.labelLarge
             )
+             */
 
             Spacer(modifier = Modifier.size(8.dp))
 
@@ -105,11 +108,12 @@ fun TurismInformationBottomSheet(
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )
 
+            /*
             Text(
                 text = turismInformation.description,
                 style = typography.labelLarge,
                 textAlign = TextAlign.Justify
-            )
+            )*/
         }
 
         Spacer(modifier = Modifier.size(16.dp))
