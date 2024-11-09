@@ -118,7 +118,9 @@ fun MapStopScreen(
                     )
                 }
             } else {
-                StopBottomSheet()
+                StopBottomSheet(
+                    onBackPressed = onBackPressed
+                )
             }
         },
         sheetShadowElevation = 8.dp

@@ -49,10 +49,6 @@ fun TurismListScreen(
         mutableStateOf(false)
     }
 
-    val openBottomSheet = {
-        isOpen = !isOpen
-    }
-
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
@@ -60,7 +56,11 @@ fun TurismListScreen(
     val closeSheet = {
         scope.launch {
             sheetState.hide()
-        }.invokeOnCompletion { isOpen = false }
+        }.invokeOnCompletion {
+            if(!sheetState.isVisible) {
+                isOpen = false
+            }
+        }
     }
 
     if(isOpen) {

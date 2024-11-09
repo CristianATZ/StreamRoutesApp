@@ -29,10 +29,9 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
 import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 
-@Preview
 @Composable
 fun MapsSmallTopAppBar(
-    modifier: Modifier = Modifier,
+    title: String,
     onBackPressed: () -> Unit = {},
     currentTab: Int = 1,
     onChangeTab: (Int) -> Unit = {},
@@ -48,7 +47,7 @@ fun MapsSmallTopAppBar(
     Column {
         CustomTopAppBar(
             title = {
-
+                Text(text = title)
             },
             navigationIcon = {
                 NavigationButton(

@@ -82,7 +82,7 @@ fun PremiumScreen(
     Scaffold(
         topBar = {
             PremiumSmallTopAppBar(
-                title = "",
+                title = stringResource(R.string.lblPremium),
                 onBackPressed = onBackPressed
             )
         }
