@@ -28,9 +28,9 @@ import net.streamroutes.sreamroutesapp.core.navigation.Destinations
 import net.streamroutes.sreamroutesapp.features.components.DrawerItem
 
 @Composable
-fun DrawerContent(
-    onLogOut: () -> Unit,
-    navHostController: NavHostController
+fun TransportDrawerContent(
+    navHostController: NavHostController,
+    onLogOut: () -> Unit
 ) {
     val currentbBackStackEntry = navHostController.currentBackStackEntryAsState()
     val currentRoute = currentbBackStackEntry.value?.destination?.route

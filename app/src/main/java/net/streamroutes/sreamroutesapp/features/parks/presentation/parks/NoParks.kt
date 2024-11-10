@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.booking.presentation.booking
+package net.streamroutes.sreamroutesapp.features.parks.presentation.parks
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import net.streamroutes.sreamroutesapp.R
 
 @Composable
-fun NoBooking(
+fun NoParks(
     modifier: Modifier = Modifier
 ) {
     Box(

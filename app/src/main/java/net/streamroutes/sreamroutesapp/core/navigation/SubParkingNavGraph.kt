@@ -6,18 +6,19 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import net.streamroutes.sreamroutesapp.features.parking.presentation.ParkingMain
-import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
+import net.streamroutes.sreamroutesapp.features.parking.presentation.booking.ParkingBookingScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingHomeScreen
 
 @Composable
-fun ParkingNavigation(
+fun SubParkingNavigation(
     navHostController: NavHostController,
-    onOpenMenu: () -> Unit
+    onBackPressed: () -> Unit,
+    onSettingsPressed: () -> Unit,
+    onProfilePressed: () -> Unit
 ) {
-    // Definición de animaciones de transición
     val slideInFromLeft = slideInHorizontally(
         initialOffsetX = { -it } // Entra desde la izquierda
     )
@@ -36,100 +37,99 @@ fun ParkingNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Destinations.HomeParking.route
+        startDestination = Destinations.Parking.route
     ) {
+        // lista de estacionamientos
         composable(
-            route = Destinations.HomeParking.route,
+            route = Destinations.Parking.route,
             enterTransition = { slideInFromLeft },
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            ParkingMain(
-                onBackPressed = onOpenMenu,
-                onProfilePressed = {
-                    navHostController.navigate(Destinations.Profile.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onSettingsPressed = {
-                    navHostController.navigate(Destinations.Settings.route) {
+            ParkingHomeScreen(
+                onOpenMenu = onBackPressed,
+                onSettingsPressed = onSettingsPressed,
+                onProfilePressed = onProfilePressed,
+                onSelectParking = {
+                    navHostController.navigate(Destinations.ParkingInformation.route) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        // profile
+        // informacion del estacionamiento
         composable(
-            route = Destinations.Profile.route,
+            route = Destinations.ParkingInformation.route,
             enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
+            exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            ProfileScreen (
+            ParkingInformationScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeParking.route) {
+                    navHostController.popBackStack()
+                },
+                onBookingPressed = {
+                    navHostController.navigate(Destinations.ParkingBooking.route) {
                         launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
                     }
                 },
-                onEditProfile = {
-                    navHostController.navigate(Destinations.EditProfile.route) {
+                onSelectPressed = {
+                    navHostController.navigate(Destinations.ParkingRoute.route) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        // edit profile
+        // apartar lugar
         composable(
-            route = Destinations.EditProfile.route,
+            route = Destinations.ParkingBooking.route,
             enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
+            exitTransition = { slideOutToLeft },
+            popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            EditProfileMain(
+            ParkingBookingScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // ajustes
+        // ruta
         composable(
-            route = Destinations.Settings.route,
+            route = Destinations.ParkingRoute.route,
             enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
+            exitTransition = { slideOutToLeft },
+            popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            SettingsMain(
+            ParkingRouteScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeParking.route) {
+                    navHostController.popBackStack()
+                },
+                onScanPressed = {
+                    navHostController.navigate(Destinations.ParkingQR.route) {
                         launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
                     }
                 }
             )
         }
 
-        // parqueos
+        // qr
         composable(
-            route = Destinations.Parks.route,
+            route = Destinations.ParkingQR.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            ParkScreen(
+            ParkingQrScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeParking.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }

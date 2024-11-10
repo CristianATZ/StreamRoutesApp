@@ -63,7 +63,6 @@ data class AlertsExpiration(
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingBookingScreen(
-    modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {}
 ) {
     val cameraPositionState = rememberCameraPositionState {

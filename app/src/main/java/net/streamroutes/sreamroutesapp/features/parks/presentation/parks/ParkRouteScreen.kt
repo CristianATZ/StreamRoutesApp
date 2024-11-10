@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.booking.presentation.booking
+package net.streamroutes.sreamroutesapp.features.parks.presentation.parks
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -33,7 +33,7 @@ import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 
 @Composable
-fun ParkingRouteBookingScreen(
+fun ParkRouteScreen(
     onBackPressed: () -> Unit
 ) {
     val cameraPositionState = rememberCameraPositionState {

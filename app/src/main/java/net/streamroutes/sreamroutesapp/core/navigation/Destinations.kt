@@ -35,5 +35,13 @@ sealed class Destinations(val route: String) {
     data object History : Destinations("history")
 
     // parking navgraph
+    data object HomeParking : Destinations("homeParking")
+    data object Parks : Destinations("parking")
 
+    // sub parking nav
+    data object Parking : Destinations("homeSubParking")
+    data object ParkingInformation : Destinations("parkingInformation")
+    data object ParkingBooking : Destinations("parkingBooking")
+    data object ParkingRoute : Destinations("parkingRoute")
+    data object ParkingQR : Destinations("parkingQR")
 }

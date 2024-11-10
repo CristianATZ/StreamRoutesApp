@@ -45,20 +45,14 @@ import net.streamroutes.sreamroutesapp.features.parking.components.InformationCh
 
 @Composable
 fun ParkingRouteScreen(
-    modifier: Modifier = Modifier,
-    onBackPressed: () -> Unit = {}
+    onBackPressed: () -> Unit = {},
+    onScanPressed: () -> Unit = {}
 ) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
     }
-
-    val onScanPressed = {
-        
-    }
     
-    Scaffold(
-
-    ) { innerPadding ->
+    Scaffold { innerPadding ->
         Box(
             modifier = Modifier
                 .padding(innerPadding)
@@ -195,9 +189,7 @@ fun ParkingRouteScreen(
                     
                     // escanear codigo qr
                     Button(
-                        onClick = {
-                            onScanPressed()
-                        },
+                        onClick = onScanPressed,
                         shape = shapes.small,
                         modifier = Modifier
                             .fillMaxWidth()

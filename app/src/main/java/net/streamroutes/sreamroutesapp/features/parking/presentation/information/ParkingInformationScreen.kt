@@ -12,26 +12,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonColors
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -44,8 +39,9 @@ import net.streamroutes.sreamroutesapp.features.parking.components.InformationCh
 
 @Composable
 fun ParkingInformationScreen(
-    modifier: Modifier = Modifier,
-    onBackPressed: () -> Unit = {}
+    onBackPressed: () -> Unit = {},
+    onBookingPressed: () -> Unit,
+    onSelectPressed: () -> Unit
 ) {
 
     val services = listOf(
@@ -54,17 +50,7 @@ fun ParkingInformationScreen(
         "Servicio de lavada de auto"
     )
 
-    val onStartRoute = {
-
-    }
-
-    val onBookingRoute = {
-
-    }
-
-    Scaffold(
-
-    ) { innerPadding ->
+    Scaffold { innerPadding ->
         Box(
             modifier = Modifier
                 .padding(innerPadding)
@@ -208,9 +194,7 @@ fun ParkingInformationScreen(
 
                 // boton de apartar espacio
                 OutlinedButton(
-                    onClick = {
-                        onBookingRoute()
-                    },
+                    onClick = onBookingPressed,
                     shape = shapes.small,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
@@ -221,9 +205,7 @@ fun ParkingInformationScreen(
 
                 // boton de iniciar viaje
                 Button(
-                    onClick = {
-                        onStartRoute()
-                    },
+                    onClick = onSelectPressed,
                     shape = shapes.small,
                     modifier = Modifier
                         .padding(horizontal = 16.dp)

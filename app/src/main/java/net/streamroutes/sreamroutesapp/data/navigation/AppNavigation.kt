@@ -15,7 +15,7 @@ import net.streamroutes.sreamroutesapp.ui.parking_screens.IniciarViajeScreen
 import net.streamroutes.sreamroutesapp.ui.parking_screens.MainParking
 import net.streamroutes.sreamroutesapp.ui.parking_screens.ParkingAccountScreen
 import net.streamroutes.sreamroutesapp.ui.parking_screens.ParkingEstacionamientoScreen
-import net.streamroutes.sreamroutesapp.ui.parking_screens.ParkingHomeScreen
+import net.streamroutes.sreamroutesapp.ui.parking_screens.HomeScreen
 import net.streamroutes.sreamroutesapp.ui.routes_screens.menu.MainScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.ChangeScreen
 import net.streamroutes.sreamroutesapp.ui.start_screens.LanguageScreen
@@ -170,7 +170,7 @@ fun ParkingNavigation(
 
     NavHost(navController = navHostController, startDestination = AppScreens.ParkingHome.route) {
         composable(AppScreens.ParkingHome.route) {
-            ParkingHomeScreen(
+            HomeScreen(
                 homePkViewModel,
                 accountPkViewModel,
                 apartarPkViewModel,

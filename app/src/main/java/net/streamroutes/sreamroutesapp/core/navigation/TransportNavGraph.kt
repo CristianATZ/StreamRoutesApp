@@ -12,7 +12,7 @@ import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScre
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
-import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.HomeScreen
+import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.TransportHomeScreen
 import net.streamroutes.sreamroutesapp.features.turism.presentation.TurismScreen
 
 @Composable
@@ -41,6 +41,44 @@ fun TransportNavigation(
         navController = navHostController,
         startDestination = Destinations.HomeTransport.route
     ) {
+        // inicio
+        composable(
+            route = Destinations.HomeTransport.route,
+            enterTransition = { slideInFromLeft },
+            exitTransition = { slideOutToLeft },
+            popEnterTransition = { slideInFromLeft },
+            popExitTransition = { slideOutToRight }
+        ) {
+            TransportHomeScreen(
+                onMenuPressed = onOpenMenu,
+                onSettingsPressed = {
+                    navHostController.navigate(Destinations.Settings.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onProfilePressed = {
+                    navHostController.navigate(Destinations.Profile.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onMapsPressed = {
+                    navHostController.navigate(Destinations.Maps.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onTourismPressed = {
+                    navHostController.navigate(Destinations.Tourism.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onForumPressed = {
+                    navHostController.navigate(Destinations.Forum.route) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
         // profile
         composable(
             route = Destinations.Profile.route,
@@ -75,44 +113,6 @@ fun TransportNavigation(
             EditProfileMain(
                 onBackPressed = {
                     navHostController.popBackStack()
-                }
-            )
-        }
-
-        // inicio
-        composable(
-            route = Destinations.HomeTransport.route,
-            enterTransition = { slideInFromLeft },
-            exitTransition = { slideOutToLeft },
-            popEnterTransition = { slideInFromLeft },
-            popExitTransition = { slideOutToRight }
-        ) {
-            HomeScreen(
-                onMenuPressed = onOpenMenu,
-                onSettingsPressed = {
-                    navHostController.navigate(Destinations.Settings.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onProfilePressed = {
-                    navHostController.navigate(Destinations.Profile.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onMapsPressed = {
-                    navHostController.navigate(Destinations.Maps.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onTourismPressed = {
-                    navHostController.navigate(Destinations.Tourism.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onForumPressed = {
-                    navHostController.navigate(Destinations.Forum.route) {
-                        launchSingleTop = true
-                    }
                 }
             )
         }

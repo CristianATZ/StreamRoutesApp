@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.booking.components
+package net.streamroutes.sreamroutesapp.features.parks.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
@@ -13,7 +13,7 @@ import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
 import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 
 @Composable
-fun BookinSmallTopAppBar(
+fun BookingSmallTopAppBar(
     modifier: Modifier = Modifier,
     onNavigationPressed: () -> Unit
 ) {

@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.booking.presentation.booking
+package net.streamroutes.sreamroutesapp.features.parks.presentation.parks
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.SizeTransform
@@ -15,9 +15,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import net.streamroutes.sreamroutesapp.features.booking.components.BookinSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.parks.components.BookingSmallTopAppBar
 
-data class BookingItemClass(
+data class ParkItem(
     val parkingName: String,
     val parkingAddress: String,
     val price: Double,
@@ -33,12 +33,12 @@ data class BookingItemClass(
 )
 
 @Composable
-fun BookingScreen(
-    modifier: Modifier = Modifier
+fun ParkScreen(
+    onBackPressed: () -> Unit
 ) {
     // ontener lista
     val bookingList = listOf(
-        BookingItemClass(
+        ParkItem(
             parkingName = "Estacionamiento Central",
             parkingAddress = "Calle Principal 123, Guanajuato",
             price = 20.0,
@@ -52,7 +52,7 @@ fun BookingScreen(
             enter = "11:00:40",
             exit = "14:00:20"
         ),
-        BookingItemClass(
+        ParkItem(
             parkingName = "Estacionamiento Norte",
             parkingAddress = "Avenida Hidalgo 456, Guanajuato",
             price = 15.0,
@@ -70,17 +70,13 @@ fun BookingScreen(
     
     var onViewRoute by remember { mutableStateOf(false) }
 
-    val onBackPressed = {
-
-    }
-
     val onWatchRoute = {
         onViewRoute = true
     }
 
     Scaffold(
         topBar = {
-            BookinSmallTopAppBar(
+            BookingSmallTopAppBar(
                 onNavigationPressed = onBackPressed,
             )
         }
@@ -91,7 +87,7 @@ fun BookingScreen(
                 .fillMaxSize()
         ) {
             if(bookingList.isEmpty()) {
-                NoBooking()
+                NoParks()
             } else {
                 AnimatedContent(
                     targetState = onViewRoute,
@@ -113,13 +109,13 @@ fun BookingScreen(
                     label = ""
                 ) { isRoute ->
                     if (isRoute) {
-                        ParkingRouteBookingScreen(
+                        ParkRouteScreen(
                             onBackPressed = {
                                 onViewRoute = false
                             }
                         )
                     } else {
-                        BookingList(
+                        ParksList(
                             bookingList = bookingList,
                             onWatchRoute = onWatchRoute
                         )

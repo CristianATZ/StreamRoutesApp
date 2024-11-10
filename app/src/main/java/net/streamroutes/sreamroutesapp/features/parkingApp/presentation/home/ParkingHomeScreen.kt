@@ -2,7 +2,6 @@ package net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -57,8 +56,11 @@ import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingSma
 @SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
-    onOpenMenu: () -> Unit
+fun ParkingHomeScreen(
+    onOpenMenu: () -> Unit,
+    onSettingsPressed: () -> Unit,
+    onProfilePressed: () -> Unit,
+    onSelectParking: () -> Unit
 ) {
     var query by remember {
         mutableStateOf("")
@@ -66,14 +68,11 @@ fun HomeScreen(
     var viewall by remember {
         mutableStateOf(false)
     }
-    val viewTransition = remember { MutableTransitionState(false) }
-    viewTransition.targetState = !viewall
 
     var openFilter by remember {
         mutableStateOf(false)
     }
-    val filterTransition = remember { MutableTransitionState(false) }
-    filterTransition.targetState = openFilter
+
     var filters by remember {
         mutableStateOf(FilterParking())
     }
@@ -109,12 +108,8 @@ fun HomeScreen(
         topBar = {
             ParkingSmallTopAppBar(
                 onNavigationPressed = onOpenMenu,
-                onSettingsPressed = {
-
-                },
-                onProfilePressed = {
-
-                },
+                onSettingsPressed = onSettingsPressed,
+                onProfilePressed = onProfilePressed,
                 onFilterPressed = {
                     openFilter = !openFilter
                 }
@@ -128,7 +123,7 @@ fun HomeScreen(
         ) {
             // filtros
             AnimatedVisibility(
-                visibleState = filterTransition
+                visible = openFilter
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth()
@@ -229,7 +224,7 @@ fun HomeScreen(
             }
 
             AnimatedVisibility(
-                visibleState = viewTransition
+                visible = !viewall
             ) {
                 Column {
                     // barra de busqueda
@@ -323,7 +318,8 @@ fun HomeScreen(
                         title = "ITSUR",
                         description = "Av. Educacion Superior, 38890",
                         price = "31",
-                        calification = "3.8"
+                        calification = "3.8",
+                        onClick = onSelectParking
                     )
 
                     Spacer(Modifier.size(16.dp))

@@ -1,8 +1,6 @@
 package net.streamroutes.sreamroutesapp.ui.parking_screens
 
 import android.annotation.SuppressLint
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -82,7 +80,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.parking.ViajePkViewModel
 import java.time.LocalTime
 
 @Composable
-fun ParkingHomeScreen(
+fun HomeScreen(
     homePkViewModel: HomePkViewModel,
     accountPkViewModel: AccountPkViewModel,
     apartarPkViewModel: ApartarPkViewModel,

@@ -1,7 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.parking.presentation.qr
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.core.MutableTransitionState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +19,6 @@ import com.example.compose.yellow
 
 @Composable
 fun ParkingQrScreen(
-    modifier: Modifier = Modifier,
     onBackPressed: () -> Unit = {}
 ) {
     val background = listOf(orange, yellow)
@@ -35,9 +33,7 @@ fun ParkingQrScreen(
 
     }
 
-    Scaffold(
-
-    ) { innerPadding ->
+    Scaffold { innerPadding ->
         Box(
             modifier = Modifier
                 .padding(innerPadding)
