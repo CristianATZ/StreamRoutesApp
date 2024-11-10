@@ -77,50 +77,6 @@ class LoginActivity : ComponentActivity() {
                     navHostController = navHostController
                 )
 
-                // A surface container using the 'background' color from the theme
-                /*Surface(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    AppNavigation(
-                        navHostController = navHostController,
-                        myViewModel = myViewModel,
-                        parkingPkViewModel = parkingPkViewModel,
-                        homePkViewModel = homePkViewModel,
-                        viajePkViewModel = viajePkViewModel,
-                        apartarPkViewModel = apartarPkViewModel,
-                        orsViewModel = orsViewModel,
-                        routesViewModel = routesViewModel
-                    )
-                }*/
-                // EditProfileScreen()
-                //RoutesScreen(orsViewModel, routesViewModel)
-                //EditInformation()
-                //EditAccountScreen()
-                //EditProfileScreen()
-                //SavedPostScreen()
-                //SavedRouteScreen()
-                //HistoryScreen()
-                //PremiumScreen()
-                //MapsScreen()
-                //TurismScreen()
-                //ForumScreen()
-                //SettingsScreen()
-                //NotificationsScreen()
-                //MapsSettingsScreen()
-                //PrivacityScreen()
-                //ApparenceScreen()
-                //MapsSettingsScreen()
-                //StorageScreen()
-                //TransportApp()
-                //ParkingApp()
-                //TransportScreen()
-                //ParkingInformationScreen()
-                //ParkingRouteScreen()
-                //ParkingQrScreen()
-                //ParkingBookingScreen()
-                //BookingScreen()
-
-
                 /**
                  * PANTALLAS VINCULADAS CON BACK
                  */

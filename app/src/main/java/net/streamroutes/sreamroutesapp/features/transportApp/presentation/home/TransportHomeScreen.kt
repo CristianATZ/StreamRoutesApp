@@ -24,7 +24,7 @@ import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.Pro
 import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportSmallTopAppBar
 
 @Composable
-fun HomeScreen(
+fun TransportHomeScreen(
     profileViewModel: ProfileViewModel = hiltViewModel(),
     onSettingsPressed: () -> Unit,
     onProfilePressed: () -> Unit,

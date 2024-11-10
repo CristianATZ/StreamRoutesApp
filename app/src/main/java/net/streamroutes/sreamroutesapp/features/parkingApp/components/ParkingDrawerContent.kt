@@ -18,15 +18,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.navigation.Destinations
 import net.streamroutes.sreamroutesapp.features.components.DrawerItem
 
 @Composable
 fun ParkingDrawerContent(
-    selectedRoute: Int,
-    onChangeRoute: (Int) -> Unit,
+    navHostController: NavHostController,
     onLogOut: () -> Unit
 ) {
+    val currentbBackStackEntry = navHostController.currentBackStackEntryAsState()
+    val currentRoute = currentbBackStackEntry.value?.destination?.route
+
     ModalDrawerSheet(
         drawerShape = RectangleShape,
         modifier = Modifier
@@ -47,9 +52,11 @@ fun ParkingDrawerContent(
             label = stringResource(id = R.string.lblProfile),
             icon = Icons.Outlined.Person,
             iconDescription = stringResource(id = R.string.iconProfile),
-            selected = selectedRoute == 0,
+            selected = currentRoute == Destinations.Profile.route,
             onClick = {
-                onChangeRoute(0)
+                navHostController.navigate(Destinations.Profile.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -59,9 +66,12 @@ fun ParkingDrawerContent(
             label = stringResource(id = R.string.lblHome),
             icon = Icons.Outlined.Home,
             iconDescription = stringResource(id = R.string.iconHome),
-            selected = selectedRoute == 1,
+            selected = currentRoute == Destinations.HomeParking.route,
             onClick = {
-                onChangeRoute(1)
+                navHostController.navigate(Destinations.HomeParking.route) {
+                    launchSingleTop = true
+                    popUpTo(0) { inclusive = true }
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -71,9 +81,11 @@ fun ParkingDrawerContent(
             label = stringResource(id = R.string.lblParks),
             icon = Icons.Outlined.BookmarkBorder,
             iconDescription = stringResource(id = R.string.iconBooking),
-            selected = selectedRoute == 2,
+            selected = currentRoute == Destinations.Parks.route,
             onClick = {
-                onChangeRoute(2)
+                navHostController.navigate(Destinations.Parks.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -82,9 +94,11 @@ fun ParkingDrawerContent(
             label = stringResource(id = R.string.lblSettings),
             icon = Icons.Outlined.Settings,
             iconDescription = stringResource(id = R.string.iconSettings),
-            selected = selectedRoute == 3,
+            selected = currentRoute == Destinations.Settings.route,
             onClick = {
-                onChangeRoute(3)
+                navHostController.navigate(Destinations.Settings.route) {
+                    launchSingleTop = true
+                }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )

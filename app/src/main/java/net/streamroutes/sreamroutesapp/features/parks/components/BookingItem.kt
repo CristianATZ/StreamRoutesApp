@@ -1,6 +1,5 @@
-package net.streamroutes.sreamroutesapp.features.booking.components
+package net.streamroutes.sreamroutesapp.features.parks.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
@@ -10,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.material3.Card
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.QrCode
 import androidx.compose.material.icons.outlined.Route
@@ -18,7 +16,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
-import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -26,29 +23,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import com.example.compose.orange
-import com.example.compose.primary
-import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.features.booking.presentation.booking.BookingItemClass
+import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkItem
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
 import net.streamroutes.sreamroutesapp.features.profile.components.LineInformation
-import net.streamroutes.sreamroutesapp.utils.QrUtils.generateQRCode
-import net.streamroutes.sreamroutesapp.utils.brush
 
 @Composable
 fun BookingItem(
-    item: BookingItemClass,
+    item: ParkItem,
     onWatchRoute: () -> Unit
 ) {
     var openQr by remember {

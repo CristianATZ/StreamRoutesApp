@@ -15,7 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.navigation.TransportNavigation
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
-import net.streamroutes.sreamroutesapp.features.transportApp.components.DrawerContent
+import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportDrawerContent
 
 @AndroidEntryPoint
 class TransportActivity : ComponentActivity() {
@@ -41,7 +41,7 @@ class TransportActivity : ComponentActivity() {
                     drawerState = drawerState,
                     drawerContent = {
                         // MENU, LLAMAR COMPONENTE DrawerContent
-                        DrawerContent(
+                        TransportDrawerContent(
                             navHostController = navHostController,
                             onLogOut = {
                                 loginViewModel.signOut()

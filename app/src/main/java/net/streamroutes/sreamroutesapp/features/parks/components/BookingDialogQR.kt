@@ -1,4 +1,4 @@
-package net.streamroutes.sreamroutesapp.features.booking.components
+package net.streamroutes.sreamroutesapp.features.parks.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,13 +24,13 @@ import com.example.compose.orange
 import com.example.compose.primary
 import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.features.booking.presentation.booking.BookingItemClass
+import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkItem
 import net.streamroutes.sreamroutesapp.utils.QrUtils.generateQRCode
 
 @Composable
 fun BookingDialogQr(
     onDissmiss: () -> Unit,
-    item: BookingItemClass
+    item: ParkItem
 ) {
     val background = listOf(orange, yellow)
 
