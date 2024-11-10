@@ -16,11 +16,12 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
 import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 
-@Preview
 @Composable
 fun TransportSmallTopAppBar(
     modifier: Modifier = Modifier,
-    onNavigationPressed: () -> Unit = {}
+    onNavigationPressed: () -> Unit = {},
+    onProfilePressed: () -> Unit,
+    onSettingsPressed: () -> Unit
 ) {
     Column {
         CustomTopAppBar(
@@ -32,7 +33,8 @@ fun TransportSmallTopAppBar(
             },
             actions = {
                 ActionsTopBar(
-
+                    onProfilePressed = onProfilePressed,
+                    onSettingsPressed = onSettingsPressed
                 )
             },
             modifier = modifier

@@ -26,6 +26,8 @@ import net.streamroutes.sreamroutesapp.features.transportApp.components.Transpor
 @Composable
 fun HomeScreen(
     profileViewModel: ProfileViewModel = hiltViewModel(),
+    onSettingsPressed: () -> Unit,
+    onProfilePressed: () -> Unit,
     onMenuPressed: () -> Unit,
     onMapsPressed: () -> Unit,
     onTourismPressed: () -> Unit,
@@ -36,7 +38,9 @@ fun HomeScreen(
     Scaffold(
         topBar = {
             TransportSmallTopAppBar(
-                onNavigationPressed = onMenuPressed
+                onNavigationPressed = onMenuPressed,
+                onSettingsPressed = onSettingsPressed,
+                onProfilePressed = onProfilePressed
             )
         }
     ) { innerPadding ->

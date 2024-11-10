@@ -89,6 +89,16 @@ fun TransportNavigation(
         ) {
             HomeScreen(
                 onMenuPressed = onOpenMenu,
+                onSettingsPressed = {
+                    navHostController.navigate(Destinations.Settings.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onProfilePressed = {
+                    navHostController.navigate(Destinations.Profile.route) {
+                        launchSingleTop = true
+                    }
+                },
                 onMapsPressed = {
                     navHostController.navigate(Destinations.Maps.route) {
                         launchSingleTop = true
