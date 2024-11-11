@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.maps.presentation.transport
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -28,7 +29,9 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
+import net.streamroutes.sreamroutesapp.features.components.ShimmerMapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
+import net.streamroutes.sreamroutesapp.features.maps.components.ShimmerElementOption
 import net.streamroutes.sreamroutesapp.features.maps.components.TransportModalBottomSheet
 
 enum class TransportFilter {
@@ -175,6 +178,21 @@ fun TransportScreen(
                 time = route.route.arriveTime
             )
             Spacer(Modifier.size(16.dp))
+        }
+    }
+}
+
+@Composable
+fun ShimmerTransportScreen(
+    modifier: Modifier
+) {
+    Column(
+        modifier = modifier
+    ) {
+        ShimmerMapAllOptions()
+
+        repeat(3) {
+            ShimmerElementOption()
         }
     }
 }

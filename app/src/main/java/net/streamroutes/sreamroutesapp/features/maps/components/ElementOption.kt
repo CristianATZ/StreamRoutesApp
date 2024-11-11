@@ -6,10 +6,12 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
@@ -19,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -26,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.orange
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 @Preview(showBackground = true)
 @Composable
@@ -103,5 +107,43 @@ fun ElementOption(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ShimmerElementOption() {
+    Column {
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
+                .height(150.dp)
+                .clip(shapes.small)
+                .shimmerEffect()
+        )
+
+        Spacer(Modifier.size(8.dp))
+
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
+                .height(40.dp)
+                .clip(shapes.small)
+                .shimmerEffect()
+        )
+
+        Spacer(Modifier.size(8.dp))
+
+        Box(
+            modifier = Modifier
+                .padding(horizontal = 16.dp)
+                .fillMaxWidth()
+                .height(20.dp)
+                .clip(shapes.small)
+                .shimmerEffect()
+        )
+
+        Spacer(Modifier.size(16.dp))
     }
 }
