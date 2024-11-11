@@ -59,6 +59,7 @@ fun TransportDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Profile.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeTransport.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -73,7 +74,7 @@ fun TransportDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.HomeTransport.route) {
                     launchSingleTop = true
-                    popUpTo(0) { inclusive = true }
+                    popUpTo(Destinations.HomeTransport.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -88,6 +89,7 @@ fun TransportDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Premium.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeTransport.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -102,6 +104,7 @@ fun TransportDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Maps.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeTransport.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -116,6 +119,7 @@ fun TransportDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Tourism.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeTransport.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -130,6 +134,7 @@ fun TransportDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Forum.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeTransport.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -144,6 +149,7 @@ fun TransportDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Settings.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeTransport.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)

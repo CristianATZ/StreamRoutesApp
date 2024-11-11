@@ -89,10 +89,7 @@ fun TransportNavigation(
         ) {
             ProfileScreen (
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeTransport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 },
                 onEditProfile = {
                     navHostController.navigate(Destinations.EditProfile.route) {
@@ -127,10 +124,7 @@ fun TransportNavigation(
         ) {
             PremiumScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeTransport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }
@@ -145,10 +139,7 @@ fun TransportNavigation(
         ) {
             MapsScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeTransport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }
@@ -163,10 +154,7 @@ fun TransportNavigation(
         ) {
             TurismScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeTransport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }
@@ -181,10 +169,7 @@ fun TransportNavigation(
         ) {
             ForumScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeTransport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }
@@ -199,10 +184,7 @@ fun TransportNavigation(
         ) {
             SettingsMain(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeTransport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }

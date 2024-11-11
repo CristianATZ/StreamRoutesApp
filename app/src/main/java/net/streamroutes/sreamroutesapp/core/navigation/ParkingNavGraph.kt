@@ -70,10 +70,7 @@ fun ParkingNavigation(
         ) {
             ProfileScreen (
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeParking.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 },
                 onEditProfile = {
                     navHostController.navigate(Destinations.EditProfile.route) {
@@ -108,10 +105,7 @@ fun ParkingNavigation(
         ) {
             SettingsMain(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeParking.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }
@@ -126,10 +120,7 @@ fun ParkingNavigation(
         ) {
             ParkScreen(
                 onBackPressed = {
-                    navHostController.navigate(Destinations.HomeParking.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 }
             )
         }

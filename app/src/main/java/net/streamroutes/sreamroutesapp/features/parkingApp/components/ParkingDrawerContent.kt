@@ -70,7 +70,7 @@ fun ParkingDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.HomeParking.route) {
                     launchSingleTop = true
-                    popUpTo(0) { inclusive = true }
+                    popUpTo(Destinations.HomeParking.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -85,11 +85,13 @@ fun ParkingDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Parks.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeParking.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
+        // ajustes
         DrawerItem(
             label = stringResource(id = R.string.lblSettings),
             icon = Icons.Outlined.Settings,
@@ -98,6 +100,7 @@ fun ParkingDrawerContent(
             onClick = {
                 navHostController.navigate(Destinations.Settings.route) {
                     launchSingleTop = true
+                    popUpTo(Destinations.HomeParking.route) { inclusive = false }
                 }
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
