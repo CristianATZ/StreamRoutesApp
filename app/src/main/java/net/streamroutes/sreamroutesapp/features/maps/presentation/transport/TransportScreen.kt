@@ -97,89 +97,86 @@ fun TransportScreen(
         )
     }
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // filtros
-        item {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-                    .fillMaxWidth()
-            ) {
-                FilterChip(
-                    selected = filterStatus == TransportFilter.ALL,
-                    onClick = {
-                        updateFilter(TransportFilter.ALL)
-                    },
-                    label = {
-                        Text(text = stringResource(id = R.string.lblFilterAll))
-                    }
-                )
+    if(routes.isNullOrEmpty()){
+        ShimmerTransportScreen(modifier)
+    } else {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // filtros
+            item {
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .fillMaxWidth()
+                ) {
+                    FilterChip(
+                        selected = filterStatus == TransportFilter.ALL,
+                        onClick = {
+                            updateFilter(TransportFilter.ALL)
+                        },
+                        label = {
+                            Text(text = stringResource(id = R.string.lblFilterAll))
+                        }
+                    )
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                FilterChip(
-                    selected = filterStatus == TransportFilter.ONE_WAY,
-                    onClick = {
-                        updateFilter(TransportFilter.ONE_WAY)
-                    },
-                    label = {
-                        Text(text = stringResource(id = R.string.lblFilterOneWay))
-                    }
-                )
+                    FilterChip(
+                        selected = filterStatus == TransportFilter.ONE_WAY,
+                        onClick = {
+                            updateFilter(TransportFilter.ONE_WAY)
+                        },
+                        label = {
+                            Text(text = stringResource(id = R.string.lblFilterOneWay))
+                        }
+                    )
 
-                Spacer(modifier = Modifier.size(8.dp))
+                    Spacer(modifier = Modifier.size(8.dp))
 
-                FilterChip(
-                    selected = filterStatus == TransportFilter.RETURN,
-                    onClick = {
-                        updateFilter(TransportFilter.RETURN)
-                    },
-                    label = {
-                        Text(text = stringResource(id = R.string.lblFilterReturn))
-                    }
-                )
+                    FilterChip(
+                        selected = filterStatus == TransportFilter.RETURN,
+                        onClick = {
+                            updateFilter(TransportFilter.RETURN)
+                        },
+                        label = {
+                            Text(text = stringResource(id = R.string.lblFilterReturn))
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.size(16.dp))
             }
 
-            Spacer(modifier = Modifier.size(16.dp))
-        }
-
-        // ver mapa
-        item {
-            // cambiar por imagen
-            MapAllOptions(
-                onClick = onSelectMap
-            )
-
-            Spacer(modifier = Modifier.size(32.dp))
-        }
-
-        // Despues eliminar este, solo lo dejé para saber si me estaba trayendo datos o no
-        item {
-            if(routes.isNullOrEmpty()){
-                Text(
-                    text = "cargando..."
+            // ver mapa
+            item {
+                // cambiar por imagen
+                MapAllOptions(
+                    onClick = onSelectMap
                 )
-            }
-        }
 
-        // Rutas de transporte
-        items(routes ?: emptyList()) { route ->
-            ElementOption(
-                onClick = {
-                    //openBottomSheet
-                    selectedRoute = route
-                    isOpen = !isOpen
-                },
-                title = route.route.name,
-                time = route.route.arriveTime
-            )
-            Spacer(Modifier.size(16.dp))
+                Spacer(modifier = Modifier.size(32.dp))
+            }
+
+            // Rutas de transporte
+            items(routes ?: emptyList()) { route ->
+                ElementOption(
+                    onClick = {
+                        //openBottomSheet
+                        selectedRoute = route
+                        isOpen = !isOpen
+                    },
+                    title = route.route.name,
+                    time = route.route.arriveTime
+                )
+                Spacer(Modifier.size(16.dp))
+            }
         }
     }
+
+
 }
 
 @Composable
