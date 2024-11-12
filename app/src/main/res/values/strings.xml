@@ -632,7 +632,7 @@
     <string name="lblTurismDetails">Detalles del lugar</string>
     <string name="lblTurismTotalRoutes">• %1$d rutas cercanas</string>
     <string name="lblTurismMoreInformation">Saber mas</string>
-    <string name="lblTurismCalendar">• Horario de %1$s</string>
+    <string name="lblTurismCalendar">• Horarios %1$s</string>
     <string name="lblTurismPrice">• Costo: %1$s</string>
     <string name="lblTurismFree">Sin costo</string>
     <string name="iconMoreTurism">Visitar pagina</string>

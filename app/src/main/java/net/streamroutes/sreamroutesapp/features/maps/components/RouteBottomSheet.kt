@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +27,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 @Composable
@@ -36,8 +41,11 @@ fun RouteBottomSheet(
     colorRoute: Color = Color.Black, // este dato tambien del viewmodel
     colorStop: Color = Color.Green,
     onBackPressed: () -> Unit = {},
-    onShareLocation: () -> Unit = {}
+    onShareLocation: () -> Unit = {},
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
+    val selectedRoute by transportViewModel.selectedRoute.collectAsState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -46,7 +54,7 @@ fun RouteBottomSheet(
     ) {
         // nombre de la ruta
         Text(
-            text = routeName,
+            text = selectedRoute?.route?.name ?: "cargando...",
             style = typography.headlineSmall
         )
 
@@ -77,7 +85,7 @@ fun RouteBottomSheet(
         // siguiente parada
 
 
-        if(timeToStop != null){
+        if(selectedRoute?.route?.arriveTime != null){
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = colorScheme.tertiaryContainer,
@@ -95,7 +103,7 @@ fun RouteBottomSheet(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = timeToStop,
+                        text = selectedRoute?.route?.arriveTime.toString() + " minutos",
                         style = typography.displayMedium
                     )
 

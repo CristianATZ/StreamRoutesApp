@@ -50,7 +50,8 @@ fun TransportScreen(
 
     // Obtiene el controlador del teclado
     val routes by transportViewModel.routes.collectAsState()
-    var selectedRoute by remember { mutableStateOf<RouteWithPlaces?>(null) }
+    //var selectedRoute by remember { mutableStateOf<RouteWithPlaces?>(null) }
+    val selectedRoute by transportViewModel.selectedRoute.collectAsState()
 
 
     var filterStatus by remember {
@@ -165,7 +166,7 @@ fun TransportScreen(
                 ElementOption(
                     onClick = {
                         //openBottomSheet
-                        selectedRoute = route
+                        transportViewModel.selectRoute(route)
                         isOpen = !isOpen
                     },
                     title = route.route.name,

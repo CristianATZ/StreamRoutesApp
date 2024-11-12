@@ -50,6 +50,17 @@ fun TurismModalBottomSheet(
     onSelectRoute: () -> Unit = {},
     onMore: () -> Unit
 ) {
+    // Variable con los días de la semana
+    val dias = listOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
+
+    // Map para dar formato al horario que se trae desde base de datos
+    val horario = turisticPoint?.turisticPoint?.days?.let { days ->
+        days.mapIndexed { index, day ->
+            "${dias[index]}: ${day.startTime} - ${day.endTime}"
+        }.joinToString("\n")
+    } ?: "cargando..."
+
+
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismiss
@@ -104,12 +115,12 @@ fun TurismModalBottomSheet(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.lblTurismCalendar, turisticPoint?.turisticPoint?.days?.toString() ?: "cargando..."),
+                    text = stringResource(id = R.string.lblTurismCalendar, "\n" + horario),
                     style = typography.labelLarge
                 )
 
                 Text(
-                    text = stringResource(id = R.string.lblTurismPrice, turisticPoint?.turisticPoint?.fee ?: stringResource(id = R.string.lblTurismFree)),
+                    text = stringResource(id = R.string.lblTurismPrice, "$ " +turisticPoint?.turisticPoint?.fee ?: stringResource(id = R.string.lblTurismFree)),
                     style = typography.labelLarge
                 )
 

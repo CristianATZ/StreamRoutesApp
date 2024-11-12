@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,12 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
@@ -38,9 +43,11 @@ import net.streamroutes.sreamroutesapp.features.maps.components.ShimmerRouteDeta
 fun MapRouteScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    onShareLocation: () -> Unit
+    onShareLocation: () -> Unit,
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
+    val selectedRoute by transportViewModel.selectedRoute.collectAsState()
 
     // CALCULAR LA INFORMACION PARA EN ROUTE DETAILS
     // INFORMACION DE LA RUTA
@@ -59,8 +66,9 @@ fun MapRouteScreen(
         }
     }
 
+    // --
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(21.018189012668753, -101.26659563575932), 17f) // San Francisco como posición inicial
     }
 
     BottomSheetScaffold(
@@ -85,7 +93,8 @@ fun MapRouteScreen(
                     cameraPositionState = cameraPositionState,
                     onMapLoaded = {
 
-                    }
+                    },
+                    selectedRoute = selectedRoute
                     // pasar en parametro la informacion de la ruta
                 )
             } else {
@@ -116,13 +125,33 @@ fun ShimmerRouteScreenContent() {
 @Composable
 fun MapRouteScreenContent(
     cameraPositionState: CameraPositionState,
-    onMapLoaded: () -> Unit
+    onMapLoaded: () -> Unit,
+    selectedRoute: RouteWithPlaces?
 ) {
     MapFullSize(
         cameraPositionState = cameraPositionState,
         onMapClick = { },
         onMapLoaded = onMapLoaded
     ) {
+        Marker(
+            state = MarkerState(
+                LatLng(
+                    selectedRoute?.startPlace?.latitude!!.toDouble(),
+                    selectedRoute?.startPlace?.longitude!!.toDouble()
+                )
+            )
+        )
+
+        Marker(
+            state = MarkerState(
+                LatLng(
+                    selectedRoute?.endPlace?.latitude!!.toDouble(),
+                    selectedRoute?.endPlace?.longitude!!.toDouble()
+                )
+            )
+        )
+
+        
         // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
     }
 

@@ -11,29 +11,41 @@ import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import javax.inject.Inject
 
-@HiltViewModel
-class TransportViewModel @Inject constructor(
-    private val routeRepository: RouteRepository
-) : ViewModel() {
-    private val _routes = MutableStateFlow<List<RouteWithPlaces>?>(null)
-    val routes: StateFlow<List<RouteWithPlaces>?> = _routes
+    @HiltViewModel
+    class TransportViewModel @Inject constructor(
+        private val routeRepository: RouteRepository
+    ) : ViewModel() {
+        private val _routes = MutableStateFlow<List<RouteWithPlaces>?>(null)
+        val routes: StateFlow<List<RouteWithPlaces>?> = _routes
 
-    /**
-     * Inicializador del viewModel para obtener todas las rutas de transporte
-     */
-    init {
-        getAllRoutes()
-    }
+        private val _selectedRoute = MutableStateFlow<RouteWithPlaces?>(null)
+        val selectedRoute: StateFlow<RouteWithPlaces?> = _selectedRoute
 
-    /**
-     * Método usaro para traer todas las registradas en la base de datos
-     */
-    fun getAllRoutes(){
-        viewModelScope.launch {
-            _routes.value = routeRepository.getAllRoutes()
+        /**
+         * Inicializador del viewModel para obtener todas las rutas de transporte
+         */
+        init {
+            getAllRoutes()
+        }
+
+        /**
+         * Método usaro para traer todas las registradas en la base de datos
+         */
+        fun getAllRoutes(){
+            viewModelScope.launch {
+                _routes.value = routeRepository.getAllRoutes()
+                _selectedRoute.value = routes?.value?.get(0)
+            }
+        }
+
+
+        /**
+         * Método para actualizar la ruta seleccionada
+         */
+        fun selectRoute(route: RouteWithPlaces) {
+            _selectedRoute.value = route
         }
     }
-}
 
 class TransportViewModelFactory(
     private val routeRepository: RouteRepository
