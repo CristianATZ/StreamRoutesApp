@@ -8,14 +8,17 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Delete
@@ -37,6 +40,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -45,6 +49,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
+import net.streamroutes.sreamroutesapp.utils.shimmerEffect
+import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,8 +58,59 @@ fun CommentModalBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit = {},
     isSaved: Boolean = false,
-    commentList: List<Comment> = emptyList()
 ) {
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
+    val sampleComments = listOf(
+        Comment(
+            commenterName = "CristianToZa",
+            description = "¡Hola! ¿Cómo te va? Hace tiempo que no hablamos, espero que todo esté bien contigo y que las cosas estén marchando de maravilla. ¿Qué has estado haciendo últimamente?",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Espero que tengas un buen día lleno de éxitos y alegrías. Siempre es importante recordar que cada día es una nueva oportunidad para aprender algo nuevo y crecer.",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "¿Qué planes tienes para hoy? Estoy pensando en salir a caminar un rato por el parque para despejarme y aprovechar el buen clima. Sería genial si te animas a venir también.",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "¡Nos vemos luego! Estaré por la zona del centro en la tarde, así que si tienes tiempo libre podemos juntarnos para tomar un café y ponernos al día.",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Quería comentarte sobre ese proyecto en el que estás trabajando, he estado pensando en algunas ideas que podrían ser útiles y me encantaría compartirlas contigo pronto.",
+            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "No puedo creer que ya estemos en junio de 2024, el tiempo vuela. Parece que fue ayer cuando comenzamos este año, y ahora ya estamos a mitad de camino.",
+            commentDate = LocalDateTime.of(2024, 6, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "El invierno de este año ha sido bastante frío, ¿no crees? Aunque a veces disfruto de los días frescos, estoy deseando que llegue la primavera para poder salir más.",
+            commentDate = LocalDateTime.of(2023, 2, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "CristianToZa",
+            description = "Ya casi es septiembre, uno de mis meses favoritos. Me encanta cuando comienza el otoño, el clima es perfecto y los paisajes se ven impresionantes con los colores de las hojas.",
+            commentDate = LocalDateTime.of(2023, 9, 1, 12, 0),
+        ),
+        Comment(
+            commenterName = "HOla",
+            description = "El verano ha sido bastante caluroso este año, pero he disfrutado de varias salidas a la playa. Me encanta la sensación de estar cerca del mar, es realmente relajante.",
+            commentDate = LocalDateTime.of(2023, 7, 1, 12, 0),
+        )
+    )
+
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismiss,
@@ -74,17 +131,58 @@ fun CommentModalBottomSheet(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp).graphicsLayer(alpha = 0.5f))
 
-            // lista de comentarios
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxHeight(0.5f)
-                    .weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                items(commentList) { comment ->
-                    CommentItem(
-                        comment = comment
-                    )
+            if(!isLoading) {
+                // lista de comentarios
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxHeight(0.5f)
+                        .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(sampleComments) { comment ->
+                        CommentItem(
+                            comment = comment
+                        )
+                    }
+                }
+            } else {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxHeight(0.5f)
+                        .weight(1f),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    items(3) {
+                        Row {
+                            Spacer(
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .size(50.dp)
+                                    .clip(CircleShape)
+                                    .shimmerEffect()
+                            )
+
+                            Column {
+                                Spacer(
+                                    modifier = Modifier
+                                        .padding(start = 8.dp, end = 16.dp)
+                                        .fillMaxWidth(0.4f)
+                                        .height(25.dp)
+                                        .clip(shapes.small)
+                                        .shimmerEffect()
+                                )
+
+                                Spacer(
+                                    modifier = Modifier
+                                        .padding(start = 8.dp, end = 16.dp, top = 8.dp, bottom = 16.dp)
+                                        .fillMaxWidth()
+                                        .height(50.dp)
+                                        .clip(shapes.small)
+                                        .shimmerEffect()
+                                )
+                            }
+                        }
+                    }
                 }
             }
 

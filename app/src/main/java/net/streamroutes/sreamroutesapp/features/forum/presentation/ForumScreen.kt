@@ -2,9 +2,11 @@ package net.streamroutes.sreamroutesapp.features.forum.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -38,6 +41,7 @@ import net.streamroutes.sreamroutesapp.features.components.PostItem
 import net.streamroutes.sreamroutesapp.features.forum.components.ForumSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.forum.components.MoreModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.forum.components.PostModalBottomSheet
+import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +49,9 @@ import java.time.LocalDateTime
 fun ForumScreen(
     onBackPressed: () -> Unit
 ) {
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
 
     val scope = rememberCoroutineScope()
 
@@ -103,54 +110,6 @@ fun ForumScreen(
                 Comment("Usuario6", LocalDateTime.of(2023, 10, 5, 20, 30), "Es una excelente manera de mejorar la UI."),
                 Comment("TechEnthusiast", LocalDateTime.of(2023, 10, 5, 21, 0), "¡Sí! Definitivamente le da un gran aspecto a las aplicaciones.")
             )
-        )
-    )
-
-    val sampleComments = listOf(
-        Comment(
-            commenterName = "CristianToZa",
-            description = "¡Hola! ¿Cómo te va? Hace tiempo que no hablamos, espero que todo esté bien contigo y que las cosas estén marchando de maravilla. ¿Qué has estado haciendo últimamente?",
-            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "CristianToZa",
-            description = "Espero que tengas un buen día lleno de éxitos y alegrías. Siempre es importante recordar que cada día es una nueva oportunidad para aprender algo nuevo y crecer.",
-            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "CristianToZa",
-            description = "¿Qué planes tienes para hoy? Estoy pensando en salir a caminar un rato por el parque para despejarme y aprovechar el buen clima. Sería genial si te animas a venir también.",
-            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "CristianToZa",
-            description = "¡Nos vemos luego! Estaré por la zona del centro en la tarde, así que si tienes tiempo libre podemos juntarnos para tomar un café y ponernos al día.",
-            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "CristianToZa",
-            description = "Quería comentarte sobre ese proyecto en el que estás trabajando, he estado pensando en algunas ideas que podrían ser útiles y me encantaría compartirlas contigo pronto.",
-            commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "CristianToZa",
-            description = "No puedo creer que ya estemos en junio de 2024, el tiempo vuela. Parece que fue ayer cuando comenzamos este año, y ahora ya estamos a mitad de camino.",
-            commentDate = LocalDateTime.of(2024, 6, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "CristianToZa",
-            description = "El invierno de este año ha sido bastante frío, ¿no crees? Aunque a veces disfruto de los días frescos, estoy deseando que llegue la primavera para poder salir más.",
-            commentDate = LocalDateTime.of(2023, 2, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "CristianToZa",
-            description = "Ya casi es septiembre, uno de mis meses favoritos. Me encanta cuando comienza el otoño, el clima es perfecto y los paisajes se ven impresionantes con los colores de las hojas.",
-            commentDate = LocalDateTime.of(2023, 9, 1, 12, 0),
-        ),
-        Comment(
-            commenterName = "HOla",
-            description = "El verano ha sido bastante caluroso este año, pero he disfrutado de varias salidas a la playa. Me encanta la sensación de estar cerca del mar, es realmente relajante.",
-            commentDate = LocalDateTime.of(2023, 7, 1, 12, 0),
         )
     )
 
@@ -240,7 +199,6 @@ fun ForumScreen(
         // PROBAR DE ESTAR FORMA
         CommentModalBottomSheet(
             sheetState = commentSheetState,
-            commentList = sampleComments,
             onDismiss = openCommentBottomSheet
         )
     }
@@ -253,67 +211,160 @@ fun ForumScreen(
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            // letra y barra de busqueda
-            item {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    // CAMBIAR POR PRIMERA LETRA
-                    Box(
+        if(!isLoading) {
+            ForumScreenContent(
+                samplePostTemps = samplePostTemps,
+                openCommentBottomSheet = openCommentBottomSheet,
+                openPostBottomSheet = openPostBottomSheet,
+                openMoreBottomSheet = openMoreBottomSheet,
+                updateMoreSelect = { info: Pair<String, LocalDateTime>? ->
+                    updateMoreSelect(info)
+                },
+                modifier = Modifier.padding(innerPadding)
+            )
+        } else {
+            ShimmerForumScreen(
+                modifier = Modifier.padding(innerPadding)
+            )
+        }
+    }
+}
+
+@Composable
+fun ShimmerForumScreen(modifier: Modifier) {
+    Column(
+        modifier = modifier
+    ) {
+        repeat(3) {
+            Box(
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth()
+                    .background(colorScheme.surfaceContainer)
+            ) {
+                Column {
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .fillMaxWidth(0.75f)
+                            .height(25.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
+                    )
+
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth(0.3f)
+                            .height(25.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
+                    )
+
+                    Spacer(
                         modifier = Modifier
                             .padding(16.dp)
-                            .background(colorScheme.tertiaryContainer, shapes.extraLarge)
-                            .size(40.dp),
-                        contentAlignment = Alignment.Center
-                    ){
-                        Text(
-                            text = "C",
-                            style = typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
+                            .fillMaxWidth()
+                            .height(75.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
+                    )
+
+                    Row(
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    ) {
+                        Spacer(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .weight(1f)
+                                .height(25.dp)
+                                .clip(shapes.small)
+                                .shimmerEffect()
+                        )
+
+                        Spacer(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .weight(1f)
+                                .height(25.dp)
+                                .clip(shapes.small)
+                                .shimmerEffect()
                         )
                     }
-
-                    OutlinedCard(
-                        onClick = openPostBottomSheet,
-                        shape = shapes.extraLarge,
-                        modifier = Modifier
-                            .weight(1f)
-                            .height(40.dp)
-                    ) {
-                        Row(
-                            modifier = Modifier.fillMaxSize(),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Spacer(modifier = Modifier.size(16.dp))
-
-                            Text(
-                                text = stringResource(id = R.string.lblPostSomething)
-                            )
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.size(16.dp))
                 }
             }
+        }
+    }
+}
 
-            items(samplePostTemps) { post ->
-                PostItem(
-                    postTemp = post,
-                    onLikePressed = {
-                        // ACTUALIZAR DATO EN FIRESTORE
-                    },
-                    onCommentPressed = openCommentBottomSheet,
-                    onMorePressed = {
-                        updateMoreSelect(Pair(post.authorName, post.publicationDate))
-                        openMoreBottomSheet()
+@Composable
+fun ForumScreenContent(
+    samplePostTemps: List<PostTemp>,
+    openCommentBottomSheet: () -> Unit,
+    openPostBottomSheet: () -> Unit,
+    modifier: Modifier,
+    openMoreBottomSheet: () -> Unit,
+    updateMoreSelect: (Pair<String, LocalDateTime>?) -> Unit,
+) {
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        // letra y barra de busqueda
+        item {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // CAMBIAR POR PRIMERA LETRA
+                Box(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .background(colorScheme.tertiaryContainer, shapes.extraLarge)
+                        .size(40.dp),
+                    contentAlignment = Alignment.Center
+                ){
+                    Text(
+                        text = "C",
+                        style = typography.headlineSmall,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                OutlinedCard(
+                    onClick = openPostBottomSheet,
+                    shape = shapes.extraLarge,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(40.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Spacer(modifier = Modifier.size(16.dp))
+
+                        Text(
+                            text = stringResource(id = R.string.lblPostSomething)
+                        )
                     }
-                )
+                }
+
+                Spacer(modifier = Modifier.size(16.dp))
             }
+        }
+
+        items(samplePostTemps) { post ->
+            PostItem(
+                postTemp = post,
+                onLikePressed = {
+                    // ACTUALIZAR DATO EN FIRESTORE
+                },
+                onCommentPressed = openCommentBottomSheet,
+                onMorePressed = {
+                    updateMoreSelect(Pair(post.authorName, post.publicationDate))
+                    openMoreBottomSheet()
+                }
+            )
         }
     }
 }

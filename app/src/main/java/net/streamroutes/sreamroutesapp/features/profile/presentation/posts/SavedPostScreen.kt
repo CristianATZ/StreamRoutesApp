@@ -161,7 +161,6 @@ fun SavedPostScreen(
     if(isOpen) {
         CommentModalBottomSheet(
             sheetState = sheetState,
-            commentList = sampleComments,
             onDismiss = openBottomSheet,
             isSaved = true
         )
