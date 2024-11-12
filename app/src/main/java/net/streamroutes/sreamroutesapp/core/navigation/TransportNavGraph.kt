@@ -83,7 +83,7 @@ fun TransportNavigation(
         composable(
             route = Destinations.Profile.route,
             enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
+            exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
