@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
 import net.streamroutes.sreamroutesapp.features.components.ShimmerMapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption

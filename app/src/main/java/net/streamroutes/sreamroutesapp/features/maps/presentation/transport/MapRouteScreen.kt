@@ -13,12 +13,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -47,14 +45,8 @@ fun MapRouteScreen(
     transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
-    val selectedRoute by transportViewModel.selectedRoute.collectAsState()
 
-    // CALCULAR LA INFORMACION PARA EN ROUTE DETAILS
-    // INFORMACION DE LA RUTA
-    // CAMBIAR EL ESTADO
-    var isLoading by remember {
-        mutableStateOf(false)
-    }
+    val selectedRoute by transportViewModel.selectedRoute.collectAsState()
 
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(initialValue = SheetValue.Hidden, skipHiddenState = false)
@@ -66,18 +58,13 @@ fun MapRouteScreen(
         }
     }
 
-    // --
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(21.018189012668753, -101.26659563575932), 17f) // San Francisco como posición inicial
-    }
-
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
             RouteBottomSheet(
                 onBackPressed = onBackPressed,
                 onShareLocation = onShareLocation,
-                timeToStop = if(isLoading) null else "5 minutos"
+                selectedRoute = selectedRoute
             )
         },
         sheetShadowElevation = 8.dp
@@ -87,16 +74,13 @@ fun MapRouteScreen(
         Box(
             modifier = modifier.fillMaxSize()
         ){
-            if(!isLoading) {
-                showBottomSheet()
-                MapRouteScreenContent(
-                    cameraPositionState = cameraPositionState,
-                    onMapLoaded = {
-
-                    },
-                    selectedRoute = selectedRoute
-                    // pasar en parametro la informacion de la ruta
-                )
+            if(selectedRoute != null) {
+                selectedRoute?.let {
+                    showBottomSheet()
+                    MapRouteScreenContent(
+                        selectedRoute = it
+                    )
+                }
             } else {
                 ShimmerRouteScreenContent()
             }
@@ -124,30 +108,37 @@ fun ShimmerRouteScreenContent() {
 
 @Composable
 fun MapRouteScreenContent(
-    cameraPositionState: CameraPositionState,
-    onMapLoaded: () -> Unit,
-    selectedRoute: RouteWithPlaces?
+    selectedRoute: RouteWithPlaces
 ) {
+
+    val startRoute = LatLng(selectedRoute.startPlace.latitude.toDouble(), selectedRoute.startPlace.longitude.toDouble())
+    val endRoute = LatLng(selectedRoute.endPlace.latitude.toDouble(), selectedRoute.endPlace.longitude.toDouble())
+
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(
+            //LatLng(21.018189012668753, -101.26659563575932)
+            startRoute,
+            17f
+        ) // San Francisco como posición inicial
+    }
+
     MapFullSize(
         cameraPositionState = cameraPositionState,
         onMapClick = { },
-        onMapLoaded = onMapLoaded
+        onMapLoaded = {
+
+        }
     ) {
         Marker(
             state = MarkerState(
-                LatLng(
-                    selectedRoute?.startPlace?.latitude!!.toDouble(),
-                    selectedRoute?.startPlace?.longitude!!.toDouble()
-                )
+                startRoute
             )
         )
 
         Marker(
             state = MarkerState(
-                LatLng(
-                    selectedRoute?.endPlace?.latitude!!.toDouble(),
-                    selectedRoute?.endPlace?.longitude!!.toDouble()
-                )
+                endRoute
             )
         )
 

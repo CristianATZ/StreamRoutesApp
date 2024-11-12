@@ -24,8 +24,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.compose.orange
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.navigation.Destinations
 import net.streamroutes.sreamroutesapp.features.components.CustomTopAppBar
 import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 
@@ -33,16 +36,18 @@ import net.streamroutes.sreamroutesapp.features.components.NavigationButton
 fun MapsSmallTopAppBar(
     title: String,
     onBackPressed: () -> Unit = {},
-    currentTab: Int = 1,
-    onChangeTab: (Int) -> Unit = {},
-    onSettingsPressed: () -> Unit = {}
+    onSettingsPressed: () -> Unit = {},
+    mapsNavHostController: NavHostController
 ) {
+    val currentEntry = mapsNavHostController.currentBackStackEntryAsState()
+    val currentRoute = currentEntry.value?.destination?.route
 
-    val tabs = listOf(
-        Triple(stringResource(id = R.string.lblTransport), Icons.Outlined.DirectionsBus, stringResource(id = R.string.iconBus)),
-        Triple(stringResource(id = R.string.lblPlanner), Icons.Outlined.LocationOn, stringResource(id = R.string.iconLocation)),
-        Triple(stringResource(id = R.string.lblWalking), Icons.AutoMirrored.Outlined.DirectionsWalk, stringResource(id = R.string.iconFootWalking))
-    )
+    val currentTab = when(currentRoute) {
+        Destinations.Transport.route -> 0
+        Destinations.Planner.route -> 1
+        Destinations.Fastest.route -> 2
+        else -> 0
+    }
 
     Column {
         CustomTopAppBar(
@@ -74,33 +79,95 @@ fun MapsSmallTopAppBar(
                 )
             },
         ) {
-            tabs.forEachIndexed { index, tab ->
-                Tab(
-                    selected = index == currentTab,
-                    text = {
-                        AnimatedContent(
-                            targetState = index == currentTab, label = ""
-                        ) { isSelected ->
-                            if(isSelected) {
-                                Text(
-                                    text = tab.first,
-                                    style = typography.headlineSmall
-                                )
-                            } else {
-                                Icon(
-                                    imageVector = tab.second,
-                                    contentDescription = tab.third
-                                )
-                            }
+            // transporte
+            Tab(
+                selected = currentRoute == Destinations.Transport.route,
+                text = {
+                    AnimatedContent(
+                        targetState = currentRoute == Destinations.Transport.route, label = ""
+                    ) { isSelected ->
+                        if(isSelected) {
+                            Text(
+                                text = stringResource(id = R.string.lblTransport),
+                                style = typography.headlineSmall
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.DirectionsBus,
+                                contentDescription = stringResource(R.string.iconBus)
+                            )
                         }
-                    },
-                    selectedContentColor = orange,
-                    unselectedContentColor = colorScheme.outline,
-                    onClick = {
-                        onChangeTab(index)
                     }
-                )
-            }
+                },
+                selectedContentColor = orange,
+                unselectedContentColor = colorScheme.outline,
+                onClick = {
+                    mapsNavHostController.navigate(Destinations.Transport.route) {
+                        launchSingleTop = true
+                        popUpTo(0) { inclusive = true }
+                    }
+                }
+            )
+
+            // planifica
+            Tab(
+                selected = currentRoute == Destinations.Planner.route,
+                text = {
+                    AnimatedContent(
+                        targetState = currentRoute == Destinations.Planner.route, label = ""
+                    ) { isSelected ->
+                        if(isSelected) {
+                            Text(
+                                text = stringResource(id = R.string.lblPlanner),
+                                style = typography.headlineSmall
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.LocationOn,
+                                contentDescription = stringResource(R.string.iconLocation)
+                            )
+                        }
+                    }
+                },
+                selectedContentColor = orange,
+                unselectedContentColor = colorScheme.outline,
+                onClick = {
+                    mapsNavHostController.navigate(Destinations.Planner.route) {
+                        launchSingleTop = true
+                        popUpTo(Destinations.Transport.route) { inclusive = false }
+                    }
+                }
+            )
+
+            // camina
+            Tab(
+                selected = currentRoute == Destinations.Fastest.route,
+                text = {
+                    AnimatedContent(
+                        targetState = currentRoute == Destinations.Fastest.route, label = ""
+                    ) { isSelected ->
+                        if(isSelected) {
+                            Text(
+                                text = stringResource(id = R.string.lblWalking),
+                                style = typography.headlineSmall
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.AutoMirrored.Outlined.DirectionsWalk,
+                                contentDescription = stringResource(R.string.iconFootWalking)
+                            )
+                        }
+                    }
+                },
+                selectedContentColor = orange,
+                unselectedContentColor = colorScheme.outline,
+                onClick = {
+                    mapsNavHostController.navigate(Destinations.Fastest.route) {
+                        launchSingleTop = true
+                        popUpTo(Destinations.Transport.route) { inclusive = false }
+                    }
+                }
+            )
         }
     }
 }

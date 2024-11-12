@@ -8,7 +8,6 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
@@ -38,7 +37,8 @@ fun TurismRouteScreen(
         sheetContent = {
             RouteBottomSheet(
                 onBackPressed = onBackPressed,
-                onShareLocation = onShareLocation
+                onShareLocation = onShareLocation,
+                selectedRoute = null
             )
         },
         sheetShadowElevation = 8.dp

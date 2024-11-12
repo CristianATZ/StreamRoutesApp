@@ -45,8 +45,6 @@ fun MapStopScreen(
         mutableStateOf(false)
     }
 
-
-
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(

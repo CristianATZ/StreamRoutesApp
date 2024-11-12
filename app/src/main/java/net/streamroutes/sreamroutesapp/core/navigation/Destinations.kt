@@ -34,6 +34,13 @@ sealed class Destinations(val route: String) {
     data object Routes : Destinations("routes")
     data object History : Destinations("history")
 
+    // maps navgraph
+    data object Transport : Destinations("transport")
+    data object Planner : Destinations("planner")
+    data object Fastest : Destinations("fastest")
+    data object MapStops : Destinations("mapStops")
+    data object MapRoute : Destinations("mapRoute")
+
     // parking navgraph
     data object HomeParking : Destinations("homeParking")
     data object Parks : Destinations("parking")
