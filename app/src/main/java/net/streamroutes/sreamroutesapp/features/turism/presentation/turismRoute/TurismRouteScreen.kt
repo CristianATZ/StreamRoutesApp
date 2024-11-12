@@ -58,9 +58,7 @@ fun TurismRouteScreen(
                 // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
             }
 
-            RouteDetails(
-                modifier = Modifier.align(Alignment.TopCenter)
-            )
+            RouteDetails()
         }
     }
 }
