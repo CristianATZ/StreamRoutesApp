@@ -6,8 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.choose.ChooseScreen
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.ParkingMain
+import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkScreen
 import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
@@ -39,12 +42,34 @@ fun TransportNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Destinations.HomeTransport.route
+        startDestination = Destinations.Select.route
     ) {
+        // seleccion de funciones
+        composable(
+            route = Destinations.Select.route,
+            enterTransition = { slideInFromRight },
+            exitTransition = { slideOutToLeft },
+            popEnterTransition = { slideInFromLeft },
+            popExitTransition = { slideOutToRight }
+        ) {
+            ChooseScreen(
+                onTransport = {
+                    navHostController.navigate(Destinations.HomeTransport.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onParking = {
+                    navHostController.navigate(Destinations.HomeParking.route) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
         // inicio
         composable(
             route = Destinations.HomeTransport.route,
-            enterTransition = { slideInFromLeft },
+            enterTransition = { slideInFromRight },
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
@@ -183,6 +208,44 @@ fun TransportNavigation(
             popExitTransition = { slideOutToRight }
         ) {
             SettingsMain(
+                onBackPressed = {
+                    navHostController.popBackStack()
+                }
+            )
+        }
+
+        // main parking
+        composable(
+            route = Destinations.HomeParking.route,
+            enterTransition = { slideInFromRight },
+            exitTransition = { slideOutToLeft },
+            popEnterTransition = { slideInFromLeft },
+            popExitTransition = { slideOutToRight }
+        ) {
+            ParkingMain(
+                onBackPressed = onOpenMenu,
+                onProfilePressed = {
+                    navHostController.navigate(Destinations.Profile.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onSettingsPressed = {
+                    navHostController.navigate(Destinations.Settings.route) {
+                        launchSingleTop = true
+                    }
+                }
+            )
+        }
+
+        // parqueos
+        composable(
+            route = Destinations.Parks.route,
+            enterTransition = { slideInFromRight },
+            exitTransition = { slideOutToRight },
+            popEnterTransition = { slideInFromRight },
+            popExitTransition = { slideOutToRight }
+        ) {
+            ParkScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }

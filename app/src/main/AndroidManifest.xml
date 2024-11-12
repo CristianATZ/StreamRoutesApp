@@ -40,11 +40,6 @@
             android:label="@string/title_activity_transport"
             android:theme="@style/Theme.Rumapp" />
         <activity
-            android:name=".app.ParkingActivity"
-            android:exported="false"
-            android:label="@string/title_activity_parking"
-            android:theme="@style/Theme.Rumapp" />
-        <activity
             android:name=".app.LoginActivity"
             android:windowSoftInputMode="adjustResize"
             android:exported="true"

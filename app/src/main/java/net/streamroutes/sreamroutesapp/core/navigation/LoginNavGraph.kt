@@ -10,7 +10,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import net.streamroutes.sreamroutesapp.app.ParkingActivity
 import net.streamroutes.sreamroutesapp.app.TransportActivity
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.choose.ChooseScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
@@ -54,10 +53,9 @@ fun LoginNavigation(
         ) {
             LoginScreen(
                 onSignIn = {
-                    navHostController.navigate(Destinations.Select.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    val intent = Intent(context, TransportActivity::class.java)
+                    context.startActivity(intent)
+                    (context as? ComponentActivity)?.finish()
                 },
                 onSignUp = {
                     navHostController.navigate(Destinations.SignUp.route) {
@@ -98,28 +96,6 @@ fun LoginNavigation(
             PasswordScreen(
                 onBackSignIn = {
                     navHostController.popBackStack()
-                }
-            )
-        }
-
-        // seleccion de funciones
-        composable(
-            route = Destinations.Select.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
-            popExitTransition = { slideOutToRight }
-        ) {
-            ChooseScreen(
-                onTransport = {
-                    val intent = Intent(context, TransportActivity::class.java)
-                    context.startActivity(intent)
-                    (context as? ComponentActivity)?.finish()
-                },
-                onParking = {
-                    val intent = Intent(context, ParkingActivity::class.java)
-                    context.startActivity(intent)
-                    (context as? ComponentActivity)?.finish()
                 }
             )
         }

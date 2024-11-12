@@ -42,7 +42,7 @@ fun SubParkingNavigation(
         // lista de estacionamientos
         composable(
             route = Destinations.Parking.route,
-            enterTransition = { slideInFromLeft },
+            enterTransition = { slideInFromRight },
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
