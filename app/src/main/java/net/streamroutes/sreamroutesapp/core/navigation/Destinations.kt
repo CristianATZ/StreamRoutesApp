@@ -10,16 +10,19 @@ sealed class Destinations(val route: String) {
 
     // transport navgraph
     data object Profile : Destinations("profile")
-    data object HomeEditProfile : Destinations("homeEditProfile")
     data object HomeTransport : Destinations("homeTransport")
     data object Premium : Destinations("premium")
     data object Maps : Destinations("maps")
-    data object Tourism : Destinations("tourism")
+    data object HomeTourism : Destinations("homeTourism")
     data object Forum : Destinations("forum")
     data object Settings : Destinations("settings")
 
+    // tourism navgraph
+    data object Tourism : Destinations("tourism")
+    data object MapsPoints : Destinations("mapsPoints")
+    data object TourismRoute : Destinations("tourismRoute")
+
     // settings navgraph
-    data object HomeSettings : Destinations("homeSettings")
     data object NotificationsSettings : Destinations("notificationsSettings")
     data object MapsSettings : Destinations("mapsSettings")
     data object PrivacitySettings : Destinations("privacitySettings")
@@ -39,7 +42,7 @@ sealed class Destinations(val route: String) {
     data object Planner : Destinations("planner")
     data object Fastest : Destinations("fastest")
     data object MapStops : Destinations("mapStops")
-    data object MapRoute : Destinations("mapRoute")
+    data object TransportRoute : Destinations("transportRoute")
 
     // parking navgraph
     data object HomeParking : Destinations("homeParking")

@@ -8,22 +8,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.navigation.SettingsNavigation
 import net.streamroutes.sreamroutesapp.features.profile.components.RowField
 import net.streamroutes.sreamroutesapp.features.settings.components.SettingsSmallTopAppBar
-
-@Composable
-fun SettingsMain(
-    onBackPressed: () -> Unit
-) {
-    val settingsNavHostController = rememberNavController()
-    SettingsNavigation(
-        navHostController = settingsNavHostController,
-        onBackPressed = onBackPressed
-    )
-}
 
 @Composable
 fun SettingsScreen(

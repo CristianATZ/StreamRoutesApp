@@ -49,7 +49,10 @@ fun MapRouteScreen(
     val selectedRoute by transportViewModel.selectedRoute.collectAsState()
 
     val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = rememberStandardBottomSheetState(initialValue = SheetValue.Hidden, skipHiddenState = false)
+        bottomSheetState = rememberStandardBottomSheetState(
+            initialValue = SheetValue.Hidden,
+            skipHiddenState = false
+        )
     )
 
     val showBottomSheet = {

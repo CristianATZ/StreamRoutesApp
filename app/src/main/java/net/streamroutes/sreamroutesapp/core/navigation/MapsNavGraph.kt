@@ -66,7 +66,7 @@ fun MapsNavigation(
             route = Destinations.Transport.route,
             enterTransition = {
                 if(initialState.destination.route == Destinations.MapStops.route ||
-                    initialState.destination.route == Destinations.MapRoute.route) {
+                    initialState.destination.route == Destinations.TransportRoute.route) {
                     slideInFromTop
                 } else {
                     slideInFromLeft
@@ -74,7 +74,7 @@ fun MapsNavigation(
             },
             exitTransition = {
                 if(targetState.destination.route == Destinations.MapStops.route ||
-                    targetState.destination.route == Destinations.MapRoute.route) {
+                    targetState.destination.route == Destinations.TransportRoute.route) {
                     slideOutToTop
                 } else {
                     slideOutToLeft
@@ -83,7 +83,7 @@ fun MapsNavigation(
         ) {
             TransportScreen(
                 onSelectRoute = {
-                    navHostController.navigate(Destinations.MapRoute.route) {
+                    navHostController.navigate(Destinations.TransportRoute.route) {
                         launchSingleTop = true
                     }
                 },
@@ -146,17 +146,15 @@ fun MapsNavigation(
         ) {
             MapStopScreen (
                 onBackPressed = {
-                    navHostController.navigate(Destinations.Transport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
-                }
+                    navHostController.popBackStack()
+                },
+                modifier = modifier
             )
         }
 
         // mapa de la ruta
         composable(
-            route = Destinations.MapRoute.route,
+            route = Destinations.TransportRoute.route,
             enterTransition = {
                 slideInFromBottom
             },
@@ -166,10 +164,7 @@ fun MapsNavigation(
         ) {
             MapRouteScreen (
                 onBackPressed = {
-                    navHostController.navigate(Destinations.Transport.route) {
-                        launchSingleTop = true
-                        popUpTo(0) { inclusive = true }
-                    }
+                    navHostController.popBackStack()
                 },
                 onShareLocation = {
 

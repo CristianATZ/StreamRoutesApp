@@ -16,7 +16,6 @@ import net.streamroutes.sreamroutesapp.features.profile.presentation.history.His
 import net.streamroutes.sreamroutesapp.features.profile.presentation.posts.SavedPostScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.routes.SavedRouteScreen
@@ -24,11 +23,10 @@ import net.streamroutes.sreamroutesapp.features.settings.presentation.apparence.
 import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsSettingsScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.NotificationsScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.privacity.PrivacityScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
 import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.storage.StorageScreen
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.TransportHomeScreen
-import net.streamroutes.sreamroutesapp.features.turism.presentation.TurismScreen
+import net.streamroutes.sreamroutesapp.features.turism.presentation.TourismScreen
 
 @Composable
 fun TransportNavigation(
@@ -104,7 +102,7 @@ fun TransportNavigation(
                     }
                 },
                 onTourismPressed = {
-                    navHostController.navigate(Destinations.Tourism.route) {
+                    navHostController.navigate(Destinations.HomeTourism.route) {
                         launchSingleTop = true
                     }
                 },
@@ -148,13 +146,13 @@ fun TransportNavigation(
 
         // turismo
         composable(
-            route = Destinations.Tourism.route,
+            route = Destinations.HomeTourism.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            TurismScreen(
+            TourismScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }

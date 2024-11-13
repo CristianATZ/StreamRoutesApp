@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
@@ -39,10 +40,11 @@ import net.streamroutes.sreamroutesapp.features.maps.components.StopInformationB
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapStopScreen(
-    onBackPressed: () -> Unit,
+    modifier: Modifier = Modifier,
+    onBackPressed: () -> Unit
 ) {
     var isLoading by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
 
     val scope = rememberCoroutineScope()
@@ -52,10 +54,6 @@ fun MapStopScreen(
             skipHiddenState = false
         )
     )
-
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
-    }
 
     val stopList = listOf(
         Pair(
@@ -121,12 +119,9 @@ fun MapStopScreen(
             }
         },
         sheetShadowElevation = 8.dp
-        // CAMBIAR EL MAPA, CALLES BLANCAS
-        // CONSTRUCCIONES GRIS PARA QUE SE VEA
     ) {
         if(!isLoading) {
             MapStopScreenContent(
-                cameraPositionState = cameraPositionState,
                 stopList = stopList,
                 onClickMarker = { stop: Pair<RouteInformation, LatLng> ->
                     if(stopSelected != stop.first) {
@@ -135,7 +130,8 @@ fun MapStopScreen(
                         markerPressed(null)
                     }
                     true
-                }
+                },
+                modifier = modifier
             )
         } else {
             ShimmerMapStopScreenContent()
@@ -162,10 +158,13 @@ fun ShimmerMapStopScreenContent() {
 @Composable
 fun MapStopScreenContent(
     modifier: Modifier = Modifier,
-    cameraPositionState: CameraPositionState,
     stopList: List<Pair<RouteInformation, LatLng>>,
     onClickMarker: (Pair<RouteInformation, LatLng>) -> Boolean
 ) {
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+    }
+
     MapFullSize(
         cameraPositionState = cameraPositionState,
         onMapClick = {},

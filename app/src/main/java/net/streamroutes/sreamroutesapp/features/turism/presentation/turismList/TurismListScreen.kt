@@ -37,10 +37,10 @@ import net.streamroutes.sreamroutesapp.features.turism.components.TurismModalBot
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TurismListScreen(
+fun TourismListScreen(
     modifier: Modifier = Modifier,
-    onViewMap: () -> Unit,
-    onSelectPoint: () -> Unit,
+    onSelectMap: () -> Unit,
+    onSelectRoute: () -> Unit,
     turismViewModel: TurismListViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
@@ -55,12 +55,15 @@ fun TurismListScreen(
         skipPartiallyExpanded = true
     )
 
-    val closeSheet = {
+    val closeSheet = { select: Boolean ->
         scope.launch {
             sheetState.hide()
         }.invokeOnCompletion {
             if(!sheetState.isVisible) {
                 isOpen = false
+            }
+            if(select) {
+                onSelectRoute()
             }
         }
     }
@@ -69,11 +72,10 @@ fun TurismListScreen(
         TurismModalBottomSheet(
             sheetState = sheetState,
             onDismiss = {
-                closeSheet()
+                closeSheet(false)
             },
             onSelectRoute = {
-                closeSheet()
-                onSelectPoint()
+                closeSheet(true)
             },
             onMore = {
 
@@ -121,7 +123,7 @@ fun TurismListScreen(
             // opcion para el mapa
             item {
                 MapAllOptions(
-                    onClick = onViewMap
+                    onClick = onSelectMap
                 )
 
                 Spacer(modifier = Modifier.size(16.dp))

@@ -81,18 +81,5 @@ fun MapsScreen(
             navHostController = mapsNavHostController,
             modifier = Modifier.padding(innerPadding)
         )
-        /*when(currentTab) {
-            0 -> {
-                MapsTransportMainScreen(
-                    modifier = Modifier.padding(innerPadding)
-                )
-            }
-            1 -> {
-                PlannerScreen(modifier = Modifier.padding(innerPadding))
-            }
-            2 -> {
-                FastestScreen(modifier = Modifier.padding(innerPadding))
-            }
-        }*/
     }
 }
