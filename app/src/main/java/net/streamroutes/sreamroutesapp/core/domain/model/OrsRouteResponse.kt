@@ -1,12 +1,5 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
-import net.streamroutes.sreamroutesapp.data.model.ors.Geometry
-import net.streamroutes.sreamroutesapp.data.model.ors.Properties
-import net.streamroutes.sreamroutesapp.data.model.ors.RouteFeature
-import net.streamroutes.sreamroutesapp.data.model.ors.Segment
-import net.streamroutes.sreamroutesapp.data.model.ors.Step
-import net.streamroutes.sreamroutesapp.data.model.ors.Summary
-
 /**
  * Modelos de datos de Open Route Service
  */
@@ -48,10 +41,6 @@ data class OrsFeature (
     val type: String
 )
 
-data class OrsRoute (
-    val features: List<RouteFeature> = emptyList()
-)
-
 data class OrsRouteResponse (
-    val routes: List<OrsRoute>
+    val features: List<OrsFeature> = emptyList()
 )

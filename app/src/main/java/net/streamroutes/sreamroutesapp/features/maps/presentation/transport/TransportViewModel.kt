@@ -12,6 +12,7 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.data.repository.OrsRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
+import net.streamroutes.sreamroutesapp.core.domain.network.OpenRouteServiceClient
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,6 +28,7 @@ class TransportViewModel @Inject constructor(
 
     private val _orsRoute = MutableStateFlow<List<LatLng>>(emptyList())
     val orsRoute: StateFlow<List<LatLng>> = _orsRoute
+
 
     /**
      * Inicializador del viewModel para obtener todas las rutas de transporte
@@ -67,8 +69,16 @@ class TransportViewModel @Inject constructor(
 
                 Log.d("RESPONSE", "${start.longitude},${start.latitude}")
                 Log.d("RESPONSE", "${end.longitude},${end.latitude}")
-                Log.d("RESPONSE", response.toString())
 
+                val coordinates = response.body()?.features?.get(0)?.geometry?.coordinates
+                val latLngList = coordinates?.map { LatLng(it[1], it[0]) }
+                if (latLngList != null) {
+                    _orsRoute.value = latLngList
+                }
+                Log.d("RESPONSE", latLngList.toString())
+
+
+                /*
                 if (response.routes.isNotEmpty()) {
                     val coordinates = response.routes[0].features[0].geometry.coordinates
                     val latLngList = coordinates.map { LatLng(it[1], it[0]) }
@@ -78,6 +88,7 @@ class TransportViewModel @Inject constructor(
                     Log.e("ORS", "No se encontró una ruta válida en la respuesta de la API.")
                     _orsRoute.value = emptyList() // Si deseas limpiar la ruta anterior
                 }
+                 */
             } catch (e: Exception) {
                 Log.e("ORS", "Error al obtener la ruta de ORS: ${e.message}", e)
             }

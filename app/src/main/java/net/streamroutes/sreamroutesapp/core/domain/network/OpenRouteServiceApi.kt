@@ -1,8 +1,10 @@
 package net.streamroutes.sreamroutesapp.core.domain.network
 
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsRouteResponse
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import retrofit2.http.Header
 import retrofit2.http.Query
 
 /**
@@ -11,8 +13,19 @@ import retrofit2.http.Query
 interface OpenRouteServiceApi {
     @GET("/v2/directions/driving-car")
     suspend fun getRoute(
-        @Header("Authorization") apiKey: String,
+        @Query("api_key") api_key: String,
         @Query("start") start: String,
         @Query("end") end: String
-    ): OrsRouteResponse
+    ): Response<OrsRouteResponse>
+}
+
+object RetrofitORS {
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("https://api.openrouteservice.org/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+
+    val retrofitService: OpenRouteServiceApi by lazy {
+        retrofit.create(OpenRouteServiceApi::class.java)
+    }
 }

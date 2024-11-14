@@ -13,7 +13,6 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.hilt.android.AndroidEntryPoint
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
-import net.streamroutes.sreamroutesapp.core.domain.network.OpenRouteServiceClient
 import net.streamroutes.sreamroutesapp.core.navigation.LoginNavigation
 import net.streamroutes.sreamroutesapp.data.RetrofitOpenRouteService
 import net.streamroutes.sreamroutesapp.data.RetrofitParkingService
@@ -71,7 +70,6 @@ class LoginActivity : ComponentActivity() {
             // viewmodel encargado de manejar acerca de la peticion a ORS
             val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
 
-            val api = OpenRouteServiceClient.create()
 
             RumappAppTheme (false){
 
