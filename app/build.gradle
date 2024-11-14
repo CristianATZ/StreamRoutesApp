@@ -112,8 +112,10 @@ dependencies {
     // END FOR EXTENDED ICONS
 
     // FOR RETROFIT
-    implementation(libs.retrofit)
+    implementation(libs.retrofit.core)
     implementation(libs.retrofit.converter.gson)
+    implementation(libs.okhttp)
+    implementation(libs.okhttp.logging.interceptor)
     // END FOR RETROFIT
 
     // FOR SYSTEM CONTROLLER

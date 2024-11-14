@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
@@ -91,6 +93,8 @@ fun MapRouteScreen(
     }
 }
 
+
+
 @Composable
 fun ShimmerRouteScreenContent() {
     Box(
@@ -111,12 +115,18 @@ fun ShimmerRouteScreenContent() {
 
 @Composable
 fun MapRouteScreenContent(
-    selectedRoute: RouteWithPlaces
+    selectedRoute: RouteWithPlaces,
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
 
     val startRoute = LatLng(selectedRoute.startPlace.latitude.toDouble(), selectedRoute.startPlace.longitude.toDouble())
     val endRoute = LatLng(selectedRoute.endPlace.latitude.toDouble(), selectedRoute.endPlace.longitude.toDouble())
 
+    LaunchedEffect(Unit){
+        transportViewModel.getOrsRoute(startRoute, endRoute)
+    }
+
+    val orsRoute by transportViewModel.orsRoute.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(
@@ -138,14 +148,20 @@ fun MapRouteScreenContent(
                 startRoute
             )
         )
-
         Marker(
             state = MarkerState(
                 endRoute
             )
         )
 
-        
+        orsRoute?.let {
+            Polyline(
+                points = orsRoute,
+                color = Color.Blue,
+                width = 5f
+            )
+        }
+
         // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
     }
 

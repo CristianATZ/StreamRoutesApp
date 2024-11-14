@@ -89,7 +89,7 @@ class OrsViewModel(
 }
 
 data class OrsUiState(
-    val geometry: Geometry? = null,
+    val geometry:  Geometry? = null,
     val properties: Properties? = null,
     val state: OrsState = OrsState.NONE,
     val message: String = "",

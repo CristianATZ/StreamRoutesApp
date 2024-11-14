@@ -1,52 +1,91 @@
 package net.streamroutes.sreamroutesapp.features.maps.presentation.transport
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.core.data.repository.OrsRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import javax.inject.Inject
 
-    @HiltViewModel
-    class TransportViewModel @Inject constructor(
-        private val routeRepository: RouteRepository
-    ) : ViewModel() {
-        private val _routes = MutableStateFlow<List<RouteWithPlaces>?>(null)
-        val routes: StateFlow<List<RouteWithPlaces>?> = _routes
+@HiltViewModel
+class TransportViewModel @Inject constructor(
+    private val routeRepository: RouteRepository,
+    private val orsRepository: OrsRepository
+) : ViewModel() {
+    private val _routes = MutableStateFlow<List<RouteWithPlaces>?>(null)
+    val routes: StateFlow<List<RouteWithPlaces>?> = _routes
 
-        private val _selectedRoute = MutableStateFlow<RouteWithPlaces?>(null)
-        val selectedRoute: StateFlow<RouteWithPlaces?> = _selectedRoute
+    private val _selectedRoute = MutableStateFlow<RouteWithPlaces?>(null)
+    val selectedRoute: StateFlow<RouteWithPlaces?> = _selectedRoute
 
-        /**
-         * Inicializador del viewModel para obtener todas las rutas de transporte
-         */
-        init {
-            getAllRoutes()
-        }
+    private val _orsRoute = MutableStateFlow<List<LatLng>>(emptyList())
+    val orsRoute: StateFlow<List<LatLng>> = _orsRoute
 
-        /**
-         * Método usaro para traer todas las registradas en la base de datos
-         */
-        fun getAllRoutes(){
-            viewModelScope.launch {
-                _routes.value = routeRepository.getAllRoutes()
-                _selectedRoute.value = routes?.value?.get(0)
-            }
-        }
+    /**
+     * Inicializador del viewModel para obtener todas las rutas de transporte
+     */
+    init {
+        getAllRoutes()
+    }
 
-
-        /**
-         * Método para actualizar la ruta seleccionada
-         */
-        fun selectRoute(route: RouteWithPlaces) {
-            _selectedRoute.value = route
+    /**
+     * Método usaro para traer todas las registradas en la base de datos
+     */
+    fun getAllRoutes(){
+        viewModelScope.launch {
+            _routes.value = routeRepository.getAllRoutes()
+            _selectedRoute.value = routes?.value?.get(0)
         }
     }
 
+
+    /**
+     * Método para actualizar la ruta seleccionada
+     */
+    fun selectRoute(route: RouteWithPlaces) {
+        _selectedRoute.value = route
+    }
+
+
+    /**
+     * Método usado para trazar la ruta para transporte público
+     */
+    fun getOrsRoute(start: LatLng, end: LatLng) {
+        viewModelScope.launch {
+            try {
+                val response = orsRepository.fetchRoute(
+                    "${start.longitude},${start.latitude}",
+                    "${end.longitude},${end.latitude}"
+                )
+
+                Log.d("RESPONSE", "${start.longitude},${start.latitude}")
+                Log.d("RESPONSE", "${end.longitude},${end.latitude}")
+                Log.d("RESPONSE", response.toString())
+
+                if (response.routes.isNotEmpty()) {
+                    val coordinates = response.routes[0].features[0].geometry.coordinates
+                    val latLngList = coordinates.map { LatLng(it[1], it[0]) }
+                    _orsRoute.value = latLngList
+                } else {
+                    // Manejar caso de respuesta vacía o datos nulos
+                    Log.e("ORS", "No se encontró una ruta válida en la respuesta de la API.")
+                    _orsRoute.value = emptyList() // Si deseas limpiar la ruta anterior
+                }
+            } catch (e: Exception) {
+                Log.e("ORS", "Error al obtener la ruta de ORS: ${e.message}", e)
+            }
+        }
+    }
+}
+
+/*
 class TransportViewModelFactory(
     private val routeRepository: RouteRepository
 ): ViewModelProvider.Factory {
@@ -57,3 +96,4 @@ class TransportViewModelFactory(
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
+*/

@@ -23,8 +23,8 @@ barcode-scanning = "17.3.0"
 zxing-core = "3.3.0"
 coil-compose = "2.6.0"
 icons-extended = "1.7.2"
-retrofit-version = "2.9.0"
-retrofit-converter = "2.9.0"
+retrofit = "2.9.0"
+okhttp = "4.9.3"
 camera-x = "1.3.4"
 work-version = "2.9.1"
 viewmodel-version = "2.8.6"
@@ -65,8 +65,6 @@ accompanist-permissions = { group = "com.google.accompanist", name = "accompanis
 zxing-core = { group = "com.google.zxing", name = "core", version.ref = "zxing-core"}
 coil-compose = {group = "io.coil-kt", name = "coil-compose", version.ref = "coil-compose"}
 androidx-compose-material = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "icons-extended"}
-retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit-version"}
-retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit-converter"}
 camera = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera-x"}
 camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera-x"}
 camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera-x"}
@@ -86,6 +84,10 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 compose-colorpicker = { module = "com.github.skydoves:colorpicker-compose", version.ref = "colorPicker" }
 androidx-ui-text-google-fonts = { group = "androidx.compose.ui", name = "ui-text-google-fonts", version.ref = "uiTextGoogleFonts" }
 androidx-hilt-navigation-compose = { group = "androidx.hilt", name = "hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
