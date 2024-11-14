@@ -83,7 +83,8 @@ fun MapRouteScreen(
                 selectedRoute?.let {
                     showBottomSheet()
                     MapRouteScreenContent(
-                        selectedRoute = it
+                        selectedRoute = it,
+                        transportViewModel = transportViewModel
                     )
                 }
             } else {
@@ -116,7 +117,7 @@ fun ShimmerRouteScreenContent() {
 @Composable
 fun MapRouteScreenContent(
     selectedRoute: RouteWithPlaces,
-    transportViewModel: TransportViewModel = hiltViewModel()
+    transportViewModel: TransportViewModel
 ) {
 
     val startRoute = LatLng(selectedRoute.startPlace.latitude.toDouble(), selectedRoute.startPlace.longitude.toDouble())
@@ -154,13 +155,16 @@ fun MapRouteScreenContent(
             )
         )
 
+
         orsRoute?.let {
             Polyline(
                 points = orsRoute,
                 color = Color.Blue,
-                width = 5f
+                width = 8f
             )
         }
+
+
 
         // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
     }

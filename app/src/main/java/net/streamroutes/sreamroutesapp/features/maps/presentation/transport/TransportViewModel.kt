@@ -43,7 +43,7 @@ class TransportViewModel @Inject constructor(
     fun getAllRoutes(){
         viewModelScope.launch {
             _routes.value = routeRepository.getAllRoutes()
-            _selectedRoute.value = routes?.value?.get(0)
+            _selectedRoute.value = routes?.value?.get(2)
         }
     }
 

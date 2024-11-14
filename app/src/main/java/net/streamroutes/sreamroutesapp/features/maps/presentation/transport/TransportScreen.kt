@@ -162,7 +162,7 @@ fun TransportScreen(
             }
 
             // Rutas de transporte
-            items(routes ?: emptyList()) { route ->
+            items(routes!!) { route ->
                 ElementOption(
                     onClick = {
                         //openBottomSheet
