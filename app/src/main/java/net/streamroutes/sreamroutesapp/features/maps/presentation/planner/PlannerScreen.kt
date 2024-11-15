@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.maps.presentation.planner
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -35,6 +36,7 @@ import net.streamroutes.sreamroutesapp.features.maps.components.PlannerFloatingB
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerInfoWindow
 import net.streamroutes.sreamroutesapp.features.maps.components.CardCurrentLocationWithIcon
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerModalBottomSheet
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemDown
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemUp
 import net.streamroutes.sreamroutesapp.utils.ListUtils.removeItem
@@ -43,17 +45,18 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlannerScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    transportViewModel: TransportViewModel
 ) {
     val coroutine = rememberCoroutineScope()
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(21.018541825334918, -101.25880481892467), 17f) // San Francisco como posición inicial
     }
     // ACTUALIZAR LA POSICION DEL MARCADOR A TU UBICACION ACTUAL
     // PARA QUE FUNCIONE EL onMapClick
     val markerState = rememberMarkerState(
-        position = LatLng(20.126856880277188, -101.19127471960047)
+        position = LatLng(21.018541825334918, -101.25880481892467)
     )
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
@@ -81,6 +84,7 @@ fun PlannerScreen(
     val onMapClick = { coord: LatLng ->
         coroutine.launch {
             markerState.position = coord
+            transportViewModel.getAddress(markerState.position)
             markerVisible = true
             delay(100)
             updateCameraPosition(coord)
@@ -100,6 +104,7 @@ fun PlannerScreen(
                     address = "Padre Luis Gaytan #${Random.nextInt(1,500)}"
                 )
             )
+            Log.d("MARKER", markerState.position.toString())
             markerVisible = false
         }
     }

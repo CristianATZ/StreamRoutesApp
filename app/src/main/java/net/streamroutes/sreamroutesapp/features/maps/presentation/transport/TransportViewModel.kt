@@ -20,15 +20,19 @@ class TransportViewModel @Inject constructor(
     private val routeRepository: RouteRepository,
     private val orsRepository: OrsRepository
 ) : ViewModel() {
+    // Variable usada para guardar todas las rutas de tranporte público de la base de datos
     private val _routes = MutableStateFlow<List<RouteWithPlaces>?>(null)
     val routes: StateFlow<List<RouteWithPlaces>?> = _routes
 
+    // Variable usada para guardar la ruta seleccionada en rutas de transporte
     private val _selectedRoute = MutableStateFlow<RouteWithPlaces?>(null)
     val selectedRoute: StateFlow<RouteWithPlaces?> = _selectedRoute
 
+    // Variable usada para capturar los puntos (LatLng) de la ruta de transporte seleccionada
     private val _orsRoute = MutableStateFlow<List<LatLng>>(emptyList())
     val orsRoute: StateFlow<List<LatLng>> = _orsRoute
 
+    // Variable usada para almacenar los datos de la ruta (distancia, tiempo, etc.)
     private val _orsRouteData = MutableStateFlow<Map<String, Any?>?>(null)
     val orsRouteData: StateFlow<Map<String, Any?>?> = _orsRouteData
 
@@ -40,8 +44,9 @@ class TransportViewModel @Inject constructor(
         getAllRoutes()
     }
 
+
     /**
-     * Método usaro para traer todas las registradas en la base de datos
+     * Método usado para traer todas las registradas en la base de datos
      */
     fun getAllRoutes(){
         viewModelScope.launch {
@@ -72,63 +77,68 @@ class TransportViewModel @Inject constructor(
                     "${end.longitude},${end.latitude}"
                 )
 
-                // Guardar datos de la ruta
-                val _distance = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.distance?.div(1000)
-                val distance = _distance?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
+                if (response.isSuccessful) {
+                    // Guardar datos de la ruta
+                    val _distance = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.distance?.div(1000)
+                    val distance = _distance?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
 
-                val _duration = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.duration?.div(60)
-                val duration = _duration?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
+                    val _duration = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.duration?.div(60)
+                    val duration = _duration?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
 
-                val nextStreet = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.steps?.find { it.name != "-" }?.name
+                    val nextStreet = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.steps?.find { it.name != "-" }?.name
 
-                Log.d("RESPONSE", "${start.longitude},${start.latitude}")
-                Log.d("RESPONSE", "${end.longitude},${end.latitude}")
-                Log.d("RESPONSE", "Distancia:  ${distance}")
-                Log.d("RESPONSE", "Duracion:  ${duration}")
-                Log.d("RESPONSE", "NextStreet:  ${nextStreet}")
+                    /*
+                    Log.d("RESPONSE", "${start.longitude},${start.latitude}")
+                    Log.d("RESPONSE", "${end.longitude},${end.latitude}")
+                    Log.d("RESPONSE", "Distancia:  ${distance}")
+                    Log.d("RESPONSE", "Duracion:  ${duration}")
+                    Log.d("RESPONSE", "NextStreet:  ${nextStreet}")
+                     */
 
-                val mapOrsRouteData = mapOf(
-                    "distance" to distance,
-                    "duration" to duration,
-                    "nextStreet" to nextStreet
-                )
-                _orsRouteData.value = mapOrsRouteData
+                    val mapOrsRouteData = mapOf(
+                        "distance" to distance,
+                        "duration" to duration,
+                        "nextStreet" to nextStreet
+                    )
+                    _orsRouteData.value = mapOrsRouteData
 
-                // Calcular coordenadas y puntos de la polilínea
-                val coordinates = response.body()?.features?.get(0)?.geometry?.coordinates
-                val latLngList = coordinates?.map { LatLng(it[1], it[0]) }
-                if (latLngList != null) {
-                    _orsRoute.value = latLngList
-                }
-                //Log.d("RESPONSE", latLngList.toString())
-
-                /*
-                if (response.routes.isNotEmpty()) {
-                    val coordinates = response.routes[0].features[0].geometry.coordinates
-                    val latLngList = coordinates.map { LatLng(it[1], it[0]) }
-                    _orsRoute.value = latLngList
+                    // Calcular coordenadas y puntos de la polilínea
+                    val coordinates = response.body()?.features?.get(0)?.geometry?.coordinates
+                    val latLngList = coordinates?.map { LatLng(it[1], it[0]) }
+                    if (latLngList != null) {
+                        _orsRoute.value = latLngList
+                    }
                 } else {
-                    // Manejar caso de respuesta vacía o datos nulos
                     Log.e("ORS", "No se encontró una ruta válida en la respuesta de la API.")
-                    _orsRoute.value = emptyList() // Si deseas limpiar la ruta anterior
+                    _orsRoute.value = emptyList()
                 }
-                 */
+
             } catch (e: Exception) {
                 Log.e("ORS", "Error al obtener la ruta de ORS: ${e.message}", e)
             }
         }
     }
-}
 
-/*
-class TransportViewModelFactory(
-    private val routeRepository: RouteRepository
-): ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if(modelClass.isAssignableFrom(TransportViewModel::class.java)){
-            return TransportViewModel(routeRepository) as T
+
+    /**
+     * Método usado para obtener la dirección de un LatLng
+     */
+    fun getAddress(location: LatLng){
+        viewModelScope.launch {
+            try {
+                // Enviar request al repository y guardar su response
+                val response = orsRepository.getAddress(
+                    "${location.longitude}", "${location.latitude}"
+                )
+
+                if (response.isSuccessful) {
+                    Log.d("RESPONSE", response.body().toString())
+                } else {
+                    Log.e("ORS", "No se encontró una direccin valida en la respuesta de la API.")
+                }
+            } catch (e: Exception) {
+                Log.e("ORS", "Error al obtener la direccion: ${e.message}", e)
+            }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-*/

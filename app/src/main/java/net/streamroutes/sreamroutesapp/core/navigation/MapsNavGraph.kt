@@ -118,7 +118,8 @@ fun MapsNavigation(
             }
         ) {
             PlannerScreen(
-                modifier = modifier
+                modifier = modifier,
+                transportViewModel = transportViewModel
             )
         }
 
