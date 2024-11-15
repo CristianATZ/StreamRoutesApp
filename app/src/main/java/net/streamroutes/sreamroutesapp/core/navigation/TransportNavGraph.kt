@@ -9,6 +9,7 @@ import androidx.navigation.compose.composable
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.choose.ChooseScreen
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.parking.presentation.ParkingMain
 import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkScreen
 import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
@@ -31,7 +32,8 @@ import net.streamroutes.sreamroutesapp.features.turism.presentation.TourismScree
 @Composable
 fun TransportNavigation(
     navHostController: NavHostController,
-    onOpenMenu: () -> Unit
+    onOpenMenu: () -> Unit,
+    transportViewModel: TransportViewModel
 ) {
     // Definición de animaciones de transición
     val slideInFromLeft = slideInHorizontally(
@@ -140,7 +142,8 @@ fun TransportNavigation(
             MapsScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
-                }
+                },
+                transportViewModel = transportViewModel
             )
         }
 

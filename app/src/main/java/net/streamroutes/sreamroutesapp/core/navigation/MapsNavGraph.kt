@@ -14,11 +14,13 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.planner.Planne
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapRouteScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.MapStopScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportScreen
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 
 @Composable
 fun MapsNavigation(
     modifier: Modifier = Modifier,
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    transportViewModel: TransportViewModel
 ) {
     // Entrada desde la parte superior
     val slideInFromTop = slideInVertically(
@@ -92,7 +94,8 @@ fun MapsNavigation(
                         launchSingleTop = true
                     }
                 },
-                modifier = modifier
+                modifier = modifier,
+                transportViewModel = transportViewModel
             )
         }
 
@@ -169,7 +172,8 @@ fun MapsNavigation(
                 onShareLocation = {
 
                 },
-                modifier = modifier
+                modifier = modifier,
+                transportViewModel = transportViewModel
             )
         }
     }

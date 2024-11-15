@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.navigation.TransportNavigation
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportDrawerContent
 
 @AndroidEntryPoint
@@ -27,6 +28,7 @@ class TransportActivity : ComponentActivity() {
                 val navHostController = rememberNavController()
 
                 val loginViewModel: LoginViewModel = hiltViewModel()
+                val transportViewModel: TransportViewModel = hiltViewModel()
 
                 val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
                 val coroutineScope = rememberCoroutineScope()
@@ -53,7 +55,8 @@ class TransportActivity : ComponentActivity() {
                         navHostController = navHostController,
                         onOpenMenu = {
                             openDrawer()
-                        }
+                        },
+                        transportViewModel = transportViewModel
                     )
                 }
             }

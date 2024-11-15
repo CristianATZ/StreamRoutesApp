@@ -44,7 +44,7 @@ fun MapRouteScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
     onShareLocation: () -> Unit,
-    transportViewModel: TransportViewModel = hiltViewModel()
+    transportViewModel: TransportViewModel
 ) {
     val scope = rememberCoroutineScope()
 
@@ -84,7 +84,7 @@ fun MapRouteScreen(
                     showBottomSheet()
                     MapRouteScreenContent(
                         selectedRoute = it,
-                        transportViewModel = transportViewModel
+                        transportViewModel
                     )
                 }
             } else {
@@ -123,12 +123,6 @@ fun MapRouteScreenContent(
     val startRoute = LatLng(selectedRoute.startPlace.latitude.toDouble(), selectedRoute.startPlace.longitude.toDouble())
     val endRoute = LatLng(selectedRoute.endPlace.latitude.toDouble(), selectedRoute.endPlace.longitude.toDouble())
 
-    LaunchedEffect(Unit){
-        transportViewModel.getOrsRoute(startRoute, endRoute)
-    }
-
-    val orsRoute by transportViewModel.orsRoute.collectAsState()
-
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(
             //LatLng(21.018189012668753, -101.26659563575932)
@@ -136,6 +130,13 @@ fun MapRouteScreenContent(
             17f
         ) // San Francisco como posición inicial
     }
+
+    LaunchedEffect(selectedRoute) {
+        transportViewModel.getOrsRoute(startRoute, endRoute)
+    }
+
+    val orsRoute by transportViewModel.orsRoute.collectAsState()
+
 
     MapFullSize(
         cameraPositionState = cameraPositionState,
@@ -154,9 +155,7 @@ fun MapRouteScreenContent(
                 endRoute
             )
         )
-
-
-        orsRoute?.let {
+        if (orsRoute.isNotEmpty()) {
             Polyline(
                 points = orsRoute,
                 color = Color.Blue,

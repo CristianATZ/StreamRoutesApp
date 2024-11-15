@@ -25,7 +25,7 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.Tran
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapsScreen(
-    transportViewModel: TransportViewModel = hiltViewModel(),
+    transportViewModel: TransportViewModel,
     onBackPressed: () -> Unit
 ) {
     val mapsNavHostController = rememberNavController()
@@ -79,6 +79,7 @@ fun MapsScreen(
     ) { innerPadding ->
         MapsNavigation(
             navHostController = mapsNavHostController,
+            transportViewModel = transportViewModel ,
             modifier = Modifier.padding(innerPadding)
         )
     }

@@ -42,7 +42,7 @@ enum class TransportFilter {
 @Composable
 fun TransportScreen(
     modifier: Modifier = Modifier,
-    transportViewModel: TransportViewModel = hiltViewModel(),
+    transportViewModel: TransportViewModel,
     onSelectRoute: () -> Unit,
     onSelectMap: () -> Unit
 ) {
