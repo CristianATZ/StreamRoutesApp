@@ -20,7 +20,7 @@ interface OpenRouteServiceApi {
         @Query("end") end: String
     ): Response<OrsRouteResponse>
 
-
+    // Función para obtener la dirección de un LatLng
     @GET("geocode/reverse")
     suspend fun getAddress(
         @Query("api_key") apiKey: String,
@@ -28,6 +28,8 @@ interface OpenRouteServiceApi {
         @Query("point.lat") latitude: String,
         @Query("size") size: String = "1",
     ): Response<OrsPlannerResponse>
+
+    // Para planifica tu viaje, se usa la funcion getRoute pero con un body y header
 }
 
 object RetrofitORS {

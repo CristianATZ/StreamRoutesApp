@@ -11,6 +11,7 @@ import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +49,8 @@ fun PlannerScreen(
     modifier: Modifier = Modifier,
     transportViewModel: TransportViewModel
 ) {
+    val markerAddress by transportViewModel.markerAdress.collectAsState()
+
     val coroutine = rememberCoroutineScope()
 
     val cameraPositionState = rememberCameraPositionState {
@@ -85,8 +88,8 @@ fun PlannerScreen(
         coroutine.launch {
             markerState.position = coord
             transportViewModel.getAddress(markerState.position)
-            markerVisible = true
             delay(100)
+            markerVisible = true
             updateCameraPosition(coord)
             markerState.showInfoWindow()
         }
@@ -98,13 +101,18 @@ fun PlannerScreen(
     // AGREGAR DESTINO A LA LISTA
     val onAdd = {
         if(markerVisible) {
-            destinationsList.add(
+            markerAddress?.let {
                 Destinations(
                     coords = markerState.position,
-                    address = "Padre Luis Gaytan #${Random.nextInt(1,500)}"
+                    //address = "Padre Luis Gaytan #${Random.nextInt(1,500)}"
+                    address = it
                 )
-            )
-            Log.d("MARKER", markerState.position.toString())
+            }?.let {
+                destinationsList.add(
+                    it
+                )
+            }
+            //Log.d("MARKER", markerState.position.toString())
             markerVisible = false
         }
     }
@@ -165,7 +173,7 @@ fun PlannerScreen(
                 state = markerState,
                 visible = markerVisible
             ) {
-                PlannerInfoWindow()
+                PlannerInfoWindow(transportViewModel)
             }
         }
 

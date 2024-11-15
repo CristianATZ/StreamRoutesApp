@@ -36,6 +36,10 @@ class TransportViewModel @Inject constructor(
     private val _orsRouteData = MutableStateFlow<Map<String, Any?>?>(null)
     val orsRouteData: StateFlow<Map<String, Any?>?> = _orsRouteData
 
+    // Variable usada para almacenar la dirección del marcador de planifica tu viaje
+    private val _markerAddress = MutableStateFlow<String?>(null)
+    val markerAdress: StateFlow<String?> = _markerAddress
+
 
     /**
      * Inicializador del viewModel para obtener todas las rutas de transporte
@@ -61,7 +65,7 @@ class TransportViewModel @Inject constructor(
      */
     fun selectRoute(route: RouteWithPlaces) {
         _selectedRoute.value = route
-        Log.d("TransportViewModel", selectedRoute.value.toString())
+        //Log.d("TransportViewModel", selectedRoute.value.toString())
     }
 
 
@@ -132,13 +136,20 @@ class TransportViewModel @Inject constructor(
                 )
 
                 if (response.isSuccessful) {
-                    Log.d("RESPONSE", response.body().toString())
+                    val address = response.body()?.features?.get(0)?.properties?.label
+                    if(address != null){
+                        _markerAddress.value = address
+                    } else {
+                        _markerAddress.value = null
+                    }
+                    Log.d("RESPONSE", address ?: "NADA ALV")
                 } else {
-                    Log.e("ORS", "No se encontró una direccin valida en la respuesta de la API.")
+                    Log.e("RESPONSE", "No se encontró una direccin valida en la respuesta de la API.")
                 }
             } catch (e: Exception) {
-                Log.e("ORS", "Error al obtener la direccion: ${e.message}", e)
+                Log.e("RESPONSE", "Error al obtener la direccion: ${e.message}", e)
             }
         }
     }
+
 }
