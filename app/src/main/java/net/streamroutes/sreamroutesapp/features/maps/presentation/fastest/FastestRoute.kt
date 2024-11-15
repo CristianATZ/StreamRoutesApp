@@ -23,21 +23,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
-@Preview(showBackground = true)
 @Composable
 fun FastestRoute(
     currentRoute: String = "",
     onCancelRoute: () -> Unit ={},
-    onMyLocation: () -> Unit = {}
+    onMyLocation: () -> Unit = {},
+    transportViewModel: TransportViewModel
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize(),
         horizontalAlignment = Alignment.End
     ) {
-        RouteDetails()
+        RouteDetails(transportViewModel = transportViewModel)
 
         Spacer(modifier = Modifier.weight(1f))
 

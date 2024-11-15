@@ -23,13 +23,15 @@ import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.ShimmerRouteScreenContent
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismRouteScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    onShareLocation: () -> Unit
+    onShareLocation: () -> Unit,
+    transportViewModel: TransportViewModel
 ) {
     // ELIMINAR ESTA VARIABLE CUANDO CARGUES LA INFORMACION
     // GUIATE CON MapRouteScreen.kt
@@ -70,7 +72,7 @@ fun TurismRouteScreen(
         ){
             if(!isLoading) {
                 showBottomSheet()
-                TourismRouteScreenContent()
+                TourismRouteScreenContent(transportViewModel)
             } else {
                 ShimmerRouteScreenContent()
             }
@@ -79,7 +81,9 @@ fun TurismRouteScreen(
 }
 
 @Composable
-fun TourismRouteScreenContent() {
+fun TourismRouteScreenContent(
+    transportViewModel: TransportViewModel
+) {
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
     }
@@ -94,5 +98,5 @@ fun TourismRouteScreenContent() {
         // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
     }
 
-    RouteDetails()
+    RouteDetails(transportViewModel = transportViewModel)
 }

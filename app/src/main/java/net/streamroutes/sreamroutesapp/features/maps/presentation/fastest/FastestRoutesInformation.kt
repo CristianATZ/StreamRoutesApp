@@ -27,13 +27,15 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteType
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 
 @Composable
 fun FastestRoutesInformation(
     currentRoute: Int,
     onChangeRoute: (Int) -> Unit,
     onSelectRoute: () -> Unit,
-    onMyLocation: () -> Unit
+    onMyLocation: () -> Unit,
+    transportViewModel: TransportViewModel
 ) {
 
 
@@ -41,7 +43,7 @@ fun FastestRoutesInformation(
         modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        RouteDetails()
+        RouteDetails(transportViewModel = transportViewModel)
 
         Row(
             modifier = Modifier

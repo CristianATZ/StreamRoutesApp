@@ -17,6 +17,8 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,15 +28,19 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 @Composable
 fun RouteDetails(
-    distance: String = "2.3 km",
-    time: String = "19 min",
+    //distance: String = "2.3 km",
+    //time: String = "19 min",
     currentStreet: String = "Padre Luis Gaytan",
-    nextStreet: String = "Pedro Guzman"
+    //nextStreet: String = "Pedro Guzman",
+    transportViewModel: TransportViewModel
 ) {
+    val routeData by transportViewModel.orsRouteData.collectAsState()
+
     Card(
         colors = CardDefaults.cardColors(
             containerColor = colorScheme.surface,
@@ -59,13 +65,13 @@ fun RouteDetails(
                 )
 
                 Text(
-                    text = distance,
+                    text = "${routeData?.get("distance")} km",
                     style = typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
 
                 Text(
-                    text = time,
+                    text = "${routeData?.get("duration")} min",
                     style = typography.labelLarge,
                     textAlign = TextAlign.Center
                 )
@@ -92,7 +98,7 @@ fun RouteDetails(
                 )
 
                 Text(
-                    text = stringResource(id = R.string.lblRouteDirection, nextStreet),
+                    text = stringResource(id = R.string.lblRouteDirection, "${routeData?.get("nextStreet")}"),
                     style = typography.labelLarge
                 )
             }

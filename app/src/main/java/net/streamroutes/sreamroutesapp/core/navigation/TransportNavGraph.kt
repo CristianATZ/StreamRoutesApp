@@ -158,7 +158,8 @@ fun TransportNavigation(
             TourismScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
-                }
+                },
+                transportViewModel = transportViewModel
             )
         }
 

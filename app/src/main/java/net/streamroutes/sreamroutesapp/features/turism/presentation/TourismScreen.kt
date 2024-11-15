@@ -8,11 +8,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.navigation.TourismNavigation
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismSmallTopAppBar
 
 @Composable
 fun TourismScreen(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    transportViewModel: TransportViewModel
 ) {
     val tourismNavHostController = rememberNavController()
 
@@ -26,7 +28,8 @@ fun TourismScreen(
     ) { innerPadding ->
         TourismNavigation(
             navHostController = tourismNavHostController,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            transportViewModel = transportViewModel
         )
     }
 }

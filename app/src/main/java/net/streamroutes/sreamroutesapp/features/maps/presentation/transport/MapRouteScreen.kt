@@ -158,7 +158,7 @@ fun MapRouteScreenContent(
         if (orsRoute.isNotEmpty()) {
             Polyline(
                 points = orsRoute,
-                color = Color.Blue,
+                color = Color.Black,
                 width = 8f
             )
         }
@@ -168,7 +168,7 @@ fun MapRouteScreenContent(
         // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
     }
 
-    RouteDetails()
+    RouteDetails(transportViewModel = transportViewModel)
 }
 
 

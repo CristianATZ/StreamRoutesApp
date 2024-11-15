@@ -29,6 +29,9 @@ class TransportViewModel @Inject constructor(
     private val _orsRoute = MutableStateFlow<List<LatLng>>(emptyList())
     val orsRoute: StateFlow<List<LatLng>> = _orsRoute
 
+    private val _orsRouteData = MutableStateFlow<Map<String, Any?>?>(null)
+    val orsRouteData: StateFlow<Map<String, Any?>?> = _orsRouteData
+
 
     /**
      * Inicializador del viewModel para obtener todas las rutas de transporte
@@ -63,21 +66,41 @@ class TransportViewModel @Inject constructor(
     fun getOrsRoute(start: LatLng, end: LatLng) {
         viewModelScope.launch {
             try {
+                // Enviar request al repository y guardar su response
                 val response = orsRepository.fetchRoute(
                     "${start.longitude},${start.latitude}",
                     "${end.longitude},${end.latitude}"
                 )
 
+                // Guardar datos de la ruta
+                val _distance = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.distance?.div(1000)
+                val distance = _distance?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
+
+                val _duration = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.duration?.div(60)
+                val duration = _duration?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
+
+                val nextStreet = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.steps?.find { it.name != "-" }?.name
+
                 Log.d("RESPONSE", "${start.longitude},${start.latitude}")
                 Log.d("RESPONSE", "${end.longitude},${end.latitude}")
+                Log.d("RESPONSE", "Distancia:  ${distance}")
+                Log.d("RESPONSE", "Duracion:  ${duration}")
+                Log.d("RESPONSE", "NextStreet:  ${nextStreet}")
 
+                val mapOrsRouteData = mapOf(
+                    "distance" to distance,
+                    "duration" to duration,
+                    "nextStreet" to nextStreet
+                )
+                _orsRouteData.value = mapOrsRouteData
+
+                // Calcular coordenadas y puntos de la polilínea
                 val coordinates = response.body()?.features?.get(0)?.geometry?.coordinates
                 val latLngList = coordinates?.map { LatLng(it[1], it[0]) }
                 if (latLngList != null) {
                     _orsRoute.value = latLngList
                 }
-                Log.d("RESPONSE", latLngList.toString())
-
+                //Log.d("RESPONSE", latLngList.toString())
 
                 /*
                 if (response.routes.isNotEmpty()) {
