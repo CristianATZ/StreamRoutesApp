@@ -136,14 +136,14 @@ class TransportViewModel @Inject constructor(
             if (response.isSuccessful) {
                 val address = response.body()?.features?.get(0)?.properties?.label
                 _markerAddress.value = address
-                Log.d("RESPONSE", address ?: "NADA ALV")
+                //Log.d("RESPONSE", address ?: "NADA ALV")
                 address
             } else {
-                Log.e("RESPONSE", "No se encontró una dirección válida en la respuesta de la API.")
+                //Log.e("RESPONSE", "No se encontró una dirección válida en la respuesta de la API.")
                 null
             }
         } catch (e: Exception) {
-            Log.e("RESPONSE", "Error al obtener la dirección: ${e.message}", e)
+            //Log.e("RESPONSE", "Error al obtener la dirección: ${e.message}", e)
             null
         }
     }
@@ -160,6 +160,7 @@ class TransportViewModel @Inject constructor(
 
                 // Llamar al repositorio para obtener la ruta
                 val response = orsRepository.planRoute(routeCoordinates)
+                Log.d("RESPONSE", response.body().toString())
 
                 if (response.isSuccessful) {
                     val routeData = response.body()

@@ -20,6 +20,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.MarkerInfoWindow
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.delay
@@ -74,6 +76,10 @@ fun PlannerScreen(
     var isOpen by remember {
         mutableStateOf(false)
     }
+    var isCalculated by remember {
+        mutableStateOf(false)
+    }
+
     val destinationsList = remember { mutableStateListOf<Destinations>() }
 
     // MOVER SIN AFECTAR EL ZOOM
@@ -117,6 +123,8 @@ fun PlannerScreen(
     }
     val onCalculateRoute = {
         // CALCULAR RUTA
+        transportViewModel.planRoute(destinationsList.map { it.coords })
+        isCalculated = true
     }
     val onMyLocation = {
         // CAMBIAR CAMARA A MI UBICACION ACTUAL
@@ -158,6 +166,7 @@ fun PlannerScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
+        val orsRoute by transportViewModel.orsRoute.collectAsState()
         MapFullSize(
             cameraPositionState = cameraPositionState,
             onMapClick = { coord ->
@@ -176,6 +185,14 @@ fun PlannerScreen(
                     PlannerInfoWindow(address = address)
                 }
             }
+            if(isCalculated && orsRoute.isNotEmpty()){
+                Polyline(
+                    points = orsRoute,
+                    color = Color.Black,
+                    width = 8f
+                )
+            }
+
         }
 
         Column {

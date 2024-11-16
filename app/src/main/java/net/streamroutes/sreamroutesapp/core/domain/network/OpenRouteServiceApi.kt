@@ -1,7 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.domain.network
 
+import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerRequestBody
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerResponse
-import net.streamroutes.sreamroutesapp.core.domain.model.OrsRouteRequestBody
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsRouteResponse
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -39,7 +39,7 @@ interface OpenRouteServiceApi {
         @Header("Authorization") apiKey: String,
         @Header("Accept") accept: String = "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
         @Header("Content-Type") contentType: String = "application/json",
-        @Body body: OrsRouteRequestBody
+        @Body body: OrsPlannerRequestBody
     ): Response<OrsRouteResponse>
 }
 

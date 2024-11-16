@@ -1,8 +1,8 @@
 package net.streamroutes.sreamroutesapp.core.data.repository
 
 import android.util.Log
+import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerRequestBody
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerResponse
-import net.streamroutes.sreamroutesapp.core.domain.model.OrsRouteRequestBody
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsRouteResponse
 import net.streamroutes.sreamroutesapp.core.domain.network.OpenRouteServiceApi
 import retrofit2.Response
@@ -25,7 +25,7 @@ class OrsRepository @Inject constructor (
     }
 
     suspend fun planRoute(coordinates: List<List<Double>>): Response<OrsRouteResponse> {
-        val routeRequestBody = OrsRouteRequestBody(coordinates = coordinates)
+        val routeRequestBody = OrsPlannerRequestBody(coordinates = coordinates)
         return orsService.planRoute(apiKey = apiKey, body = routeRequestBody)
     }
 }
