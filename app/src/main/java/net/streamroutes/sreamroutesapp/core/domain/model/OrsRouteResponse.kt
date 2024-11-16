@@ -67,3 +67,7 @@ data class OrsPlannerFeature (
 data class OrsPlannerResponse (
     val features: List<OrsPlannerFeature> = emptyList()
 )
+
+data class OrsRouteRequestBody(
+    val coordinates: List<List<Double>>
+)

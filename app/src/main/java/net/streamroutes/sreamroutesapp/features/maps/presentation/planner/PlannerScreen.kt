@@ -48,7 +48,7 @@ import kotlin.random.Random
 @Composable
 fun PlannerScreen(
     modifier: Modifier = Modifier,
-    transportViewModel: TransportViewModel
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     //val markerAddress by transportViewModel.markerAdress.collectAsState()
 
