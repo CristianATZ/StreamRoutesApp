@@ -10,15 +10,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.features.profile.components.HistoryItem
 import net.streamroutes.sreamroutesapp.features.profile.components.HistoryModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.profile.components.ShimmerHistoryItem
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -27,18 +30,28 @@ import java.time.LocalTime
 fun HistoryScreen(
     onBackPressed: () -> Unit
 ) {
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
+    val scope = rememberCoroutineScope()
 
     var isOpen by remember {
         mutableStateOf(false)
     }
 
-    val openBottomSheet = {
-        isOpen = !isOpen
-    }
-
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val closeSheet = {
+        scope.launch {
+            sheetState.hide()
+        }.invokeOnCompletion {
+            if(!sheetState.isVisible) {
+                isOpen = false
+            }
+        }
+    }
 
     if(isOpen) {
         // bottom sheet para el item de historial
@@ -57,7 +70,9 @@ fun HistoryScreen(
                 parkingAddress = "Av. Educacion Superior, 38980"
             ),
             sheetState = sheetState,
-            onDismiss = openBottomSheet
+            onDismiss = {
+                closeSheet()
+            }
         )
     }
 
@@ -75,8 +90,18 @@ fun HistoryScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            items(5) {
-                HistoryItem(onClick = openBottomSheet)
+            if(!isLoading) {
+                items(5) {
+                    HistoryItem(
+                        onClick = {
+                            isOpen = !isOpen
+                        }
+                    )
+                }
+            } else {
+                items(5) {
+                    ShimmerHistoryItem()
+                }
             }
         }
     }

@@ -2,11 +2,16 @@ package net.streamroutes.sreamroutesapp.features.profile.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bookmark
@@ -21,6 +26,7 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -32,6 +38,7 @@ import com.example.compose.orange
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
+import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDateTime
 import java.time.LocalTime
 
@@ -134,5 +141,54 @@ fun HistoryItem(
         }
 
         HorizontalDivider()
+    }
+}
+
+@Composable
+fun ShimmerHistoryItem(
+
+) {
+    Row(
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Spacer(
+            modifier = Modifier
+                .padding(end = 16.dp)
+                .size(50.dp)
+                .clip(CircleShape)
+                .shimmerEffect()
+        )
+
+        Column {
+            Spacer(
+                modifier = Modifier
+                    .padding(bottom = 8.dp)
+                    .fillMaxWidth(0.25f)
+                    .height(25.dp)
+                    .clip(shapes.small)
+                    .shimmerEffect()
+            )
+
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .height(25.dp)
+                    .clip(shapes.small)
+                    .shimmerEffect()
+            )
+        }
+
+        Spacer(Modifier.weight(1f))
+        
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth(0.5f)
+                .height(40.dp)
+                .clip(shapes.small)
+                .shimmerEffect()
+        )
     }
 }

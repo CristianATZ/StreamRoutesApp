@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -23,8 +24,13 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +40,7 @@ import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatTime
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
+import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -45,6 +52,9 @@ fun HistoryModalBottomSheet(
 ) {
     // CARGAR LA INFORMACION DEL ITEM
     // EN LUGAR DE PASAR EL HISTORIAL ITEM
+    var isLoading by remember {
+        mutableStateOf(true)
+    }
 
     val historyDate = fullDateFormat(postDateTime = history.parkingDate)
 
@@ -70,11 +80,16 @@ fun HistoryModalBottomSheet(
             )
 
             // CAMBIAR VALORES AL ABRIR
-            ParkingDescription(
-                name = history.parkingName,
-                address = history.parkingAddress,
-                price = history.parkingPrice
-            )
+            if(!isLoading) {
+                ParkingDescription(
+                    name = history.parkingName,
+                    address = history.parkingAddress,
+                    price = history.parkingPrice
+                )
+            } else {
+
+            ShimmerHistoryItem()
+            }
 
             // RESERVADO
             if(history.isReserved) {
@@ -118,10 +133,21 @@ fun HistoryModalBottomSheet(
 
                     Spacer(modifier = Modifier.size(8.dp))
 
-                    Text(
-                        text = stringResource(id = R.string.lblTimeHours, history.totalTime),
-                        style = typography.bodyLarge
-                    )
+                    if(!isLoading) {
+                        Text(
+                            text = stringResource(id = R.string.lblTimeHours, history.totalTime),
+                            style = typography.bodyLarge
+                        )
+                    } else {
+                        Spacer(
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .fillMaxWidth(0.5f)
+                                .height(25.dp)
+                                .clip(shapes.small)
+                                .shimmerEffect()
+                        )
+                    }
                 }
             }
 
@@ -143,41 +169,61 @@ fun HistoryModalBottomSheet(
                     modifier = Modifier.padding(bottom = 8.dp, top = 16.dp)
                 )
 
-                LineInformation(
-                    title = stringResource(id = R.string.lblParkingIn),
-                    desc = parkingIn,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                if(!isLoading) {
+                    LineInformation(
+                        title = stringResource(id = R.string.lblParkingIn),
+                        desc = parkingIn,
+                        modifier = Modifier.padding(bottom = 8.dp)
+                    )
 
-                LineInformation(
-                    title = stringResource(id = R.string.lblParkingOut),
-                    desc = parkingOut,
-                    modifier = Modifier.padding(bottom = 16.dp)
-                )
+                    LineInformation(
+                        title = stringResource(id = R.string.lblParkingOut),
+                        desc = parkingOut,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                } else {
+                    Spacer(
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                            .fillMaxWidth()
+                            .height(25.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
+                    )
+
+                    Spacer(
+                        modifier = Modifier
+                            .padding(vertical = 4.dp)
+                            .fillMaxWidth()
+                            .height(25.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
+                    )
+                }
             }
 
             // facturar transaccion
             OutlinedButton(
-                onClick = onBillClicked,
+                onClick = onDismiss,
                 shape = shapes.small,
                 modifier = Modifier
                     .padding(horizontal = 16.dp,)
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
             ) {
-                Text(text = stringResource(id = R.string.btnBill))
+                Text(text = stringResource(id = R.string.btnBack))
             }
 
             // regresar
             Button(
-                onClick = onDismiss,
+                onClick = onBillClicked,
                 shape = shapes.small,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
             ) {
-                Text(text = stringResource(id = R.string.btnBack))
+                Text(text = stringResource(id = R.string.btnBill))
             }
 
             Spacer(modifier = Modifier.size(16.dp))
