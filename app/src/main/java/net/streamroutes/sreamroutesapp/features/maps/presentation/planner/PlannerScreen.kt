@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.features.maps.presentation.planner
 
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +10,7 @@ import androidx.compose.material.icons.outlined.MyLocation
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -48,9 +48,9 @@ import kotlin.random.Random
 @Composable
 fun PlannerScreen(
     modifier: Modifier = Modifier,
-    transportViewModel: TransportViewModel = hiltViewModel()
+    transportViewModel: TransportViewModel
 ) {
-    val markerAddress by transportViewModel.markerAdress.collectAsState()
+    //val markerAddress by transportViewModel.markerAdress.collectAsState()
 
     val coroutine = rememberCoroutineScope()
 
@@ -65,6 +65,8 @@ fun PlannerScreen(
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+
+    var address by remember { mutableStateOf("") }
 
     var markerVisible by remember {
         mutableStateOf(false)
@@ -88,13 +90,15 @@ fun PlannerScreen(
     val onMapClick = { coord: LatLng ->
         coroutine.launch {
             markerState.position = coord
-            transportViewModel.getAddress(markerState.position)
-            delay(100)
+            address = transportViewModel.getAddress(markerState.position).toString()
             markerVisible = true
+            //delay(2000)
             updateCameraPosition(coord)
+            delay(100)
             markerState.showInfoWindow()
         }
     }
+
     // ABRIR MODALBOTTOm
     val openBottomSheet = {
         isOpen = !isOpen
@@ -102,18 +106,12 @@ fun PlannerScreen(
     // AGREGAR DESTINO A LA LISTA
     val onAdd = {
         if(markerVisible) {
-            markerAddress?.let {
+            destinationsList.add(
                 Destinations(
                     coords = markerState.position,
-                    //address = "Padre Luis Gaytan #${Random.nextInt(1,500)}"
-                    address = it
+                    address = address
                 )
-            }?.let {
-                destinationsList.add(
-                    it
-                )
-            }
-            //Log.d("MARKER", markerState.position.toString())
+            )
             markerVisible = false
         }
     }
@@ -170,11 +168,13 @@ fun PlannerScreen(
             },
             modifier = Modifier.fillMaxSize()
         ) {
-            MarkerInfoWindow(
-                state = markerState,
-                visible = markerVisible
-            ) {
-                PlannerInfoWindow(transportViewModel)
+            if (markerVisible) {
+                MarkerInfoWindow(
+                    state = markerState,
+                    visible = markerVisible
+                ) {
+                    PlannerInfoWindow(address = address)
+                }
             }
         }
 
@@ -186,6 +186,7 @@ fun PlannerScreen(
                 iconDescription = stringResource(id = R.string.iconMyLocation),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
+
         }
 
         PlannerFloatingButtons(

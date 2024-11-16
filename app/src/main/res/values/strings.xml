@@ -577,7 +577,7 @@
     <string name="btnSelect">Seleccionar</string>
     <string name="lblRouteDetails">Detalles de la ruta</string>
     <string name="iconDownload">Descargar ruta</string>
-    <string name="lblDistance">Distancia %1$s</string>
+    <string name="lblDistance">Distancia </string>
     <string name="lblRouteDirection">En direccion a %1$s</string>
     <string name="lblGoNearStop">Dirigete a la parada mas cercana</string>
     <string name="lblBusTimeToStop">Siguiente parada</string>

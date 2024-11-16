@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.features.maps.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ElevatedCard
@@ -10,6 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -18,10 +19,9 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.Tran
 
 @Composable
 fun PlannerInfoWindow(
-    transportViewModel: TransportViewModel
+    //ubication: String ="Padre Luis Gaytan, Col. San Isidro, Cp. 38887, Moroleon, Guanajuato Mexico"
+    address: String
 ) {
-    val markerAddress by transportViewModel.markerAdress.collectAsState()
-
     ElevatedCard(
         modifier = Modifier.padding(horizontal = 32.dp, vertical = 8.dp)
     ) {
@@ -35,15 +35,10 @@ fun PlannerInfoWindow(
             )
 
             // direccion
-            markerAddress?.let {
-                Text(
-                    text = it,
-                    style = typography.labelLarge
-                )
-            }
-
-
-
+            Text(
+                text = address,
+                style = typography.labelLarge
+            )
         }
     }
 }

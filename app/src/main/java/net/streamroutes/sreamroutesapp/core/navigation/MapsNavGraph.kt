@@ -85,7 +85,7 @@ fun MapsNavigation(
         ) {
             TransportScreen(
                 onSelectRoute = {
-                    navHostController.navigate(Destinations.Transport.route) {
+                    navHostController.navigate(Destinations.TransportRoute.route) {
                         launchSingleTop = true
                     }
                 },

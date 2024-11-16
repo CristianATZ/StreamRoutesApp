@@ -127,28 +127,24 @@ class TransportViewModel @Inject constructor(
     /**
      * Método usado para obtener la dirección de un LatLng
      */
-    fun getAddress(location: LatLng){
-        viewModelScope.launch {
-            try {
-                // Enviar request al repository y guardar su response
-                val response = orsRepository.getAddress(
-                    "${location.longitude}", "${location.latitude}"
-                )
+    suspend fun getAddress(location: LatLng): String? {
+        return try {
+            val response = orsRepository.getAddress(
+                "${location.longitude}", "${location.latitude}"
+            )
 
-                if (response.isSuccessful) {
-                    val address = response.body()?.features?.get(0)?.properties?.label
-                    if(address != null){
-                        _markerAddress.value = address
-                    } else {
-                        _markerAddress.value = null
-                    }
-                    Log.d("RESPONSE", address ?: "NADA ALV")
-                } else {
-                    Log.e("RESPONSE", "No se encontró una direccin valida en la respuesta de la API.")
-                }
-            } catch (e: Exception) {
-                Log.e("RESPONSE", "Error al obtener la direccion: ${e.message}", e)
+            if (response.isSuccessful) {
+                val address = response.body()?.features?.get(0)?.properties?.label
+                _markerAddress.value = address
+                Log.d("RESPONSE", address ?: "NADA ALV")
+                address
+            } else {
+                Log.e("RESPONSE", "No se encontró una dirección válida en la respuesta de la API.")
+                null
             }
+        } catch (e: Exception) {
+            Log.e("RESPONSE", "Error al obtener la dirección: ${e.message}", e)
+            null
         }
     }
 
