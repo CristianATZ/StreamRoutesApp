@@ -60,6 +60,7 @@ import net.streamroutes.sreamroutesapp.core.domain.model.ParkingCategory
 import net.streamroutes.sreamroutesapp.core.navigation.ParkingNavigation
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.ShimmerTransportScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.CategoryItem
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingDrawerContent
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingSmallTopAppBar
@@ -108,6 +109,10 @@ fun ParkingHomeScreen(
     onProfilePressed: () -> Unit,
     onSelectParking: () -> Unit
 ) {
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
     var query by remember {
         mutableStateOf("")
     }
@@ -162,217 +167,223 @@ fun ParkingHomeScreen(
             )
         }
     ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .padding(innerPadding)
-                .fillMaxSize()
-        ) {
-            // filtros
-            AnimatedVisibility(
-                visible = openFilter
+        if(!isLoading) {
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .fillMaxSize()
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth()
+                // filtros
+                AnimatedVisibility(
+                    visible = openFilter
                 ) {
-                    // filtros de espacio
-                    Row(
-                        modifier = Modifier.padding(horizontal = 16.dp)
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
                     ) {
-                        FilterChip(
-                            selected = spaceFilter == FilterSpace.ALL,
-                            label = {
-                                Text(text = stringResource(R.string.lblFilterAll))
-                            },
-                            onClick = {
-                                spaceFilter = FilterSpace.ALL
-                            }
-                        )
-
-                        Spacer(Modifier.size(8.dp))
-
-                        FilterChip(
-                            selected = spaceFilter == FilterSpace.FREE,
-                            label = {
-                                Text(text = stringResource(R.string.lblFilterFreeSpace))
-                            },
-                            onClick = {
-                                spaceFilter = FilterSpace.FREE
-                            }
-                        )
-
-                        Spacer(Modifier.size(8.dp))
-
-                        FilterChip(
-                            selected = spaceFilter == FilterSpace.BUSY,
-                            label = {
-                                Text(text = stringResource(R.string.lblFilterBusySpace))
-                            },
-                            onClick = {
-                                spaceFilter = FilterSpace.BUSY
-                            }
-                        )
-                    }
-
-                    // filtros por costo
-                    Row(
-                        modifier = Modifier.padding(horizontal = 16.dp)
-                    ) {
-                        FilterChip(
-                            selected = costFilter == FilterCost.ALL,
-                            label = {
-                                Text(text = stringResource(R.string.lblFilterAll))
-                            },
-                            onClick = {
-                                costFilter = FilterCost.ALL
-                            }
-                        )
-
-                        Spacer(Modifier.size(8.dp))
-
-                        FilterChip(
-                            selected = costFilter == FilterCost.FREE,
-                            label = {
-                                Text(text = stringResource(R.string.lblFilterFreeCost))
-                            },
-                            onClick = {
-                                costFilter = FilterCost.FREE
-                            }
-                        )
-
-                        Spacer(Modifier.size(8.dp))
-
-                        FilterChip(
-                            selected = costFilter == FilterCost.COST,
-                            label = {
-                                Text(text = stringResource(R.string.lblFilterCost))
-                            },
-                            onClick = {
-                                costFilter = FilterCost.COST
-                            }
-                        )
-                    }
-
-                    // aplicar filtros
-                    Button(
-                        onClick = {
-                            updateFilters(spaceFilter, costFilter)
-                            openFilter = !openFilter
-                        },
-                        shape = shapes.small,
-                        modifier = Modifier
-                            .align(Alignment.End)
-                            .padding(horizontal = 16.dp)
-                    ) {
-                        Text(text = stringResource(R.string.lblApply))
-                    }
-
-                    Spacer(Modifier.size(16.dp))
-                    HorizontalDivider()
-                }
-            }
-
-            AnimatedVisibility(
-                visible = !viewall
-            ) {
-                Column {
-                    // barra de busqueda
-                    SearchBar(
-                        query = query,
-                        onQueryChange = { query = it },
-                        onSearch = {
-                            query = it
-                            onSearch()
-                        },
-                        active = false,
-                        onActiveChange = {
-
-                        },
-                        trailingIcon = {
-                            IconButton(
+                        // filtros de espacio
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        ) {
+                            FilterChip(
+                                selected = spaceFilter == FilterSpace.ALL,
+                                label = {
+                                    Text(text = stringResource(R.string.lblFilterAll))
+                                },
                                 onClick = {
-                                    onSearch()
+                                    spaceFilter = FilterSpace.ALL
                                 }
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Outlined.Search,
-                                    contentDescription = stringResource(id = R.string.iconSearch)
-                                )
-                            }
-                        },
-                        placeholder = {
-                            Text(text = stringResource(id = R.string.lblSearch))
-                        },
-                        shadowElevation = 4.dp,
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .fillMaxWidth()
-                    ) {
-
-                    }
-
-                    // categorias
-                    LazyRow(
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        items(categoryList) { item ->
-                            CategoryItem (
-                                icon = item.icon,
-                                selected = categoryVehicle == item.categoryVehicle,
-                                label = item.label,
-                                onSelectCategory = item.onSelectCategory
                             )
 
-                            Spacer(Modifier.size(16.dp))
+                            Spacer(Modifier.size(8.dp))
+
+                            FilterChip(
+                                selected = spaceFilter == FilterSpace.FREE,
+                                label = {
+                                    Text(text = stringResource(R.string.lblFilterFreeSpace))
+                                },
+                                onClick = {
+                                    spaceFilter = FilterSpace.FREE
+                                }
+                            )
+
+                            Spacer(Modifier.size(8.dp))
+
+                            FilterChip(
+                                selected = spaceFilter == FilterSpace.BUSY,
+                                label = {
+                                    Text(text = stringResource(R.string.lblFilterBusySpace))
+                                },
+                                onClick = {
+                                    spaceFilter = FilterSpace.BUSY
+                                }
+                            )
+                        }
+
+                        // filtros por costo
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp)
+                        ) {
+                            FilterChip(
+                                selected = costFilter == FilterCost.ALL,
+                                label = {
+                                    Text(text = stringResource(R.string.lblFilterAll))
+                                },
+                                onClick = {
+                                    costFilter = FilterCost.ALL
+                                }
+                            )
+
+                            Spacer(Modifier.size(8.dp))
+
+                            FilterChip(
+                                selected = costFilter == FilterCost.FREE,
+                                label = {
+                                    Text(text = stringResource(R.string.lblFilterFreeCost))
+                                },
+                                onClick = {
+                                    costFilter = FilterCost.FREE
+                                }
+                            )
+
+                            Spacer(Modifier.size(8.dp))
+
+                            FilterChip(
+                                selected = costFilter == FilterCost.COST,
+                                label = {
+                                    Text(text = stringResource(R.string.lblFilterCost))
+                                },
+                                onClick = {
+                                    costFilter = FilterCost.COST
+                                }
+                            )
+                        }
+
+                        // aplicar filtros
+                        Button(
+                            onClick = {
+                                updateFilters(spaceFilter, costFilter)
+                                openFilter = !openFilter
+                            },
+                            shape = shapes.small,
+                            modifier = Modifier
+                                .align(Alignment.End)
+                                .padding(horizontal = 16.dp)
+                        ) {
+                            Text(text = stringResource(R.string.lblApply))
+                        }
+
+                        Spacer(Modifier.size(16.dp))
+                        HorizontalDivider()
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = !viewall
+                ) {
+                    Column {
+                        // barra de busqueda
+                        SearchBar(
+                            query = query,
+                            onQueryChange = { query = it },
+                            onSearch = {
+                                query = it
+                                onSearch()
+                            },
+                            active = false,
+                            onActiveChange = {
+
+                            },
+                            trailingIcon = {
+                                IconButton(
+                                    onClick = {
+                                        onSearch()
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.Search,
+                                        contentDescription = stringResource(id = R.string.iconSearch)
+                                    )
+                                }
+                            },
+                            placeholder = {
+                                Text(text = stringResource(id = R.string.lblSearch))
+                            },
+                            shadowElevation = 4.dp,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
+                        ) {
+
+                        }
+
+                        // categorias
+                        LazyRow(
+                            contentPadding = PaddingValues(16.dp)
+                        ) {
+                            items(categoryList) { item ->
+                                CategoryItem (
+                                    icon = item.icon,
+                                    selected = categoryVehicle == item.categoryVehicle,
+                                    label = item.label,
+                                    onSelectCategory = item.onSelectCategory
+                                )
+
+                                Spacer(Modifier.size(16.dp))
+                            }
                         }
                     }
                 }
-            }
 
-            LazyColumn(
-                modifier = Modifier.fillMaxSize()
-            ) {
-                item {
-                    // espacios cercanos, boton de ver mas
-                    Row(
-                        modifier = Modifier.padding(horizontal = 16.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(R.string.lblNearSpace),
-                            style = typography.labelLarge,
-                            fontWeight = FontWeight.Bold,
-                            modifier = Modifier.graphicsLayer(alpha = 0.5f)
-                        )
-
-                        Spacer(Modifier.weight(1f))
-
-                        TextButton(
-                            onClick = {
-                                viewall = !viewall
-                            }
+                LazyColumn(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    item {
+                        // espacios cercanos, boton de ver mas
+                        Row(
+                            modifier = Modifier.padding(horizontal = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
-                                text = stringResource(R.string.lblViewAll),
+                                text = stringResource(R.string.lblNearSpace),
                                 style = typography.labelLarge,
-                                color = orange,
-                                fontWeight = FontWeight.Bold
+                                fontWeight = FontWeight.Bold,
+                                modifier = Modifier.graphicsLayer(alpha = 0.5f)
                             )
+
+                            Spacer(Modifier.weight(1f))
+
+                            TextButton(
+                                onClick = {
+                                    viewall = !viewall
+                                }
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.lblViewAll),
+                                    style = typography.labelLarge,
+                                    color = orange,
+                                    fontWeight = FontWeight.Bold
+                                )
+                            }
                         }
                     }
-                }
 
-                items(5) {
-                    ElementOption(
-                        title = "ITSUR",
-                        description = "Av. Educacion Superior, 38890",
-                        price = "31",
-                        calification = "3.8",
-                        onClick = onSelectParking
-                    )
+                    items(5) {
+                        ElementOption(
+                            title = "ITSUR",
+                            description = "Av. Educacion Superior, 38890",
+                            price = "31",
+                            calification = "3.8",
+                            onClick = onSelectParking
+                        )
 
-                    Spacer(Modifier.size(16.dp))
+                        Spacer(Modifier.size(16.dp))
+                    }
                 }
             }
+        } else {
+            ShimmerTransportScreen(
+                modifier = Modifier.padding(innerPadding)
+            )
         }
     }
 }

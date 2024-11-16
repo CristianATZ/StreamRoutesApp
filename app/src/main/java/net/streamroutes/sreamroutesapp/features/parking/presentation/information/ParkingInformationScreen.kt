@@ -4,13 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ArrowBackIosNew
@@ -25,8 +29,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -36,13 +45,20 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
+import net.streamroutes.sreamroutesapp.features.profile.components.ShimmerHistoryItem
+import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ParkingInformationScreen(
     onBackPressed: () -> Unit = {},
     onBookingPressed: () -> Unit,
     onSelectPressed: () -> Unit
 ) {
+    var isLoading by remember {
+        mutableStateOf(false)
+    }
+
 
     val services = listOf(
         "Camaras",
@@ -79,19 +95,30 @@ fun ParkingInformationScreen(
                         Icon(imageVector = Icons.Outlined.ArrowBackIosNew, contentDescription = null)
                     }
 
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp)
-                            .fillMaxWidth()
-                            .background(Color.Black.copy(0.5f), shapes.extraLarge),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(
-                            text = stringResource(R.string.lblAllowPlaces, "5"),
-                            style = typography.labelLarge,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White,
-                            modifier = Modifier.padding(8.dp)
+                    if(!isLoading) {
+                        Box(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
+                                .background(Color.Black.copy(0.5f), shapes.extraLarge),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                text = stringResource(R.string.lblAllowPlaces, "5"),
+                                style = typography.labelLarge,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                modifier = Modifier.padding(8.dp)
+                            )
+                        }
+                    } else {
+                        Spacer(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .fillMaxWidth()
+                                .height(40.dp)
+                                .clip(shapes.extraLarge)
+                                .shimmerEffect()
                         )
                     }
                 }
@@ -113,105 +140,201 @@ fun ParkingInformationScreen(
                     address = "Padre Luis Gaytan #234",
                     price = 29.5
                 )
+                if(!isLoading) {
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                            .horizontalScroll(rememberScrollState())
+                    ) {
+                        InformationChip(
+                            text = stringResource(R.string.lblDistance, "400 m")
+                        )
 
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                        .horizontalScroll(rememberScrollState())
-                ) {
-                    InformationChip(
-                        text = stringResource(R.string.lblDistance, "400 m")
-                    )
+                        InformationChip(
+                            text = stringResource(R.string.lblCapacity, "30")
+                        )
 
-                    InformationChip(
-                        text = stringResource(R.string.lblCapacity, "30")
-                    )
+                        InformationChip(
+                            text = stringResource(R.string.lblWaitPlace, "3.2 Hrs")
+                        )
 
-                    InformationChip(
-                        text = stringResource(R.string.lblWaitPlace, "3.2 Hrs")
-                    )
-
-                    InformationChip(
-                        text = stringResource(R.string.lblRating, "4.6")
-                    )
+                        InformationChip(
+                            text = stringResource(R.string.lblRating, "4.6")
+                        )
+                    }
+                } else {
+                    Row {
+                        repeat(3) {
+                            Spacer(
+                                modifier = Modifier
+                                    .padding(start = 16.dp)
+                                    .width(100.dp)
+                                    .height(40.dp)
+                                    .clip(shapes.small)
+                                    .shimmerEffect()
+                            )
+                        }
+                    }
                 }
 
                 Spacer(Modifier.size(32.dp))
 
                 // servicios
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = stringResource(R.string.lblOfferServices),
-                        style = typography.bodyLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    Spacer(Modifier.size(8.dp))
-
-                    services.forEach { item ->
+                if(!isLoading) {
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    ) {
                         Text(
-                            text = stringResource(R.string.lblDout, item),
-                            style = typography.labelLarge,
+                            text = stringResource(R.string.lblOfferServices),
+                            style = typography.bodyLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(Modifier.size(8.dp))
+
+                        services.forEach { item ->
+                            Text(
+                                text = stringResource(R.string.lblDout, item),
+                                style = typography.labelLarge,
+                                modifier = Modifier
+                                    .padding(horizontal = 8.dp)
+                                    .graphicsLayer(alpha = 0.5f)
+                            )
+                        }
+                    }
+                } else {
+                    Column {
+                        Spacer(
                             modifier = Modifier
-                                .padding(horizontal = 8.dp)
-                                .graphicsLayer(alpha = 0.5f)
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                                .fillMaxWidth(0.4f)
+                                .height(25.dp)
+                                .clip(shapes.small)
+                                .shimmerEffect()
+                        )
+
+                        Spacer(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 4.dp)
+                                .fillMaxWidth()
+                                .height(25.dp)
+                                .clip(shapes.small)
+                                .shimmerEffect()
+                        )
+                        Spacer(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 4.dp)
+                                .fillMaxWidth()
+                                .height(25.dp)
+                                .clip(shapes.small)
+                                .shimmerEffect()
+                        )
+                        Spacer(
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp, vertical = 4.dp)
+                                .fillMaxWidth()
+                                .height(25.dp)
+                                .clip(shapes.small)
+                                .shimmerEffect()
                         )
                     }
                 }
 
                 Spacer(Modifier.size(16.dp))
 
-                // descripcion
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(
-                        text = stringResource(R.string.lblDescription),
-                        style = typography.bodyLarge,
-                        fontWeight = FontWeight.Bold
+                if(!isLoading) {
+                    // descripcion
+                    Column(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = stringResource(R.string.lblDescription),
+                            style = typography.bodyLarge,
+                            fontWeight = FontWeight.Bold
+                        )
+
+                        Spacer(Modifier.size(8.dp))
+
+                        Text(
+                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                            style = typography.labelLarge,
+                            textAlign = TextAlign.Justify,
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .graphicsLayer(alpha = 0.5f)
+                        )
+                    }
+                } else {
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                            .fillMaxWidth(0.4f)
+                            .height(25.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
                     )
 
-                    Spacer(Modifier.size(8.dp))
-
-                    Text(
-                        text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-                        style = typography.labelLarge,
-                        textAlign = TextAlign.Justify,
+                    Spacer(
                         modifier = Modifier
-                            .padding(horizontal = 8.dp)
-                            .graphicsLayer(alpha = 0.5f)
+                            .padding(horizontal = 16.dp, vertical = 4.dp)
+                            .fillMaxWidth()
+                            .height(100.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
                     )
                 }
 
                 Spacer(Modifier.weight(1f))
 
-                // boton de apartar espacio
-                OutlinedButton(
-                    onClick = onBookingPressed,
-                    shape = shapes.small,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(text = stringResource(R.string.lblBookPlace))
-                }
+                if(!isLoading) {
+                    // boton de apartar espacio
+                    OutlinedButton(
+                        onClick = onBookingPressed,
+                        shape = shapes.small,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = stringResource(R.string.lblBookPlace))
+                    }
 
-                // boton de iniciar viaje
-                Button(
-                    onClick = onSelectPressed,
-                    shape = shapes.small,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(text = stringResource(R.string.lblStartParkingRoute))
+                    // boton de iniciar viaje
+                    Button(
+                        onClick = onSelectPressed,
+                        shape = shapes.small,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = stringResource(R.string.lblStartParkingRoute))
+                    }
+                } else {
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
+                    )
+
+                    Spacer(
+                        modifier = Modifier.size(8.dp)
+                    )
+
+                    Spacer(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                            .height(50.dp)
+                            .clip(shapes.small)
+                            .shimmerEffect()
+                    )
                 }
 
                 Spacer(Modifier.size(16.dp))

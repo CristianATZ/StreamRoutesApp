@@ -72,7 +72,7 @@ fun ElementOption(
                     style = typography.titleLarge
                 )
                 Text(
-                    text = "Siguiente parada en ${time} minutos",
+                    text = description,
                     style = typography.bodyMedium,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )

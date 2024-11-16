@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.ArrowBackIosNew
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
@@ -65,6 +66,10 @@ data class AlertsExpiration(
 fun ParkingBookingScreen(
     onBackPressed: () -> Unit = {}
 ) {
+    var isLoading by remember {
+        mutableStateOf(true)
+    }
+
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
     }
@@ -95,17 +100,31 @@ fun ParkingBookingScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            MapFullSize(
-                cameraPositionState = cameraPositionState,
-                onMapClick = {
+            if(!isLoading) {
+                MapFullSize(
+                    cameraPositionState = cameraPositionState,
+                    onMapClick = {
 
-                },
-                onMapLoaded = {
+                    },
+                    onMapLoaded = {
 
-                },
-                modifier = Modifier.fillMaxWidth().fillMaxHeight(0.35f)
-            ) {
+                    },
+                    modifier = Modifier.fillMaxWidth().fillMaxHeight(0.35f)
+                ) {
 
+                }
+            } else {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.35f),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                    Spacer(Modifier.size(16.dp))
+                    Text(text = stringResource(R.string.lblLoadingMap))
+                }
             }
 
             Row(

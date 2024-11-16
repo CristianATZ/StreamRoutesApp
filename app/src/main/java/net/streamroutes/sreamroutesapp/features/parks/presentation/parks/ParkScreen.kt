@@ -6,8 +6,12 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,7 +19,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.features.parks.components.BookingSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.parks.components.ShimmerBookingItem
+import net.streamroutes.sreamroutesapp.features.profile.components.ShimmerHistoryItem
+import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 data class ParkItem(
     val parkingName: String,
@@ -36,6 +45,9 @@ data class ParkItem(
 fun ParkScreen(
     onBackPressed: () -> Unit
 ) {
+    var isLoading by remember {
+        mutableStateOf(true)
+    }
     // ontener lista
     val bookingList = listOf(
         ParkItem(
@@ -86,42 +98,48 @@ fun ParkScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            if(bookingList.isEmpty()) {
-                NoParks()
-            } else {
-                AnimatedContent(
-                    targetState = onViewRoute,
-                    transitionSpec = {
-                        if(onViewRoute) {
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> fullWidth } // Comienza desde la izquierda
-                            ) togetherWith slideOutHorizontally(
-                                targetOffsetX = { fullWidth -> -fullWidth } // Desliza hacia la derecha al salir
-                            ) using SizeTransform(clip = false)
-                        } else {
-                            slideInHorizontally(
-                                initialOffsetX = { fullWidth -> -fullWidth } // Comienza desde la izquierda
-                            ) togetherWith slideOutHorizontally(
-                                targetOffsetX = { fullWidth -> fullWidth } // Desliza hacia la derecha al salir
-                            ) using SizeTransform(clip = false)
-                        }
-                    },
-                    label = ""
-                ) { isRoute ->
-                    if (isRoute) {
-                        ParkRouteScreen(
-                            onBackPressed = {
-                                onViewRoute = false
+            if(!isLoading) {
+                if(bookingList.isEmpty()) {
+                    NoParks()
+                } else {
+                    AnimatedContent(
+                        targetState = onViewRoute,
+                        transitionSpec = {
+                            if(onViewRoute) {
+                                slideInHorizontally(
+                                    initialOffsetX = { fullWidth -> fullWidth } // Comienza desde la izquierda
+                                ) togetherWith slideOutHorizontally(
+                                    targetOffsetX = { fullWidth -> -fullWidth } // Desliza hacia la derecha al salir
+                                ) using SizeTransform(clip = false)
+                            } else {
+                                slideInHorizontally(
+                                    initialOffsetX = { fullWidth -> -fullWidth } // Comienza desde la izquierda
+                                ) togetherWith slideOutHorizontally(
+                                    targetOffsetX = { fullWidth -> fullWidth } // Desliza hacia la derecha al salir
+                                ) using SizeTransform(clip = false)
                             }
-                        )
-                    } else {
-                        ParksList(
-                            bookingList = bookingList,
-                            onWatchRoute = onWatchRoute
-                        )
+                        },
+                        label = ""
+                    ) { isRoute ->
+                        if (isRoute) {
+                            ParkRouteScreen(
+                                onBackPressed = {
+                                    onViewRoute = false
+                                }
+                            )
+                        } else {
+                            ParksList(
+                                bookingList = bookingList,
+                                onWatchRoute = onWatchRoute
+                            )
+                        }
                     }
-                }
 
+                }
+            } else {
+                repeat(2) {
+                    ShimmerBookingItem()
+                }
             }
         }
     }
