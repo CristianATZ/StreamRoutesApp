@@ -6,17 +6,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
-import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
-import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
+import net.streamroutes.sreamroutesapp.features.parking.presentation.ParkingMain
+import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
 import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
-import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.TransportHomeScreen
-import net.streamroutes.sreamroutesapp.features.turism.presentation.TourismScreen
 
 @Composable
-fun TransportNavigation(
+fun ParkingNavigation(
     navHostController: NavHostController,
     onOpenMenu: () -> Unit
 ) {
@@ -39,40 +36,24 @@ fun TransportNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Destinations.HomeTransport.route
+        startDestination = Destinations.HomeParking.route
     ) {
-        // inicio
         composable(
-            route = Destinations.HomeTransport.route,
+            route = Destinations.HomeParking.route,
             enterTransition = { slideInFromLeft },
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            TransportHomeScreen(
-                onMenuPressed = onOpenMenu,
-                onSettingsPressed = {
-                    navHostController.navigate(Destinations.Settings.route) {
-                        launchSingleTop = true
-                    }
-                },
+            ParkingMain(
+                onBackPressed = onOpenMenu,
                 onProfilePressed = {
                     navHostController.navigate(Destinations.Profile.route) {
                         launchSingleTop = true
                     }
                 },
-                onMapsPressed = {
-                    navHostController.navigate(Destinations.Maps.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onTourismPressed = {
-                    navHostController.navigate(Destinations.Tourism.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onForumPressed = {
-                    navHostController.navigate(Destinations.Forum.route) {
+                onSettingsPressed = {
+                    navHostController.navigate(Destinations.Settings.route) {
                         launchSingleTop = true
                     }
                 }
@@ -83,7 +64,7 @@ fun TransportNavigation(
         composable(
             route = Destinations.Profile.route,
             enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToLeft },
+            exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
@@ -107,67 +88,7 @@ fun TransportNavigation(
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            EditProfileMain (
-                onBackPressed = {
-                    navHostController.popBackStack()
-                }
-            )
-        }
-
-        // premium
-        composable(
-            route = Destinations.Premium.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
-            popExitTransition = { slideOutToRight }
-        ) {
-            PremiumScreen(
-                onBackPressed = {
-                    navHostController.popBackStack()
-                }
-            )
-        }
-
-        // mapas
-        composable(
-            route = Destinations.Maps.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
-            popExitTransition = { slideOutToRight }
-        ) {
-            MapsScreen(
-                onBackPressed = {
-                    navHostController.popBackStack()
-                }
-            )
-        }
-
-        // turismo
-        composable(
-            route = Destinations.Tourism.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
-            popExitTransition = { slideOutToRight }
-        ) {
-            TourismScreen(
-                onBackPressed = {
-                    navHostController.popBackStack()
-                }
-            )
-        }
-
-        // foro
-        composable(
-            route = Destinations.Forum.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
-            popExitTransition = { slideOutToRight }
-        ) {
-            ForumScreen(
+            EditProfileMain(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
@@ -182,7 +103,22 @@ fun TransportNavigation(
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            SettingsMain (
+            SettingsMain(
+                onBackPressed = {
+                    navHostController.popBackStack()
+                }
+            )
+        }
+
+        // parqueos
+        composable(
+            route = Destinations.Parks.route,
+            enterTransition = { slideInFromRight },
+            exitTransition = { slideOutToRight },
+            popEnterTransition = { slideInFromRight },
+            popExitTransition = { slideOutToRight }
+        ) {
+            ParkScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }

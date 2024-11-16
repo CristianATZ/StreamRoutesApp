@@ -6,21 +6,18 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
-import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
-import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
-import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.TransportHomeScreen
-import net.streamroutes.sreamroutesapp.features.turism.presentation.TourismScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.posts.SavedPostScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.routes.SavedRouteScreen
 
 @Composable
-fun TransportNavigation(
+fun ProfileNavigation(
     navHostController: NavHostController,
-    onOpenMenu: () -> Unit
+    onBackPressed: () -> Unit
 ) {
-    // Definición de animaciones de transición
     val slideInFromLeft = slideInHorizontally(
         initialOffsetX = { -it } // Entra desde la izquierda
     )
@@ -39,150 +36,117 @@ fun TransportNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Destinations.HomeTransport.route
+        startDestination = Destinations.HomeEditProfile.route
     ) {
-        // inicio
-        composable(
-            route = Destinations.HomeTransport.route,
-            enterTransition = { slideInFromLeft },
-            exitTransition = { slideOutToLeft },
-            popEnterTransition = { slideInFromLeft },
-            popExitTransition = { slideOutToRight }
-        ) {
-            TransportHomeScreen(
-                onMenuPressed = onOpenMenu,
-                onSettingsPressed = {
-                    navHostController.navigate(Destinations.Settings.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onProfilePressed = {
-                    navHostController.navigate(Destinations.Profile.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onMapsPressed = {
-                    navHostController.navigate(Destinations.Maps.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onTourismPressed = {
-                    navHostController.navigate(Destinations.Tourism.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onForumPressed = {
-                    navHostController.navigate(Destinations.Forum.route) {
-                        launchSingleTop = true
-                    }
-                }
-            )
-        }
 
-        // profile
+
+        // editar perfil
         composable(
-            route = Destinations.Profile.route,
+            route = Destinations.HomeEditProfile.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            ProfileScreen (
-                onBackPressed = {
-                    navHostController.popBackStack()
+            EditProfileScreen(
+                onBackPressed = onBackPressed,
+                onEditAccount = {
+                    navHostController.navigate(Destinations.EditAccount.route) {
+                        launchSingleTop = true
+                    }
                 },
-                onEditProfile = {
-                    navHostController.navigate(Destinations.EditProfile.route) {
+                onEditPersonalInformation = {
+                    navHostController.navigate(Destinations.EditPersonalInformation.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onPosts = {
+                    navHostController.navigate(Destinations.Posts.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onRoutes = {
+                    navHostController.navigate(Destinations.Routes.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onHistory = {
+                    navHostController.navigate(Destinations.History.route) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        // edit profile
+        // edit account
         composable(
-            route = Destinations.EditProfile.route,
+            route = Destinations.EditAccount.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            EditProfileMain (
+            EditAccountScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // premium
+        // edit personal information
         composable(
-            route = Destinations.Premium.route,
+            route = Destinations.EditPersonalInformation.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            PremiumScreen(
+            EditInformation(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // mapas
+        // posts
         composable(
-            route = Destinations.Maps.route,
+            route = Destinations.Posts.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            MapsScreen(
+            SavedPostScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // turismo
+        // routes
         composable(
-            route = Destinations.Tourism.route,
+            route = Destinations.Routes.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            TourismScreen(
+            SavedRouteScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // foro
+        // history
         composable(
-            route = Destinations.Forum.route,
+            route = Destinations.History.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            ForumScreen(
-                onBackPressed = {
-                    navHostController.popBackStack()
-                }
-            )
-        }
-
-        // ajustes
-        composable(
-            route = Destinations.Settings.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
-            popExitTransition = { slideOutToRight }
-        ) {
-            SettingsMain (
+            HistoryScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }

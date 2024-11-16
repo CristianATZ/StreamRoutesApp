@@ -44,7 +44,7 @@ fun MapRouteScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
     onShareLocation: () -> Unit,
-    transportViewModel: TransportViewModel
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     val scope = rememberCoroutineScope()
 

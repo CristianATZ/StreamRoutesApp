@@ -5,6 +5,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.navigation.TourismNavigation
@@ -13,8 +14,7 @@ import net.streamroutes.sreamroutesapp.features.turism.components.TurismSmallTop
 
 @Composable
 fun TourismScreen(
-    onBackPressed: () -> Unit,
-    transportViewModel: TransportViewModel
+    onBackPressed: () -> Unit
 ) {
     val tourismNavHostController = rememberNavController()
 
@@ -28,8 +28,7 @@ fun TourismScreen(
     ) { innerPadding ->
         TourismNavigation(
             navHostController = tourismNavHostController,
-            modifier = Modifier.padding(innerPadding),
-            transportViewModel = transportViewModel
+            modifier = Modifier.padding(innerPadding)
         )
     }
 }

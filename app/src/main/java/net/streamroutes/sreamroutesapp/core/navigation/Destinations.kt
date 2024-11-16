@@ -2,14 +2,19 @@ package net.streamroutes.sreamroutesapp.core.navigation
 
 sealed class Destinations(val route: String) {
 
+    // general navgraph
+    data object Choose : Destinations("choose")
+    data object TransportMain : Destinations("transportMain")
+    data object ParkingMain : Destinations("parkingMain")
+
     // login navgraph
     data object SignIn : Destinations("signIn")
     data object ChangePassword : Destinations("changePassword")
     data object SignUp : Destinations("signUp")
-    data object Select : Destinations("select")
 
     // transport navgraph
     data object Profile : Destinations("profile")
+    data object HomeEditProfile : Destinations("homeEditProfile")
     data object HomeTransport : Destinations("homeTransport")
     data object Premium : Destinations("premium")
     data object Maps : Destinations("maps")
@@ -23,6 +28,7 @@ sealed class Destinations(val route: String) {
     data object TourismRoute : Destinations("tourismRoute")
 
     // settings navgraph
+    data object HomeSettings : Destinations("homeSettings")
     data object NotificationsSettings : Destinations("notificationsSettings")
     data object MapsSettings : Destinations("mapsSettings")
     data object PrivacitySettings : Destinations("privacitySettings")

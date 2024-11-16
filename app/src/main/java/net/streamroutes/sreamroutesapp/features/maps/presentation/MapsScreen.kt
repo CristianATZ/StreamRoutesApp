@@ -25,7 +25,7 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.Tran
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapsScreen(
-    transportViewModel: TransportViewModel,
+    transportViewModel: TransportViewModel = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
     val mapsNavHostController = rememberNavController()

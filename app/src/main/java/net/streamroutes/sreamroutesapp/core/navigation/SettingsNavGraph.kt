@@ -6,21 +6,18 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
-import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
-import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
-import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
-import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.TransportHomeScreen
-import net.streamroutes.sreamroutesapp.features.turism.presentation.TourismScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.apparence.ApparenceScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapsSettingsScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.notifications.NotificationsScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.privacity.PrivacityScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsScreen
+import net.streamroutes.sreamroutesapp.features.settings.presentation.storage.StorageScreen
 
 @Composable
-fun TransportNavigation(
+fun SettingsNavigation(
     navHostController: NavHostController,
-    onOpenMenu: () -> Unit
+    onBackPressed: () -> Unit
 ) {
-    // Definición de animaciones de transición
     val slideInFromLeft = slideInHorizontally(
         initialOffsetX = { -it } // Entra desde la izquierda
     )
@@ -39,90 +36,55 @@ fun TransportNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Destinations.HomeTransport.route
+        startDestination = Destinations.HomeSettings.route
     ) {
-        // inicio
+        // inicio ajustes
         composable(
-            route = Destinations.HomeTransport.route,
+            route = Destinations.HomeSettings.route,
             enterTransition = { slideInFromLeft },
             exitTransition = { slideOutToLeft },
             popEnterTransition = { slideInFromLeft },
             popExitTransition = { slideOutToRight }
         ) {
-            TransportHomeScreen(
-                onMenuPressed = onOpenMenu,
-                onSettingsPressed = {
-                    navHostController.navigate(Destinations.Settings.route) {
-                        launchSingleTop = true
-                    }
-                },
-                onProfilePressed = {
-                    navHostController.navigate(Destinations.Profile.route) {
+            SettingsScreen (
+                onBackPressed = onBackPressed,
+                onNotificationPressed = {
+                    navHostController.navigate(Destinations.NotificationsSettings.route) {
                         launchSingleTop = true
                     }
                 },
                 onMapsPressed = {
-                    navHostController.navigate(Destinations.Maps.route) {
+                    navHostController.navigate(Destinations.MapsSettings.route) {
                         launchSingleTop = true
                     }
                 },
-                onTourismPressed = {
-                    navHostController.navigate(Destinations.Tourism.route) {
+                onPrivacityPressed = {
+                    navHostController.navigate(Destinations.PrivacitySettings.route) {
                         launchSingleTop = true
                     }
                 },
-                onForumPressed = {
-                    navHostController.navigate(Destinations.Forum.route) {
+                onStoragePressed = {
+                    navHostController.navigate(Destinations.StorageSettings.route) {
+                        launchSingleTop = true
+                    }
+                },
+                onApparencePressed = {
+                    navHostController.navigate(Destinations.ApparenceSettings.route) {
                         launchSingleTop = true
                     }
                 }
             )
         }
 
-        // profile
+        // notificaciones
         composable(
-            route = Destinations.Profile.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToLeft },
-            popEnterTransition = { slideInFromLeft },
-            popExitTransition = { slideOutToRight }
-        ) {
-            ProfileScreen (
-                onBackPressed = {
-                    navHostController.popBackStack()
-                },
-                onEditProfile = {
-                    navHostController.navigate(Destinations.EditProfile.route) {
-                        launchSingleTop = true
-                    }
-                }
-            )
-        }
-
-        // edit profile
-        composable(
-            route = Destinations.EditProfile.route,
+            route = Destinations.NotificationsSettings.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            EditProfileMain (
-                onBackPressed = {
-                    navHostController.popBackStack()
-                }
-            )
-        }
-
-        // premium
-        composable(
-            route = Destinations.Premium.route,
-            enterTransition = { slideInFromRight },
-            exitTransition = { slideOutToRight },
-            popEnterTransition = { slideInFromRight },
-            popExitTransition = { slideOutToRight }
-        ) {
-            PremiumScreen(
+            NotificationsScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
@@ -131,58 +93,58 @@ fun TransportNavigation(
 
         // mapas
         composable(
-            route = Destinations.Maps.route,
+            route = Destinations.MapsSettings.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            MapsScreen(
+            MapsSettingsScreen (
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // turismo
+        // privacidad
         composable(
-            route = Destinations.Tourism.route,
+            route = Destinations.PrivacitySettings.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            TourismScreen(
+            PrivacityScreen (
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // foro
+        // almacenamiento
         composable(
-            route = Destinations.Forum.route,
+            route = Destinations.StorageSettings.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            ForumScreen(
+            StorageScreen (
                 onBackPressed = {
                     navHostController.popBackStack()
                 }
             )
         }
 
-        // ajustes
+        // apariencia
         composable(
-            route = Destinations.Settings.route,
+            route = Destinations.ApparenceSettings.route,
             enterTransition = { slideInFromRight },
             exitTransition = { slideOutToRight },
             popEnterTransition = { slideInFromRight },
             popExitTransition = { slideOutToRight }
         ) {
-            SettingsMain (
+            ApparenceScreen (
                 onBackPressed = {
                     navHostController.popBackStack()
                 }

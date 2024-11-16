@@ -2,7 +2,6 @@ package net.streamroutes.sreamroutesapp.core.navigation
 
 import android.content.Intent
 import androidx.activity.ComponentActivity
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
@@ -10,8 +9,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import net.streamroutes.sreamroutesapp.app.TransportActivity
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.choose.ChooseScreen
+import net.streamroutes.sreamroutesapp.app.GeneralActivity
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.password.PasswordScreen
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.register.RegisterScreen
@@ -53,7 +51,7 @@ fun LoginNavigation(
         ) {
             LoginScreen(
                 onSignIn = {
-                    val intent = Intent(context, TransportActivity::class.java)
+                    val intent = Intent(context, GeneralActivity::class.java)
                     context.startActivity(intent)
                     (context as? ComponentActivity)?.finish()
                 },

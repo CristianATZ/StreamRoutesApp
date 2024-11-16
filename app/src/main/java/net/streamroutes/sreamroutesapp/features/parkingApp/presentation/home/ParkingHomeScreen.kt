@@ -20,6 +20,7 @@ import androidx.compose.material.icons.outlined.DirectionsCar
 import androidx.compose.material.icons.outlined.Motorcycle
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
@@ -27,14 +28,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SearchBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,16 +46,58 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.compose.RumappAppTheme
 import com.example.compose.orange
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.CategoryVehicle
 import net.streamroutes.sreamroutesapp.core.domain.model.FilterCost
 import net.streamroutes.sreamroutesapp.core.domain.model.FilterParking
 import net.streamroutes.sreamroutesapp.core.domain.model.FilterSpace
 import net.streamroutes.sreamroutesapp.core.domain.model.ParkingCategory
+import net.streamroutes.sreamroutesapp.core.navigation.ParkingNavigation
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.CategoryItem
+import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingDrawerContent
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingSmallTopAppBar
+
+@Composable
+fun ParkingMain(
+    loginViewModel: LoginViewModel = hiltViewModel()
+) {
+    val navHostController = rememberNavController()
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+
+    val openDrawer = {
+        coroutineScope.launch {
+            drawerState.open()
+        }
+    }
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            ParkingDrawerContent(
+                navHostController = navHostController,
+                onLogOut = {
+                    loginViewModel.signOut()
+                }
+            )
+        }
+    ) {
+        ParkingNavigation(
+            navHostController = navHostController,
+            onOpenMenu = {
+                openDrawer()
+            }
+        )
+    }
+}
 
 @SuppressLint("UnusedContentLambdaTargetStateParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -213,7 +259,9 @@ fun ParkingHomeScreen(
                             openFilter = !openFilter
                         },
                         shape = shapes.small,
-                        modifier = Modifier.align(Alignment.End).padding(horizontal = 16.dp)
+                        modifier = Modifier
+                            .align(Alignment.End)
+                            .padding(horizontal = 16.dp)
                     ) {
                         Text(text = stringResource(R.string.lblApply))
                     }

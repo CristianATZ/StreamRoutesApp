@@ -68,7 +68,7 @@ fun MapsNavigation(
             route = Destinations.Transport.route,
             enterTransition = {
                 if(initialState.destination.route == Destinations.MapStops.route ||
-                    initialState.destination.route == Destinations.TransportRoute.route) {
+                    initialState.destination.route == Destinations.Transport.route) {
                     slideInFromTop
                 } else {
                     slideInFromLeft
@@ -76,7 +76,7 @@ fun MapsNavigation(
             },
             exitTransition = {
                 if(targetState.destination.route == Destinations.MapStops.route ||
-                    targetState.destination.route == Destinations.TransportRoute.route) {
+                    targetState.destination.route == Destinations.Transport.route) {
                     slideOutToTop
                 } else {
                     slideOutToLeft
@@ -85,7 +85,7 @@ fun MapsNavigation(
         ) {
             TransportScreen(
                 onSelectRoute = {
-                    navHostController.navigate(Destinations.TransportRoute.route) {
+                    navHostController.navigate(Destinations.Transport.route) {
                         launchSingleTop = true
                     }
                 },

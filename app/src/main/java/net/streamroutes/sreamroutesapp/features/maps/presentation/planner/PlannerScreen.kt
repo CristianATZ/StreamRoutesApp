@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -47,7 +48,7 @@ import kotlin.random.Random
 @Composable
 fun PlannerScreen(
     modifier: Modifier = Modifier,
-    transportViewModel: TransportViewModel
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     val markerAddress by transportViewModel.markerAdress.collectAsState()
 

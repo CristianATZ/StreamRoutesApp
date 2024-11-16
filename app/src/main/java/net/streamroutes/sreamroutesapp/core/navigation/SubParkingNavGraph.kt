@@ -1,7 +1,9 @@
 package net.streamroutes.sreamroutesapp.core.navigation
 
 import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,20 +21,20 @@ fun SubParkingNavigation(
     onSettingsPressed: () -> Unit,
     onProfilePressed: () -> Unit
 ) {
-    val slideInFromLeft = slideInHorizontally(
-        initialOffsetX = { -it } // Entra desde la izquierda
+    val slideInFromLeft = slideInVertically (
+        initialOffsetY = { -it } // Entra desde la izquierda
     )
 
-    val slideOutToLeft = slideOutHorizontally(
-        targetOffsetX = { -it } // Sale hacia la izquierda
+    val slideOutToLeft = slideOutVertically(
+        targetOffsetY = { -it } // Sale hacia la izquierda
     )
 
-    val slideInFromRight = slideInHorizontally(
-        initialOffsetX = { it } // Entra desde la derecha
+    val slideInFromRight = slideInVertically(
+        initialOffsetY = { it } // Entra desde la derecha
     )
 
-    val slideOutToRight = slideOutHorizontally(
-        targetOffsetX = { it } // Sale hacia la derecha
+    val slideOutToRight = slideOutVertically(
+        targetOffsetY = { it } // Sale hacia la derecha
     )
 
     NavHost(

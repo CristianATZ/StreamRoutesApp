@@ -4,6 +4,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,7 +17,7 @@ import net.streamroutes.sreamroutesapp.features.turism.presentation.turismRoute.
 fun TourismNavigation(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    transportViewModel: TransportViewModel
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     // Entrada desde la parte superior
     val slideInFromTop = slideInVertically(
@@ -40,11 +41,11 @@ fun TourismNavigation(
 
     NavHost(
         navController = navHostController,
-        startDestination = Destinations.Tourism.route
+        startDestination = Destinations.HomeTourism.route
     ) {
         // lista de puntos turisticos
         composable(
-            route = Destinations.Tourism.route,
+            route = Destinations.HomeTourism.route,
             enterTransition = {
                 slideInFromTop
             },

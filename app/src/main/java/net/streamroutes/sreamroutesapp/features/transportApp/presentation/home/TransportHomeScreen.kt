@@ -6,22 +6,67 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.MaterialTheme.typography
+import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.navigation.TransportNavigation
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.components.CardOption
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
+import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportDrawerContent
 import net.streamroutes.sreamroutesapp.features.transportApp.components.TransportSmallTopAppBar
+
+@Composable
+fun TransportMain(
+    loginViewModel: LoginViewModel = hiltViewModel()
+) {
+    val navHostController = rememberNavController()
+
+    val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
+    val coroutineScope = rememberCoroutineScope()
+
+    val openDrawer = {
+        coroutineScope.launch {
+            drawerState.open()
+        }
+    }
+
+    ModalNavigationDrawer(
+        drawerState = drawerState,
+        drawerContent = {
+            // MENU, LLAMAR COMPONENTE DrawerContent
+            TransportDrawerContent(
+                navHostController = navHostController,
+                onLogOut = {
+                    loginViewModel.signOut()
+                }
+            )
+        }
+    ) {
+        TransportNavigation(
+            navHostController = navHostController,
+            onOpenMenu = {
+                openDrawer()
+            }
+        )
+    }
+}
 
 @Composable
 fun TransportHomeScreen(
@@ -67,7 +112,9 @@ fun TransportHomeScreen(
             }
 
             Column(
-                modifier = Modifier.fillMaxSize().padding(bottom = 16.dp),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(bottom = 16.dp),
                 verticalArrangement = Arrangement.SpaceAround
             ) {
                 CardOption(

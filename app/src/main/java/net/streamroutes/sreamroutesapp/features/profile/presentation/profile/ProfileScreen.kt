@@ -23,12 +23,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.navigation.ProfileNavigation
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileTopBar
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatDate
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatName
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatPhoneNumber
+
+@Composable
+fun EditProfileMain(
+    onBackPressed: () -> Unit
+) {
+    val profileNavHostController = rememberNavController()
+    ProfileNavigation(
+        navHostController = profileNavHostController,
+        onBackPressed = onBackPressed
+    )
+}
 
 @Composable
 fun ProfileScreen(
