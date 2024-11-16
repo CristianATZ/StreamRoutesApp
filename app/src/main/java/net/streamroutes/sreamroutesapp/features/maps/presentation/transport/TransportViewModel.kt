@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.PolyUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -160,30 +161,18 @@ class TransportViewModel @Inject constructor(
 
                 // Llamar al repositorio para obtener la ruta
                 val response = orsRepository.planRoute(routeCoordinates)
-                Log.d("RESPONSE", response.body().toString())
 
                 if (response.isSuccessful) {
-                    val routeData = response.body()
-                    // Manejar datos de la ruta, similar a `getOrsRoute`
-                    val mapOrsRouteData = mapOf(
-                        "distance" to routeData?.features?.get(0)?.properties?.segments?.get(0)?.distance,
-                        "duration" to routeData?.features?.get(0)?.properties?.segments?.get(0)?.duration
-                    )
-                    _orsRouteData.value = mapOrsRouteData
-
-                    // Procesar coordenadas para la polilínea
-                    val coordinates = routeData?.features?.get(0)?.geometry?.coordinates
-                    val latLngList = coordinates?.map { LatLng(it[1], it[0]) }
-                    if (latLngList != null) {
-                        _orsRoute.value = latLngList
-
-                    }
+                    val polyline = response.body()?.routes?.get(0)?.geometry
+                    val coordinates: List<LatLng> = PolyUtil.decode(polyline)
+                    Log.d("RESPONSE", coordinates.toString())
+                    _orsRoute.value = coordinates
                 } else {
-                    Log.e("ORS", "No se encontró una ruta válida en la respuesta de la API.")
+                    Log.e("RESPONSE", "No se encontró una ruta válida en la respuesta de la API.")
                     _orsRoute.value = emptyList()
                 }
             } catch (e: Exception) {
-                Log.e("ORS", "Error al planificar la ruta: ${e.message}", e)
+                Log.e("RESPONSE", "Error al planificar la ruta: ${e.message}", e)
             }
         }
     }

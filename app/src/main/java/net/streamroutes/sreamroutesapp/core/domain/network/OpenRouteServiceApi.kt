@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.core.domain.network
 
+import net.streamroutes.sreamroutesapp.core.domain.model.OrsAddresssResponse
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerRequestBody
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerResponse
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsRouteResponse
@@ -31,7 +32,7 @@ interface OpenRouteServiceApi {
         @Query("point.lon") longitude: String,
         @Query("point.lat") latitude: String,
         @Query("size") size: String = "1",
-    ): Response<OrsPlannerResponse>
+    ): Response<OrsAddresssResponse>
 
     // Para planifica tu viaje, se usa la funcion getRoute pero con un body y header
     @POST("/v2/directions/driving-car")
@@ -40,7 +41,7 @@ interface OpenRouteServiceApi {
         @Header("Accept") accept: String = "application/json, application/geo+json, application/gpx+xml, img/png; charset=utf-8",
         @Header("Content-Type") contentType: String = "application/json",
         @Body body: OrsPlannerRequestBody
-    ): Response<OrsRouteResponse>
+    ): Response<OrsPlannerResponse>
 }
 
 object RetrofitORS {

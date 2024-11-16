@@ -1,9 +1,17 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
-/**
- * Modelos de datos de Open Route Service - Mapas (Rutas de transporte público)
+import net.streamroutes.sreamroutesapp.data.model.ors.Segment
+import net.streamroutes.sreamroutesapp.data.model.ors.Summary
+
+/** --------------------------------------------------
+ * Modelos de datos de Open Route Service
+ * ---------------------------------------------------
  */
 
+
+/**
+ * Mapas (Rutas de transporte público)
+ */
 data class OrsGeometry (
     val coordinates: List<List<Double>>
 )
@@ -47,10 +55,9 @@ data class OrsRouteResponse (
 
 
 /**
- * Modelos de datos de Open Route Service - Planifica tu viaje
+ * Reverse
  */
-
-data class OrsPlannerProperties (
+data class OrsAddressProperties (
     val name: String,
     val housenumber: String,
     val street: String,
@@ -60,14 +67,31 @@ data class OrsPlannerProperties (
     val label: String
 )
 
-data class OrsPlannerFeature (
-    val properties: OrsPlannerProperties
+data class OrsAddressFeature (
+    val properties: OrsAddressProperties
 )
 
-data class OrsPlannerResponse (
-    val features: List<OrsPlannerFeature> = emptyList()
+data class OrsAddresssResponse (
+    val features: List<OrsAddressFeature> = emptyList()
 )
 
+
+/**
+ * Planifica tu viaje
+ */
 data class OrsPlannerRequestBody(
     val coordinates: List<List<Double>>
+)
+
+data class OrsRoute (
+    val summary: OrsSummary,
+    val segments: List<OrsSegment>,
+    val bbox: List<Double>,
+    val geometry: String,
+    val way_points: List<Int>
+)
+
+data class OrsPlannerResponse(
+    val bbox: List<Double>,
+    val routes: List<OrsRoute>
 )

@@ -36,6 +36,7 @@ googleServices = "4.4.2"
 colorPicker = "1.1.2"
 uiTextGoogleFonts = "1.7.2"
 hiltNavigationCompose = "1.2.0"
+mapsUtils = "3.4.0"
 
 
 [libraries]
@@ -88,6 +89,7 @@ retrofit-core = { module = "com.squareup.retrofit2:retrofit", version.ref = "ret
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
 okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+maps-utils = { module = "com.google.maps.android:android-maps-utils", version.ref = "mapsUtils" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

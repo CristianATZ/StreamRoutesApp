@@ -27,7 +27,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerInfoWindow
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
@@ -191,6 +193,14 @@ fun PlannerScreen(
                     color = Color.Black,
                     width = 8f
                 )
+
+                destinationsList.forEach { destination ->
+                    Marker(
+                        state = MarkerState(
+                            destination.coords
+                        )
+                    )
+                }
             }
 
         }

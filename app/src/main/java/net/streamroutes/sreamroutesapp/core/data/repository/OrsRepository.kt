@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.data.repository
 
 import android.util.Log
+import net.streamroutes.sreamroutesapp.core.domain.model.OrsAddresssResponse
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerRequestBody
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsPlannerResponse
 import net.streamroutes.sreamroutesapp.core.domain.model.OrsRouteResponse
@@ -20,11 +21,11 @@ class OrsRepository @Inject constructor (
         return orsService.getRoute(apiKey, start, end)
     }
 
-    suspend fun getAddress(longitude: String, latitude: String): Response<OrsPlannerResponse> {
+    suspend fun getAddress(longitude: String, latitude: String): Response<OrsAddresssResponse> {
         return orsService.getAddress(apiKey, longitude, latitude)
     }
 
-    suspend fun planRoute(coordinates: List<List<Double>>): Response<OrsRouteResponse> {
+    suspend fun planRoute(coordinates: List<List<Double>>): Response<OrsPlannerResponse> {
         val routeRequestBody = OrsPlannerRequestBody(coordinates = coordinates)
         return orsService.planRoute(apiKey = apiKey, body = routeRequestBody)
     }
