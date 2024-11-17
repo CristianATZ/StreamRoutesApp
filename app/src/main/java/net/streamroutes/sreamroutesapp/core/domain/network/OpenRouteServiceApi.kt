@@ -11,6 +11,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 /**
@@ -18,8 +19,9 @@ import retrofit2.http.Query
  */
 interface OpenRouteServiceApi {
     // Función para obtener una ruta de un coche
-    @GET("/v2/directions/driving-car")
+    @GET("/v2/directions/{profile}")
     suspend fun getRoute(
+        @Path("profile") profile: String,
         @Query("api_key") apiKey: String,
         @Query("start") start: String,
         @Query("end") end: String

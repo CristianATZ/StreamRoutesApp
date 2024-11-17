@@ -16,7 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -135,7 +138,7 @@ fun MapRouteScreenContent(
     }
 
     LaunchedEffect(selectedRoute) {
-        transportViewModel.getOrsRoute(startRoute, endRoute)
+        transportViewModel.getOrsRoute("driving-car", startRoute, endRoute)
     }
 
     val orsRoute by transportViewModel.orsRoute.collectAsState()
@@ -171,7 +174,7 @@ fun MapRouteScreenContent(
         // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
     }
 
-    RouteDetails(transportViewModel = transportViewModel)
+    RouteDetails(currentStreet = selectedRoute.startPlace.name, transportViewModel = transportViewModel)
 }
 
 

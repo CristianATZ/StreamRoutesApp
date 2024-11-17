@@ -74,7 +74,7 @@ fun FastestScreen(
     val onCalculateRoute = {
         // CAMBIAR PANTALLA
         // MANDAR DATOS A LA API Y RECUPERAR LOS 4 TIPOS DE VIAJE
-        transportViewModel.getOrsRoute(markerMyLocation.position, markerDestinaton.position)
+        transportViewModel.getOrsRoute("foot-walking", markerMyLocation.position, markerDestinaton.position)
         isCalculated = true
     }
 

@@ -28,6 +28,7 @@ class TransportViewModel @Inject constructor(
     // Variable usada para guardar la ruta seleccionada en rutas de transporte
     private val _selectedRoute = MutableStateFlow<RouteWithPlaces?>(null)
     val selectedRoute: StateFlow<RouteWithPlaces?> = _selectedRoute
+
     // Variable usada para capturar los puntos (LatLng) de la ruta de transporte seleccionada
     private val _orsRoute = MutableStateFlow<List<LatLng>>(emptyList())
     val orsRoute: StateFlow<List<LatLng>> = _orsRoute
@@ -72,11 +73,12 @@ class TransportViewModel @Inject constructor(
     /**
      * Método usado para trazar la ruta para transporte público
      */
-    fun getOrsRoute(start: LatLng, end: LatLng) {
+    fun getOrsRoute(profile: String, start: LatLng, end: LatLng) {
         viewModelScope.launch {
             try {
                 // Enviar request al repository y guardar su response
                 val response = orsRepository.fetchRoute(
+                    profile,
                     "${start.longitude},${start.latitude}",
                     "${end.longitude},${end.latitude}"
                 )
@@ -134,7 +136,7 @@ class TransportViewModel @Inject constructor(
             )
 
             if (response.isSuccessful) {
-                val address = response.body()?.features?.get(0)?.properties?.label
+                val address = response.body()?.features?.get(0)?.properties?.label.toString()
                 _markerAddress.value = address
                 //Log.d("RESPONSE", address ?: "NADA ALV")
                 address

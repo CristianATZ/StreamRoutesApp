@@ -17,8 +17,8 @@ class OrsRepository @Inject constructor (
 ) {
     val apiKey = "5b3ce3597851110001cf6248cf096e9bff7543a9b65bfeea90be20ac"
 
-    suspend fun fetchRoute(start: String, end: String): Response<OrsRouteResponse> {
-        return orsService.getRoute(apiKey, start, end)
+    suspend fun fetchRoute(profile: String, start: String, end: String): Response<OrsRouteResponse> {
+        return orsService.getRoute(profile, apiKey, start, end)
     }
 
     suspend fun getAddress(longitude: String, latitude: String): Response<OrsAddresssResponse> {

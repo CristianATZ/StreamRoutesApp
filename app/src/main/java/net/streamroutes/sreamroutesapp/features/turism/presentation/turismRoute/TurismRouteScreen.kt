@@ -11,7 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -56,11 +59,14 @@ fun TurismRouteScreen(
     val selectedTP by tourismViewModel.selectedTPRoute.collectAsState()
     val destination = LatLng(selectedTP?.place?.latitude?.toDouble() ?: 0.0, selectedTP?.place?.longitude?.toDouble() ?: 0.0)
 
+    var address by remember { mutableStateOf("") }
     LaunchedEffect(Unit) {
         transportViewModel.getOrsRoute(
+            "driving-car",
             currentPos.position,
             destination
         )
+        address = transportViewModel.getAddress(currentPos.position).toString()
     }
 
     val scaffoldState = rememberBottomSheetScaffoldState(
@@ -97,7 +103,7 @@ fun TurismRouteScreen(
         ){
             //if(!isLoading) {
                 showBottomSheet()
-                TourismRouteScreenContent(transportViewModel, currentPos.position, destination, selectedTP?.place?.name ?: "")
+                TourismRouteScreenContent(transportViewModel, currentPos.position, destination, selectedTP?.place?.name ?: "", address)
             //} else {
             //    ShimmerRouteScreenContent()
             //}
@@ -110,7 +116,8 @@ fun TourismRouteScreenContent(
     transportViewModel: TransportViewModel,
     start: LatLng,
     end: LatLng,
-    name: String
+    name: String,
+    currentStreet: String
 ) {
     val orsRoute by transportViewModel.orsRoute.collectAsState()
 
@@ -150,5 +157,5 @@ fun TourismRouteScreenContent(
         }
     }
 
-    RouteDetails(transportViewModel = transportViewModel)
+    RouteDetails(currentStreet = currentStreet, transportViewModel = transportViewModel)
 }
