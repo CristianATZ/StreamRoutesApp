@@ -6,5 +6,5 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
 
 val Context.apparenceDataStore: DataStore<Preferences> by preferencesDataStore(name = "apparence_preferences")
-val Context.mapDataStore: DataStore<Preferences> by preferencesDataStore(name = "map_preferences")
+val Context.mapsDataStore: DataStore<Preferences> by preferencesDataStore(name = "map_preferences")
 
