@@ -755,4 +755,5 @@
     <string name="lblTimeTripAprox">%1$s minutos de viaje</string>
     <string name="lblAvailableSpaces">Lugares disponibles</string>
     <string name="lblLoadingMap">Cargando mapa...</string>
+    <string name="lblLoading">Cargando...</string>
 </resources>

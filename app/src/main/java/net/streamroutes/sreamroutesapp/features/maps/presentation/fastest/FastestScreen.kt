@@ -3,35 +3,53 @@ package net.streamroutes.sreamroutesapp.features.maps.presentation.fastest
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 
 @Composable
 fun FastestScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     val coroutine = rememberCoroutineScope()
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
     }
+
+    // ROUTES INFORMATION
+    var currentRoute by remember {
+        mutableIntStateOf(1)
+    }
+
+    var isCalculated by remember { mutableStateOf(false) }
+    var address by remember { mutableStateOf("") }
+    var currentAdress by remember { mutableStateOf("") }
 
     val markerDestinaton = rememberMarkerState()
     val markerMyLocation = rememberMarkerState(
-        position = LatLng(20.126856880277188, -101.19127471960047)
+        position = LatLng(21.017917732561727, -101.25808073954296)
     )
+
     // MOVER SIN AFECTAR EL ZOOM
     // CON ANIMACION INCLUIDA
     val updateCameraPosition = { coord: LatLng ->
@@ -53,14 +71,28 @@ fun FastestScreen(
     val restartLocation = {
         markerDestinaton.position = LatLng(0.0, 0.0)
     }
-    val onCalculareRoute = {
+    val onCalculateRoute = {
         // CAMBIAR PANTALLA
         // MANDAR DATOS A LA API Y RECUPERAR LOS 4 TIPOS DE VIAJE
+        transportViewModel.getOrsRoute(markerMyLocation.position, markerDestinaton.position)
+        isCalculated = true
     }
 
-    // ROUTES INFORMATION
-    var currentRoute by remember {
-        mutableIntStateOf(1)
+    // EVENTO ON CLICK DEL MAPA
+    val onMapClick = { coords: LatLng ->
+        // SELECTPOINTS SCREEN
+        coroutine.launch {
+            markerDestinaton.position = coords
+            address = transportViewModel.getAddress(markerDestinaton.position).toString()
+            updateCameraPosition(coords)
+        }
+    }
+
+
+    LaunchedEffect(Unit) {
+        coroutine.launch {
+            currentAdress = transportViewModel.getAddress(markerMyLocation.position).toString()
+        }
     }
     
     val onChangeRoute = { route: Int ->
@@ -77,12 +109,20 @@ fun FastestScreen(
         modifier = modifier
             .fillMaxSize()
     ) {
+        val orsRoute by transportViewModel.orsRoute.collectAsState()
         MapFullSize(
             cameraPositionState = cameraPositionState,
+            /*
             onMapClick = {  coords ->
                 // SELECTPOINTS SCREEN
-                markerDestinaton.position = coords
-                updateCameraPosition(coords)
+                coroutine.launch {
+                    markerDestinaton.position = coords
+                    address = transportViewModel.getAddress(markerDestinaton.position).toString()
+                    updateCameraPosition(coords)
+                }
+            },*/
+            onMapClick = { coords ->
+                onMapClick(coords)
             },
             onMapLoaded = { /*TODO */ },
             modifier = Modifier.fillMaxSize()
@@ -95,15 +135,24 @@ fun FastestScreen(
                 state = markerDestinaton
             )
 
+            if(isCalculated && orsRoute.isNotEmpty()){
+                Polyline(
+                    points = orsRoute,
+                    color = Color.Black,
+                    width = 8f
+                )
+
+            }
+
             // ROUTES INFORMATION
             // dibujar polilinea
         }
 
         FastestSelectPoints(
-            currentRoute = "Padre Luis Gaytan, San Isidro 38887",
-            dest = dest,
+            currentRoute = currentAdress,
+            dest = address,
             onRestartLocation = restartLocation,
-            onCalculateRoute = onCalculareRoute,
+            onCalculateRoute = onCalculateRoute,
             onMyLocation = onMyLocation,
             modifier = Modifier.align(Alignment.TopCenter)
         )

@@ -94,6 +94,7 @@ fun FastestRoutesInformation(
             modifier = Modifier.padding(16.dp).fillMaxWidth(),
             horizontalAlignment = Alignment.End
         ) {
+
             FloatingActionButton(
                 onClick = onMyLocation,
                 containerColor = colorScheme.tertiaryContainer,
@@ -107,11 +108,13 @@ fun FastestRoutesInformation(
             
             Spacer(modifier = Modifier.size(8.dp))
 
+
             ExtendedFloatingActionButton(
                 onClick = onSelectRoute
             ) {
                 Text(text = stringResource(id = R.string.btnSelect))
             }
+
         }
     }
 }

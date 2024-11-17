@@ -36,7 +36,7 @@ fun FastestSelectPoints(
     onMyLocation: () -> Unit
 ) {
     val destination = if(dest.isNullOrEmpty()) stringResource(id = R.string.lblDestination) else dest
-    val currentAddress = if(currentRoute.isNullOrEmpty()) stringResource(id = R.string.lblEmptyCurrentAddress) else currentRoute
+    val currentAddress = if(currentRoute.isNullOrEmpty()) stringResource(id = R.string.lblLoading) else currentRoute
 
     Column(
         modifier = Modifier.fillMaxSize(),
