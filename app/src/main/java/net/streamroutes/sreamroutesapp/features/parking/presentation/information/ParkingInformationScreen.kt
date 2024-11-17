@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.parking.presentation.information
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Box
@@ -29,10 +30,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +48,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
@@ -59,17 +65,42 @@ fun ParkingInformationScreen(
     onSelectPressed: () -> Unit,
     parkingViewModel: ParkingViewModel = hiltViewModel()
 ) {
-    val selectedParking by parkingViewModel.selectedParking.collectAsState()
 
+    val selectedParking by parkingViewModel.selectedParking.collectAsState()
+    val servicesParking by parkingViewModel.services.collectAsState()
+    //val servicesParking by remember { mutableStateOf(listOf("Servicio 1", "Servicio 2", "Servicio 3")) }
+
+
+    val services = remember { mutableStateListOf<String>() }
+    var servicesLoaded by remember { mutableStateOf(false) }
     var isLoading by remember {
         mutableStateOf(false)
     }
 
+    /*
     val services = listOf(
-        "Camaras",
-        "Horario de 07:00 - 23:00",
-        "Servicio de lavada de auto"
+        "Horario de ${selectedParking?.parking?.openHour} - ${selectedParking?.parking?.closeHour}"
     )
+     */
+
+    LaunchedEffect(Unit) {
+        services.clear()
+        servicesLoaded = false
+        isLoading = false
+        parkingViewModel.getServicesByParking()
+    }
+
+    LaunchedEffect(servicesParking) {
+        Log.d("Debug", "ServicesParking: $servicesParking")
+        if (!servicesParking.isNullOrEmpty()) {
+            services.clear()
+            servicesLoaded = false
+            services.add("Horario de ${selectedParking?.parking?.openHour} - ${selectedParking?.parking?.closeHour}")
+            servicesParking?.forEach { services.add(it) }
+            servicesLoaded = true
+        }
+    }
+
 
     Scaffold { innerPadding ->
         Box(
@@ -91,7 +122,7 @@ fun ParkingInformationScreen(
                     Spacer(Modifier.size(8.dp))
 
                     IconButton(
-                        onClick = onBackPressed,
+                        onClick =  onBackPressed,
                         colors = IconButtonDefaults.iconButtonColors(
                             containerColor = colorScheme.background,
                             contentColor = colorScheme.onBackground
@@ -198,7 +229,7 @@ fun ParkingInformationScreen(
                 Spacer(Modifier.size(32.dp))
 
                 // servicios
-                if(!isLoading) {
+                if(!isLoading && servicesLoaded) {
                     Column(
                         modifier = Modifier
                             .padding(horizontal = 16.dp)

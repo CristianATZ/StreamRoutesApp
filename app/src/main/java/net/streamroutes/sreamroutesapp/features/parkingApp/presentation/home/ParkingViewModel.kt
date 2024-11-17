@@ -22,6 +22,10 @@ class ParkingViewModel @Inject constructor(
     private val _selectedParking = MutableStateFlow<ParkingWithPlace?>(null)
     val selectedParking: StateFlow<ParkingWithPlace?> = _selectedParking
 
+    // Variable usada para guardar los servicios del estacionamiento seleccionado
+    private val _services = MutableStateFlow<List<String>?>(null)
+    val services: StateFlow<List<String>?> = _services
+
 
     init {
         getAllParkings()
@@ -41,7 +45,9 @@ class ParkingViewModel @Inject constructor(
      */
     fun getServicesByParking(){
         viewModelScope.launch {
-
+            // Enviar ID del selectedParking ("parking-01")
+            val idParking = _selectedParking.value?.parking?.idPlace
+            _services.value = idParking?.let { parkingRepository.getServicesByParking(it) }
         }
     }
 

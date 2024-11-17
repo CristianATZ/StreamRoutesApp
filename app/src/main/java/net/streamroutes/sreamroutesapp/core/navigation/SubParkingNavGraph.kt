@@ -121,7 +121,8 @@ fun SubParkingNavigation(
                     navHostController.navigate(Destinations.ParkingQR.route) {
                         launchSingleTop = true
                     }
-                }
+                },
+                parkingViewModel = parkingViewModel
             )
         }
 

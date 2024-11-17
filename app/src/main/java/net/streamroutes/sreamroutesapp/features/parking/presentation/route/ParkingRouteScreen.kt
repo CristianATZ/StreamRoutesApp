@@ -31,9 +31,12 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,27 +46,60 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 @Composable
 fun ParkingRouteScreen(
     onBackPressed: () -> Unit = {},
-    onScanPressed: () -> Unit = {}
+    onScanPressed: () -> Unit = {},
+    parkingViewModel: ParkingViewModel,
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
+    val coroutine = rememberCoroutineScope()
+    val selectedParking by parkingViewModel.selectedParking.collectAsState()
+    val orsRoute by transportViewModel.orsRoute.collectAsState()
+
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
+    }
+
+    val markerStart = rememberMarkerState(
+        position = LatLng(21.017917732561727, -101.25808073954296)
+    )
+
+    val markerEnd = rememberMarkerState(
+        position = LatLng(
+            selectedParking?.place?.latitude?.toDouble() ?: 0.0,
+            selectedParking?.place?.longitude?.toDouble() ?: 0.0
+        )
+    )
+
     var isLoading by remember {
         mutableStateOf(true)
     }
 
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+    LaunchedEffect(Unit) {
+        coroutine.launch {
+            transportViewModel.getOrsRoute("driving-car", markerStart.position, markerEnd.position)
+            isLoading = false
+        }
     }
+
     
     Scaffold { innerPadding ->
         Box(
@@ -86,6 +122,23 @@ fun ParkingRouteScreen(
                         .align(Alignment.TopCenter)
                 ) {
                     // mandar polilineas
+                    Marker(
+                        state = MarkerState(
+                            markerStart.position
+                        )
+                    )
+                    Marker(
+                        state = MarkerState(
+                            markerEnd.position
+                        )
+                    )
+                    if(orsRoute.isNotEmpty()){
+                        Polyline(
+                            points = orsRoute,
+                            color = Color.Black,
+                            width = 8f
+                        )
+                    }
                 }
             } else {
                 Column(
@@ -125,7 +178,7 @@ fun ParkingRouteScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "ITSUR",
+                        text = selectedParking?.place?.name ?: "cargando..",
                         style = typography.labelLarge,
                         fontWeight = FontWeight.Bold,
                         color = Color.White,
@@ -145,9 +198,11 @@ fun ParkingRouteScreen(
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
+                    val address = "${selectedParking?.place?.street ?: "SN"}, ${selectedParking?.place?.suburb ?: "SN"}, ${selectedParking?.place?.state ?: "SN"}"
+
                     ParkingDescription(
-                        name = "EStacionamiento 1",
-                        address = "Padre Luis Gaytan #234",
+                        name = selectedParking?.place?.name ?: "cargando..",
+                        address = address,
                         price = null
                     )
 

@@ -49,10 +49,26 @@ class ParkingRepository @Inject constructor(
     /**
      * Método usado para obtener todos los servicios de un estacionamiento
      */
-    suspend fun getServicesByParking(): List<Service> {
+    suspend fun getServicesByParking(idParking: String): List<String> {
         return try {
-            val services = mutableListOf<Service>()
-            return services
+            // Obtener los servicios correspondientes del estacionamiento
+            val parkServDocs = db.collection("parking_service")
+                .whereEqualTo("idParking", idParking)
+                .get()
+                .await()
+
+            // Obteer todos los servicios de la DB y aosciarlos a un map junto con su ID de servicio
+            val serviceDocs = db.collection("services").get().await()
+            val mapServices = serviceDocs.documents.associate {
+                it.id to it.getString("description").orEmpty()
+            }
+
+            // Obtener description de cda servicio de cada estacionamiento
+            return parkServDocs.documents.mapNotNull {
+                val idService = it.getString("idService")
+                mapServices[idService]
+            }
+
         } catch (e: Exception) {
             Log.d("parking_repo", "Error: ${e.message}")
             println("Error: ${e.message}")
