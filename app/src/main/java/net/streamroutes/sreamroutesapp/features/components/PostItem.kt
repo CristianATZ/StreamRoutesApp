@@ -34,15 +34,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.PostWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.PostTemp
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
-@Preview(showBackground = true)
 @Composable
 fun PostItem(
+    /*
     postTemp: PostTemp = PostTemp(
         postId = "000",
         authorName = "CristianToZa",
@@ -50,7 +53,8 @@ fun PostItem(
         description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
         likes = 512,
         comments = emptyList()
-    ),
+    ),*/
+    post: PostWithInfo,
     isSaved: Boolean = false,
     onLikePressed: () -> Unit = {},
     onCommentPressed: () -> Unit = {},
@@ -59,10 +63,13 @@ fun PostItem(
 ) {
     var isExpanded by remember { mutableStateOf(false) } // Solo se necesita este estado
 
+    val localDate = LocalDate.parse(post.post.date)
+    val localHour = LocalTime.parse(post.post.hour)
+    val localDateTime = LocalDateTime.of(localDate, localHour)
     val publicationDate = if(isSaved) {
-        fullDateFormat(postDateTime = postTemp.publicationDate)
+        fullDateFormat(postDateTime = localDateTime)
     } else {
-        formatPostDateTime(postDateTime = postTemp.publicationDate)
+        formatPostDateTime(postDateTime = localDateTime)
     }
 
     // checar cual icono dependiendo si es guardado o no
@@ -88,7 +95,7 @@ fun PostItem(
         }
     }
 
-    val descriptionModifier = if(postTemp.description.length <= 150) {
+    val descriptionModifier = if(post.post.description.length <= 150) {
         Modifier
     } else {
         Modifier.clickable { isExpanded = !isExpanded }
@@ -115,7 +122,7 @@ fun PostItem(
         ) {
             Column {
                 Text(
-                    text = postTemp.authorName, // Acceso directo
+                    text = post.user.username, // Acceso directo
                     style = typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -138,9 +145,9 @@ fun PostItem(
             modifier = descriptionModifier
         ) {
             // Comprobar si la descripción es más corta que 150 caracteres
-            if (postTemp.description.length <= 150 || isExpanded) {
+            if (post.post.description.length <= 150 || isExpanded) {
                 Text(
-                    text = postTemp.description,
+                    text = post.post.description,
                     style = typography.bodyMedium,
                     textAlign = TextAlign.Justify,
                     modifier = Modifier
@@ -149,7 +156,7 @@ fun PostItem(
                 )
             } else {
                 Text(
-                    text = viewMoreTextOverflow(postTemp.description.take(150)), // Limitar la descripción y añadir "..."
+                    text = viewMoreTextOverflow(post.post.description.take(150)), // Limitar la descripción y añadir "..."
                     style = typography.bodyMedium,
                     textAlign = TextAlign.Justify,
                     maxLines = 4, // Limitar a 4 líneas
@@ -170,7 +177,7 @@ fun PostItem(
         ) {
             if(!isSaved) {
                 Text(
-                    text = stringResource(id = R.string.lblLikes, postTemp.likes), // Acceso directo
+                    text = stringResource(id = R.string.lblLikes, post.post.likes), // Acceso directo
                     style = typography.labelSmall,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
@@ -179,7 +186,7 @@ fun PostItem(
             }
 
             Text(
-                text = stringResource(id = R.string.lblCountComments, postTemp.comments.size), // Acceso directo
+                text = stringResource(id = R.string.lblCountComments, post.post.totalComments), // Acceso directo
                 style = typography.labelSmall,
                 modifier = Modifier.graphicsLayer(alpha = 0.5f)
             )

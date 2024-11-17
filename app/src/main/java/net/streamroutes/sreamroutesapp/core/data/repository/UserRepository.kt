@@ -1,9 +1,12 @@
 package net.streamroutes.sreamroutesapp.core.data.repository
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
+import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import net.streamroutes.sreamroutesapp.utils.DateUtils.getCurrentDate
 import javax.inject.Inject
@@ -140,3 +143,4 @@ class UserRepository @Inject constructor(
 
 
 }
+

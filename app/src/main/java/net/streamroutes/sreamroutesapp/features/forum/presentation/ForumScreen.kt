@@ -21,6 +21,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,6 +33,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
@@ -42,18 +44,23 @@ import net.streamroutes.sreamroutesapp.features.forum.components.ForumSmallTopAp
 import net.streamroutes.sreamroutesapp.features.forum.components.MoreModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.forum.components.PostModalBottomSheet
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForumScreen(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    forumViewModel: ForumViewModel = hiltViewModel()
 ) {
+
     var isLoading by remember {
         mutableStateOf(false)
     }
 
     val scope = rememberCoroutineScope()
+
 
     val samplePostTemps = listOf(
         PostTemp(
@@ -213,14 +220,15 @@ fun ForumScreen(
     ) { innerPadding ->
         if(!isLoading) {
             ForumScreenContent(
-                samplePostTemps = samplePostTemps,
+                //samplePostTemps = samplePostTemps,
                 openCommentBottomSheet = openCommentBottomSheet,
                 openPostBottomSheet = openPostBottomSheet,
                 openMoreBottomSheet = openMoreBottomSheet,
                 updateMoreSelect = { info: Pair<String, LocalDateTime>? ->
                     updateMoreSelect(info)
                 },
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                forumViewModel = forumViewModel
             )
         } else {
             ShimmerForumScreen(
@@ -299,72 +307,99 @@ fun ShimmerForumScreen(modifier: Modifier) {
 
 @Composable
 fun ForumScreenContent(
-    samplePostTemps: List<PostTemp>,
+    //samplePostTemps: List<PostTemp>,
     openCommentBottomSheet: () -> Unit,
     openPostBottomSheet: () -> Unit,
     modifier: Modifier,
     openMoreBottomSheet: () -> Unit,
     updateMoreSelect: (Pair<String, LocalDateTime>?) -> Unit,
+    forumViewModel: ForumViewModel
 ) {
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        // letra y barra de busqueda
-        item {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                // CAMBIAR POR PRIMERA LETRA
-                Box(
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .background(colorScheme.tertiaryContainer, shapes.extraLarge)
-                        .size(40.dp),
-                    contentAlignment = Alignment.Center
-                ){
-                    Text(
-                        text = "C",
-                        style = typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+    val posts by forumViewModel.posts.collectAsState()
 
-                OutlinedCard(
-                    onClick = openPostBottomSheet,
-                    shape = shapes.extraLarge,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(40.dp)
+    if(posts.isNullOrEmpty()){
+        ShimmerForumScreen(modifier)
+    } else {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+        ) {
+            // letra y barra de busqueda
+            item {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        modifier = Modifier.fillMaxSize(),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Spacer(modifier = Modifier.size(16.dp))
-
+                    // CAMBIAR POR PRIMERA LETRA
+                    Box(
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .background(colorScheme.tertiaryContainer, shapes.extraLarge)
+                            .size(40.dp),
+                        contentAlignment = Alignment.Center
+                    ){
                         Text(
-                            text = stringResource(id = R.string.lblPostSomething)
+                            text = "C",
+                            style = typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
                         )
                     }
-                }
 
-                Spacer(modifier = Modifier.size(16.dp))
+                    OutlinedCard(
+                        onClick = openPostBottomSheet,
+                        shape = shapes.extraLarge,
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(40.dp)
+                    ) {
+                        Row(
+                            modifier = Modifier.fillMaxSize(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Spacer(modifier = Modifier.size(16.dp))
+
+                            Text(
+                                text = stringResource(id = R.string.lblPostSomething)
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.size(16.dp))
+                }
+            }
+
+            /*
+            items(samplePostTemps) { post ->
+                PostItem(
+                    postTemp = post,
+                    onLikePressed = {
+                        // ACTUALIZAR DATO EN FIRESTORE
+                    },
+                    onCommentPressed = openCommentBottomSheet,
+                    onMorePressed = {
+                        updateMoreSelect(Pair(post.authorName, post.publicationDate))
+                        openMoreBottomSheet()
+                    }
+                )
+            }*/
+
+            items(posts!!){ post ->
+                PostItem(
+                    post = post,
+                    onLikePressed = {
+                        // ACTUALIZAR DATO EN FIRESTORE
+                    },
+                    onCommentPressed = openCommentBottomSheet,
+                    onMorePressed = {
+                        val localDate = LocalDate.parse(post.post.date)
+                        val localHour = LocalTime.parse(post.post.hour)
+                        val localDateTime = LocalDateTime.of(localDate, localHour)
+                        updateMoreSelect(Pair(post.user.username, localDateTime))
+                        openMoreBottomSheet()
+                    }
+                )
             }
         }
-
-        items(samplePostTemps) { post ->
-            PostItem(
-                postTemp = post,
-                onLikePressed = {
-                    // ACTUALIZAR DATO EN FIRESTORE
-                },
-                onCommentPressed = openCommentBottomSheet,
-                onMorePressed = {
-                    updateMoreSelect(Pair(post.authorName, post.publicationDate))
-                    openMoreBottomSheet()
-                }
-            )
-        }
     }
+
+
 }

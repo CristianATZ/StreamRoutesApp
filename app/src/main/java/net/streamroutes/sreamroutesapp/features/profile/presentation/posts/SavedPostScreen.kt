@@ -192,13 +192,14 @@ fun SavedPostScreen(
                 )
             }
 
+            /*
             items(samplePostTemps) { post ->
                 PostItem(
-                    postTemp = post,
+                    post = post,
                     isSaved = true,
                     onCommentPressed = openBottomSheet
                 )
-            }
+            }*/
         }
     }
 }
