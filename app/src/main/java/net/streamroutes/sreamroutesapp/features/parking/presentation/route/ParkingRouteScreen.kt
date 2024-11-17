@@ -73,6 +73,7 @@ fun ParkingRouteScreen(
     val coroutine = rememberCoroutineScope()
     val selectedParking by parkingViewModel.selectedParking.collectAsState()
     val orsRoute by transportViewModel.orsRoute.collectAsState()
+    val routeData by transportViewModel.orsRouteData.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
@@ -208,7 +209,7 @@ fun ParkingRouteScreen(
 
                     if(!isLoading) {
                         Text(
-                            text = stringResource(R.string.lblSchedule, "07:00", "23:00"),
+                            text = stringResource(R.string.lblSchedule, selectedParking?.parking?.openHour ?: "cargando...", selectedParking?.parking?.closeHour ?: "cargando..."),
                             style = typography.labelLarge,
                             modifier = Modifier.padding(horizontal = 16.dp).graphicsLayer(alpha = 0.5f)
                         )
@@ -234,18 +235,22 @@ fun ParkingRouteScreen(
                         ) {
                             // distancia faltante
                             InformationChip(
-                                text = stringResource(R.string.lblDistanceLeft, "400 m")
+                                text = stringResource(R.string.lblDistanceLeft, "${routeData?.get("distance")} km")
                             )
 
                             // tiempo faltante
+                            val duration = routeData?.get("duration").toString().split('.')[0]
                             InformationChip(
-                                text = stringResource(R.string.lblTimeAprox, "20 min")
+                                text = stringResource(R.string.lblTimeAprox, "${duration} minutos")
                             )
 
                             // precio
-                            InformationChip(
-                                text = stringResource(R.string.lblPriceFull, "31")
-                            )
+                            selectedParking?.parking?.feePerHour?.let { stringResource(R.string.lblPriceFull, it) }
+                                ?.let {
+                                    InformationChip(
+                                        text = it
+                                    )
+                                }
                         }
                     } else {
                         Row {
@@ -280,8 +285,10 @@ fun ParkingRouteScreen(
                                 verticalAlignment = Alignment.CenterVertically,
                                 horizontalArrangement = Arrangement.Center
                             ) {
+                                val available = (selectedParking?.parking?.maxCapacity ?: 0) - (selectedParking?.parking?.currentEntrances ?: 0)
+
                                 Text(
-                                    text = "5",
+                                    text = available.toString(),
                                     style = typography.displayMedium
                                 )
 
