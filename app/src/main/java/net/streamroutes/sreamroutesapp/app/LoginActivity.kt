@@ -52,7 +52,7 @@ class LoginActivity : ComponentActivity() {
             val routesService = RetrofitOpenRouteService.retrofitService
             val repository by lazy { NetworkRemoteReposiroty(parkingService, routesService) }
             val firebaseRepository by lazy { FirebaseRepository() }
-            val parkingRepository by lazy { ParkingRepository() }
+            //val parkingRepository by lazy { ParkingRepository() }
 
             // viewmodel de rutas
 

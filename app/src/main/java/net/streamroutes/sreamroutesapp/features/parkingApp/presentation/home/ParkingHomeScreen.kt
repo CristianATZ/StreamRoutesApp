@@ -35,6 +35,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -107,10 +108,13 @@ fun ParkingHomeScreen(
     onOpenMenu: () -> Unit,
     onSettingsPressed: () -> Unit,
     onProfilePressed: () -> Unit,
-    onSelectParking: () -> Unit
+    onSelectParking: () -> Unit,
+    parkingViewModel: ParkingViewModel = hiltViewModel()
 ) {
+    val parkings by parkingViewModel.parkings.collectAsState()
+
     var isLoading by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
 
     var query by remember {
@@ -154,6 +158,10 @@ fun ParkingHomeScreen(
         ParkingCategory(stringResource(R.string.lblBike), Icons.AutoMirrored.Outlined.DirectionsBike, CategoryVehicle.BIKE) { categoryVehicle = CategoryVehicle.BIKE },
         ParkingCategory(stringResource(R.string.lblBus), Icons.Outlined.DirectionsBus, CategoryVehicle.BUS) { categoryVehicle = CategoryVehicle.BUS},
     )
+
+    if(!parkings.isNullOrEmpty()){
+        isLoading = false
+    }
 
     Scaffold(
         topBar = {
@@ -367,6 +375,7 @@ fun ParkingHomeScreen(
                         }
                     }
 
+                    /*
                     items(5) {
                         ElementOption(
                             title = "ITSUR",
@@ -377,6 +386,16 @@ fun ParkingHomeScreen(
                         )
 
                         Spacer(Modifier.size(16.dp))
+                    }*/
+
+                    items(parkings!!) { parking ->
+                        ElementOption(
+                            title = parking.place.name,
+                            description = parking.parking.description,
+                            price = parking.parking.feePerHour.toString(),
+                            calification = parking.parking.rating.toString(),
+                            onClick = onSelectParking
+                        )
                     }
                 }
             }
