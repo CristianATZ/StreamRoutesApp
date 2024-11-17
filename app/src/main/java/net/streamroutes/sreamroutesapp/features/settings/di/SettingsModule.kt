@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import net.streamroutes.sreamroutesapp.features.settings.data.SettingsRepositoryImp
+import net.streamroutes.sreamroutesapp.features.settings.data.ApparenceRepositoryImp
 import javax.inject.Singleton
 
 @Module
@@ -14,9 +14,9 @@ import javax.inject.Singleton
 object SettingsModule {
     @Provides
     @Singleton
-    fun provideUserPreferencesRepository(
+    fun provideApparencePreferencesRepository(
         @ApplicationContext context: Context
-    ): SettingsRepositoryImp {
-        return SettingsRepositoryImp(context)
+    ): ApparenceRepositoryImp {
+        return ApparenceRepositoryImp(context)
     }
 }

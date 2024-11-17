@@ -1,9 +1,7 @@
 package net.streamroutes.sreamroutesapp.features.settings.presentation.apparence
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.DarkMode
@@ -11,41 +9,30 @@ import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material.icons.outlined.LightMode
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.SwitchField
 import net.streamroutes.sreamroutesapp.features.settings.components.SettingsSmallTopAppBar
 
-enum class Theme {
-    CLARO, OSCURO
-}
-
 @Composable
 fun ApparenceScreen(
-    modifier: Modifier = Modifier,
+    apparenceViewModel: ApparenceViewModel = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
-    var theme by remember {
-        mutableStateOf(Theme.CLARO)
-    }
-    val onChangeTheme = { b: Theme ->
-        theme = b
-        // actualizar valor en el viewmodel
+    val theme by apparenceViewModel.theme.collectAsState()
+    val onChangeTheme = { t: Boolean ->
+        apparenceViewModel.changeTheme(t)
     }
 
-    var dynamicTheme by remember {
-        mutableStateOf(false)
+    val dynamicTheme by apparenceViewModel.dynaminc.collectAsState()
+    val onEnableDynamic = { d: Boolean ->
+        apparenceViewModel.enableDynamictheme(d)
     }
-    val onChangeDynamicTheme = { b: Boolean ->
-        dynamicTheme = b
-        // actualizar valor en el viewmodel
-    }
+
 
     Scaffold(
         topBar = {
@@ -65,12 +52,9 @@ fun ApparenceScreen(
                 iconTrue = Icons.Outlined.DarkMode,
                 iconFalse = Icons.Outlined.LightMode,
                 iconDescription = stringResource(R.string.iconThemeMode),
-                value =  theme == Theme.OSCURO,
+                value = theme,
                 onValueChange = {
-                    onChangeTheme(
-                        if(it) Theme.OSCURO
-                        else Theme.CLARO
-                    )
+                    onChangeTheme(it)
                 }
             )
 
@@ -83,7 +67,7 @@ fun ApparenceScreen(
                 iconDescription = stringResource(R.string.iconDoneClose),
                 value =  dynamicTheme,
                 onValueChange = {
-                    onChangeDynamicTheme(it)
+                    onEnableDynamic(it)
                 }
             )
         }

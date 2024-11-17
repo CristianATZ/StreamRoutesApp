@@ -397,7 +397,7 @@
     <string name="lblReservaciones">Reservaciones</string>
 
     <string name="title_activity_parking">ParkingActivity</string>
-    <string name="title_activity_transport">TransportActivity</string>
+    <string name="title_activity_transport">GeneralActivity</string>
     <string name="title_activity_login">LoginActivity</string>
     <string name="lblLogin">Iniciar Sesion</string>
     <string name="btnForgot">Olvide mi contrasenia</string>
