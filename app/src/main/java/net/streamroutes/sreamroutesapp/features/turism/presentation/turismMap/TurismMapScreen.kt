@@ -39,14 +39,14 @@ import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInf
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismBottomSheet
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismInformationBottomSheet
-import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TurismListViewModel
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TourismViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismMapScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
-    turismViewModel: TurismListViewModel = hiltViewModel()
+    turismViewModel: TourismViewModel = hiltViewModel()
 ) {
     var isLoading by remember {
         mutableStateOf(true)

@@ -66,11 +66,14 @@ fun MapRouteScreen(
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
-            RouteBottomSheet(
-                onBackPressed = onBackPressed,
-                onShareLocation = onShareLocation,
-                selectedRoute = selectedRoute
-            )
+            selectedRoute?.route?.name?.let {
+                RouteBottomSheet(
+                    onBackPressed = onBackPressed,
+                    onShareLocation = onShareLocation,
+                    name = it,
+                    transportViewModel = transportViewModel,
+                )
+            }
         },
         sheetShadowElevation = 8.dp
         // CAMBIAR EL MAPA, CALLES BLANCAS

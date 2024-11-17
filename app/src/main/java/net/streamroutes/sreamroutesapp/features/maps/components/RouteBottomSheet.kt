@@ -18,6 +18,8 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +30,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 @Composable
@@ -37,8 +40,11 @@ fun RouteBottomSheet(
     colorStop: Color = Color.Green,
     onBackPressed: () -> Unit = {},
     onShareLocation: () -> Unit = {},
-    selectedRoute: RouteWithPlaces?
+    //selectedRoute: RouteWithPlaces?
+    name: String,
+    transportViewModel: TransportViewModel
 ) {
+    val routeData by transportViewModel.orsRouteData.collectAsState()
 
     Column(
         modifier = Modifier
@@ -47,7 +53,7 @@ fun RouteBottomSheet(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         // nombre de la ruta
-        if(selectedRoute?.route?.name == null) {
+        if(name == null) {
             Spacer(
                 modifier = Modifier
                     .fillMaxWidth(0.75f)
@@ -58,7 +64,7 @@ fun RouteBottomSheet(
             )
         } else {
             Text(
-                text = selectedRoute.route.name,
+                text = name,
                 style = typography.headlineSmall,
                 textAlign = TextAlign.Center
             )
@@ -91,7 +97,7 @@ fun RouteBottomSheet(
         // siguiente parada
 
 
-        if(selectedRoute?.route?.arriveTime != null){
+        if(routeData?.get("duration") != null){
             Card(
                 colors = CardDefaults.cardColors(
                     containerColor = colorScheme.tertiaryContainer,
@@ -109,7 +115,7 @@ fun RouteBottomSheet(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = selectedRoute?.route?.arriveTime.toString() + " minutos",
+                        text = "${routeData?.get("duration")} minutos",
                         style = typography.displayMedium
                     )
 

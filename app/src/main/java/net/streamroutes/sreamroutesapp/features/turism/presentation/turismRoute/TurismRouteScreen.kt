@@ -8,22 +8,28 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
+import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
-import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.ShimmerRouteScreenContent
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TourismViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,15 +37,31 @@ fun TurismRouteScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit,
     onShareLocation: () -> Unit,
-    transportViewModel: TransportViewModel
+    tourismViewModel: TourismViewModel,
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     // ELIMINAR ESTA VARIABLE CUANDO CARGUES LA INFORMACION
     // GUIATE CON MapRouteScreen.kt
+    /*
     var isLoading by remember {
         mutableStateOf(true)
-    }
+    }*/
 
     val scope = rememberCoroutineScope()
+
+    val currentPos = rememberMarkerState(
+        position =  LatLng(21.017917732561727, -101.25808073954296)
+    )
+
+    val selectedTP by tourismViewModel.selectedTPRoute.collectAsState()
+    val destination = LatLng(selectedTP?.place?.latitude?.toDouble() ?: 0.0, selectedTP?.place?.longitude?.toDouble() ?: 0.0)
+
+    LaunchedEffect(Unit) {
+        transportViewModel.getOrsRoute(
+            currentPos.position,
+            destination
+        )
+    }
 
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
@@ -57,11 +79,14 @@ fun TurismRouteScreen(
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
-            RouteBottomSheet(
-                onBackPressed = onBackPressed,
-                onShareLocation = onShareLocation,
-                selectedRoute = null
-            )
+            selectedTP?.place?.name?.let {
+                RouteBottomSheet(
+                    onBackPressed = onBackPressed,
+                    onShareLocation = onShareLocation,
+                    name = it,
+                    transportViewModel = transportViewModel
+                )
+            }
         },
         sheetShadowElevation = 8.dp
         // CAMBIAR EL MAPA, CALLES BLANCAS
@@ -70,22 +95,27 @@ fun TurismRouteScreen(
         Box(
             modifier = modifier.fillMaxSize()
         ){
-            if(!isLoading) {
+            //if(!isLoading) {
                 showBottomSheet()
-                TourismRouteScreenContent(transportViewModel)
-            } else {
-                ShimmerRouteScreenContent()
-            }
+                TourismRouteScreenContent(transportViewModel, currentPos.position, destination, selectedTP?.place?.name ?: "")
+            //} else {
+            //    ShimmerRouteScreenContent()
+            //}
         }
     }
 }
 
 @Composable
 fun TourismRouteScreenContent(
-    transportViewModel: TransportViewModel
+    transportViewModel: TransportViewModel,
+    start: LatLng,
+    end: LatLng,
+    name: String
 ) {
+    val orsRoute by transportViewModel.orsRoute.collectAsState()
+
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
     }
 
     MapFullSize(
@@ -96,6 +126,28 @@ fun TourismRouteScreenContent(
         }
     ) {
         // COLOCAR LAS POLILINEAS Y MARCADORES NECESARIOS
+        Marker(
+            state = MarkerState(
+                position = start
+            ),
+            title = "Ubicación Actual",
+            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+        )
+
+        Marker(
+            state = MarkerState(
+                position = end
+            ),
+            title = name
+        )
+
+        if(orsRoute.isNotEmpty()){
+            Polyline(
+                points = orsRoute,
+                color = Color.Black,
+                width = 8f
+            )
+        }
     }
 
     RouteDetails(transportViewModel = transportViewModel)

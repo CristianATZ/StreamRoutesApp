@@ -28,7 +28,6 @@ class TransportViewModel @Inject constructor(
     // Variable usada para guardar la ruta seleccionada en rutas de transporte
     private val _selectedRoute = MutableStateFlow<RouteWithPlaces?>(null)
     val selectedRoute: StateFlow<RouteWithPlaces?> = _selectedRoute
-
     // Variable usada para capturar los puntos (LatLng) de la ruta de transporte seleccionada
     private val _orsRoute = MutableStateFlow<List<LatLng>>(emptyList())
     val orsRoute: StateFlow<List<LatLng>> = _orsRoute

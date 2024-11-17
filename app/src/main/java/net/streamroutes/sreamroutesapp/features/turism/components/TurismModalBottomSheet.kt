@@ -23,6 +23,8 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -32,11 +34,13 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TourismViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TurismModalBottomSheet(
-    turisticPoint: TuristicPointWithInfo?,
+    //turisticPoint: TuristicPointWithInfo?,
+    tourismViewModel: TourismViewModel,
     sheetState: SheetState = rememberModalBottomSheetState(),
     /*
     turismInformation: TurismInformation = TurismInformation(
@@ -50,6 +54,7 @@ fun TurismModalBottomSheet(
     onSelectRoute: () -> Unit = {},
     onMore: () -> Unit
 ) {
+    val turisticPoint by tourismViewModel.selectedTPRoute.collectAsState()
     // Variable con los días de la semana
     val dias = listOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
 

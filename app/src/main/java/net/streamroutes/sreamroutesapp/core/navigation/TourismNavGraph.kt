@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TourismListScreen
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TourismViewModel
 import net.streamroutes.sreamroutesapp.features.turism.presentation.turismMap.TurismMapScreen
 import net.streamroutes.sreamroutesapp.features.turism.presentation.turismRoute.TurismRouteScreen
 
@@ -17,7 +18,7 @@ import net.streamroutes.sreamroutesapp.features.turism.presentation.turismRoute.
 fun TourismNavigation(
     modifier: Modifier = Modifier,
     navHostController: NavHostController,
-    transportViewModel: TransportViewModel = hiltViewModel()
+    tourismViewModel: TourismViewModel
 ) {
     // Entrada desde la parte superior
     val slideInFromTop = slideInVertically(
@@ -64,7 +65,8 @@ fun TourismNavigation(
                         launchSingleTop = true
                     }
                 },
-                modifier = modifier
+                modifier = modifier,
+                tourismViewModel = tourismViewModel
             )
         }
 
@@ -104,7 +106,7 @@ fun TourismNavigation(
 
                 },
                 modifier = modifier,
-                transportViewModel = transportViewModel
+                tourismViewModel = tourismViewModel
             )
         }
     }

@@ -33,6 +33,7 @@ import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
 import net.streamroutes.sreamroutesapp.features.components.ShimmerMapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
 import net.streamroutes.sreamroutesapp.features.maps.components.ShimmerElementOption
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismModalBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -41,10 +42,10 @@ fun TourismListScreen(
     modifier: Modifier = Modifier,
     onSelectMap: () -> Unit,
     onSelectRoute: () -> Unit,
-    turismViewModel: TurismListViewModel = hiltViewModel()
+    tourismViewModel: TourismViewModel = hiltViewModel(),
 ) {
     val scope = rememberCoroutineScope()
-    val turisticPoints by turismViewModel.turisticPoints.collectAsState()
+    val turisticPoints by tourismViewModel.turisticPoints.collectAsState()
     var selectedTp by remember { mutableStateOf<TuristicPointWithInfo?>(null) }
 
     var isOpen by remember {
@@ -80,7 +81,8 @@ fun TourismListScreen(
             onMore = {
 
             },
-            turisticPoint = selectedTp
+            //turisticPoint = selectedTp
+            tourismViewModel = tourismViewModel
         )
     }
 
@@ -137,7 +139,8 @@ fun TourismListScreen(
                     description = stringResource(id = R.string.lblTimeNextStop, nextStopTime),
                     //onClick = openBottomSheet
                     onClick = {
-                        selectedTp = turisticPoint
+                        //selectedTp = turisticPoint
+                        tourismViewModel.selectTPRoute(turisticPoint)
                         isOpen = !isOpen
                     }
                 )

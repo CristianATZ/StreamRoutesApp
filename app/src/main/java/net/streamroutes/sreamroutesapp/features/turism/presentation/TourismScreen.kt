@@ -11,9 +11,11 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.navigation.TourismNavigation
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TourismViewModel
 
 @Composable
 fun TourismScreen(
+    tourismViewModel: TourismViewModel = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
     val tourismNavHostController = rememberNavController()
@@ -28,7 +30,8 @@ fun TourismScreen(
     ) { innerPadding ->
         TourismNavigation(
             navHostController = tourismNavHostController,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            tourismViewModel = tourismViewModel
         )
     }
 }
