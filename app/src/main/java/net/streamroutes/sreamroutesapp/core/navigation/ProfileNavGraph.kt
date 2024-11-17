@@ -6,17 +6,20 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.posts.SavedPostScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditInformation
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.routes.SavedRouteScreen
 
 @Composable
 fun ProfileNavigation(
     navHostController: NavHostController,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    profileViewModel: ProfileViewModel,
 ) {
     val slideInFromLeft = slideInHorizontally(
         initialOffsetX = { -it } // Entra desde la izquierda
@@ -119,7 +122,8 @@ fun ProfileNavigation(
             SavedPostScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
-                }
+                },
+                profileViewModel = profileViewModel
             )
         }
 

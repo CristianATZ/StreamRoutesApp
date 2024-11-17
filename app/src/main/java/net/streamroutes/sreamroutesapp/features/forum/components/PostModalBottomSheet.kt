@@ -43,7 +43,7 @@ import java.time.LocalDateTime
 fun PostModalBottomSheet(
     sheetState: SheetState,
     onDismiss: () -> Unit,
-    onMakePost: () -> Unit,
+    onMakePost: (String) -> Unit,
     onCloseMakePost: () -> Unit,
     info: Pair<String, LocalDateTime>
 ) {
@@ -133,7 +133,7 @@ fun PostModalBottomSheet(
 
             // publicar
             Button(
-                onClick = onMakePost,
+                onClick = { onMakePost(post) },
                 shape = shapes.small,
                 modifier = Modifier
                     .padding(horizontal = 16.dp)

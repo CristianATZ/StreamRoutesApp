@@ -25,15 +25,19 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 import net.streamroutes.sreamroutesapp.core.domain.model.PostTemp
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.components.CommentModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.components.PostItem
+import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import java.time.LocalDateTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SavedPostScreen(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    profileViewModel: ProfileViewModel
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
@@ -162,7 +166,8 @@ fun SavedPostScreen(
         CommentModalBottomSheet(
             sheetState = sheetState,
             onDismiss = openBottomSheet,
-            isSaved = true
+            isSaved = true,
+            profileViewModel = profileViewModel
         )
     }
 

@@ -41,7 +41,22 @@ class ForumRepository @Inject constructor(
             println("Error: ${e.message}")
             emptyList()
         }
+    }
 
+
+    /**
+     * Método usado para crear un post
+     */
+    suspend fun createPost(post: Post): Boolean {
+        return try {
+            val newPost = db.collection("posts").document()
+            newPost.set(post).await()
+            true
+        } catch (e: Exception) {
+            Log.d("forum_repo", "Error: ${e.message}")
+            println("Error: ${e.message}")
+            false
+        }
     }
 }
 

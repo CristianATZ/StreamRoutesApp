@@ -34,6 +34,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -49,6 +50,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDateTime
 
@@ -58,14 +61,17 @@ fun CommentModalBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit = {},
     isSaved: Boolean = false,
+    profileViewModel: ProfileViewModel
 ) {
+    val currentUser by profileViewModel.userData.collectAsState()
+
     var isLoading by remember {
         mutableStateOf(false)
     }
 
     val sampleComments = listOf(
         Comment(
-            commenterName = "CristianToZa",
+            commenterName = currentUser?.names ?: "cargando...",
             description = "¡Hola! ¿Cómo te va? Hace tiempo que no hablamos, espero que todo esté bien contigo y que las cosas estén marchando de maravilla. ¿Qué has estado haciendo últimamente?",
             commentDate = LocalDateTime.of(2023, 10, 1, 12, 0),
         ),

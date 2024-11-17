@@ -14,11 +14,16 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ForumViewModel @Inject constructor(
-    private val forumRepository: ForumRepository
+    private val forumRepository: ForumRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     // Variable usada para guardar todos los posts de la base de datos
     private val _posts = MutableStateFlow<List<PostWithInfo>?>(null)
     val posts: StateFlow<List<PostWithInfo>?> = _posts
+
+    // Variable usada para saber si se creo un post
+    private val _createdPost = MutableStateFlow<Boolean?>(null)
+    val createdPost: StateFlow<Boolean?> = _createdPost
 
     init {
         getAllPosts()
@@ -30,6 +35,19 @@ class ForumViewModel @Inject constructor(
     fun getAllPosts(){
         viewModelScope.launch {
             _posts.value = forumRepository.getAllPosts()
+        }
+    }
+
+    /**
+     * Método usado para crear un post
+     */
+    fun createPost(post: Post){
+        viewModelScope.launch {
+            val currentUser = userRepository.getCurrentUser()
+            if(currentUser != null) {
+                post.idUser = currentUser.uid
+                _createdPost.value = forumRepository.createPost(post)
+            }
         }
     }
 }

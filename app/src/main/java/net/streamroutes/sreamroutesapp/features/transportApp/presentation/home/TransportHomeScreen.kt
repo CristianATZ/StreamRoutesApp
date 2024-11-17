@@ -34,7 +34,8 @@ import net.streamroutes.sreamroutesapp.features.transportApp.components.Transpor
 
 @Composable
 fun TransportMain(
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginViewModel: LoginViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val navHostController = rememberNavController()
 
@@ -63,7 +64,8 @@ fun TransportMain(
             navHostController = navHostController,
             onOpenMenu = {
                 openDrawer()
-            }
+            },
+            profileViewModel = profileViewModel,
         )
     }
 }

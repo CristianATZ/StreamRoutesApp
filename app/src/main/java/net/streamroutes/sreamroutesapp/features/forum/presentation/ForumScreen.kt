@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.forum.presentation
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,23 +38,31 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
+import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.core.domain.model.PostTemp
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.components.CommentModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.components.PostItem
 import net.streamroutes.sreamroutesapp.features.forum.components.ForumSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.forum.components.MoreModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.forum.components.PostModalBottomSheet
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import kotlin.math.log
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ForumScreen(
     onBackPressed: () -> Unit,
-    forumViewModel: ForumViewModel = hiltViewModel()
+    forumViewModel: ForumViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel
 ) {
+    val currentUser by profileViewModel.userData.collectAsState()
+    val currentFirebaseUser by profileViewModel.currentUser.collectAsState()
 
     var isLoading by remember {
         mutableStateOf(false)
@@ -61,11 +70,11 @@ fun ForumScreen(
 
     val scope = rememberCoroutineScope()
 
-
     val samplePostTemps = listOf(
         PostTemp(
             postId = "001",
             authorName = "CristianToZa",
+            //authorName = currentUser?.names ?: "cargando...",
             publicationDate = LocalDateTime.of(2023, 10, 1, 12, 0),
             description = "¡Hola a todos! Estoy emocionado de compartir mi primer proyecto en el foro. Espero que les guste.",
             likes = 25,
@@ -164,8 +173,23 @@ fun ForumScreen(
     val openPostBottomSheet = {
         isOpenPostSheet = !isOpenPostSheet
     }
-    val onMakePost = {
+    val onMakePost = { description: String ->
+        val currentDateTime = LocalDateTime.now()
 
+        val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+        val currentDate = currentDateTime.format(dateFormatter)
+
+        val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+        val currentTime = currentDateTime.format(timeFormatter)
+
+
+        forumViewModel.createPost(
+            Post(
+                date = currentDate,
+                hour = currentTime,
+                description = description
+            )
+        )
     }
     val onCloseMakePost = {
         scope.launch {
@@ -181,11 +205,13 @@ fun ForumScreen(
         PostModalBottomSheet(
             sheetState = postSheetState,
             onDismiss = openPostBottomSheet,
-            onMakePost = onMakePost,
+            onMakePost = { description ->
+                onMakePost(description)
+            },
             onCloseMakePost = {
                 onCloseMakePost()
             },
-            info = Pair("Usuario", LocalDateTime.now())
+            info = Pair(currentUser?.username ?: "Usuario", LocalDateTime.now())
         )
     }
 
@@ -206,7 +232,8 @@ fun ForumScreen(
         // PROBAR DE ESTAR FORMA
         CommentModalBottomSheet(
             sheetState = commentSheetState,
-            onDismiss = openCommentBottomSheet
+            onDismiss = openCommentBottomSheet,
+            profileViewModel = profileViewModel
         )
     }
 
@@ -228,7 +255,8 @@ fun ForumScreen(
                     updateMoreSelect(info)
                 },
                 modifier = Modifier.padding(innerPadding),
-                forumViewModel = forumViewModel
+                forumViewModel = forumViewModel,
+                profileViewModel = profileViewModel
             )
         } else {
             ShimmerForumScreen(
@@ -313,9 +341,11 @@ fun ForumScreenContent(
     modifier: Modifier,
     openMoreBottomSheet: () -> Unit,
     updateMoreSelect: (Pair<String, LocalDateTime>?) -> Unit,
-    forumViewModel: ForumViewModel
+    forumViewModel: ForumViewModel,
+    profileViewModel: ProfileViewModel
 ) {
     val posts by forumViewModel.posts.collectAsState()
+    val currentUser by profileViewModel.userData.collectAsState()
 
     if(posts.isNullOrEmpty()){
         ShimmerForumScreen(modifier)
@@ -338,7 +368,8 @@ fun ForumScreenContent(
                         contentAlignment = Alignment.Center
                     ){
                         Text(
-                            text = "C",
+                            //text = "C",
+                            text = currentUser?.username?.get(0).toString(),
                             style = typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )

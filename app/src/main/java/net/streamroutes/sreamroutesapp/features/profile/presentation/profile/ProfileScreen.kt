@@ -26,6 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.navigation.ProfileNavigation
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileTopBar
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatDate
@@ -34,12 +35,14 @@ import net.streamroutes.sreamroutesapp.utils.DateUtils.formatPhoneNumber
 
 @Composable
 fun EditProfileMain(
+    profileViewModel: ProfileViewModel = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
     val profileNavHostController = rememberNavController()
     ProfileNavigation(
         navHostController = profileNavHostController,
-        onBackPressed = onBackPressed
+        onBackPressed = onBackPressed,
+        profileViewModel = profileViewModel
     )
 }
 

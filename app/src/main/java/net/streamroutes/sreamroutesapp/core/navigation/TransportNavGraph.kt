@@ -6,11 +6,13 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumScreen
 import net.streamroutes.sreamroutesapp.features.maps.presentation.MapsScreen
 import net.streamroutes.sreamroutesapp.features.premium.presentation.PremiumScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditProfileMain
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileScreen
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.features.settings.presentation.settings.SettingsMain
 import net.streamroutes.sreamroutesapp.features.transportApp.presentation.home.TransportHomeScreen
 import net.streamroutes.sreamroutesapp.features.turism.presentation.TourismScreen
@@ -18,7 +20,8 @@ import net.streamroutes.sreamroutesapp.features.turism.presentation.TourismScree
 @Composable
 fun TransportNavigation(
     navHostController: NavHostController,
-    onOpenMenu: () -> Unit
+    onOpenMenu: () -> Unit,
+    profileViewModel: ProfileViewModel
 ) {
     // Definición de animaciones de transición
     val slideInFromLeft = slideInHorizontally(
@@ -170,7 +173,8 @@ fun TransportNavigation(
             ForumScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
-                }
+                },
+                profileViewModel = profileViewModel
             )
         }
 

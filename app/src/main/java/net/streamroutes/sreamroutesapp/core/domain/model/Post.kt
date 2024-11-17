@@ -1,7 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class Post(
-    val idUser: String = "",        // ID del usuario que posteo
+    var idUser: String = "",        // ID del usuario que posteo
     val date: String = "",          // Fecha
     val hour: String = "",          // Hora
     val description: String = "",   // Texto o descripción del post
