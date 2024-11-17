@@ -25,6 +25,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Marker
@@ -59,21 +60,22 @@ fun PlannerScreen(
     val coroutine = rememberCoroutineScope()
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(21.018541825334918, -101.25880481892467), 17f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
     }
     // ACTUALIZAR LA POSICION DEL MARCADOR A TU UBICACION ACTUAL
     // PARA QUE FUNCIONE EL onMapClick
     val markerState = rememberMarkerState(
-        position = LatLng(21.018541825334918, -101.25880481892467)
+        position = LatLng(21.017917732561727, -101.25808073954296)
     )
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
     val initialPos = rememberMarkerState(
-        position =  LatLng(21.018541825334918, -101.25880481892467)
+        position =  LatLng(21.017917732561727, -101.25808073954296)
     )
 
     var address by remember { mutableStateOf("") }
+    var currentPos by remember { mutableStateOf("") }
 
     var markerVisible by remember {
         mutableStateOf(false)
@@ -102,6 +104,9 @@ fun PlannerScreen(
         coroutine.launch {
             markerState.position = coord
             address = transportViewModel.getAddress(markerState.position).toString()
+            if(currentPos == "") {
+                currentPos = address
+            }
             markerVisible = true
             //delay(2000)
             updateCameraPosition(coord)
@@ -120,7 +125,7 @@ fun PlannerScreen(
             destinationsList.add(
                 Destinations(
                     coords = initialPos.position,
-                    address = "(Ubicación actual)"
+                    address = "(Ubicacion actual) " + currentPos
                 )
             )
         }
@@ -156,6 +161,10 @@ fun PlannerScreen(
     // HACER LISTA DE DESITNO
     // PROGRAMAR VIEW DEL PUNTO SELECCIONADO
     // FUNCION PARA AGREGAR A LA LISTA
+
+    LaunchedEffect(Unit){
+        onMapClick(initialPos.position)
+    }
 
     if(isOpen) {
         PlannerModalBottomSheet(
@@ -213,7 +222,6 @@ fun PlannerScreen(
                     )
                 }
             }
-
         }
 
         Column {
@@ -222,7 +230,8 @@ fun PlannerScreen(
             CardCurrentLocationWithIcon(
                 icon = Icons.Outlined.MyLocation,
                 iconDescription = stringResource(id = R.string.iconMyLocation),
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                modifier = Modifier.align(Alignment.CenterHorizontally),
+                currentAddress = currentPos
             )
 
         }

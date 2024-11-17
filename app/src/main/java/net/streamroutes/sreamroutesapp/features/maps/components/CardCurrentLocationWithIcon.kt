@@ -20,11 +20,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 
-@Preview(showBackground = true)
 @Composable
 fun CardCurrentLocationWithIcon(
     modifier: Modifier = Modifier,
-    currentAddress: String = "Padre Luis Gaytan, San Isidro 38887",
+    //currentAddress: String = "Padre Luis Gaytan, San Isidro 38887",
+    currentAddress: String,
     icon: ImageVector = Icons.Outlined.MyLocation,
     iconDescription: String = stringResource(id = R.string.iconMyLocation)
 ) {

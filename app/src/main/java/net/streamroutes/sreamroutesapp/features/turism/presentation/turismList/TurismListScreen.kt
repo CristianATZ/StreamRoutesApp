@@ -134,7 +134,7 @@ fun TourismListScreen(
                 val nextStopTime = turisticPoint?.turisticPoint?.nextStop ?: 0
                 ElementOption(
                     title = turisticPoint.place.name,
-                    description = stringResource(id = R.string.lblTimeNextStop, 7),
+                    description = stringResource(id = R.string.lblTimeNextStop, nextStopTime),
                     //onClick = openBottomSheet
                     onClick = {
                         selectedTp = turisticPoint
