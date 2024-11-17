@@ -155,13 +155,17 @@ dependencies {
     // END FOR FIREBASE
 
     // FOR GOOGLE FONTS
-    implementation libs.androidx.ui.text.google.fonts
+    implementation(libs.androidx.ui.text.google.fonts)
     // ENF FOR GOOGLE FONTS
 
 
     // FOR GOOGLE MAPS UTILS
     implementation(libs.maps.utils)
     // END GOR GOOGLE MAPS UTILS
+
+    // FOR DATASTORE
+    implementation(libs.androidx.datastore.preferences)
+    // END FOR DATASTORE
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
