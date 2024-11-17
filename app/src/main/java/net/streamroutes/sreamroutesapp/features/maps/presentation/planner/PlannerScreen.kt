@@ -69,6 +69,9 @@ fun PlannerScreen(
     val sheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+    val initialPos = rememberMarkerState(
+        position =  LatLng(21.018541825334918, -101.25880481892467)
+    )
 
     var address by remember { mutableStateOf("") }
 
@@ -113,6 +116,14 @@ fun PlannerScreen(
     }
     // AGREGAR DESTINO A LA LISTA
     val onAdd = {
+        if(destinationsList.isEmpty()){
+            destinationsList.add(
+                Destinations(
+                    coords = initialPos.position,
+                    address = "(Ubicación actual)"
+                )
+            )
+        }
         if(markerVisible) {
             destinationsList.add(
                 Destinations(
