@@ -33,7 +33,7 @@ class LoginViewModel @Inject constructor(
     /**
      * Método usado para iniciar sesión
      */
-    fun loginUser(email: String, password: String) {
+    suspend fun loginUser(email: String, password: String) {
         viewModelScope.launch {
             _loginResult.value = null
             val result = userRepository.loginUser(email, password)

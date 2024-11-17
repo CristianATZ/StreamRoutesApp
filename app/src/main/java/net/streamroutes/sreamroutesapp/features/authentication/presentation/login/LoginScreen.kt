@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.authentication.presentation.login
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -27,6 +29,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.compose.orange
 import com.example.compose.yellow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.authentication.components.DisplayText
 import net.streamroutes.sreamroutesapp.features.authentication.components.PrimaryFilledButton
@@ -47,13 +51,14 @@ fun LoginScreen(
     // collectAsState para que se tome como estado observable
     val loginResult by loginViewModel.loginResult.collectAsState()
     val userData by loginViewModel.userData.collectAsState()
+    val coroutine = rememberCoroutineScope()
 
     var email by remember {
-        mutableStateOf("")
+        mutableStateOf("alanslgdo2902@gmail.com")
     }
 
     var password by remember {
-        mutableStateOf("")
+        mutableStateOf("123456")
     }
 
     /**
@@ -131,8 +136,17 @@ fun LoginScreen(
             text = stringResource(id = R.string.btnLogin),
             onClick =  {
                 // AUTENTICAR USUARIO CON FIREBASE
-                //loginViewModel.loginUser(email, password)
-                onSignIn()
+                coroutine.launch {
+                    loginViewModel.loginUser(email, password)
+
+                    // Recoger el resultado después de que se haya emitido
+                    loginViewModel.loginResult.collect { loginResult ->
+                        //Log.d("loginscreen", loginResult.toString())
+                        if (loginResult == true) {
+                            onSignIn()
+                        }
+                    }
+                }
             },
             modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth()
         )
