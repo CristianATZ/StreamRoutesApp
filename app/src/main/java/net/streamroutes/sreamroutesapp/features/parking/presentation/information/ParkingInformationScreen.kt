@@ -29,6 +29,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,9 +43,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ShimmerHistoryItem
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
@@ -53,12 +56,14 @@ import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 fun ParkingInformationScreen(
     onBackPressed: () -> Unit = {},
     onBookingPressed: () -> Unit,
-    onSelectPressed: () -> Unit
+    onSelectPressed: () -> Unit,
+    parkingViewModel: ParkingViewModel = hiltViewModel()
 ) {
+    val selectedParking by parkingViewModel.selectedParking.collectAsState()
+
     var isLoading by remember {
         mutableStateOf(false)
     }
-
 
     val services = listOf(
         "Camaras",
@@ -103,8 +108,10 @@ fun ParkingInformationScreen(
                                 .background(Color.Black.copy(0.5f), shapes.extraLarge),
                             contentAlignment = Alignment.Center
                         ) {
+                            val available = (selectedParking?.parking?.maxCapacity ?: 0) - (selectedParking?.parking?.currentEntrances ?: 0)
+
                             Text(
-                                text = stringResource(R.string.lblAllowPlaces, "5"),
+                                text = stringResource(R.string.lblAllowPlaces, "${available}"),
                                 style = typography.labelLarge,
                                 fontWeight = FontWeight.Bold,
                                 color = Color.White,
@@ -134,11 +141,13 @@ fun ParkingInformationScreen(
 
                 Spacer(Modifier.size(16.dp))
 
+                val address = "${selectedParking?.place?.street ?: "SN"}, ${selectedParking?.place?.suburb ?: "SN"}, ${selectedParking?.place?.state ?: "SN"}"
+
                 // decripcion estacionamiento
                 ParkingDescription(
-                    name = "ITSUR",
-                    address = "Padre Luis Gaytan #234",
-                    price = 29.5
+                    name = selectedParking?.place?.name ?: stringResource(R.string.lblLoading),
+                    address = address,
+                    price = selectedParking?.parking?.feePerHour
                 )
                 if(!isLoading) {
                     Row(
@@ -147,20 +156,28 @@ fun ParkingInformationScreen(
                             .fillMaxWidth()
                             .horizontalScroll(rememberScrollState())
                     ) {
+                        val waitingHours = selectedParking?.parking?.waitingMinutes?.div(60)
+                        val waitingMinutes = selectedParking?.parking?.waitingMinutes?.rem(60)
+                        val rating = selectedParking?.parking?.rating ?: 0
+
                         InformationChip(
                             text = stringResource(R.string.lblDistance, "400 m")
                         )
 
                         InformationChip(
-                            text = stringResource(R.string.lblCapacity, "30")
+                            text = stringResource(R.string.lblCapacity, selectedParking?.parking?.maxCapacity ?: 0)
+                        )
+
+                        var waitingTime = ""
+                        if(waitingHours == 0) waitingTime = "${waitingMinutes} min"
+                        else if(waitingMinutes == 0) waitingTime = "${waitingHours} Hrs"
+                        else waitingTime = "${waitingHours} Hrs y ${waitingMinutes} min"
+                        InformationChip(
+                            text = stringResource(R.string.lblWaitPlace, waitingTime)
                         )
 
                         InformationChip(
-                            text = stringResource(R.string.lblWaitPlace, "3.2 Hrs")
-                        )
-
-                        InformationChip(
-                            text = stringResource(R.string.lblRating, "4.6")
+                            text = stringResource(R.string.lblRating, "${rating}")
                         )
                     }
                 } else {
@@ -261,7 +278,7 @@ fun ParkingInformationScreen(
                         Spacer(Modifier.size(8.dp))
 
                         Text(
-                            text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
+                            text = selectedParking?.parking?.description ?: "",
                             style = typography.labelLarge,
                             textAlign = TextAlign.Justify,
                             modifier = Modifier

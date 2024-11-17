@@ -5,6 +5,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.Parking
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
+import net.streamroutes.sreamroutesapp.core.domain.model.Service
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -37,9 +38,21 @@ class ParkingRepository @Inject constructor(
                 }
             }
 
-
-
             return parkings
+        } catch (e: Exception) {
+            Log.d("parking_repo", "Error: ${e.message}")
+            println("Error: ${e.message}")
+            emptyList()
+        }
+    }
+
+    /**
+     * Método usado para obtener todos los servicios de un estacionamiento
+     */
+    suspend fun getServicesByParking(): List<Service> {
+        return try {
+            val services = mutableListOf<Service>()
+            return services
         } catch (e: Exception) {
             Log.d("parking_repo", "Error: ${e.message}")
             println("Error: ${e.message}")
@@ -53,3 +66,4 @@ data class ParkingWithPlace(
     val parking: Parking,
     val place: Place
 )
+

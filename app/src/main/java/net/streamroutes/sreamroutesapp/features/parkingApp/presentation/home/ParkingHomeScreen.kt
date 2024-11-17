@@ -394,7 +394,10 @@ fun ParkingHomeScreen(
                             description = parking.parking.description,
                             price = parking.parking.feePerHour.toString(),
                             calification = parking.parking.rating.toString(),
-                            onClick = onSelectParking
+                            onClick = {
+                                parkingViewModel.selectParking(parking)
+                                onSelectParking()
+                            }
                         )
                     }
                 }

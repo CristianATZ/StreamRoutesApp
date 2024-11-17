@@ -13,13 +13,15 @@ import net.streamroutes.sreamroutesapp.features.parking.presentation.information
 import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingHomeScreen
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
 
 @Composable
 fun SubParkingNavigation(
     navHostController: NavHostController,
     onBackPressed: () -> Unit,
     onSettingsPressed: () -> Unit,
-    onProfilePressed: () -> Unit
+    onProfilePressed: () -> Unit,
+    parkingViewModel: ParkingViewModel
 ) {
     val slideInFromLeft = slideInVertically (
         initialOffsetY = { -it } // Entra desde la izquierda
@@ -57,7 +59,8 @@ fun SubParkingNavigation(
                     navHostController.navigate(Destinations.ParkingInformation.route) {
                         launchSingleTop = true
                     }
-                }
+                },
+                parkingViewModel = parkingViewModel
             )
         }
 
@@ -82,7 +85,8 @@ fun SubParkingNavigation(
                     navHostController.navigate(Destinations.ParkingRoute.route) {
                         launchSingleTop = true
                     }
-                }
+                },
+                parkingViewModel = parkingViewModel
             )
         }
 

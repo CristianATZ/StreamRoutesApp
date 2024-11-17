@@ -18,13 +18,38 @@ class ParkingViewModel @Inject constructor(
     private val _parkings = MutableStateFlow<List<ParkingWithPlace>?>(null)
     val parkings: StateFlow<List<ParkingWithPlace>?> = _parkings
 
+    // Variable usada para guardar el estacionamiento seleccionado en la vista principal
+    private val _selectedParking = MutableStateFlow<ParkingWithPlace?>(null)
+    val selectedParking: StateFlow<ParkingWithPlace?> = _selectedParking
+
+
     init {
         getAllParkings()
     }
 
+    /**
+     * Método usado para traer todos los estacionamientos de la base de datos
+     */
     fun getAllParkings(){
         viewModelScope.launch {
             _parkings.value = parkingRepository.getAllParkings()
         }
+    }
+
+    /**
+     * Método para obtener todos los servicios de un estacionamiento
+     */
+    fun getServicesByParking(){
+        viewModelScope.launch {
+
+        }
+    }
+
+
+    /**
+     * Método usado para actualizar el estacionamiento seleccionado
+     */
+    fun selectParking(parking: ParkingWithPlace){
+        _selectedParking.value = parking
     }
 }
