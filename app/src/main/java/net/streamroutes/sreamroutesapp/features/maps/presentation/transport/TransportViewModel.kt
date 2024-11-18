@@ -125,6 +125,12 @@ class TransportViewModel @Inject constructor(
         }
     }
 
+    fun restartOrsRoute() {
+        viewModelScope.launch {
+            _orsRoute.value = emptyList()
+            _orsRouteData.value = null
+        }
+    }
 
     /**
      * Método usado para obtener la dirección de un LatLng

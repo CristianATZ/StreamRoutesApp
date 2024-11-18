@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.features.maps.presentation.fastest
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -31,6 +34,12 @@ fun FastestScreen(
     modifier: Modifier = Modifier,
     transportViewModel: TransportViewModel = hiltViewModel()
 ) {
+    val orsRoute by transportViewModel.orsRoute.collectAsState()
+
+    var currenTab by remember {
+        mutableIntStateOf(0)
+    }
+
     val coroutine = rememberCoroutineScope()
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
@@ -61,21 +70,18 @@ fun FastestScreen(
         }
     }
 
-    val onMyLocation = {
-        // cambiar camara a posicion actual
-        //updateCameraPosition()
-    }
-
     // SELECTPOINTS SCREEN
     val dest = if(markerDestinaton.position == LatLng(0.0,0.0)) "" else markerDestinaton.position.toString()
     val restartLocation = {
         markerDestinaton.position = LatLng(0.0, 0.0)
+        address = ""
     }
     val onCalculateRoute = {
         // CAMBIAR PANTALLA
         // MANDAR DATOS A LA API Y RECUPERAR LOS 4 TIPOS DE VIAJE
         transportViewModel.getOrsRoute("foot-walking", markerMyLocation.position, markerDestinaton.position)
         isCalculated = true
+        currenTab = 1
     }
 
     // EVENTO ON CLICK DEL MAPA
@@ -88,28 +94,20 @@ fun FastestScreen(
         }
     }
 
+    val onChangeRoute = { route: Int ->
+        currentRoute = route
+    }
 
     LaunchedEffect(Unit) {
         coroutine.launch {
             currentAdress = transportViewModel.getAddress(markerMyLocation.position).toString()
         }
     }
-    
-    val onChangeRoute = { route: Int ->
-        currentRoute = route
-    }
-
-    // FASTEST ROUTE
-    val onCancelRoute = {
-        // CANCELAR RUTA
-        // ENVIAR AL INICIO
-    }
 
     Box(
         modifier = modifier
             .fillMaxSize()
     ) {
-        val orsRoute by transportViewModel.orsRoute.collectAsState()
         MapFullSize(
             cameraPositionState = cameraPositionState,
             /*
@@ -148,31 +146,67 @@ fun FastestScreen(
             // dibujar polilinea
         }
 
-        FastestSelectPoints(
-            currentRoute = currentAdress,
-            dest = address,
-            onRestartLocation = restartLocation,
-            onCalculateRoute = onCalculateRoute,
-            onMyLocation = onMyLocation,
-            modifier = Modifier.align(Alignment.TopCenter)
-        )
+        AnimatedVisibility(
+            visible = currenTab == 0,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            FastestSelectPoints(
+                currentRoute = currentAdress,
+                dest = address,
+                onRestartLocation = restartLocation,
+                onCalculateRoute = onCalculateRoute,
+                onMyLocation = {
+                    updateCameraPosition(
+                        markerMyLocation.position
+                    )
+                },
+                modifier = Modifier.align(Alignment.TopCenter)
+            )
+        }
 
-        /*FastestRoutesInformation(
-            currentRoute = currentRoute,
-            onChangeRoute = { route ->
-                onChangeRoute(route)
-            },
-            onSelectRoute = {
-                // SELECCIONAR LA RUTA SELECCIONADA EN BASE
-                // A LA RUTA ACTUAL SELECCIONADA
-            },
-            onMyLocation = onMyLocation
-        )*/
+        AnimatedVisibility(
+            visible = currenTab == 1,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            FastestRoutesInformation(
+                currentRoute = currentRoute,
+                onChangeRoute = { route ->
+                    onChangeRoute(route)
+                },
+                onSelectRoute = {
+                    currenTab = 2
+                },
+                onMyLocation = {
+                    updateCameraPosition(
+                        markerMyLocation.position
+                    )
+                },
+                onCancelRoute = {
+                    currenTab = 0
+                    isCalculated = false
+                    transportViewModel.restartOrsRoute()
+                }
+            )
+        }
 
-        /*FastestRoute(
-            currentRoute = "Padre Luis Gaytan",
-            onCancelRoute = onCancelRoute,
-
-        )*/
+        AnimatedVisibility(
+            visible = currenTab == 2,
+            enter = fadeIn(),
+            exit = fadeOut(),
+        ) {
+            FastestRoute(
+                currentRoute = "Padre Luis Gaytan",
+                onCancelRoute = {
+                    currenTab = 1
+                } ,
+                onMyLocation = {
+                    updateCameraPosition(
+                        markerMyLocation.position
+                    )
+                }
+            )
+        }
     }
 }

@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.features.maps.presentation.fastest
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
@@ -31,7 +33,7 @@ fun FastestRoute(
     currentRoute: String = "",
     onCancelRoute: () -> Unit ={},
     onMyLocation: () -> Unit = {},
-    transportViewModel: TransportViewModel
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
     Column(
         modifier = Modifier
@@ -62,17 +64,7 @@ fun FastestRoute(
             Spacer(modifier = Modifier.size(8.dp))
 
             ExtendedFloatingActionButton(
-                onClick = { /*TODO*/ },
-                modifier = Modifier
-                    .combinedClickable(
-                        onClick = {
-
-                        },
-                        onLongClick = {
-                            // CANCELAR RUTA
-                            onCancelRoute()
-                        }
-                    )
+                onClick = onCancelRoute
             ) {
                 Text(text = stringResource(id = R.string.btnCancelRoute))
             }

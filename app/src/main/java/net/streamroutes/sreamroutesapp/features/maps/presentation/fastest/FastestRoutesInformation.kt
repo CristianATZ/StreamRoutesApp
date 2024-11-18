@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteType
@@ -35,7 +36,8 @@ fun FastestRoutesInformation(
     onChangeRoute: (Int) -> Unit,
     onSelectRoute: () -> Unit,
     onMyLocation: () -> Unit,
-    transportViewModel: TransportViewModel
+    onCancelRoute: () -> Unit,
+    transportViewModel: TransportViewModel = hiltViewModel()
 ) {
 
 
@@ -108,13 +110,21 @@ fun FastestRoutesInformation(
             
             Spacer(modifier = Modifier.size(8.dp))
 
+            ExtendedFloatingActionButton(
+                onClick = onCancelRoute,
+                containerColor = colorScheme.errorContainer,
+                contentColor = colorScheme.onErrorContainer
+            ) {
+                Text(text = stringResource(id = R.string.btnBack))
+            }
+
+            Spacer(modifier = Modifier.size(8.dp))
 
             ExtendedFloatingActionButton(
                 onClick = onSelectRoute
             ) {
                 Text(text = stringResource(id = R.string.btnSelect))
             }
-
         }
     }
 }

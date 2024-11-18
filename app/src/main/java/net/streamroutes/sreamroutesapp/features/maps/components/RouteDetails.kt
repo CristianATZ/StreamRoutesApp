@@ -41,68 +41,72 @@ fun RouteDetails(
 ) {
     val routeData by transportViewModel.orsRouteData.collectAsState()
 
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = colorScheme.surface,
-            contentColor = colorScheme.onSurface
-        ),
-        modifier = Modifier
-            .padding(16.dp)
-            .fillMaxWidth()
-    ) {
-        Row {
-            Column(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .weight(1f)
-                    .padding(8.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.lblDistance),
-                    style = typography.labelLarge
+    if(routeData != null) {
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = colorScheme.surface,
+                contentColor = colorScheme.onSurface
+            ),
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
+        ) {
+            Row {
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .weight(1f)
+                        .padding(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.lblDistance),
+                        style = typography.labelLarge
+                    )
+
+                    Text(
+                        text = "${routeData?.get("distance")} km",
+                        style = typography.bodyLarge,
+                        fontWeight = FontWeight.Bold
+                    )
+
+                    Text(
+                        text = "${routeData?.get("duration")} min",
+                        style = typography.labelLarge,
+                        textAlign = TextAlign.Center
+                    )
+                }
+
+                VerticalDivider(
+                    modifier = Modifier
+                        .padding(end = 16.dp)
+                        .height(50.dp)
+                        .align(Alignment.CenterVertically)
                 )
 
-                Text(
-                    text = "${routeData?.get("distance")} km",
-                    style = typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
-                )
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .weight(2f)
+                        .padding(vertical = 8.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = currentStreet,
+                        style = typography.bodyLarge,
+                        fontWeight = FontWeight.Bold
+                    )
 
-                Text(
-                    text = "${routeData?.get("duration")} min",
-                    style = typography.labelLarge,
-                    textAlign = TextAlign.Center
-                )
-            }
-
-            VerticalDivider(
-                modifier = Modifier
-                    .padding(end = 16.dp)
-                    .height(50.dp)
-                    .align(Alignment.CenterVertically)
-            )
-
-            Column(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically)
-                    .weight(2f)
-                    .padding(vertical = 8.dp),
-                verticalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = currentStreet,
-                    style = typography.bodyLarge,
-                    fontWeight = FontWeight.Bold
-                )
-
-                Text(
-                    text = stringResource(id = R.string.lblRouteDirection, "${routeData?.get("nextStreet")}"),
-                    style = typography.labelLarge
-                )
+                    Text(
+                        text = stringResource(id = R.string.lblRouteDirection, "${routeData?.get("nextStreet")}"),
+                        style = typography.labelLarge
+                    )
+                }
             }
         }
+    } else {
+        ShimmerRouteDetails()
     }
 }
 
