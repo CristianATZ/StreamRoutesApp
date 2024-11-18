@@ -11,7 +11,8 @@ fun ParkingMain(
     onBackPressed: () -> Unit,
     onProfilePressed: () -> Unit,
     onSettingsPressed: () -> Unit,
-    parkingViewModel: ParkingViewModel = hiltViewModel()
+    parkingViewModel: ParkingViewModel = hiltViewModel(),
+    onSuccess: () -> Unit
 ) {
     val subParkingNavHostController = rememberNavController()
     SubParkingNavigation(
@@ -19,6 +20,7 @@ fun ParkingMain(
         onBackPressed = onBackPressed,
         onSettingsPressed = onSettingsPressed,
         onProfilePressed = onProfilePressed,
+        onSuccess = onSuccess,
         parkingViewModel = parkingViewModel
     )
 }

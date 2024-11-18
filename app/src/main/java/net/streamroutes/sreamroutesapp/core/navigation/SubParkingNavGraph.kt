@@ -1,8 +1,6 @@
 package net.streamroutes.sreamroutesapp.core.navigation
 
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -21,6 +19,7 @@ fun SubParkingNavigation(
     onBackPressed: () -> Unit,
     onSettingsPressed: () -> Unit,
     onProfilePressed: () -> Unit,
+    onSuccess: () -> Unit,
     parkingViewModel: ParkingViewModel
 ) {
     val slideInFromLeft = slideInVertically (
@@ -137,6 +136,13 @@ fun SubParkingNavigation(
             ParkingQrScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
+                },
+                sendToBooking = {
+                    navHostController.navigate(Destinations.Parking.route) {
+                        launchSingleTop = true
+                        popUpTo(0) { inclusive = true }
+                    }
+                    onSuccess()
                 }
             )
         }

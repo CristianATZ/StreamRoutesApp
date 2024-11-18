@@ -46,48 +46,11 @@ class LoginActivity : ComponentActivity() {
         setContent {
             val navHostController = rememberNavController()
 
-            val myViewModel : MyViewModel = viewModel()
-
-            val parkingService = RetrofitParkingService.retrofitService
-            val routesService = RetrofitOpenRouteService.retrofitService
-            val repository by lazy { NetworkRemoteReposiroty(parkingService, routesService) }
-            val firebaseRepository by lazy { FirebaseRepository() }
-            //val parkingRepository by lazy { ParkingRepository() }
-
-            // viewmodel de rutas
-
-            // viewmodels de esatcionamiento
-            val parkingPkViewModel: ParkingPkViewModel by viewModels { ParkingPkViewModelFactory(repository) }
-            val homePkViewModel: HomePkViewModel by viewModels { HomePkViewModelFactory(repository) }
-            val viajePkViewModel : ViajePkViewModel by viewModels { ViajePkViewModelFactory(repository) }
-            val apartarPkViewModel: ApartarPkViewModel by viewModels { ApartarPkViewModelFactory(repository) }
-
-
-
-            // ------------------------------------------------------------------
-            // viewModels de usuarios (ViewModels Chidos)
-
-            // viewmodel encargado de manejar acerca de la peticion a ORS
-            val orsViewModel: OrsViewModel by viewModels { OrsViewModelFactory(repository) }
-
-
             RumappAppTheme (false){
 
                 LoginNavigation(
                     navHostController = navHostController
                 )
-
-                /**
-                 * PANTALLAS VINCULADAS CON BACK
-                 */
-                //RegisterScreen(registerViewModel)
-                //LoginScreen(loginViewModel)
-                //ProfileScreen(profileViewModel)
-                //EditAccountScreen(profileViewModel)
-                //EditInformation(profileViewModel)
-                //PasswordScreen(passwordViewModel)
-                //TransportApp(loginViewModel, profileViewModel)
-                //TransportScreen(transportViewModel)
             }
         }
     }

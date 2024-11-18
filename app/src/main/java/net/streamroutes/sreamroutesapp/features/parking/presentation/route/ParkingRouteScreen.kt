@@ -61,15 +61,20 @@ import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
 @Composable
 fun ParkingRouteScreen(
     onBackPressed: () -> Unit = {},
     onScanPressed: () -> Unit = {},
-    parkingViewModel: ParkingViewModel,
-    transportViewModel: TransportViewModel = hiltViewModel()
+    parkingViewModel: ParkingViewModel = hiltViewModel(),
+    transportViewModel: TransportViewModel = hiltViewModel(),
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel()
 ) {
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
+
     val coroutine = rememberCoroutineScope()
     val selectedParking by parkingViewModel.selectedParking.collectAsState()
     val orsRoute by transportViewModel.orsRoute.collectAsState()
@@ -136,8 +141,8 @@ fun ParkingRouteScreen(
                     if(orsRoute.isNotEmpty()){
                         Polyline(
                             points = orsRoute,
-                            color = Color.Black,
-                            width = 8f
+                            color = Color(routeColor),
+                            width = lineSize.toFloat()
                         )
                     }
                 }

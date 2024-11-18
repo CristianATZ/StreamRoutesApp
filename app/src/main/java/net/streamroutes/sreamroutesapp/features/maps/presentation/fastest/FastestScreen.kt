@@ -28,12 +28,16 @@ import com.google.maps.android.compose.rememberMarkerState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 
 @Composable
 fun FastestScreen(
     modifier: Modifier = Modifier,
-    transportViewModel: TransportViewModel = hiltViewModel()
+    transportViewModel: TransportViewModel = hiltViewModel(),
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel()
 ) {
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
     val orsRoute by transportViewModel.orsRoute.collectAsState()
 
     var currenTab by remember {
@@ -136,8 +140,8 @@ fun FastestScreen(
             if(isCalculated && orsRoute.isNotEmpty()){
                 Polyline(
                     points = orsRoute,
-                    color = Color.Black,
-                    width = 8f
+                    color = Color(routeColor),
+                    width = lineSize.toFloat()
                 )
 
             }

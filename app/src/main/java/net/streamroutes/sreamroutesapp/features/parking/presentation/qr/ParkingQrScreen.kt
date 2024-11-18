@@ -19,7 +19,8 @@ import com.example.compose.yellow
 
 @Composable
 fun ParkingQrScreen(
-    onBackPressed: () -> Unit = {}
+    onBackPressed: () -> Unit = {},
+    sendToBooking: () -> Unit
 ) {
     val background = listOf(orange, yellow)
 
@@ -27,6 +28,7 @@ fun ParkingQrScreen(
 
     val onSuccess = {
         onScannSuccess = true
+        sendToBooking()
     }
 
     val onAcceptPressed = {

@@ -65,6 +65,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.google.android.gms.maps.model.CameraPosition
@@ -80,6 +81,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Route
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 import net.streamroutes.sreamroutesapp.ui.start_screens.CustomOutlinedTextField
 import net.streamroutes.sreamroutesapp.viewmodel.OrsState
 import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
@@ -129,7 +131,10 @@ fun RoutesScreenView(
                 .padding(paddingValues)
                 .fillMaxSize()
         ){
-            MainContent(orsViewModel, routes)
+            MainContent(
+                orsViewModel = orsViewModel,
+                rutas = routes
+            )
 
             AnimatedVisibility(
                 visible = sidePanelVisible
@@ -554,8 +559,12 @@ fun RouteInfo(
 @Composable
 fun MainContent(
     orsViewModel: OrsViewModel,
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel(),
     rutas: List<Route>
 ) {
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
+
     val index = remember { mutableStateOf(0) }
     val camera = LatLng(21.001793271283407, -101.27624380641946)
     val orsState by orsViewModel.uiState.collectAsState()
@@ -614,7 +623,8 @@ fun MainContent(
                 if (orsState.state == OrsState.SUCCESSFUL) {
                     Polyline(
                         points = orsState.geometry!!.coordinates.map { LatLng(it.last(), it.first()) },
-                        color = Color.Black,
+                        color = Color(routeColor),
+                        width = lineSize.toFloat(),
                         jointType = JointType.ROUND,
                         startCap = RoundCap(),
                         endCap = RoundCap()

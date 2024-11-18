@@ -17,15 +17,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.SwitchField
 import net.streamroutes.sreamroutesapp.features.settings.components.SettingsSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 
 @Composable
 fun ApparenceScreen(
     apparenceViewModel: ApparenceViewModel = hiltViewModel(),
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
     val theme by apparenceViewModel.theme.collectAsState()
     val onChangeTheme = { t: Boolean ->
         apparenceViewModel.changeTheme(t)
+        mapSettingsViewModel.changeMapTheme(t)
     }
 
     val dynamicTheme by apparenceViewModel.dynaminc.collectAsState()

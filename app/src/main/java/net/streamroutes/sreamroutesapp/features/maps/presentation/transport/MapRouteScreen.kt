@@ -40,6 +40,7 @@ import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
 import net.streamroutes.sreamroutesapp.features.maps.components.ShimmerRouteDetails
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -90,7 +91,7 @@ fun MapRouteScreen(
                     showBottomSheet()
                     MapRouteScreenContent(
                         selectedRoute = it,
-                        transportViewModel
+                        transportViewModel = transportViewModel
                     )
                 }
             } else {
@@ -123,8 +124,12 @@ fun ShimmerRouteScreenContent() {
 @Composable
 fun MapRouteScreenContent(
     selectedRoute: RouteWithPlaces,
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel(),
     transportViewModel: TransportViewModel
 ) {
+
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
 
     val startRoute = LatLng(selectedRoute.startPlace.latitude.toDouble(), selectedRoute.startPlace.longitude.toDouble())
     val endRoute = LatLng(selectedRoute.endPlace.latitude.toDouble(), selectedRoute.endPlace.longitude.toDouble())
@@ -164,8 +169,8 @@ fun MapRouteScreenContent(
         if (orsRoute.isNotEmpty()) {
             Polyline(
                 points = orsRoute,
-                color = Color.Black,
-                width = 8f
+                color = Color(routeColor),
+                width = lineSize.toFloat()
             )
         }
 

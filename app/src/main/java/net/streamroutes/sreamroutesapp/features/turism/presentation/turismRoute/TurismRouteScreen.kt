@@ -32,6 +32,7 @@ import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.components.RouteDetails
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 import net.streamroutes.sreamroutesapp.features.turism.presentation.turismList.TourismViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -103,7 +104,13 @@ fun TurismRouteScreen(
         ){
             //if(!isLoading) {
                 showBottomSheet()
-                TourismRouteScreenContent(transportViewModel, currentPos.position, destination, selectedTP?.place?.name ?: "", address)
+                TourismRouteScreenContent(
+                    transportViewModel = transportViewModel,
+                    start = currentPos.position,
+                    end = destination,
+                    name = selectedTP?.place?.name ?: "",
+                    currentStreet = address
+                )
             //} else {
             //    ShimmerRouteScreenContent()
             //}
@@ -114,11 +121,14 @@ fun TurismRouteScreen(
 @Composable
 fun TourismRouteScreenContent(
     transportViewModel: TransportViewModel,
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel(),
     start: LatLng,
     end: LatLng,
     name: String,
     currentStreet: String
 ) {
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
     val orsRoute by transportViewModel.orsRoute.collectAsState()
 
     val cameraPositionState = rememberCameraPositionState {
@@ -138,7 +148,7 @@ fun TourismRouteScreenContent(
                 position = start
             ),
             title = "Ubicación Actual",
-            icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
+            //icon = BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)
         )
 
         Marker(
@@ -151,8 +161,8 @@ fun TourismRouteScreenContent(
         if(orsRoute.isNotEmpty()){
             Polyline(
                 points = orsRoute,
-                color = Color.Black,
-                width = 8f
+                color = Color(routeColor),
+                width = lineSize.toFloat()
             )
         }
     }

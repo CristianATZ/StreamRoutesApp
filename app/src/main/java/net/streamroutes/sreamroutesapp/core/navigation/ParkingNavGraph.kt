@@ -56,6 +56,11 @@ fun ParkingNavigation(
                     navHostController.navigate(Destinations.Settings.route) {
                         launchSingleTop = true
                     }
+                },
+                onSuccess = {
+                    navHostController.navigate(Destinations.Parks.route) {
+                        launchSingleTop = true
+                    }
                 }
             )
         }

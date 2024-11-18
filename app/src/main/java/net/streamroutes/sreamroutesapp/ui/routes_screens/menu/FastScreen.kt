@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.BitmapDescriptor
@@ -42,6 +43,7 @@ import net.streamroutes.sreamroutesapp.viewmodel.OrsViewModel
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -211,8 +213,12 @@ fun CalcularDestino(
 fun MapBodyFast(
     fastViewModel: FastViewModel,
     orsViewModel: OrsViewModel,
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel(),
     onMapClick: (LatLng) -> Unit
 ) {
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
+
     //20.139539228288044, -101.15073143400946 ITSUR
     val itsur = LatLng(20.08311316364202, -98.77385045129488)
     val cameraPosition = rememberCameraPositionState {
@@ -280,8 +286,8 @@ fun MapBodyFast(
         orsUiState.geometry?.coordinates?.let { coordinates ->
             Polyline(
                 points = coordinates.map { LatLng(it[1], it[0]) },
-                color = Color.Black,  // Cambiar a color negro
-                width = 8f  // Hacer la línea más gruesa
+                color = Color(routeColor),  // Cambiar a color negro
+                width = lineSize.toFloat()// Hacer la línea más gruesa
             )
         }
 

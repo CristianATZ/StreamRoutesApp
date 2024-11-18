@@ -48,12 +48,21 @@ fun TransportMain(
         }
     }
 
+    val closeDrawer = {
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             // MENU, LLAMAR COMPONENTE DrawerContent
             TransportDrawerContent(
                 navHostController = navHostController,
+                closeDrawer = {
+                    closeDrawer()
+                },
                 onLogOut = {
                     loginViewModel.signOut()
                 }

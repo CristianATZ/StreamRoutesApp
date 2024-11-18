@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.maps.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +25,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -34,45 +36,58 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.github.skydoves.colorpicker.compose.rememberColorPickerController
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.ColorField
 import net.streamroutes.sreamroutesapp.features.components.ColorPickerDialog
 import net.streamroutes.sreamroutesapp.features.components.SliderField
 import net.streamroutes.sreamroutesapp.features.components.SwitchField
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapsModalBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel(),
     onDismiss: () -> Unit = {},
     onSave: () -> Unit = {}
 ) {
     val colorState = rememberColorPickerController()
 
-    var colorTransport by remember {
-        mutableStateOf(Color.Black)
+    val r by mapSettingsViewModel.routeColor.collectAsState()
+    var routeColor by remember {
+        mutableStateOf(Color(r))
     }
-    var colorNearStop by remember {
-        mutableStateOf(Color.Green)
+    val s by mapSettingsViewModel.stopColor.collectAsState()
+    var stopColor by remember {
+        mutableStateOf(Color(s))
     }
-    var widthLine by remember {
-        mutableFloatStateOf(3f)
+    val l by mapSettingsViewModel.lineSize.collectAsState()
+    var lineSize by remember {
+        mutableFloatStateOf(l.toFloat())
     }
-    var mapType by remember {
-        mutableStateOf(false)
-    }
-    
-    val onChangeProgress = { progress: Float ->
-        widthLine = progress
+    val m by mapSettingsViewModel.mapTheme.collectAsState()
+    var mapTheme by remember {
+        mutableStateOf(mapSettingsViewModel.mapTheme.value)
     }
 
     val onRestartMapSettings = {
-        // devovler los valores
+        mapTheme = mapSettingsViewModel.mapTheme.value
+        routeColor = Color(mapSettingsViewModel.routeColor.value)
+        stopColor = Color(mapSettingsViewModel.stopColor.value)
+        lineSize = mapSettingsViewModel.lineSize.value.toFloat()
+    }
+
+    val onChangeProgress = { progress: Float ->
+        lineSize = progress
     }
 
     val onSaveMapSettings = {
-        // actualizar valores en el viewmodel
+        mapSettingsViewModel.changeMapTheme(mapTheme)
+        mapSettingsViewModel.changeStopColor(stopColor)
+        mapSettingsViewModel.changeRouteColor(routeColor)
+        mapSettingsViewModel.changeLineSize(lineSize.toInt())
         onSave()
     }
 
@@ -84,9 +99,9 @@ fun MapsModalBottomSheet(
     if(showTransportColor) {
         ColorPickerDialog(
             colorState = colorState,
-            initialColor = colorTransport,
+            initialColor = routeColor,
             onColorChange = { color: Color ->
-                colorTransport = color
+                routeColor = color
             },
             onDismiss = openTransportColor
         )
@@ -95,9 +110,9 @@ fun MapsModalBottomSheet(
     if(showNearStopColor) {
         ColorPickerDialog(
             colorState = colorState,
-            initialColor = colorNearStop,
+            initialColor = stopColor,
             onColorChange = { color: Color ->
-                colorNearStop = color
+                stopColor = color
             },
             onDismiss = openNearStopColor
         )
@@ -144,21 +159,21 @@ fun MapsModalBottomSheet(
             ColorField(
                 headerText = stringResource(id = R.string.lblTransportLineColor),
                 descriptionText = stringResource(id = R.string.lblTrasnportLineColorDescription),
-                colorTransport = colorTransport,
+                colorTransport = routeColor,
                 onOpenPickerColor = openTransportColor
             )
 
             ColorField(
                 headerText = stringResource(id = R.string.lblNearStopLineColor),
                 descriptionText = stringResource(id = R.string.lblNearStopLineColorDescription),
-                colorTransport = colorNearStop,
+                colorTransport = stopColor,
                 onOpenPickerColor = openNearStopColor
             )
 
             SliderField(
                 headerText = stringResource(id = R.string.lblWidthLine),
                 descriptionText = stringResource(id = R.string.lblWidthLineDescription),
-                progress = widthLine,
+                progress = lineSize,
                 onChangeProgress = {
                     onChangeProgress(it)
                 }
@@ -167,12 +182,12 @@ fun MapsModalBottomSheet(
             SwitchField(
                 headerText = stringResource(id = R.string.lblMapType),
                 descriptionText = stringResource(id = R.string.lblMapTypeDescription),
-                value = mapType,
+                value = mapTheme,
                 iconTrue = Icons.Outlined.DarkMode,
                 iconFalse = Icons.Outlined.LightMode,
                 iconDescription = stringResource(R.string.iconThemeMode),
                 onValueChange = { type ->
-                    mapType = type
+                    mapTheme = type
                 }
             )
 

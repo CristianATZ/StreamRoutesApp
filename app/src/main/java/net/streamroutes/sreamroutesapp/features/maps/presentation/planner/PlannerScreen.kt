@@ -43,6 +43,7 @@ import net.streamroutes.sreamroutesapp.features.maps.components.PlannerInfoWindo
 import net.streamroutes.sreamroutesapp.features.maps.components.CardCurrentLocationWithIcon
 import net.streamroutes.sreamroutesapp.features.maps.components.PlannerModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemDown
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemUp
 import net.streamroutes.sreamroutesapp.utils.ListUtils.removeItem
@@ -51,9 +52,13 @@ import net.streamroutes.sreamroutesapp.utils.ListUtils.removeItem
 @Composable
 fun PlannerScreen(
     modifier: Modifier = Modifier,
-    transportViewModel: TransportViewModel = hiltViewModel()
+    transportViewModel: TransportViewModel = hiltViewModel(),
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel()
 ) {
     //val markerAddress by transportViewModel.markerAdress.collectAsState()
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
+
 
     val scope = rememberCoroutineScope()
 
@@ -227,8 +232,8 @@ fun PlannerScreen(
             if(isCalculated && orsRoute.isNotEmpty()){
                 Polyline(
                     points = orsRoute,
-                    color = Color.Black,
-                    width = 8f
+                    color = Color(routeColor),
+                    width = lineSize.toFloat()
                 )
 
                 destinationsList.forEach { destination ->

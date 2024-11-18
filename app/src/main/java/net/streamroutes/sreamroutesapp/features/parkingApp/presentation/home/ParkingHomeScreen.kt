@@ -49,7 +49,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.compose.RumappAppTheme
 import com.example.compose.orange
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
@@ -81,11 +80,20 @@ fun ParkingMain(
         }
     }
 
+    val closeDrawer = {
+        coroutineScope.launch {
+            drawerState.close()
+        }
+    }
+
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
             ParkingDrawerContent(
                 navHostController = navHostController,
+                closeDrawer = {
+                    closeDrawer()
+                },
                 onLogOut = {
                     loginViewModel.signOut()
                 }

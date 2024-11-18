@@ -20,6 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import kotlinx.coroutines.Job
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.navigation.Destinations
 import net.streamroutes.sreamroutesapp.features.components.DrawerItem
@@ -27,7 +28,8 @@ import net.streamroutes.sreamroutesapp.features.components.DrawerItem
 @Composable
 fun ParkingDrawerContent(
     navHostController: NavHostController,
-    onLogOut: () -> Unit
+    onLogOut: () -> Unit,
+    closeDrawer: () -> Unit
 ) {
     val currentbBackStackEntry = navHostController.currentBackStackEntryAsState()
     val currentRoute = currentbBackStackEntry.value?.destination?.route
@@ -57,6 +59,7 @@ fun ParkingDrawerContent(
                 navHostController.navigate(Destinations.Profile.route) {
                     launchSingleTop = true
                 }
+                closeDrawer()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -72,6 +75,7 @@ fun ParkingDrawerContent(
                     launchSingleTop = true
                     popUpTo(Destinations.HomeParking.route) { inclusive = false }
                 }
+                closeDrawer()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -87,6 +91,7 @@ fun ParkingDrawerContent(
                     launchSingleTop = true
                     popUpTo(Destinations.HomeParking.route) { inclusive = false }
                 }
+                closeDrawer()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )
@@ -102,6 +107,7 @@ fun ParkingDrawerContent(
                     launchSingleTop = true
                     popUpTo(Destinations.HomeParking.route) { inclusive = false }
                 }
+                closeDrawer()
             },
             modifier = Modifier.align(Alignment.CenterHorizontally)
         )

@@ -44,6 +44,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,6 +62,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
@@ -71,6 +73,7 @@ import com.google.maps.android.compose.Polyline
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.features.settings.presentation.maps.MapSettingsViewModel
 import net.streamroutes.sreamroutesapp.utils.MyViewModel
 
 @Composable
@@ -591,7 +594,9 @@ private fun BottomSheetTourism(
                         .height(200.dp)
                         .background(Color.Blue)
                 ) {
-                    MapaRuta(ruta)
+                    MapaRuta(
+                        ruta = ruta
+                    )
                 }
 
                 Row(
@@ -733,8 +738,12 @@ data class Ruta(
 
 @Composable
 private fun MapaRuta(
+    mapSettingsViewModel: MapSettingsViewModel = hiltViewModel(),
     ruta: Ruta
 ) {
+    val routeColor by mapSettingsViewModel.routeColor.collectAsState()
+    val lineSize by mapSettingsViewModel.lineSize.collectAsState()
+
     val cameraPosition = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(ruta.pov, 15f)
     }
@@ -761,7 +770,11 @@ private fun MapaRuta(
         Marker(
             state = inicio, title = "inicio", visible = true
         )
-        Polyline(points = rutaGeoPoint)
+        Polyline(
+            points = rutaGeoPoint,
+            color = Color(routeColor),
+            width = lineSize.toFloat()
+        )
 
     }
 }
