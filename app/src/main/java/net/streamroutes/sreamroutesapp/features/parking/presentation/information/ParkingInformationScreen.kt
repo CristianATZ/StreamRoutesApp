@@ -91,7 +91,7 @@ fun ParkingInformationScreen(
     }
 
     LaunchedEffect(servicesParking) {
-        Log.d("Debug", "ServicesParking: $servicesParking")
+        //Log.d("Debug", "ServicesParking: $servicesParking")
         if (!servicesParking.isNullOrEmpty()) {
             services.clear()
             servicesLoaded = false

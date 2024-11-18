@@ -22,6 +22,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -62,10 +63,22 @@ fun ForumScreen(
     profileViewModel: ProfileViewModel
 ) {
     val currentUser by profileViewModel.userData.collectAsState()
-    val currentFirebaseUser by profileViewModel.currentUser.collectAsState()
 
     var isLoading by remember {
         mutableStateOf(false)
+    }
+
+    var seeComments by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(Unit) {
+        forumViewModel.getAllPosts()
+    }
+
+    LaunchedEffect(seeComments) {
+        forumViewModel.getAllPosts()
+        seeComments = false
     }
 
     val scope = rememberCoroutineScope()
@@ -234,9 +247,9 @@ fun ForumScreen(
         CommentModalBottomSheet(
             sheetState = commentSheetState,
             onDismiss = openCommentBottomSheet,
-            profileViewModel = profileViewModel,
             forumViewModel = forumViewModel
         )
+        seeComments = true
     }
 
     Scaffold(

@@ -1,6 +1,5 @@
 package net.streamroutes.sreamroutesapp.features.components
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -51,11 +50,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel
-import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -66,14 +62,15 @@ fun CommentModalBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit = {},
     isSaved: Boolean = false,
-    profileViewModel: ProfileViewModel,
     forumViewModel: ForumViewModel
 ) {
-    val currentUser by profileViewModel.userData.collectAsState()
-    val selectPost by forumViewModel.selectedPost.collectAsState()
     val comments by forumViewModel.comments.collectAsState()
 
     var isLoading by remember {
+        mutableStateOf(false)
+    }
+
+    var newComment by remember {
         mutableStateOf(false)
     }
 
@@ -82,7 +79,12 @@ fun CommentModalBottomSheet(
         forumViewModel.getCommentsByPost()
     }
 
+    LaunchedEffect(newComment) {
+        forumViewModel.getCommentsByPost()
+        newComment = false
+    }
 
+    /*
     val sampleComments = listOf(
         Comment(
             commenterName = currentUser?.names ?: "cargando...",
@@ -130,6 +132,7 @@ fun CommentModalBottomSheet(
             commentDate = LocalDateTime.of(2023, 7, 1, 12, 0),
         )
     )
+    */
 
 
     ModalBottomSheet(
@@ -218,6 +221,7 @@ fun CommentModalBottomSheet(
 
             if(!isSaved) {
                 CommentInput(forumViewModel)
+                newComment = true
             }
         }
     }
@@ -292,6 +296,7 @@ fun CommentInput(forumViewModel: ForumViewModel) {
                             description = comment
                         )
                     )
+                    comment = ""
                     keyboardController?.hide() // Cerrar el teclado si es necesario
                 }
             ) {

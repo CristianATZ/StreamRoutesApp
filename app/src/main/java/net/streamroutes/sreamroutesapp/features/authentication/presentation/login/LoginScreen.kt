@@ -55,10 +55,12 @@ fun LoginScreen(
 
     var email by remember {
         mutableStateOf("alanslgdo2902@gmail.com")
+        //mutableStateOf("jsalgados@gmail.com")
     }
 
     var password by remember {
         mutableStateOf("123456")
+        //mutableStateOf("chivazzz")
     }
 
     /**

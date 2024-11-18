@@ -28,7 +28,9 @@ import net.streamroutes.sreamroutesapp.core.data.repository.CommentWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -39,7 +41,9 @@ fun CommentItem(
 ) {
     var isExpanded by remember { mutableStateOf(false) } // Solo se necesita este estado
 
-    val publicationDate = formatPostDateTime(postDateTime = LocalDateTime.now())
+    val parsedDate = LocalDate.parse(comment.comment.date)
+    val parsedHour = LocalTime.parse(comment.comment.hour)
+    val publicationDate = formatPostDateTime(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
 
     Column(
         modifier = modifier

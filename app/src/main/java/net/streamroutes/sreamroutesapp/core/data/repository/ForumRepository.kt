@@ -1,11 +1,15 @@
 package net.streamroutes.sreamroutesapp.core.data.repository
 
 import android.util.Log
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
 import net.streamroutes.sreamroutesapp.core.domain.model.User
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,20 +40,10 @@ class ForumRepository @Inject constructor(
                 }
             }
 
-            posts.sortedByDescending { postWithInfo ->
-                try {
-                    val dateTime = "${postWithInfo.post.date} ${postWithInfo.post.hour}"
-                    java.time.LocalDateTime.parse(
-                        dateTime,
-                        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
-                    )
-                } catch (e: Exception) {
-                    println("Error parsing date: ${e.message}")
-                    java.time.LocalDateTime.MIN
-                }
-            }
             //Log.d("post_repository", posts.toString())
-            //return posts
+            return posts.sortedByDescending {
+                LocalDateTime.of(LocalDate.parse(it.post.date), LocalTime.parse(it.post.hour))
+            }
         } catch (e: Exception) {
             //Log.d("user_repo", "Error: ${e.message}")
             println("Error: ${e.message}")
@@ -82,6 +76,9 @@ class ForumRepository @Inject constructor(
         return try {
             val newComment = db.collection("postComments").document()
             newComment.set(comment).await()
+            // Incrementar comentarios en 1 al crear un comentario
+            val post = db.collection("posts").document(comment.idPost)
+            post.update("totalComments", FieldValue.increment(1)).await()
             true
         } catch (e: Exception) {
             //Log.d("forum_repo", "Error: ${e.message}")
@@ -89,7 +86,7 @@ class ForumRepository @Inject constructor(
             false
         }
     }
-    
+
 
     /**
      * Método usado para obtener los comentarios de un post

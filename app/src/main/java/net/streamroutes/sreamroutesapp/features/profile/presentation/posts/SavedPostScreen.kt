@@ -168,7 +168,6 @@ fun SavedPostScreen(
             sheetState = sheetState,
             onDismiss = openBottomSheet,
             isSaved = true,
-            profileViewModel = profileViewModel,
             forumViewModel = forumViewModel
         )
     }
