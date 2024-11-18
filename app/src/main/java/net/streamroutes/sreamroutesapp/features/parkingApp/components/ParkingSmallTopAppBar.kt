@@ -23,12 +23,13 @@ fun ParkingSmallTopAppBar(
     onNavigationPressed: () -> Unit,
     onProfilePressed: () -> Unit,
     onSettingsPressed: () -> Unit,
-    onFilterPressed: () -> Unit
+    onFilterPressed: () -> Unit,
+    user: String
 ) {
     Column {
         CustomTopAppBar(
             title = {
-                Text(text = stringResource(R.string.lblHello, "USUARIO"))
+                Text(text = stringResource(R.string.lblHello, user))
             },
             navigationIcon = {
                 NavigationButton(

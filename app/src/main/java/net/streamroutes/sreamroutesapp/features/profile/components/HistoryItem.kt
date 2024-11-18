@@ -36,15 +36,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.orange
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
+import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.LocalTime
 
-@Preview(showBackground = true)
 @Composable
 fun HistoryItem(
+    /*
     history: History = History(
         idReference = "ASDF34",
         idParking = "park001",
@@ -57,16 +59,19 @@ fun HistoryItem(
         parkingPrice = 39.0,
         parkingName = "ITSUR",
         parkingAddress = "Av. Educacion Superior, 38980"
-    ),
+    ),*/
+    historical: HistoricalParkingWithInfo,
     onClick: () -> Unit = {}
 ) {
-    val icon = if(history.isReserved) {
+    val icon = if(historical.historicalParking.reference.substring(0,2).equals("RES")) {
         Pair(Icons.Filled.Bookmark, stringResource(id = R.string.iconBooking))
     } else {
         Pair(Icons.Filled.QrCode, stringResource(id = R.string.iconQrCode))
     }
 
-    val parkingDate = fullDateFormat(postDateTime = history.parkingDate)
+    val parsedDate = LocalDate.parse(historical.historicalParking.entranceDate)
+    val parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+    val parkingDate = fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
 
     Column(
         modifier = Modifier
@@ -101,7 +106,7 @@ fun HistoryItem(
                     .padding(start = 16.dp)
             ) {
                 Text(
-                    text = history.idReference,
+                    text = historical.historicalParking.reference,
                     style = typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -128,7 +133,7 @@ fun HistoryItem(
                     modifier = Modifier.fillMaxWidth(0.4f)
                 ) {
                     Text(
-                        text = stringResource(id = R.string.lblPrice, history.totalPrice.toString()),
+                        text = stringResource(id = R.string.lblPrice, historical.historicalParking.feePerHour * historical.historicalParking.totalHours ),
                         style = typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 2.sp,

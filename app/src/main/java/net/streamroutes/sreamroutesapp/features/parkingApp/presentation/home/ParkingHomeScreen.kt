@@ -64,6 +64,8 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.Shim
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.CategoryItem
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingDrawerContent
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingSmallTopAppBar
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
+import kotlin.math.log
 
 @Composable
 fun ParkingMain(
@@ -117,8 +119,10 @@ fun ParkingHomeScreen(
     onSettingsPressed: () -> Unit,
     onProfilePressed: () -> Unit,
     onSelectParking: () -> Unit,
-    parkingViewModel: ParkingViewModel = hiltViewModel()
+    parkingViewModel: ParkingViewModel = hiltViewModel(),
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
+    val currentUser by profileViewModel.userData.collectAsState()
     val parkings by parkingViewModel.parkings.collectAsState()
 
     var isLoading by remember {
@@ -179,7 +183,8 @@ fun ParkingHomeScreen(
                 onProfilePressed = onProfilePressed,
                 onFilterPressed = {
                     openFilter = !openFilter
-                }
+                },
+                user = currentUser?.username ?: "USUARIO"
             )
         }
     ) { innerPadding ->

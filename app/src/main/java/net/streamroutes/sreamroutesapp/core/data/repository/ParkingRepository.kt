@@ -2,10 +2,13 @@ package net.streamroutes.sreamroutesapp.core.data.repository
 
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
+import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParking
 import net.streamroutes.sreamroutesapp.core.domain.model.Parking
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.Service
+import net.streamroutes.sreamroutesapp.core.domain.model.User
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,8 +23,8 @@ class ParkingRepository @Inject constructor(
         return try {
             val parkings = mutableListOf<ParkingWithPlace>()
             val parkingsDocs = db.collection("parkings").get().await()
-            Log.d("parking_repo", parkingsDocs.toString())
-            Log.d("parking_repo", parkings.toString())
+            //Log.d("parking_repo", parkingsDocs.toString())
+            //Log.d("parking_repo", parkings.toString())
 
             for(document in parkingsDocs){
                 val parkingObj = document.toObject(Parking::class.java)
@@ -75,6 +78,46 @@ class ParkingRepository @Inject constructor(
             emptyList()
         }
     }
+
+
+    /**
+     * Método usado para obtener el historial de aparcamientos de un usuario
+     */
+    suspend fun getHistoricalParkingByUser(idUser: String): List<HistoricalParkingWithInfo>{
+        return try {
+            val historical = mutableListOf<HistoricalParkingWithInfo>()
+            val historicalDocs = db.collection("historicalParkings")
+                .whereEqualTo("idUser", idUser)
+                .get()
+                .await()
+
+            for(document in historicalDocs){
+                val historicalObj = document.toObject(HistoricalParking::class.java)
+
+                if(historicalObj != null){
+                    val placeInfo = db.collection("places").document(historicalObj.idPlace).get().await()
+                    val userInfo = db.collection("users").document(historicalObj.idUser).get().await()
+
+                    val placeObj = placeInfo.toObject(Place::class.java)
+                    val userObj = userInfo.toObject(User::class.java)
+
+                    if(placeObj!=null && userObj!=null){
+                        historical.add(
+                            HistoricalParkingWithInfo(historicalObj, placeObj, userObj)
+                        )
+                    }
+                }
+
+            }
+
+            return historical
+
+        } catch (e: Exception) {
+            //Log.d("parking_repo", "Error: ${e.message}")
+            println("Error: ${e.message}")
+            emptyList()
+        }
+    }
 }
 
 
@@ -83,3 +126,8 @@ data class ParkingWithPlace(
     val place: Place
 )
 
+data class HistoricalParkingWithInfo (
+    val historicalParking: HistoricalParking,
+    val place: Place,
+    val user: User
+)

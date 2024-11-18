@@ -33,6 +33,7 @@ class UserRepository @Inject constructor(
                 val userId = firebaseUser.uid
 
                 val user = User(
+                    idUser = userId,
                     username = username,
                     email = email,
                     createdAt = getCurrentDate()

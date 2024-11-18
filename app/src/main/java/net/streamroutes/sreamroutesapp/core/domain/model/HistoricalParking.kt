@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class HistoricalParking(
+    val reference: String = "",
     val idUser: String = "",            // ID del usuario
     val idPlace: String = "",            // ID del lugar
     val typeVehicle: Int = 0,           // *Tipo de vehículo

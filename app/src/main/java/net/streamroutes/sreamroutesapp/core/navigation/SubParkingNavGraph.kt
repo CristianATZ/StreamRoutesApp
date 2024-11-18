@@ -6,12 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.parking.presentation.booking.ParkingBookingScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.information.ParkingInformationScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.qr.ParkingQrScreen
 import net.streamroutes.sreamroutesapp.features.parking.presentation.route.ParkingRouteScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingHomeScreen
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
+import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
+import kotlin.math.log
 
 @Composable
 fun SubParkingNavigation(
@@ -20,7 +23,8 @@ fun SubParkingNavigation(
     onSettingsPressed: () -> Unit,
     onProfilePressed: () -> Unit,
     onSuccess: () -> Unit,
-    parkingViewModel: ParkingViewModel
+    parkingViewModel: ParkingViewModel,
+    profileViewModel: ProfileViewModel
 ) {
     val slideInFromLeft = slideInVertically (
         initialOffsetY = { -it } // Entra desde la izquierda
@@ -59,7 +63,8 @@ fun SubParkingNavigation(
                         launchSingleTop = true
                     }
                 },
-                parkingViewModel = parkingViewModel
+                parkingViewModel = parkingViewModel,
+                profileViewModel = profileViewModel
             )
         }
 

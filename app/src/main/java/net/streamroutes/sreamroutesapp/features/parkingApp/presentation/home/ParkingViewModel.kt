@@ -2,17 +2,21 @@ package net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingWithPlace
+import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class ParkingViewModel @Inject constructor(
-    private val parkingRepository: ParkingRepository
+    private val parkingRepository: ParkingRepository,
+    private val userRepository: UserRepository
 ): ViewModel() {
     // Variable usada para guardar todos los estacionamientos de la base de datos
     private val _parkings = MutableStateFlow<List<ParkingWithPlace>?>(null)
@@ -25,6 +29,10 @@ class ParkingViewModel @Inject constructor(
     // Variable usada para guardar los servicios del estacionamiento seleccionado
     private val _services = MutableStateFlow<List<String>?>(null)
     val services: StateFlow<List<String>?> = _services
+
+    // Variable usada para obtener el historial de aparcamiento de un usuario
+    private val _historicalParking = MutableStateFlow<List<HistoricalParkingWithInfo>?>(null)
+    val historicalParking: StateFlow<List<HistoricalParkingWithInfo>?> = _historicalParking
 
 
     init {
@@ -57,5 +65,20 @@ class ParkingViewModel @Inject constructor(
      */
     fun selectParking(parking: ParkingWithPlace){
         _selectedParking.value = parking
+    }
+
+
+    /**
+     * Método usado para obtener el historial de aparcamientos de un usuario
+     */
+    fun getHistoricalParkingByUser(){
+        viewModelScope.launch {
+            val currentUser = userRepository.getCurrentUser()
+            if(currentUser != null){
+                _historicalParking.value = parkingRepository.getHistoricalParkingByUser(currentUser.uid)
+            } else {
+                _historicalParking.value = null
+            }
+        }
     }
 }

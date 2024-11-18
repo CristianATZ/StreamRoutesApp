@@ -46,7 +46,7 @@ fun ParkScreen(
     onBackPressed: () -> Unit
 ) {
     var isLoading by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
     // ontener lista
     val bookingList = listOf(
