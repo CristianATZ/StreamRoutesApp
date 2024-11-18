@@ -148,6 +148,7 @@ fun TransportModalBottomSheetContent(
             items(selectedRoute?.turisticPoint ?: emptyList()){ place ->
                 CardOption(
                     modifier = Modifier.size(200.dp),
+                    url = "",
                     text = place.name
                 )
                 Spacer(modifier = Modifier.size(16.dp))

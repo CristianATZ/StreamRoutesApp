@@ -51,6 +51,7 @@ fun ChooseScreen(
         CardOption(
             text = stringResource(id = R.string.lblPublictransport),
             onClick = onTransport,
+            url = "https://th.bing.com/th/id/R.4aa9ed8fe042ec51a8616a0fda0e0d48?rik=YdgG%2fUyq0s2vmA&riu=http%3a%2f%2farchitizer-prod.imgix.net%2fmedia%2f1392234306969_TAB3547.JPG%3fq%3d60%26auto%3dformat%2ccompress%26cs%3dstrip%26w%3d1680&ehk=9H2m4LOGkmPeexaV%2b7k9x47rnI4WJqocZu3nOp%2fBYCo%3d&risl=&pid=ImgRaw&r=0",
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth()
@@ -62,6 +63,7 @@ fun ChooseScreen(
         CardOption(
             text = stringResource(id = R.string.lblParkings),
             onClick = onParking,
+            url = "https://th.bing.com/th/id/R.febf1ff7c8c50cbf25cebd723ecf43cb?rik=XOJZpMNPya4vjw&pid=ImgRaw&r=0",
             modifier = Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth()

@@ -131,6 +131,7 @@ fun TransportHomeScreen(
                 CardOption(
                     text = stringResource(id = R.string.lblMaps),
                     onClick = onMapsPressed,
+                    url = "https://th.bing.com/th/id/R.e2f694460d4c1ae9a140f9292e316423?rik=1vmSchazGLiyXg&pid=ImgRaw&r=0",
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
@@ -140,6 +141,7 @@ fun TransportHomeScreen(
                 CardOption(
                     text = stringResource(id = R.string.lblTourism),
                     onClick = onTourismPressed,
+                    url = "https://wallpaperaccess.com/full/2667785.jpg",
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()
@@ -149,6 +151,7 @@ fun TransportHomeScreen(
                 CardOption(
                     text = stringResource(id = R.string.lblForum),
                     onClick = onForumPressed,
+                    url = "https://th.bing.com/th/id/OIP.Woyxf5DwzVm3MR1xdEi53gHaDt?w=2000&h=1000&rs=1&pid=ImgDetMain",
                     modifier = Modifier
                         .padding(horizontal = 16.dp)
                         .fillMaxWidth()

@@ -44,6 +44,7 @@ fun StopInformationBottomSheet(
         ) {
             items(routeInformation.officialStops) {
                 CardOption(
+                    url = "",
                     modifier = Modifier.size(200.dp)
                 )
 

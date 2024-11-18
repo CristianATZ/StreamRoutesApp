@@ -21,13 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 
-@Preview
 @Composable
 fun CardOption(
     modifier: Modifier = Modifier,
+    url: String,
     text: String = "Texto prueba",
     onClick: () -> Unit = {}
 ) {
@@ -40,7 +42,11 @@ fun CardOption(
             modifier = Modifier.fillMaxSize()
         ) {
             // remplazar por imagen
-
+            AsyncImage(
+                model = url,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = null
+            )
 
             Column(
                 modifier = Modifier
