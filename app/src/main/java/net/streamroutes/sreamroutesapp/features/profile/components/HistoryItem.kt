@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.profile.components
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -98,7 +99,8 @@ fun HistoryItem(
         else -> 0
     }
 
-    val icon = if(reference.substring(0,2).equals("RES")) {
+    //Log.d("substring", reference.substring(0,3))
+    val icon = if(reference.substring(0,3) == "RES") {
         Pair(Icons.Filled.Bookmark, stringResource(id = R.string.iconBooking))
     } else {
         Pair(Icons.Filled.QrCode, stringResource(id = R.string.iconQrCode))
