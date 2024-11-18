@@ -29,18 +29,43 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkItem
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
 import net.streamroutes.sreamroutesapp.features.profile.components.LineInformation
 import net.streamroutes.sreamroutesapp.features.profile.components.ShimmerHistoryItem
+import net.streamroutes.sreamroutesapp.utils.DateUtils.formatTime
+import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
+import java.time.Duration
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @Composable
 fun BookingItem(
-    item: ParkItem,
+    item: ReservationWithInfo,
     onWatchRoute: () -> Unit
 ) {
+    val currentHour = LocalTime.now()
+    var expectedDepartureHour = LocalTime.parse(item.reservation.hour)
+    expectedDepartureHour = expectedDepartureHour.plusHours(item.reservation.reservationHours.toLong())
+
+    val duration = Duration.between(currentHour, expectedDepartureHour)
+    val leftHours = duration.toHours()
+    val leftMinutes = duration.toMinutes() % 60
+    val timeDifference = String.format("%02d:%02d", leftHours, leftMinutes)
+
+    // Hora de entrada
+    var parsedHour = LocalTime.parse(item.reservation.hour)
+    val parkingIn = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+
+    // Hora de salida
+    parsedHour = LocalTime.parse(item.reservation.hour)
+    parsedHour = parsedHour.plusHours(item.reservation.reservationHours.toLong())
+    val parkinOut = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+
     var openQr by remember {
         mutableStateOf(false)
     }
@@ -50,7 +75,9 @@ fun BookingItem(
             item = item,
             onDissmiss = {
                 openQr = !openQr
-            }
+            },
+            parkingIn = parkingIn,
+            parkingOut = parkinOut
         )
     }
 
@@ -62,9 +89,9 @@ fun BookingItem(
     ) {
         // informacion del estacionamiento
         ParkingDescription(
-            name = item.parkingName,
+            name = item.place.name,
             price = null,
-            address = item.parkingAddress
+            address = "${item.place.street}, ${item.place.suburb}, ${item.place.state}"
         )
 
         Row(
@@ -75,7 +102,7 @@ fun BookingItem(
             Spacer(modifier = Modifier.size(8.dp))
 
             InformationChip(
-                text = stringResource(R.string.lblParkingPrice, item.price.toString()),
+                text = stringResource(R.string.lblParkingPrice, item.parking.feePerHour),
                 color = CardDefaults.outlinedCardColors(
                     containerColor = colorScheme.surfaceVariant,
                     contentColor = colorScheme.onSurfaceVariant
@@ -84,6 +111,7 @@ fun BookingItem(
 
             Spacer(modifier = Modifier.size(8.dp))
 
+            /*
             InformationChip(
                 text =
                 if(item.isReserved)
@@ -95,11 +123,20 @@ fun BookingItem(
                     contentColor = colorScheme.onSurfaceVariant
                 )
             )
+             */
+
+            InformationChip(
+                text = stringResource(R.string.lblTimeLeft, timeDifference),
+                color = CardDefaults.outlinedCardColors(
+                    containerColor = colorScheme.surfaceVariant,
+                    contentColor = colorScheme.onSurfaceVariant
+                )
+            )
 
             Spacer(modifier = Modifier.size(8.dp))
 
             InformationChip(
-                text = stringResource(R.string.lblTotalBooking, item.total.toString()),
+                text = stringResource(R.string.lblTotalBooking, item.parking.feePerHour * item.reservation.reservationHours),
                 color = CardDefaults.outlinedCardColors(
                     containerColor = colorScheme.surfaceVariant,
                     contentColor = colorScheme.onSurfaceVariant
@@ -113,39 +150,50 @@ fun BookingItem(
 
         LineInformation(
             title = stringResource(R.string.lblReference),
-            desc = item.reference,
+            desc = item.reservation.reference,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
         )
 
         LineInformation(
             title = stringResource(R.string.lblCategory),
-            desc = item.category,
+            desc = "Carro",
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
         )
 
+        /*
         if(item.isReserved) {
             LineInformation(
                 title = stringResource(R.string.lblTimeReserved),
                 desc = item.timeReserverd,
                 modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
             )
-        }
+        }*/
 
         LineInformation(
-            title = stringResource(R.string.lblDateIn),
-            desc = item.enter,
+            title = stringResource(R.string.lblTimeReserved),
+            desc = item.reservation.reservationHours.toString(),
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
         )
+
+
+        // Mandar fecha completa
+        LineInformation(
+            title = stringResource(R.string.lblDateIn),
+            desc = parkingIn,
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+        )
+
 
         LineInformation(
             title = stringResource(R.string.lblDateOut),
-            desc = item.exit,
+            desc = parkinOut,
             modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
         )
 
+
         Spacer(modifier = Modifier.size(8.dp))
 
-        if (item.isReserved) {
+        //if (item.isReserved) {
             Row {
                 TextButton(
                     onClick = onWatchRoute,
@@ -179,7 +227,7 @@ fun BookingItem(
                     Text(text = stringResource(id = R.string.btnWatchQR))
                 }
             }
-        }
+        //}
     }
 }
 

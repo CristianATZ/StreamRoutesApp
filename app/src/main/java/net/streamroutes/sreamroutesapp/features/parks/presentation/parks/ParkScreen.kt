@@ -14,13 +14,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme.shapes
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import kotlinx.coroutines.launch
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
 import net.streamroutes.sreamroutesapp.features.parks.components.BookingSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.parks.components.ShimmerBookingItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ShimmerHistoryItem
@@ -43,12 +49,28 @@ data class ParkItem(
 
 @Composable
 fun ParkScreen(
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    parkingViewModel: ParkingViewModel = hiltViewModel()
 ) {
+    val reservations by parkingViewModel.reservations.collectAsState()
+    val selectedReservation by parkingViewModel.selectedReservation.collectAsState()
+
+    val coroutine = rememberCoroutineScope()
+
+
     var isLoading by remember {
-        mutableStateOf(false)
+        mutableStateOf(true)
     }
+
+    LaunchedEffect(Unit) {
+        coroutine.launch {
+            parkingViewModel.getReservationsByUser()
+            isLoading = false
+        }
+    }
+
     // ontener lista
+    /*
     val bookingList = listOf(
         ParkItem(
             parkingName = "Estacionamiento Central",
@@ -79,6 +101,7 @@ fun ParkScreen(
             exit = "12:30:20"
         )
     )
+     */
     
     var onViewRoute by remember { mutableStateOf(false) }
 
@@ -99,7 +122,7 @@ fun ParkScreen(
                 .fillMaxSize()
         ) {
             if(!isLoading) {
-                if(bookingList.isEmpty()) {
+                if(reservations?.isEmpty() == true) {
                     NoParks()
                 } else {
                     AnimatedContent(
@@ -128,10 +151,12 @@ fun ParkScreen(
                                 }
                             )
                         } else {
-                            ParksList(
-                                bookingList = bookingList,
-                                onWatchRoute = onWatchRoute
-                            )
+                            reservations?.let {
+                                ParksList(
+                                    reservations = it,
+                                    onWatchRoute = onWatchRoute
+                                )
+                            }
                         }
                     }
 

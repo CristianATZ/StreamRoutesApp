@@ -145,7 +145,7 @@ fun HistoryScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             if(!isLoading && reservations!=null){
-                Log.d("history_sceen", reservations.toString())
+                //Log.d("history_sceen", reservations.toString())
                 items(reservations!!) { reservation ->
                     HistoryItem(
                         onClick = {

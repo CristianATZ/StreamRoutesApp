@@ -24,13 +24,16 @@ import com.example.compose.orange
 import com.example.compose.primary
 import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkItem
 import net.streamroutes.sreamroutesapp.utils.QrUtils.generateQRCode
 
 @Composable
 fun BookingDialogQr(
     onDissmiss: () -> Unit,
-    item: ParkItem
+    item: ReservationWithInfo,
+    parkingIn: String,
+    parkingOut: String
 ) {
     val background = listOf(orange, yellow)
 
@@ -45,20 +48,20 @@ fun BookingDialogQr(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Image(
-                    bitmap = generateQRCode(item.reference).asImageBitmap(),
+                    bitmap = generateQRCode(item.reservation.reference).asImageBitmap(),
                     contentDescription = null,
                     modifier = Modifier.size(250.dp).padding(16.dp).clip(shapes.small)
                 )
 
                 Text(
-                    text = item.reference,
+                    text = item.reservation.reference,
                     style = typography.headlineLarge,
                     fontWeight = FontWeight.Bold,
                     color = primary
                 )
 
                 Text(
-                    text = stringResource(R.string.lblQrTimeFormat, item.from, item.until),
+                    text = stringResource(R.string.lblQrTimeFormat, parkingIn, parkingOut),
                     style = typography.headlineLarge,
                     color = primary
                 )
