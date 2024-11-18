@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,6 +35,7 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -51,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
+import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDateTime
@@ -61,13 +64,22 @@ fun CommentModalBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit = {},
     isSaved: Boolean = false,
-    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel,
+    forumViewModel: ForumViewModel
 ) {
     val currentUser by profileViewModel.userData.collectAsState()
+    val selectPost by forumViewModel.selectedPost.collectAsState()
+    val comments by forumViewModel.comments.collectAsState()
 
     var isLoading by remember {
         mutableStateOf(false)
     }
+
+    LaunchedEffect(Unit) {
+        Log.d("vista", selectPost.toString())
+        forumViewModel.getCommentsByPost()
+    }
+
 
     val sampleComments = listOf(
         Comment(
@@ -117,6 +129,7 @@ fun CommentModalBottomSheet(
         )
     )
 
+
     ModalBottomSheet(
         sheetState = sheetState,
         onDismissRequest = onDismiss,
@@ -145,11 +158,20 @@ fun CommentModalBottomSheet(
                         .weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    /*
                     items(sampleComments) { comment ->
                         CommentItem(
                             comment = comment
                         )
+                    }*/
+                    if(comments != null){
+                        items(comments!!) { comment ->
+                            CommentItem(
+                                comment = comment
+                            )
+                        }
                     }
+
                 }
             } else {
                 LazyColumn(

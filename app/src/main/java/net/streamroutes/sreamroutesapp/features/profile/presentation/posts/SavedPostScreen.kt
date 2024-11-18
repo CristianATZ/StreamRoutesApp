@@ -37,7 +37,8 @@ import java.time.LocalDateTime
 @Composable
 fun SavedPostScreen(
     onBackPressed: () -> Unit,
-    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel,
+    forumViewModel: ForumViewModel
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
@@ -167,7 +168,8 @@ fun SavedPostScreen(
             sheetState = sheetState,
             onDismiss = openBottomSheet,
             isSaved = true,
-            profileViewModel = profileViewModel
+            profileViewModel = profileViewModel,
+            forumViewModel = forumViewModel
         )
     }
 

@@ -24,20 +24,22 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import net.streamroutes.sreamroutesapp.core.data.repository.CommentWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
 import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-@Preview(showBackground = true)
 @Composable
 fun CommentItem(
     modifier: Modifier = Modifier,
-    comment: Comment = Comment(commenterName = "CristianToZa", description = "Hola como estas amigo", commentDate = LocalDateTime.now())
+    comment: CommentWithInfo
+    //comment: Comment = Comment(commenterName = "CristianToZa", description = "Hola como estas amigo", commentDate = LocalDateTime.now())
 ) {
     var isExpanded by remember { mutableStateOf(false) } // Solo se necesita este estado
 
-    val publicationDate = formatPostDateTime(postDateTime = comment.commentDate)
+    val publicationDate = formatPostDateTime(postDateTime = LocalDateTime.now())
 
     Column(
         modifier = modifier
@@ -55,7 +57,7 @@ fun CommentItem(
                 contentAlignment = Alignment.Center
             ){
                 Text(
-                    text = comment.commenterName[0].toString(),
+                    text = comment.user.username.get(0).toString(),
                     style = typography.headlineSmall,
                     fontWeight = FontWeight.Bold
                 )
@@ -70,7 +72,7 @@ fun CommentItem(
                 ) {
                     // nombre
                     Text(
-                        text = "${comment.commenterName} •", // Acceso directo
+                        text = "${comment.user.username} •", // Acceso directo
                         style = typography.labelMedium
                     )
                     // fecha de comentario
@@ -86,16 +88,16 @@ fun CommentItem(
                 Spacer(modifier = Modifier.size(4.dp))
 
                 // Comprobar si la descripción es más corta que 150 caracteres
-                if (comment.description.length <= 200 || isExpanded) {
+                if (comment.comment.description.length <= 200 || isExpanded) {
                     Text(
-                        text = comment.description,
+                        text = comment.comment.description,
                         style = typography.labelLarge,
                         modifier = Modifier
                             .fillMaxWidth()
                     )
                 } else {
                     Text(
-                        text = viewMoreTextOverflow(comment.description.take(200)), // Limitar la descripción y añadir "..."
+                        text = viewMoreTextOverflow(comment.comment.description.take(200)), // Limitar la descripción y añadir "..."
                         style = typography.labelLarge,
                         maxLines = 4, // Limitar a 4 líneas
                         modifier = Modifier

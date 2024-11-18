@@ -190,6 +190,8 @@ fun ForumScreen(
                 description = description
             )
         )
+
+        isOpenPostSheet = false
     }
     val onCloseMakePost = {
         scope.launch {
@@ -233,7 +235,8 @@ fun ForumScreen(
         CommentModalBottomSheet(
             sheetState = commentSheetState,
             onDismiss = openCommentBottomSheet,
-            profileViewModel = profileViewModel
+            profileViewModel = profileViewModel,
+            forumViewModel = forumViewModel
         )
     }
 
@@ -418,8 +421,13 @@ fun ForumScreenContent(
                     post = post,
                     onLikePressed = {
                         // ACTUALIZAR DATO EN FIRESTORE
+                        Log.d("vista", "se ha seleccionado una ruta")
                     },
-                    onCommentPressed = openCommentBottomSheet,
+                    onCommentPressed = {
+                        //Log.d("vista", "se ha seleccionado una ruta")
+                        forumViewModel.selectPost(post)
+                        openCommentBottomSheet()
+                    },
                     onMorePressed = {
                         val localDate = LocalDate.parse(post.post.date)
                         val localHour = LocalTime.parse(post.post.hour)

@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class Post(
+    var idPost: String = "",        // ID del documento
     var idUser: String = "",        // ID del usuario que posteo
     val date: String = "",          // Fecha
     val hour: String = "",          // Hora

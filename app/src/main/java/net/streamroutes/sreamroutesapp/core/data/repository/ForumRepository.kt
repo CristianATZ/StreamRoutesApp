@@ -4,6 +4,7 @@ import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
+import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,10 +35,23 @@ class ForumRepository @Inject constructor(
                     }
                 }
             }
-            Log.d("post_repository", posts.toString())
-            return posts
+
+            posts.sortedByDescending { postWithInfo ->
+                try {
+                    val dateTime = "${postWithInfo.post.date} ${postWithInfo.post.hour}"
+                    java.time.LocalDateTime.parse(
+                        dateTime,
+                        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+                    )
+                } catch (e: Exception) {
+                    println("Error parsing date: ${e.message}")
+                    java.time.LocalDateTime.MIN
+                }
+            }
+            //Log.d("post_repository", posts.toString())
+            //return posts
         } catch (e: Exception) {
-            Log.d("user_repo", "Error: ${e.message}")
+            //Log.d("user_repo", "Error: ${e.message}")
             println("Error: ${e.message}")
             emptyList()
         }
@@ -50,6 +64,7 @@ class ForumRepository @Inject constructor(
     suspend fun createPost(post: Post): Boolean {
         return try {
             val newPost = db.collection("posts").document()
+            post.idPost = newPost.id
             newPost.set(post).await()
             true
         } catch (e: Exception) {
@@ -58,9 +73,50 @@ class ForumRepository @Inject constructor(
             false
         }
     }
+
+
+    /**
+     * Método usado para obtener los comentarios de un post
+     */
+    suspend fun getCommentsByPost(idPost: String): List<CommentWithInfo> {
+        return try {
+            val comments = mutableListOf<CommentWithInfo>()
+
+            val commentsDocs = db.collection("postComments")
+                .whereEqualTo("idPost", idPost)
+                .get()
+                .await()
+
+            for(document in commentsDocs){
+                val commentObj = document.toObject(PostComment::class.java)
+                if(commentObj != null){
+                    val userInfo = db.collection("users").document(commentObj.idUser).get().await()
+                    val userInfoObj = userInfo.toObject(User::class.java)
+
+                    if(userInfoObj != null){
+                        comments.add(
+                            CommentWithInfo(userInfoObj, commentObj)
+                        )
+                    }
+                }
+            }
+
+            return comments
+        } catch (e: Exception) {
+            //Log.d("user_repo", "Error: ${e.message}")
+            println("Error: ${e.message}")
+            emptyList()
+        }
+    }
+
 }
 
 data class PostWithInfo(
     val user: User,
     val post: Post
+)
+
+data class CommentWithInfo(
+    val user: User,
+    val comment: PostComment
 )
