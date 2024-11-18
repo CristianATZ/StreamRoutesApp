@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,18 +49,28 @@ fun TurismMapScreen(
     onBackPressed: () -> Unit,
     turismViewModel: TourismViewModel = hiltViewModel()
 ) {
+    val turisticPoints by turismViewModel.turisticPoints.collectAsState()
+    val scope = rememberCoroutineScope()
+
+
     var isLoading by remember {
         mutableStateOf(true)
     }
 
-    val scope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
+        scope.launch {
+            turismViewModel.getAllTuristicPoints()
+            isLoading = false
+        }
+    }
+
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = rememberStandardBottomSheetState(
             initialValue = SheetValue.Expanded,
             skipHiddenState = false
         )
     )
-    val turisticPoints by turismViewModel.turisticPoints.collectAsState()
+
 
     var turismSelected by remember {
         mutableStateOf<TuristicPointWithInfo?>(null)
@@ -96,7 +107,7 @@ fun TurismMapScreen(
             } else {
                 TurismBottomSheet(
                     onBackPressed = onBackPressed,
-                    totalTurism = if(!isLoading) 16 else null
+                    totalTurism = if(!isLoading) turisticPoints?.size else null
                 )
             }
         },

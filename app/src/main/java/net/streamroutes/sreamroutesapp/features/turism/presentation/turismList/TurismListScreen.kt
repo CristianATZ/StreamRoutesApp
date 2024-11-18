@@ -14,6 +14,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +51,15 @@ fun TourismListScreen(
 
     var isOpen by remember {
         mutableStateOf(false)
+    }
+
+    var loaded by remember {
+        mutableStateOf(false)
+    }
+
+    LaunchedEffect(Unit) {
+        tourismViewModel.getAllTuristicPoints()
+        loaded = true
     }
 
     val sheetState = rememberModalBottomSheetState(

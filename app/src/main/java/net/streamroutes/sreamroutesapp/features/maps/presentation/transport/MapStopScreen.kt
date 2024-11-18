@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.CircularProgressIndicator
@@ -14,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
@@ -43,9 +43,12 @@ fun MapStopScreen(
     modifier: Modifier = Modifier,
     onBackPressed: () -> Unit
 ) {
+    val coroutine = rememberCoroutineScope()
+
     var isLoading by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
+
 
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState(
@@ -58,7 +61,7 @@ fun MapStopScreen(
     val stopList = listOf(
         Pair(
             RouteInformation(
-                name = "Ruta 11 - El charco",
+                name = "Ruta 11 - Museo de las Momias de Guanajuato",
                 countTurism = 4,
                 hourAprox = 2,
                 minutesAprox = 30,
@@ -66,19 +69,67 @@ fun MapStopScreen(
                 start = "C. Pipila, Col. Ninios Herores",
                 end = "C. Francisco Marquez, Col. Zona Centro"
             ),
-            LatLng(20.126856880277188, -101.19127471960047)
+            LatLng(21.02221406583507, -101.25891755256471)
         ),
         Pair(
             RouteInformation(
-                name = "Ruta 12 - Itsur",
-                countTurism = 4,
-                hourAprox = 2,
-                minutesAprox = 30,
-                officialStops = 16,
-                start = "C. Pipila, Col. Ninios Herores",
-                end = "C. Francisco Marquez, Col. Zona Centro"
+                name = "Ruta 12 - Callejón del Beso",
+                countTurism = 5,
+                hourAprox = 1,
+                minutesAprox = 45,
+                officialStops = 10,
+                start = "Plaza de los Ángeles",
+                end = "Callejón del Beso"
             ),
-            LatLng(20.13685688027719, -101.20127471960048)
+            LatLng(21.015345, -101.255006)
+        ),
+        Pair(
+            RouteInformation(
+                name = "Ruta 13 - Alhóndiga de Granaditas",
+                countTurism = 6,
+                hourAprox = 2,
+                minutesAprox = 15,
+                officialStops = 12,
+                start = "Calle Mendizábal",
+                end = "Alhóndiga de Granaditas"
+            ),
+            LatLng(21.017234, -101.259543)
+        ),
+        Pair(
+            RouteInformation(
+                name = "Ruta 14 - Universidad de Guanajuato",
+                countTurism = 3,
+                hourAprox = 1,
+                minutesAprox = 30,
+                officialStops = 8,
+                start = "Plaza de la Paz",
+                end = "Universidad de Guanajuato"
+            ),
+            LatLng(21.016740, -101.257603)
+        ),
+        Pair(
+            RouteInformation(
+                name = "Ruta 15 - Teatro Juárez",
+                countTurism = 4,
+                hourAprox = 1,
+                minutesAprox = 20,
+                officialStops = 6,
+                start = "Calle del Campanero",
+                end = "Teatro Juárez"
+            ),
+            LatLng(21.016331, -101.257841)
+        ),
+        Pair(
+            RouteInformation(
+                name = "Ruta 16 - Monumento al Pípila",
+                countTurism = 7,
+                hourAprox = 2,
+                minutesAprox = 45,
+                officialStops = 15,
+                start = "Calle Subida al Pípila",
+                end = "Monumento al Pípila"
+            ),
+            LatLng(21.014455, -101.255222)
         )
     )
 
@@ -162,7 +213,7 @@ fun MapStopScreenContent(
     onClickMarker: (Pair<RouteInformation, LatLng>) -> Boolean
 ) {
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+        position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
     }
 
     MapFullSize(

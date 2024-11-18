@@ -35,6 +35,15 @@ fun TurismInformationBottomSheet(
     onMore: () -> Unit,
     onClose: () -> Unit
 ) {
+    val dias = listOf("Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado")
+
+    // Map para dar formato al horario que se trae desde base de datos
+    val horario = turisticPoint?.turisticPoint?.days?.let { days ->
+        days.mapIndexed { index, day ->
+            "${dias[index]}: ${day.startTime} - ${day.endTime}"
+        }.joinToString("\n")
+    } ?: "cargando..."
+
     Column(
         modifier = Modifier
             .padding(top = 8.dp)
@@ -91,12 +100,12 @@ fun TurismInformationBottomSheet(
             )
 
             Text(
-                text = stringResource(id = R.string.lblTurismCalendar, turisticPoint.turisticPoint.days.toString()),
+                text = stringResource(id = R.string.lblTurismCalendar, "\n" + horario),
                 style = typography.labelLarge
             )
 
             Text(
-                text = stringResource(id = R.string.lblTurismPrice, turisticPoint.turisticPoint.fee ?: stringResource(id = R.string.lblTurismFree)),
+                text = stringResource(id = R.string.lblTurismPrice, "$ " + turisticPoint.turisticPoint.fee ?: stringResource(id = R.string.lblTurismFree)),
                 style = typography.labelLarge
             )
 
