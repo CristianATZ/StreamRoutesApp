@@ -7,6 +7,7 @@ import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParking
 import net.streamroutes.sreamroutesapp.core.domain.model.Parking
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationParking
 import net.streamroutes.sreamroutesapp.core.domain.model.Service
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import javax.inject.Inject
@@ -118,6 +119,51 @@ class ParkingRepository @Inject constructor(
             emptyList()
         }
     }
+
+
+    /**
+     * Método usado para obtener las reservaciones de aparcamientos de un usuario
+     */
+    suspend fun getReservationByUser(idUser: String): List<ReservationWithInfo>{
+        return try {
+            val reservations = mutableListOf<ReservationWithInfo>()
+            val reservationDocs = db.collection("reservationParkings")
+                .whereEqualTo("idUser", idUser)
+                .get()
+                .await()
+
+            for(document in reservationDocs){
+                val reservationObj = document.toObject(ReservationParking::class.java)
+
+                if(reservationObj != null){
+                    val parkingInfo = db.collection("parkings").document(reservationObj.idParking).get().await()
+                    val parkingObj = parkingInfo.toObject(Parking::class.java)
+
+                    val placeInfo =
+                        parkingObj?.let { db.collection("places").document(it.idPlace).get().await() }
+                    val placeObj = placeInfo?.toObject(Place::class.java)
+
+                    val userInfo = db.collection("users").document(reservationObj.idUser).get().await()
+                    val userObj = userInfo.toObject(User::class.java)
+
+                    if(parkingObj!=null && placeObj!=null && userObj!=null){
+                        reservations.add(
+                            ReservationWithInfo(
+                                reservationObj, parkingObj, placeObj, userObj
+                            )
+                        )
+                    }
+                }
+
+            }
+
+            return reservations
+        } catch (e: Exception) {
+            //Log.d("parking_repo", "Error: ${e.message}")
+            println("Error: ${e.message}")
+            emptyList()
+        }
+    }
 }
 
 
@@ -128,6 +174,13 @@ data class ParkingWithPlace(
 
 data class HistoricalParkingWithInfo (
     val historicalParking: HistoricalParking,
+    val place: Place,
+    val user: User
+)
+
+data class ReservationWithInfo(
+    val reservation: ReservationParking,
+    val parking: Parking,
     val place: Place,
     val user: User
 )

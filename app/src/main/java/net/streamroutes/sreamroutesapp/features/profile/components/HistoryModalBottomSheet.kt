@@ -37,6 +37,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
+import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatTime
@@ -53,7 +54,8 @@ fun HistoryModalBottomSheet(
     onDismiss: () -> Unit = {},
     onBillClicked: () -> Unit = {},
     //history: History
-    historical: HistoricalParkingWithInfo
+    historical: HistoricalParkingWithInfo? = null,
+    reservation: ReservationWithInfo? = null,
 ) {
     // CARGAR LA INFORMACION DEL ITEM
     // EN LUGAR DE PASAR EL HISTORIAL ITEM
@@ -61,11 +63,100 @@ fun HistoryModalBottomSheet(
         mutableStateOf(false)
     }
 
-    var parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
-    val parkingIn = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+    val reference = when {
+        historical != null -> historical.historicalParking.reference
+        reservation != null -> reservation.reservation.reference
+        else -> ""
+    }
 
-    parsedHour = LocalTime.parse(historical.historicalParking.departureHour)
-    val parkingOut = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+    val parkingIn = when {
+        historical != null -> {
+            var parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+            formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+        }
+        reservation != null -> {
+            var parsedHour = LocalTime.parse(reservation.reservation.hour)
+            formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+        }
+        else -> "N/A"
+    }
+
+    val parkingOut = when {
+        historical != null -> {
+            var parsedHour = LocalTime.parse(historical.historicalParking.departureHour)
+            formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+        }
+        reservation != null -> {
+            var parsedHour = LocalTime.parse(reservation.reservation.hour)
+            parsedHour = parsedHour.plusHours(reservation.reservation.reservationHours.toLong())
+            formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute)) + " (aprox)."
+        }
+        else -> "N/A"
+    }
+
+    val street = when {
+        historical != null -> historical.place.street
+        reservation != null -> reservation.place.street
+        else -> ""
+    }
+
+    val suburb = when {
+        historical != null -> historical.place.suburb
+        reservation != null -> reservation.place.suburb
+        else -> ""
+    }
+
+    val state = when {
+        historical != null -> historical.place.state
+        reservation != null -> reservation.place.state
+        else -> ""
+    }
+
+    val name = when {
+        historical != null -> historical.place.name
+        reservation != null -> reservation.place.name
+        else -> ""
+    }
+
+    val feePerHour = when {
+        historical != null -> historical.historicalParking.feePerHour
+        reservation != null -> reservation.parking.feePerHour
+        else -> 0.0
+    }
+
+    val totalHours = when {
+        historical != null -> historical.historicalParking.totalHours
+        reservation != null -> reservation.reservation.reservationHours
+        else -> 0
+    }
+
+    val parkingDate = when {
+        historical != null -> {
+            val parsedDate = LocalDate.parse(historical.historicalParking.entranceDate)
+            val parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+            fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
+        }
+        reservation != null -> {
+            val parsedDate = LocalDate.parse(reservation.reservation.date)
+            val parsedHour = LocalTime.parse(reservation.reservation.hour)
+            fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
+        }
+        else -> "N/A"
+    }
+
+    /*
+    val parkingDate = when {
+            val parsedDate = LocalDate.parse(historical.historicalParking.entranceDate)
+            val parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+            val parkingDate = fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
+    }
+     */
+
+    //var parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+    //val parkingIn = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
+
+    //parsedHour = LocalTime.parse(historical.historicalParking.departureHour)
+    //val parkingOut = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -80,18 +171,18 @@ fun HistoryModalBottomSheet(
         ) {
             // referencia de transaccion
             Text(
-                text = historical.historicalParking.reference,
+                text = reference,
                 style = typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             // CAMBIAR VALORES AL ABRIR
             if(!isLoading) {
-                val address = "${historical.place.street}, ${historical.place.suburb}, ${historical.place.state}"
+                val address = "${street}, ${suburb}, ${state}"
                 ParkingDescription(
-                    name = historical.place.name,
+                    name = name,
                     address = address,
-                    price = historical.historicalParking.feePerHour
+                    price = feePerHour
                 )
             } else {
 
@@ -99,7 +190,7 @@ fun HistoryModalBottomSheet(
             }
 
             // RESERVADO
-            if(historical.historicalParking.reference.substring(0,2).equals("RES")) {
+            if(reservation != null) {
                 Box(
                     modifier = Modifier
                         .padding(16.dp)
@@ -133,7 +224,7 @@ fun HistoryModalBottomSheet(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    val total = historical.historicalParking.feePerHour * historical.historicalParking.totalHours
+                    val total = feePerHour * totalHours
                     Text(
                         text = stringResource(id = R.string.lblPrice, String.format("%.2f", total).toDouble()),
                         style = typography.displayMedium
@@ -143,7 +234,7 @@ fun HistoryModalBottomSheet(
 
                     if(!isLoading) {
                         Text(
-                            text = stringResource(id = R.string.lblTimeHours, historical.historicalParking.totalHours),
+                            text = stringResource(id = R.string.lblTimeHours, totalHours),
                             style = typography.bodyLarge
                         )
                     } else {
@@ -171,9 +262,11 @@ fun HistoryModalBottomSheet(
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
 
+                /*
                 val parsedDate = LocalDate.parse(historical.historicalParking.entranceDate)
                 val parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
                 val parkingDate = fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
+                 */
 
                 LineInformation(
                     title = stringResource(id = R.string.lblParkingDate),

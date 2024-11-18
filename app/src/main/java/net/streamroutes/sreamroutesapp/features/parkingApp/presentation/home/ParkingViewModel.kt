@@ -10,8 +10,10 @@ import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingWithPlace
+import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParking
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationParking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,9 +37,17 @@ class ParkingViewModel @Inject constructor(
     private val _historicalParking = MutableStateFlow<List<HistoricalParkingWithInfo>?>(null)
     val historicalParking: StateFlow<List<HistoricalParkingWithInfo>?> = _historicalParking
 
+    // Variable usada para obtener las reservaciones de un usuario
+    private val _reservations = MutableStateFlow<List<ReservationWithInfo>?>(null)
+    val reservations: StateFlow<List<ReservationWithInfo>?> = _reservations
+
     // Variable usada para guardar un historial seleccionado
     private val _selectedHistorical = MutableStateFlow<HistoricalParkingWithInfo?>(null)
     val selectedHistorical: StateFlow<HistoricalParkingWithInfo?> = _selectedHistorical
+
+    // Variable usada para guardar un historial seleccionado
+    private val _selectedReservation = MutableStateFlow<ReservationWithInfo?>(null)
+    val selectedReservation: StateFlow<ReservationWithInfo?> = _selectedReservation
 
 
     init {
@@ -72,6 +82,13 @@ class ParkingViewModel @Inject constructor(
         _selectedParking.value = parking
     }
 
+    /**
+     * Método usado para actualizar el estacionamiento seleccionado
+     */
+    fun selectReservations(reservation: ReservationWithInfo){
+        _selectedReservation.value = reservation
+    }
+
 
     /**
      * Método usado para obtener el historial de aparcamientos de un usuario
@@ -83,6 +100,21 @@ class ParkingViewModel @Inject constructor(
                 _historicalParking.value = parkingRepository.getHistoricalParkingByUser(currentUser.uid)
             } else {
                 _historicalParking.value = null
+            }
+        }
+    }
+
+
+    /**
+     * Método usado para obtener las reservaciones de un usuario
+     */
+    fun getReservationsByUser(){
+        viewModelScope.launch {
+            val currentUser = userRepository.getCurrentUser()
+            if(currentUser != null){
+                _reservations.value = parkingRepository.getReservationByUser(currentUser.uid)
+            } else {
+                _reservations.value = null
             }
         }
     }

@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class ReservationParking(
+    val reference: String = "",
     val idUser: String = "",                // ID de usuario
     val idParking: String = "",             // ID del estacionamiento
     val incomingAlertInMinutes: Int = 0,    // Tiempo programado para la alerta, en minutos

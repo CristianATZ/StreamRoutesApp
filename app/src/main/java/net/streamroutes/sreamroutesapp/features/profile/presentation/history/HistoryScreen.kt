@@ -40,15 +40,23 @@ fun HistoryScreen(
     val historicalParking by parkingViewModel.historicalParking.collectAsState()
     val selectedHistorical by parkingViewModel.selectedHistorical.collectAsState()
 
+    val reservations by parkingViewModel.reservations.collectAsState()
+    val selectedReservation by parkingViewModel.selectedReservation.collectAsState()
+
     val coroutine = rememberCoroutineScope()
 
     var isLoading by remember {
         mutableStateOf(true)
     }
 
+    var isReservation by remember {
+        mutableStateOf(false)
+    }
+
     LaunchedEffect(Unit) {
         coroutine.launch {
             parkingViewModel.getHistoricalParkingByUser()
+            parkingViewModel.getReservationsByUser()
             isLoading = false
         }
     }
@@ -75,7 +83,7 @@ fun HistoryScreen(
 
     if(isOpen) {
         // bottom sheet para el item de historial
-        selectedHistorical?.let {
+        if(isReservation){
             HistoryModalBottomSheet(
                 /*
                     history = History(
@@ -91,7 +99,29 @@ fun HistoryScreen(
                         parkingName = "ITSUR",
                         parkingAddress = "Av. Educacion Superior, 38980"
                     ),*/
-                historical = it,
+                reservation = selectedReservation,
+                sheetState = sheetState,
+                onDismiss = {
+                    closeSheet()
+                }
+            )
+        } else {
+            HistoryModalBottomSheet(
+                /*
+                    history = History(
+                        idReference = "ASDF34",
+                        idParking = "park001",
+                        totalTime = 2.5,
+                        totalPrice = 50.0,
+                        parkingDate = LocalDateTime.of(2024, 10, 1, 10, 0),
+                        timeIn = LocalTime.of(6,17,0),
+                        timeOut = LocalTime.of(9,17,0),
+                        isReserved = false,
+                        parkingPrice = 39.00,
+                        parkingName = "ITSUR",
+                        parkingAddress = "Av. Educacion Superior, 38980"
+                    ),*/
+                historical = selectedHistorical,
                 sheetState = sheetState,
                 onDismiss = {
                     closeSheet()
@@ -114,6 +144,19 @@ fun HistoryScreen(
                 .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            if(!isLoading && reservations!=null){
+                Log.d("history_sceen", reservations.toString())
+                items(reservations!!) { reservation ->
+                    HistoryItem(
+                        onClick = {
+                            parkingViewModel.selectReservations(reservation)
+                            isOpen = !isOpen
+                            isReservation = true
+                        },
+                        reservation = reservation
+                    )
+                }
+            }
             if(!isLoading && historicalParking!=null) {
                 //Log.d("history_screen", historicalParking?.toString() ?: "nada")
                 items(historicalParking!!) { historical ->
@@ -121,6 +164,7 @@ fun HistoryScreen(
                         onClick = {
                             parkingViewModel.selectHistoricalParking(historical)
                             isOpen = !isOpen
+                            isReservation = false
                         },
                         historical = historical
                     )

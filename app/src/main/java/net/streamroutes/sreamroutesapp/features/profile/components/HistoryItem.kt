@@ -35,8 +35,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.orange
+import kotlinx.coroutines.selects.whileSelect
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
+import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
@@ -60,18 +62,48 @@ fun HistoryItem(
         parkingName = "ITSUR",
         parkingAddress = "Av. Educacion Superior, 38980"
     ),*/
-    historical: HistoricalParkingWithInfo,
+    historical: HistoricalParkingWithInfo? = null,
+    reservation: ReservationWithInfo? = null,
     onClick: () -> Unit = {}
 ) {
-    val icon = if(historical.historicalParking.reference.substring(0,2).equals("RES")) {
+    val reference = when {
+        historical != null -> historical.historicalParking.reference
+        reservation != null -> reservation.reservation.reference
+        else -> ""
+    }
+
+    val parkingDate = when {
+        historical != null -> {
+            val parsedDate = LocalDate.parse(historical.historicalParking.entranceDate)
+            val parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+            fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
+        }
+        reservation != null -> {
+            val parsedDate = LocalDate.parse(reservation.reservation.date)
+            val parsedHour = LocalTime.parse(reservation.reservation.hour)
+            fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
+        }
+        else -> "N/A"
+    }
+
+    val feePerHour = when {
+        historical != null -> historical.historicalParking.feePerHour
+        reservation != null -> reservation.parking.feePerHour
+        else -> 0.0
+    }
+
+    val totalHours = when {
+        historical != null -> historical.historicalParking.totalHours
+        reservation != null -> reservation.reservation.reservationHours
+        else -> 0
+    }
+
+    val icon = if(reference.substring(0,2).equals("RES")) {
         Pair(Icons.Filled.Bookmark, stringResource(id = R.string.iconBooking))
     } else {
         Pair(Icons.Filled.QrCode, stringResource(id = R.string.iconQrCode))
     }
 
-    val parsedDate = LocalDate.parse(historical.historicalParking.entranceDate)
-    val parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
-    val parkingDate = fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
 
     Column(
         modifier = Modifier
@@ -106,7 +138,7 @@ fun HistoryItem(
                     .padding(start = 16.dp)
             ) {
                 Text(
-                    text = historical.historicalParking.reference,
+                    text = reference,
                     style = typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
                     maxLines = 1,
@@ -132,7 +164,7 @@ fun HistoryItem(
                 Box(
                     modifier = Modifier.fillMaxWidth(0.4f)
                 ) {
-                    val total = historical.historicalParking.feePerHour * historical.historicalParking.totalHours
+                    val total = feePerHour * totalHours
                     Text(
                         text = stringResource(id = R.string.lblPrice,  String.format("%.2f", total).toDouble()),
                         style = typography.titleLarge,
