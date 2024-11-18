@@ -132,8 +132,9 @@ fun HistoryItem(
                 Box(
                     modifier = Modifier.fillMaxWidth(0.4f)
                 ) {
+                    val total = historical.historicalParking.feePerHour * historical.historicalParking.totalHours
                     Text(
-                        text = stringResource(id = R.string.lblPrice, historical.historicalParking.feePerHour * historical.historicalParking.totalHours ),
+                        text = stringResource(id = R.string.lblPrice,  String.format("%.2f", total).toDouble()),
                         style = typography.titleLarge,
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 2.sp,

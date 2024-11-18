@@ -38,6 +38,8 @@ fun HistoryScreen(
     parkingViewModel: ParkingViewModel = hiltViewModel()
 ) {
     val historicalParking by parkingViewModel.historicalParking.collectAsState()
+    val selectedHistorical by parkingViewModel.selectedHistorical.collectAsState()
+
     val coroutine = rememberCoroutineScope()
 
     var isLoading by remember {
@@ -73,25 +75,29 @@ fun HistoryScreen(
 
     if(isOpen) {
         // bottom sheet para el item de historial
-        HistoryModalBottomSheet(
-            history = History(
-                idReference = "ASDF34",
-                idParking = "park001",
-                totalTime = 2.5,
-                totalPrice = 50.0,
-                parkingDate = LocalDateTime.of(2024, 10, 1, 10, 0),
-                timeIn = LocalTime.of(6,17,0),
-                timeOut = LocalTime.of(9,17,0),
-                isReserved = false,
-                parkingPrice = 39.00,
-                parkingName = "ITSUR",
-                parkingAddress = "Av. Educacion Superior, 38980"
-            ),
-            sheetState = sheetState,
-            onDismiss = {
-                closeSheet()
-            }
-        )
+        selectedHistorical?.let {
+            HistoryModalBottomSheet(
+                /*
+                    history = History(
+                        idReference = "ASDF34",
+                        idParking = "park001",
+                        totalTime = 2.5,
+                        totalPrice = 50.0,
+                        parkingDate = LocalDateTime.of(2024, 10, 1, 10, 0),
+                        timeIn = LocalTime.of(6,17,0),
+                        timeOut = LocalTime.of(9,17,0),
+                        isReserved = false,
+                        parkingPrice = 39.00,
+                        parkingName = "ITSUR",
+                        parkingAddress = "Av. Educacion Superior, 38980"
+                    ),*/
+                historical = it,
+                sheetState = sheetState,
+                onDismiss = {
+                    closeSheet()
+                }
+            )
+        }
     }
 
     Scaffold(
@@ -113,6 +119,7 @@ fun HistoryScreen(
                 items(historicalParking!!) { historical ->
                     HistoryItem(
                         onClick = {
+                            parkingViewModel.selectHistoricalParking(historical)
                             isOpen = !isOpen
                         },
                         historical = historical

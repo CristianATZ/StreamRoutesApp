@@ -36,11 +36,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatTime
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,18 +52,20 @@ fun HistoryModalBottomSheet(
     sheetState: SheetState = rememberModalBottomSheetState(),
     onDismiss: () -> Unit = {},
     onBillClicked: () -> Unit = {},
-    history: History
+    //history: History
+    historical: HistoricalParkingWithInfo
 ) {
     // CARGAR LA INFORMACION DEL ITEM
     // EN LUGAR DE PASAR EL HISTORIAL ITEM
     var isLoading by remember {
-        mutableStateOf(true)
+        mutableStateOf(false)
     }
 
-    val historyDate = fullDateFormat(postDateTime = history.parkingDate)
+    var parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+    val parkingIn = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
 
-    val parkingIn = formatTime(localTime = history.timeIn)
-    val parkingOut = formatTime(localTime = history.timeOut)
+    parsedHour = LocalTime.parse(historical.historicalParking.departureHour)
+    val parkingOut = formatTime(localTime = LocalTime.of(parsedHour.hour, parsedHour.minute))
 
     ModalBottomSheet(
         sheetState = sheetState,
@@ -74,25 +80,26 @@ fun HistoryModalBottomSheet(
         ) {
             // referencia de transaccion
             Text(
-                text = history.idReference,
+                text = historical.historicalParking.reference,
                 style = typography.headlineSmall,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
 
             // CAMBIAR VALORES AL ABRIR
             if(!isLoading) {
+                val address = "${historical.place.street}, ${historical.place.suburb}, ${historical.place.state}"
                 ParkingDescription(
-                    name = history.parkingName,
-                    address = history.parkingAddress,
-                    price = history.parkingPrice
+                    name = historical.place.name,
+                    address = address,
+                    price = historical.historicalParking.feePerHour
                 )
             } else {
 
-            ShimmerHistoryItem()
+                ShimmerHistoryItem()
             }
 
             // RESERVADO
-            if(history.isReserved) {
+            if(historical.historicalParking.reference.substring(0,2).equals("RES")) {
                 Box(
                     modifier = Modifier
                         .padding(16.dp)
@@ -126,8 +133,9 @@ fun HistoryModalBottomSheet(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
+                    val total = historical.historicalParking.feePerHour * historical.historicalParking.totalHours
                     Text(
-                        text = stringResource(id = R.string.lblPrice, history.totalPrice),
+                        text = stringResource(id = R.string.lblPrice, String.format("%.2f", total).toDouble()),
                         style = typography.displayMedium
                     )
 
@@ -135,7 +143,7 @@ fun HistoryModalBottomSheet(
 
                     if(!isLoading) {
                         Text(
-                            text = stringResource(id = R.string.lblTimeHours, history.totalTime),
+                            text = stringResource(id = R.string.lblTimeHours, historical.historicalParking.totalHours),
                             style = typography.bodyLarge
                         )
                     } else {
@@ -163,9 +171,13 @@ fun HistoryModalBottomSheet(
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
 
+                val parsedDate = LocalDate.parse(historical.historicalParking.entranceDate)
+                val parsedHour = LocalTime.parse(historical.historicalParking.entranceHour)
+                val parkingDate = fullDateFormat(postDateTime = LocalDateTime.of(parsedDate, parsedHour))
+
                 LineInformation(
                     title = stringResource(id = R.string.lblParkingDate),
-                    desc = historyDate,
+                    desc = parkingDate,
                     modifier = Modifier.padding(bottom = 8.dp, top = 16.dp)
                 )
 

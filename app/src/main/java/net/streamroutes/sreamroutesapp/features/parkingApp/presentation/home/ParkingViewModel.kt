@@ -11,6 +11,7 @@ import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWit
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingWithPlace
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
+import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,6 +34,10 @@ class ParkingViewModel @Inject constructor(
     // Variable usada para obtener el historial de aparcamiento de un usuario
     private val _historicalParking = MutableStateFlow<List<HistoricalParkingWithInfo>?>(null)
     val historicalParking: StateFlow<List<HistoricalParkingWithInfo>?> = _historicalParking
+
+    // Variable usada para guardar un historial seleccionado
+    private val _selectedHistorical = MutableStateFlow<HistoricalParkingWithInfo?>(null)
+    val selectedHistorical: StateFlow<HistoricalParkingWithInfo?> = _selectedHistorical
 
 
     init {
@@ -80,5 +85,13 @@ class ParkingViewModel @Inject constructor(
                 _historicalParking.value = null
             }
         }
+    }
+
+
+    /**
+     * Método usado para actualizar un historicalParking seleccionado
+     */
+    fun selectHistoricalParking(historicalParking: HistoricalParkingWithInfo){
+        _selectedHistorical.value = historicalParking
     }
 }
