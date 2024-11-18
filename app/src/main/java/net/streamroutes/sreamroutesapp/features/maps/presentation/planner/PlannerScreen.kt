@@ -25,7 +25,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.Marker
@@ -47,7 +46,6 @@ import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.Tran
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemDown
 import net.streamroutes.sreamroutesapp.utils.ListUtils.moveItemUp
 import net.streamroutes.sreamroutesapp.utils.ListUtils.removeItem
-import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +55,7 @@ fun PlannerScreen(
 ) {
     //val markerAddress by transportViewModel.markerAdress.collectAsState()
 
-    val coroutine = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
@@ -67,11 +65,12 @@ fun PlannerScreen(
     val markerState = rememberMarkerState(
         position = LatLng(21.017917732561727, -101.25808073954296)
     )
-    val sheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
     val initialPos = rememberMarkerState(
         position =  LatLng(21.017917732561727, -101.25808073954296)
+    )
+
+    val sheetState = rememberModalBottomSheetState(
+        skipPartiallyExpanded = true
     )
 
     var address by remember { mutableStateOf("") }
@@ -92,7 +91,7 @@ fun PlannerScreen(
     // MOVER SIN AFECTAR EL ZOOM
     // CON ANIMACION INCLUIDA
     val updateCameraPosition = { coord: LatLng ->
-        coroutine.launch {
+        scope.launch {
             cameraPositionState.animate(
                 CameraUpdateFactory.newLatLng(coord),
                 500 // Duración de la animación en milisegundos
@@ -101,7 +100,7 @@ fun PlannerScreen(
     }
     // ACTUALIZAR EL MARCADOR PARA QUE MUESTRE AL PRIMER TOQUE
     val onMapClick = { coord: LatLng ->
-        coroutine.launch {
+        scope.launch {
             markerState.position = coord
             address = transportViewModel.getAddress(markerState.position).toString()
             if(currentPos == "") {
@@ -119,13 +118,22 @@ fun PlannerScreen(
     val openBottomSheet = {
         isOpen = !isOpen
     }
+    val closeSheet = {
+        scope.launch {
+            sheetState.hide()
+        }.invokeOnCompletion {
+            if(!sheetState.isVisible) {
+                isOpen = false
+            }
+        }
+    }
     // AGREGAR DESTINO A LA LISTA
     val onAdd = {
         if(destinationsList.isEmpty()){
             destinationsList.add(
                 Destinations(
                     coords = initialPos.position,
-                    address = "(Ubicacion actual) " + currentPos
+                    address = "(Ubicacion actual) $currentPos"
                 )
             )
         }
@@ -143,10 +151,7 @@ fun PlannerScreen(
         // CALCULAR RUTA
         transportViewModel.planRoute(destinationsList.map { it.coords })
         isCalculated = true
-    }
-    val onMyLocation = {
-        // CAMBIAR CAMARA A MI UBICACION ACTUAL
-        //updateCameraPosition()
+        closeSheet()
     }
     val moveItemUp = { index: Int ->
         moveItemUp(destinationsList, index)
@@ -162,8 +167,13 @@ fun PlannerScreen(
     // PROGRAMAR VIEW DEL PUNTO SELECCIONADO
     // FUNCION PARA AGREGAR A LA LISTA
 
+    var current by remember {
+        mutableStateOf(LatLng(0.0,0.0))
+    }
+
     LaunchedEffect(Unit){
-        onMapClick(initialPos.position)
+        current = initialPos.position
+        currentPos = transportViewModel.getAddress(current).toString()
     }
 
     if(isOpen) {
@@ -171,7 +181,9 @@ fun PlannerScreen(
             destinationsList = destinationsList,
             sheetState = sheetState,
             onDismiss = openBottomSheet,
-            onCalculateRoute = onCalculateRoute,
+            onCalculateRoute = {
+                onCalculateRoute()
+            },
             onMoveItemUp = { index ->
                 moveItemUp(index)
             },
@@ -199,14 +211,19 @@ fun PlannerScreen(
             },
             modifier = Modifier.fillMaxSize()
         ) {
-            if (markerVisible) {
-                MarkerInfoWindow(
-                    state = markerState,
-                    visible = markerVisible
-                ) {
-                    PlannerInfoWindow(address = address)
-                }
+            Marker(
+                state = MarkerState(
+                    position = current
+                )
+            )
+
+            MarkerInfoWindow(
+                state = markerState,
+                visible = markerVisible
+            ) {
+                PlannerInfoWindow(address = address)
             }
+
             if(isCalculated && orsRoute.isNotEmpty()){
                 Polyline(
                     points = orsRoute,
@@ -239,7 +256,9 @@ fun PlannerScreen(
         PlannerFloatingButtons(
             isVisible = markerVisible,
             onMyLocation = {
-                updateCameraPosition(it)
+                updateCameraPosition(
+                    current
+                )
             },
             onOpenList = openBottomSheet,
             onAddItem = {

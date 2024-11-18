@@ -31,7 +31,7 @@ import net.streamroutes.sreamroutesapp.R
 
 @Composable
 fun PlannerFloatingButtons(
-    onMyLocation: (LatLng) -> Unit,
+    onMyLocation: () -> Unit,
     onAddItem: () -> Unit,
     onOpenList: () -> Unit,
     onCancelItem: () -> Unit,
@@ -90,10 +90,7 @@ fun PlannerFloatingButtons(
         ) {
             // cambiar camara a mi ubicacion actual
             FloatingActionButton(
-                onClick = {
-                    // OBTENER UBICACION ACTUAL Y PASAR EL PARAMETRO
-                    //onMyLocation()
-                },
+                onClick = onMyLocation,
                 shape = shapes.medium,
                 containerColor = colorScheme.tertiaryContainer,
                 contentColor = colorScheme.onTertiaryContainer
