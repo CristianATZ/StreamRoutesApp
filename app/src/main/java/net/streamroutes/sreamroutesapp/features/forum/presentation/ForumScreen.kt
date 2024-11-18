@@ -182,7 +182,6 @@ fun ForumScreen(
         val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
         val currentTime = currentDateTime.format(timeFormatter)
 
-
         forumViewModel.createPost(
             Post(
                 date = currentDate,

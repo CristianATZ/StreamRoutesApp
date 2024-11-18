@@ -68,12 +68,28 @@ class ForumRepository @Inject constructor(
             newPost.set(post).await()
             true
         } catch (e: Exception) {
-            Log.d("forum_repo", "Error: ${e.message}")
+            //Log.d("forum_repo", "Error: ${e.message}")
             println("Error: ${e.message}")
             false
         }
     }
 
+
+    /**
+     * Método usado para crea un comentario
+     */
+    suspend fun createComment(comment: PostComment): Boolean {
+        return try {
+            val newComment = db.collection("postComments").document()
+            newComment.set(comment).await()
+            true
+        } catch (e: Exception) {
+            //Log.d("forum_repo", "Error: ${e.message}")
+            println("Error: ${e.message}")
+            false
+        }
+    }
+    
 
     /**
      * Método usado para obtener los comentarios de un post

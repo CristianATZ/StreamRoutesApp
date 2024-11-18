@@ -11,6 +11,7 @@ import net.streamroutes.sreamroutesapp.core.data.repository.ForumRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.PostWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
+import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,6 +26,10 @@ class ForumViewModel @Inject constructor(
     // Variable usada para saber si se creo un post
     private val _createdPost = MutableStateFlow<Boolean?>(null)
     val createdPost: StateFlow<Boolean?> = _createdPost
+
+    // Variable usada para saber si se creo un post
+    private val _createdComment = MutableStateFlow<Boolean?>(null)
+    val createdComment: StateFlow<Boolean?> = _createdComment
 
     // Variable usada para guardar el post seleccionado
     private val _selectedPost = MutableStateFlow<PostWithInfo?>(null)
@@ -63,6 +68,21 @@ class ForumViewModel @Inject constructor(
                 }
             } else {
                 _createdPost.value = false
+            }
+        }
+    }
+
+
+    /**
+     * Método usado para crear un comentario
+     */
+    fun createComment(comment: PostComment){
+        viewModelScope.launch {
+            val currentUser = userRepository.getCurrentUser()
+            if(currentUser != null && selectedPost.value != null){
+                comment.idUser = currentUser.uid
+                comment.idPost = selectedPost.value!!.post.idPost
+                _createdComment.value = forumRepository.createComment(comment)
             }
         }
     }

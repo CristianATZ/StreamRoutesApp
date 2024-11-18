@@ -52,11 +52,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.Comment
+import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -76,7 +78,7 @@ fun CommentModalBottomSheet(
     }
 
     LaunchedEffect(Unit) {
-        Log.d("vista", selectPost.toString())
+        //Log.d("vista", selectPost.toString())
         forumViewModel.getCommentsByPost()
     }
 
@@ -215,7 +217,7 @@ fun CommentModalBottomSheet(
             }
 
             if(!isSaved) {
-                CommentInput()
+                CommentInput(forumViewModel)
             }
         }
     }
@@ -223,7 +225,7 @@ fun CommentModalBottomSheet(
 
 
 @Composable
-fun CommentInput() {
+fun CommentInput(forumViewModel: ForumViewModel) {
     // Controlador del teclado
     val keyboardController = LocalSoftwareKeyboardController.current
     var comment by remember { mutableStateOf("") }
@@ -275,6 +277,21 @@ fun CommentInput() {
                 onClick = {
                     // Acción para enviar comentario
                     // ENVIAR COMENTARIO EN FIREBASE
+                    val currentDateTime = LocalDateTime.now()
+
+                    val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                    val currentDate = currentDateTime.format(dateFormatter)
+
+                    val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+                    val currentTime = currentDateTime.format(timeFormatter)
+
+                    forumViewModel.createComment(
+                        PostComment(
+                            date = currentDate,
+                            hour = currentTime,
+                            description = comment
+                        )
+                    )
                     keyboardController?.hide() // Cerrar el teclado si es necesario
                 }
             ) {
