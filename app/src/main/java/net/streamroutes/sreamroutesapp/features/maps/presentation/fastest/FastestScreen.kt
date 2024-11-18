@@ -38,7 +38,11 @@ fun FastestScreen(
 ) {
     val routeColor by mapSettingsViewModel.routeColor.collectAsState()
     val lineSize by mapSettingsViewModel.lineSize.collectAsState()
-    val orsRoute by transportViewModel.orsRoute.collectAsState()
+
+    val orsRouteCar by transportViewModel.orsRouteCar.collectAsState()
+    val orsRouteWalk by transportViewModel.orsRouteWalk.collectAsState()
+    val orsRouteBike by transportViewModel.orsRouteBike.collectAsState()
+    val orsRouteWheelchair by transportViewModel.orsRouteWheelchair.collectAsState()
 
     var currenTab by remember {
         mutableIntStateOf(0)
@@ -80,12 +84,16 @@ fun FastestScreen(
         markerDestinaton.position = LatLng(0.0, 0.0)
         address = ""
     }
+
     val onCalculateRoute = {
         // CAMBIAR PANTALLA
         // MANDAR DATOS A LA API Y RECUPERAR LOS 4 TIPOS DE VIAJE
-        transportViewModel.getOrsRoute("foot-walking", markerMyLocation.position, markerDestinaton.position)
+
+        //transportViewModel.getOrsRoute("foot-walking", markerMyLocation.position, markerDestinaton.position)
+        transportViewModel.getOrsRouteAllVehicles(markerMyLocation.position, markerDestinaton.position)
         isCalculated = true
         currenTab = 1
+
     }
 
     // EVENTO ON CLICK DEL MAPA
@@ -103,9 +111,7 @@ fun FastestScreen(
     }
 
     LaunchedEffect(Unit) {
-        coroutine.launch {
-            currentAdress = transportViewModel.getAddress(markerMyLocation.position).toString()
-        }
+        currentAdress = transportViewModel.getAddress(markerMyLocation.position).toString()
     }
 
     Box(
@@ -137,13 +143,36 @@ fun FastestScreen(
                 state = markerDestinaton
             )
 
-            if(isCalculated && orsRoute.isNotEmpty()){
-                Polyline(
-                    points = orsRoute,
-                    color = Color(routeColor),
-                    width = lineSize.toFloat()
-                )
-
+            if(isCalculated){
+                if(currentRoute == 1 && orsRouteCar.isNotEmpty()){
+                    Polyline(
+                        points = orsRouteCar,
+                        color = Color(routeColor),
+                        width = lineSize.toFloat()
+                    )
+                }
+                else if(currentRoute == 2 && orsRouteWalk.isNotEmpty()){
+                    Polyline(
+                        points = orsRouteWalk,
+                        color = Color(routeColor),
+                        width = lineSize.toFloat()
+                    )
+                }
+                else if(currentRoute == 3 && orsRouteBike.isNotEmpty()){
+                    Polyline(
+                        points = orsRouteBike,
+                        color = Color(routeColor),
+                        width = lineSize.toFloat()
+                    )
+                }
+               else if(currentRoute == 4 && orsRouteWheelchair.isNotEmpty()){
+                    Polyline(
+                        points = orsRouteWheelchair,
+                        color = Color(routeColor),
+                        width = lineSize.toFloat()
+                    )
+                }
+                transportViewModel.changeOrsData(currentRoute)
             }
 
             // ROUTES INFORMATION

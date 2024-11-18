@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.PolyUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -40,6 +41,43 @@ class TransportViewModel @Inject constructor(
     // Variable usada para almacenar la dirección del marcador de planifica tu viaje
     private val _markerAddress = MutableStateFlow<String?>(null)
     val markerAdress: StateFlow<String?> = _markerAddress
+
+    // --------------------------------------------------------------------------
+    /**
+     * Sección para planifica tu viaje
+     */
+
+    // Variable usada para capturar la ruta de punto A a punto B en automovil
+    private val _orsRouteCar = MutableStateFlow<List<LatLng>>(emptyList())
+    val orsRouteCar: StateFlow<List<LatLng>> = _orsRouteCar
+
+    // Variable usada para almacenar los datos de la ruta de punto A a punto B en automovil
+    private val _orsRouteDataCar = MutableStateFlow<Map<String, Any?>?>(null)
+    val orsRouteDataCar: StateFlow<Map<String, Any?>?> = _orsRouteDataCar
+
+    // Variable usada para capturar la ruta de punto A a punto B a pie
+    private val _orsRouteWalk = MutableStateFlow<List<LatLng>>(emptyList())
+    val orsRouteWalk: StateFlow<List<LatLng>> = _orsRouteWalk
+
+    // Variable usada para almacenar los datos de la ruta de punto A a punto B en automovil
+    private val _orsRouteDataWalk = MutableStateFlow<Map<String, Any?>?>(null)
+    val orsRouteDataWalk: StateFlow<Map<String, Any?>?> = _orsRouteDataWalk
+
+    // Variable usada para capturar la ruta de punto A a punto B en bicicleta
+    private val _orsRouteBike = MutableStateFlow<List<LatLng>>(emptyList())
+    val orsRouteBike: StateFlow<List<LatLng>> = _orsRouteBike
+
+    // Variable usada para almacenar los datos de la ruta de punto A a punto B en automovil
+    private val _orsRouteDataBike = MutableStateFlow<Map<String, Any?>?>(null)
+    val orsRouteDataBike: StateFlow<Map<String, Any?>?> = _orsRouteDataBike
+
+    // Variable usada para capturar la ruta de punto A a punto B en silla de ruedas
+    private val _orsRouteWheelchair = MutableStateFlow<List<LatLng>>(emptyList())
+    val orsRouteWheelchair: StateFlow<List<LatLng>> = _orsRouteWheelchair
+
+    // Variable usada para almacenar los datos de la ruta de punto A a punto B en automovil
+    private val _orsRouteDataWheelchair = MutableStateFlow<Map<String, Any?>?>(null)
+    val orsRouteDataWheelchair: StateFlow<Map<String, Any?>?> = _orsRouteDataWheelchair
 
 
     /**
@@ -88,8 +126,7 @@ class TransportViewModel @Inject constructor(
                     val _distance = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.distance?.div(1000)
                     val distance = _distance?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
 
-                    val _duration = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.duration?.div(60)
-                    val duration = _duration?.toBigDecimal()?.setScale(2, java.math.RoundingMode.HALF_EVEN)
+                    val duration = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.duration?.div(60)?.toInt()
 
                     val nextStreet = response.body()?.features?.get(0)?.properties?.segments?.get(0)?.steps?.find { it.name != "-" }?.name
 
@@ -131,6 +168,47 @@ class TransportViewModel @Inject constructor(
             _orsRouteData.value = null
         }
     }
+
+
+    fun changeOrsData(currentRoute: Int){
+        viewModelScope.launch {
+            if(currentRoute == 1) _orsRouteData.value = _orsRouteDataCar.value
+            else if(currentRoute == 2) _orsRouteData.value = _orsRouteDataWalk.value
+            else if(currentRoute == 3) _orsRouteData.value = _orsRouteDataBike.value
+            else if(currentRoute == 4) _orsRouteData.value = _orsRouteDataWheelchair.value
+        }
+    }
+
+
+    fun getOrsRouteAllVehicles(start: LatLng, end: LatLng){
+        viewModelScope.launch {
+            // Calcular automovil
+            getOrsRoute("driving-car", start, end)
+            delay(1000)
+            _orsRouteCar.value = _orsRoute.value
+            _orsRouteDataCar.value = _orsRouteData.value
+
+            // Calcular a pie
+            getOrsRoute("foot-walking", start, end)
+            delay(1000)
+            _orsRouteWalk.value = _orsRoute.value
+            _orsRouteDataWalk.value = _orsRouteData.value
+
+            // Calcular bicicleta
+            getOrsRoute("cycling-regular", start, end)
+            delay(1000)
+            _orsRouteBike.value = _orsRoute.value
+            _orsRouteDataBike.value = _orsRouteData.value
+
+            // Calcular silla de ruedas
+            getOrsRoute("wheelchair", start, end)
+            delay(1000)
+            _orsRouteWheelchair.value = _orsRoute.value
+            _orsRouteDataWheelchair.value = _orsRouteData.value
+        }
+    }
+
+
 
     /**
      * Método usado para obtener la dirección de un LatLng
@@ -183,5 +261,6 @@ class TransportViewModel @Inject constructor(
             }
         }
     }
+
 
 }
