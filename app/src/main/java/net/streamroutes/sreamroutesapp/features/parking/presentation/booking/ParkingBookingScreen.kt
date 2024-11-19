@@ -35,6 +35,7 @@ import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,6 +50,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
@@ -76,8 +79,9 @@ fun ParkingBookingScreen(
         mutableStateOf(true)
     }
 
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(20.126856880277188, -101.19127471960047), 17f) // San Francisco como posición inicial
+
+    var cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
     }
 
     val sliderState = SliderState(
@@ -85,6 +89,10 @@ fun ParkingBookingScreen(
         steps = 10,
         valueRange = 1f..12f
     )
+
+    LaunchedEffect(Unit) {
+        isLoading = false
+    }
 
     var alertsState by remember {
         mutableStateOf(AlertsExpiration())
@@ -106,6 +114,9 @@ fun ParkingBookingScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
+            cameraPositionState = rememberCameraPositionState {
+                position = CameraPosition.fromLatLngZoom(LatLng(parkingLocation.latitude, parkingLocation.longitude), 17f)
+            }
             if(!isLoading) {
                 MapFullSize(
                     cameraPositionState = cameraPositionState,
@@ -117,7 +128,9 @@ fun ParkingBookingScreen(
                     },
                     modifier = Modifier.fillMaxWidth().fillMaxHeight(0.35f)
                 ) {
-
+                    Marker(
+                        state = MarkerState(parkingLocation)
+                    )
                 }
             } else {
                 Column(
