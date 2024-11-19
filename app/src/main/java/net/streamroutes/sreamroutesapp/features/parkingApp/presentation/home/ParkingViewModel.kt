@@ -45,7 +45,7 @@ class ParkingViewModel @Inject constructor(
     private val _selectedHistorical = MutableStateFlow<HistoricalParkingWithInfo?>(null)
     val selectedHistorical: StateFlow<HistoricalParkingWithInfo?> = _selectedHistorical
 
-    // Variable usada para guardar un historial seleccionado
+    // Variable usada para guardar una reservacion seleccionada
     private val _selectedReservation = MutableStateFlow<ReservationWithInfo?>(null)
     val selectedReservation: StateFlow<ReservationWithInfo?> = _selectedReservation
 

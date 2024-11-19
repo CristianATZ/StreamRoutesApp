@@ -148,13 +148,15 @@ fun ParkScreen(
                             ParkRouteScreen(
                                 onBackPressed = {
                                     onViewRoute = false
-                                }
+                                },
+                                parkingViewModel = parkingViewModel
                             )
                         } else {
                             reservations?.let {
                                 ParksList(
                                     reservations = it,
-                                    onWatchRoute = onWatchRoute
+                                    onWatchRoute = onWatchRoute,
+                                    parkingViewModel = parkingViewModel
                                 )
                             }
                         }

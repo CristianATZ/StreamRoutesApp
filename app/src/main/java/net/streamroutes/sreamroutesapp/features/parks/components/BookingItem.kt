@@ -1,6 +1,8 @@
 package net.streamroutes.sreamroutesapp.features.parks.components
 
+import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,6 +35,7 @@ import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkItem
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.LineInformation
 import net.streamroutes.sreamroutesapp.features.profile.components.ShimmerHistoryItem
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatTime
@@ -46,7 +49,8 @@ import java.time.LocalTime
 @Composable
 fun BookingItem(
     item: ReservationWithInfo,
-    onWatchRoute: () -> Unit
+    onWatchRoute: () -> Unit,
+    parkingViewModel: ParkingViewModel
 ) {
     val currentHour = LocalTime.now()
     var expectedDepartureHour = LocalTime.parse(item.reservation.hour)
@@ -196,7 +200,11 @@ fun BookingItem(
         //if (item.isReserved) {
             Row {
                 TextButton(
-                    onClick = onWatchRoute,
+                    onClick = {
+                        parkingViewModel.selectReservations(item)
+                        Log.d("reservation", parkingViewModel.selectedReservation.value.toString())
+                        onWatchRoute()
+                    },
                     shape = shapes.small,
                     modifier = Modifier.weight(1f)
                 ) {
