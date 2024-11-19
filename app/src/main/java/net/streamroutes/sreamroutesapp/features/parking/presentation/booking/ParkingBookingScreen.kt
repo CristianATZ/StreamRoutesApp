@@ -35,6 +35,7 @@ import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -52,6 +53,7 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
+import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
 
 data class AlertsExpiration(
     var fifteen: Boolean = false,
@@ -64,8 +66,12 @@ data class AlertsExpiration(
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingBookingScreen(
-    onBackPressed: () -> Unit = {}
+    onBackPressed: () -> Unit = {},
+    parkingViewModel: ParkingViewModel
 ) {
+    val selectedParking by parkingViewModel.selectedParking.collectAsState()
+    val parkingLocation = LatLng(selectedParking?.place?.latitude?.toDouble() ?: 0.0, selectedParking?.place?.longitude?.toDouble() ?: 0.0)
+
     var isLoading by remember {
         mutableStateOf(true)
     }
@@ -127,242 +133,265 @@ fun ParkingBookingScreen(
                 }
             }
 
-            Row(
-                modifier = Modifier.padding(vertical = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(Modifier.size(8.dp))
-
-                IconButton(
-                    onClick = onBackPressed,
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = colorScheme.background,
-                        contentColor = colorScheme.onBackground
-                    )
-                ) {
-                    Icon(imageVector = Icons.Outlined.ArrowBackIosNew, contentDescription = null)
-                }
-
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                        .background(Color.Black.copy(0.5f), shapes.extraLarge),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = "03:00",
-                        style = typography.labelLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = Color.White,
-                        modifier = Modifier.padding(8.dp)
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight(0.7f)
-                    .align(Alignment.BottomCenter)
-                    .background(colorScheme.background, RoundedCornerShape(topEnd = 28.dp, topStart = 28.dp))
-
-            ) {
-                Spacer(Modifier.size(16.dp))
-
-                ParkingDescription(
-                    name = "ITSUR",
-                    price = 39.0,
-                    address = "Padre Luis Gaytan #234"
-                )
-
-                Spacer(Modifier.size(32.dp))
+            if(selectedParking != null) {
 
                 Row(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
+                    modifier = Modifier.padding(vertical = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
-                        text = stringResource(R.string.lblHowMuchTime),
-                        style = typography.bodyLarge,
-                        fontWeight = FontWeight.Bold,
-                        modifier = Modifier.graphicsLayer(alpha = 0.5f).weight(0.75f)
+                    Spacer(Modifier.size(8.dp))
+
+                    IconButton(
+                        onClick = onBackPressed,
+                        colors = IconButtonDefaults.iconButtonColors(
+                            containerColor = colorScheme.background,
+                            contentColor = colorScheme.onBackground
+                        )
+                    ) {
+                        Icon(
+                            imageVector = Icons.Outlined.ArrowBackIosNew,
+                            contentDescription = null
+                        )
+                    }
+
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                            .background(Color.Black.copy(0.5f), shapes.extraLarge),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Text(
+                            text = "03:00",
+                            style = typography.labelLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White,
+                            modifier = Modifier.padding(8.dp)
+                        )
+                    }
+                }
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.7f)
+                        .align(Alignment.BottomCenter)
+                        .background(
+                            colorScheme.background,
+                            RoundedCornerShape(topEnd = 28.dp, topStart = 28.dp)
+                        )
+
+                ) {
+                    Spacer(Modifier.size(16.dp))
+
+                    val address =
+                        "${selectedParking?.place?.street}, ${selectedParking?.place?.suburb}, ${selectedParking?.place?.state}"
+                    ParkingDescription(
+                        name = selectedParking?.place?.name ?: "cargando...",
+                        price = selectedParking?.parking?.feePerHour,
+                        address = address
                     )
 
-                    Card (
+                    Spacer(Modifier.size(32.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(
+                            text = stringResource(R.string.lblHowMuchTime),
+                            style = typography.bodyLarge,
+                            fontWeight = FontWeight.Bold,
+                            modifier = Modifier.graphicsLayer(alpha = 0.5f).weight(0.75f)
+                        )
+
+                        Card(
+                            colors = CardDefaults.cardColors(
+                                containerColor = colorScheme.tertiaryContainer,
+                                contentColor = colorScheme.onTertiaryContainer
+                            ),
+                            modifier = Modifier
+                                .weight(0.25f)
+                                .height(50.dp)
+                        ) {
+                            Box(
+                                modifier = Modifier.fillMaxSize(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                Text(
+                                    text = stringResource(
+                                        R.string.lblForHour,
+                                        sliderState.value.toInt()
+                                    ),
+                                    style = typography.headlineSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = colorScheme.onTertiaryContainer
+                                )
+                            }
+                        }
+                    }
+
+                    Slider(
+                        state = sliderState,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    )
+
+                    Spacer(Modifier.size(16.dp))
+
+                    Text(
+                        text = stringResource(R.string.lblExpirationDate),
+                        style = typography.bodyLarge,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.graphicsLayer(alpha = 0.5f).padding(horizontal = 16.dp)
+                    )
+
+                    FlowRow(
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                        //.horizontalScroll(rememberScrollState())
+                    ) {
+
+                        FilterChip(
+                            selected = alertsState.fifteen,
+                            label = {
+                                Text(text = stringResource(R.string.lblFiteenMinutes))
+                            },
+                            onClick = {
+                                updateAlerState(
+                                    alertsState.copy(fifteen = !alertsState.fifteen)
+                                )
+                            }
+                        )
+
+                        Spacer(Modifier.size(8.dp))
+
+                        FilterChip(
+                            selected = alertsState.thirteen,
+                            label = {
+                                Text(text = stringResource(R.string.lblThirteenMinutes))
+                            },
+                            onClick = {
+                                updateAlerState(
+                                    alertsState.copy(thirteen = !alertsState.thirteen)
+                                )
+                            }
+                        )
+
+                        Spacer(Modifier.size(8.dp))
+
+                        FilterChip(
+                            selected = alertsState.fortyFive,
+                            label = {
+                                Text(text = stringResource(R.string.lblFortyFiveMinutes))
+                            },
+                            onClick = {
+                                updateAlerState(
+                                    alertsState.copy(fortyFive = !alertsState.fortyFive)
+                                )
+                            }
+                        )
+
+                        Spacer(Modifier.size(8.dp))
+
+                        FilterChip(
+                            selected = alertsState.oneHour,
+                            label = {
+                                Text(text = stringResource(R.string.lblOneHour))
+                            },
+                            onClick = {
+                                updateAlerState(
+                                    alertsState.copy(oneHour = !alertsState.oneHour)
+                                )
+                            }
+                        )
+
+                        Spacer(Modifier.size(8.dp))
+
+                        FilterChip(
+                            selected = alertsState.twoHour,
+                            label = {
+                                Text(text = stringResource(R.string.lblTwoHours))
+                            },
+                            onClick = {
+                                updateAlerState(
+                                    alertsState.copy(twoHour = !alertsState.twoHour)
+                                )
+                            }
+                        )
+                    }
+
+                    Spacer(Modifier.size(32.dp))
+
+                    // total y cantidad de horas
+                    Card(
                         colors = CardDefaults.cardColors(
                             containerColor = colorScheme.tertiaryContainer,
                             contentColor = colorScheme.onTertiaryContainer
                         ),
                         modifier = Modifier
-                            .weight(0.25f)
-                            .height(50.dp)
+                            .padding(horizontal = 16.dp)
                     ) {
-                        Box(
-                            modifier = Modifier.fillMaxSize(),
-                            contentAlignment = Alignment.Center
+                        Row(
+                            modifier = Modifier
+                                .padding(vertical = 8.dp)
+                                .fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.Center
                         ) {
+                            val total =
+                                selectedParking?.parking?.feePerHour?.times(sliderState.value.toInt())
+                                    ?: 0
+                            //val total = selectedReservation?.parking?.feePerHour?.times(sliderState.value.toInt())
+                            //val roundedTotal = String.format("%.2f", total).toDouble()
+
                             Text(
-                                text = stringResource(R.string.lblForHour, sliderState.value.toInt()),
-                                style = typography.headlineSmall,
-                                fontWeight = FontWeight.Bold,
-                                color = colorScheme.onTertiaryContainer
+                                text = stringResource(id = R.string.lblPrice, total),
+                                style = typography.displayMedium
+                            )
+
+                            Spacer(modifier = Modifier.size(8.dp))
+
+                            Text(
+                                text = stringResource(
+                                    id = R.string.lblTimeHours,
+                                    sliderState.value.toInt()
+                                ),
+                                style = typography.bodyLarge
                             )
                         }
                     }
-                }
 
-                Slider(
-                    state = sliderState,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                )
+                    Spacer(Modifier.weight(1f))
 
-                Spacer(Modifier.size(16.dp))
-
-                Text(
-                    text = stringResource(R.string.lblExpirationDate),
-                    style = typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.graphicsLayer(alpha = 0.5f).padding(horizontal = 16.dp)
-                )
-
-                FlowRow(
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                        //.horizontalScroll(rememberScrollState())
-                ) {
-
-                    FilterChip(
-                        selected = alertsState.fifteen,
-                        label = {
-                            Text(text = stringResource(R.string.lblFiteenMinutes))
-                        },
-                        onClick = {
-                            updateAlerState(
-                                alertsState.copy(fifteen = !alertsState.fifteen)
-                            )
-                        }
-                    )
-
-                    Spacer(Modifier.size(8.dp))
-
-                    FilterChip(
-                        selected = alertsState.thirteen,
-                        label = {
-                            Text(text = stringResource(R.string.lblThirteenMinutes))
-                        },
-                        onClick = {
-                            updateAlerState(
-                                alertsState.copy(thirteen = !alertsState.thirteen)
-                            )
-                        }
-                    )
-
-                    Spacer(Modifier.size(8.dp))
-
-                    FilterChip(
-                        selected = alertsState.fortyFive,
-                        label = {
-                            Text(text = stringResource(R.string.lblFortyFiveMinutes))
-                        },
-                        onClick = {
-                            updateAlerState(
-                                alertsState.copy(fortyFive = !alertsState.fortyFive)
-                            )
-                        }
-                    )
-
-                    Spacer(Modifier.size(8.dp))
-
-                    FilterChip(
-                        selected = alertsState.oneHour,
-                        label = {
-                            Text(text = stringResource(R.string.lblOneHour))
-                        },
-                        onClick = {
-                            updateAlerState(
-                                alertsState.copy(oneHour = !alertsState.oneHour)
-                            )
-                        }
-                    )
-
-                    Spacer(Modifier.size(8.dp))
-
-                    FilterChip(
-                        selected = alertsState.twoHour,
-                        label = {
-                            Text(text = stringResource(R.string.lblTwoHours))
-                        },
-                        onClick = {
-                            updateAlerState(
-                                alertsState.copy(twoHour = !alertsState.twoHour)
-                            )
-                        }
-                    )
-                }
-
-                Spacer(Modifier.size(32.dp))
-
-                // total y cantidad de horas
-                Card(
-                    colors = CardDefaults.cardColors(
-                        containerColor = colorScheme.tertiaryContainer,
-                        contentColor = colorScheme.onTertiaryContainer
-                    ),
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                ) {
-                    Row(
+                    TextButton(
+                        onClick = onBackPressed,
+                        shape = shapes.small,
                         modifier = Modifier
-                            .padding(vertical = 8.dp)
-                            .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Center
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
                     ) {
-                        Text(
-                            text = stringResource(id = R.string.lblPrice, "600"),
-                            style = typography.displayMedium
-                        )
-
-                        Spacer(modifier = Modifier.size(8.dp))
-
-                        Text(
-                            text = stringResource(id = R.string.lblTimeHours, "60"),
-                            style = typography.bodyLarge
-                        )
+                        Text(text = stringResource(R.string.btnCancel))
                     }
+
+                    // apartar lugar
+                    Button(
+                        onClick = {
+                            onBookPressed()
+                        },
+                        shape = shapes.small,
+                        modifier = Modifier
+                            .padding(horizontal = 16.dp)
+                            .fillMaxWidth()
+                    ) {
+                        Text(text = stringResource(R.string.btnBooking))
+                    }
+
+                    Spacer(Modifier.size(16.dp))
                 }
-
-                Spacer(Modifier.weight(1f))
-
-                TextButton(
-                    onClick = onBackPressed,
-                    shape = shapes.small,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(text = stringResource(R.string.btnCancel))
-                }
-
-                // apartar lugar
-                Button(
-                    onClick = {
-                        onBookPressed()
-                    },
-                    shape = shapes.small,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .fillMaxWidth()
-                ) {
-                    Text(text = stringResource(R.string.btnBooking))
-                }
-
-                Spacer(Modifier.size(16.dp))
             }
         }
     }

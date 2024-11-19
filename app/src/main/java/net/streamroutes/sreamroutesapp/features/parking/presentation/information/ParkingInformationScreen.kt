@@ -63,7 +63,7 @@ fun ParkingInformationScreen(
     onBackPressed: () -> Unit = {},
     onBookingPressed: () -> Unit,
     onSelectPressed: () -> Unit,
-    parkingViewModel: ParkingViewModel = hiltViewModel()
+    parkingViewModel: ParkingViewModel
 ) {
 
     val selectedParking by parkingViewModel.selectedParking.collectAsState()
@@ -342,7 +342,10 @@ fun ParkingInformationScreen(
                 if(!isLoading) {
                     // boton de apartar espacio
                     OutlinedButton(
-                        onClick = onBookingPressed,
+                        onClick = {
+                            selectedParking?.let { parkingViewModel.selectParking(it) }
+                            onBookingPressed()
+                        } ,
                         shape = shapes.small,
                         modifier = Modifier
                             .padding(horizontal = 16.dp)

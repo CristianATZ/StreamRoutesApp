@@ -105,7 +105,8 @@ fun SubParkingNavigation(
             ParkingBookingScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
-                }
+                },
+                parkingViewModel = parkingViewModel
             )
         }
 
