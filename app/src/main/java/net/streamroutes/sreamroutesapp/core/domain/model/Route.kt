@@ -7,5 +7,6 @@ data class Route(
     val arriveTime: Int = 0,        // Tiempo esperado de llegada
     val noStops: Int = 0,           // Número de paradas
     val time: Int = 0,              // Duración de la ruta
-    val turisticPoints: List<String> = emptyList()
+    val turisticPoints: List<String> = emptyList(),
+    val imageUrl: String = ""
 )
