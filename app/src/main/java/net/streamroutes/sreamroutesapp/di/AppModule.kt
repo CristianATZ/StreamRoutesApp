@@ -1,11 +1,15 @@
 package net.streamroutes.sreamroutesapp.di
 
+import android.content.Context
+import androidx.room.Room
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import net.streamroutes.sreamroutesapp.core.data.local.dao.PostDao
+import net.streamroutes.sreamroutesapp.core.data.local.database.LocalDatabase
 import net.streamroutes.sreamroutesapp.core.domain.network.OpenRouteServiceApi
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -39,5 +43,22 @@ object AppModule {
     @Singleton
     fun provideOpenRouteServiceApi(retrofit: Retrofit): OpenRouteServiceApi {
         return retrofit.create(OpenRouteServiceApi::class.java)
+    }
+
+
+    // Inyección de dependencias de room
+    @Provides
+    @Singleton
+    fun provideLocalDatabase(context: Context): LocalDatabase {
+        return Room.databaseBuilder(
+            context,
+            LocalDatabase::class.java,
+            "local_database"
+        ).build()
+    }
+
+    @Provides
+    fun providePostDao(database: LocalDatabase): PostDao {
+        return database.postDao()
     }
 }
