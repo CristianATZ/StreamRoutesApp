@@ -54,9 +54,12 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationParking
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 data class AlertsExpiration(
     var fifteen: Boolean = false,
@@ -98,12 +101,14 @@ fun ParkingBookingScreen(
         mutableStateOf(AlertsExpiration())
     }
 
+    var total = 0.0
+
     fun updateAlerState(x: AlertsExpiration) {
         alertsState = x
     }
 
     val onBookPressed = {
-
+        
     }
 
     Scaffold(
@@ -355,14 +360,14 @@ fun ParkingBookingScreen(
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
-                            val total =
-                                selectedParking?.parking?.feePerHour?.times(sliderState.value.toInt())
-                                    ?: 0
+                            total =
+                                (selectedParking?.parking?.feePerHour?.times(sliderState.value.toInt())
+                                    ?: 0) as Double
                             //val total = selectedReservation?.parking?.feePerHour?.times(sliderState.value.toInt())
                             //val roundedTotal = String.format("%.2f", total).toDouble()
 
                             Text(
-                                text = stringResource(id = R.string.lblPrice, total),
+                                text = stringResource(id = R.string.lblPrice, String.format("%.2f", total.toDouble())),
                                 style = typography.displayMedium
                             )
 
@@ -393,6 +398,27 @@ fun ParkingBookingScreen(
                     // apartar lugar
                     Button(
                         onClick = {
+                            val currentDateTime = LocalDateTime.now()
+
+                            // Formateador para la fecha (AAAA-MM-DD)
+                            val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                            val currentDate = currentDateTime.format(dateFormatter)
+
+                            // Formateador para la hora (HH:mm:ss)
+                            val timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss")
+                            val currentTime = currentDateTime.format(timeFormatter)
+
+                            parkingViewModel.createReservation(
+                                ReservationParking(
+                                    amount = total,
+                                    date = currentDate,
+                                    hour = currentTime,
+                                    idParking = selectedParking?.parking?.idParking ?: "",
+                                    incomingAlertInMinutes = 45,
+                                    reservationHours = sliderState.value.toInt(),
+                                    typeVehicle = 2
+                                )
+                            )
                             onBookPressed()
                         },
                         shape = shapes.small,

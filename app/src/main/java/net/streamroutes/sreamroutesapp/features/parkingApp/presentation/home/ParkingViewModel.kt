@@ -49,6 +49,10 @@ class ParkingViewModel @Inject constructor(
     private val _selectedReservation = MutableStateFlow<ReservationWithInfo?>(null)
     val selectedReservation: StateFlow<ReservationWithInfo?> = _selectedReservation
 
+    // Variable usada para saber si se creo una reservacion
+    private val _createdReservation = MutableStateFlow<Boolean?>(null)
+    val createdReservation: StateFlow<Boolean?> = _createdReservation
+
 
     init {
         getAllParkings()
@@ -125,5 +129,26 @@ class ParkingViewModel @Inject constructor(
      */
     fun selectHistoricalParking(historicalParking: HistoricalParkingWithInfo){
         _selectedHistorical.value = historicalParking
+    }
+
+
+    /**
+     * Método usado para crear una reservación
+     */
+    fun createReservation(reservation: ReservationParking){
+        viewModelScope.launch {
+            val currentUser = userRepository.getCurrentUser()
+            if(currentUser != null){
+                reservation.idUser = currentUser.uid
+                _createdReservation.value = parkingRepository.createReservation(reservation)
+                if(_createdReservation.value == true){
+                    getReservationsByUser()
+                } else {
+                    _createdReservation.value = false
+                }
+            } else {
+                _createdReservation.value = false
+            }
+        }
     }
 }

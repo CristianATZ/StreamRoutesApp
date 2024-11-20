@@ -12,6 +12,7 @@ import net.streamroutes.sreamroutesapp.core.domain.model.Service
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlin.random.Random
 
 @Singleton
 class ParkingRepository @Inject constructor(
@@ -163,6 +164,28 @@ class ParkingRepository @Inject constructor(
             println("Error: ${e.message}")
             emptyList()
         }
+    }
+
+
+    /**
+     * Método usado para crear una reservación
+     */
+    suspend fun createReservation(reservation: ReservationParking): Boolean {
+        return try {
+            val newReservation = db.collection("reservationParkings").document()
+            reservation.reference = generateReference()
+            newReservation.set(reservation).await()
+            true
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+            false
+        }
+    }
+
+
+    private fun generateReference(): String {
+        val randomDigits = Random.nextInt(0, 10000).toString().padStart(4, '0')
+        return "RES-${randomDigits}"
     }
 }
 

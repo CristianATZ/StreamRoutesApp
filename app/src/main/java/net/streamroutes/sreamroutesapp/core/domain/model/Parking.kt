@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class Parking(
+    val idParking: String = "",     // ID del parking
     val idPlace: String = "",       // ID de lugar
     val feePerHour: Double = 0.0,   // Tarifa por hora
     val rating: Double = 0.0,       // Calificación del 0.0 - 5.0
