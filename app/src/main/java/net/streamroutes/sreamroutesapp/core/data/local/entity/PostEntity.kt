@@ -5,13 +5,13 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "posts")
 data class PostEntity(
-    @PrimaryKey val idPost: String,
-    val idUser: String,
-    val description: String,
-    val date: String,
-    val hour: String,
-    val totalComments: Int,
-    val likes: Int
+    @PrimaryKey val idPost: String = "",
+    val idUser: String = "",
+    val date: String = "",
+    val hour: String = "",
+    val description: String = "",
+    val likes: Int = 0,
+    val totalComments: Int = 0
 )
 
 @Entity(tableName = "users")

@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.streamroutes.sreamroutesapp.core.data.local.dao.PostDao
 import net.streamroutes.sreamroutesapp.core.data.local.database.LocalDatabase
@@ -49,7 +50,7 @@ object AppModule {
     // Inyección de dependencias de room
     @Provides
     @Singleton
-    fun provideLocalDatabase(context: Context): LocalDatabase {
+    fun provideLocalDatabase(@ApplicationContext context: Context): LocalDatabase {
         return Room.databaseBuilder(
             context,
             LocalDatabase::class.java,

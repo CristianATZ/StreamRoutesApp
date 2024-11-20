@@ -3,7 +3,10 @@ package net.streamroutes.sreamroutesapp.core.data.repository
 import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
+import net.streamroutes.sreamroutesapp.core.data.local.dao.PostDao
+import net.streamroutes.sreamroutesapp.core.data.local.entity.PostEntity
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
 import net.streamroutes.sreamroutesapp.core.domain.model.User
@@ -16,7 +19,8 @@ import javax.inject.Singleton
 
 @Singleton
 class ForumRepository @Inject constructor(
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    private val postDao: PostDao
 ) {
     /**
      * Método usado paa obtener todos los posts de todos los usuarios
@@ -40,15 +44,23 @@ class ForumRepository @Inject constructor(
                 }
             }
 
-            //Log.d("post_repository", posts.toString())
+            // GUARDADO EN ROOM
+            val postsRoom = postsDocs.map { document ->
+                document.toObject(PostEntity::class.java)
+            }
+            postsRoom.forEach { postDao.insertPost(it) }
+
             return posts.sortedByDescending {
                 LocalDateTime.of(LocalDate.parse(it.post.date), LocalTime.parse(it.post.hour))
             }
+
         } catch (e: Exception) {
             //Log.d("user_repo", "Error: ${e.message}")
             println("Error: ${e.message}")
             emptyList()
         }
+
+
     }
 
 
