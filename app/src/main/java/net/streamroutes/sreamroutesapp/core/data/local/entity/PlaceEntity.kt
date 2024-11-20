@@ -1,7 +1,11 @@
-package net.streamroutes.sreamroutesapp.core.domain.model
+package net.streamroutes.sreamroutesapp.core.data.local.entity
 
-data class Place(
-    val idPlace: String = "",
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "places")
+data class PlaceEntity (
+    @PrimaryKey val idPlace: String = "",
     val name: String = "",          // Nombre
     val latitude: String = "",      // Latitud
     val longitude: String = "",     // Longitud
@@ -10,6 +14,3 @@ data class Place(
     val suburb: String = "",        // Colonia
     val type: Int = 0               // *Tipo de lugar
 )
-
-// --- NOTAS ----
-// * type: 1 para lugares generales, 2 para estacionamientos
