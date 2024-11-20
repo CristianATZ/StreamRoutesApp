@@ -1,5 +1,6 @@
 package net.streamroutes.sreamroutesapp.features.parking.presentation.booking
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,7 +36,6 @@ import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -69,22 +69,19 @@ data class AlertsExpiration(
     var twoHour: Boolean = false
 )
 
+@SuppressLint("DefaultLocale")
 @OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun ParkingBookingScreen(
     onBackPressed: () -> Unit = {},
-    parkingViewModel: ParkingViewModel
+    parkingViewModel: ParkingViewModel,
+    onBookingPressed: () -> Unit
 ) {
     val selectedParking by parkingViewModel.selectedParking.collectAsState()
     val parkingLocation = LatLng(selectedParking?.place?.latitude?.toDouble() ?: 0.0, selectedParking?.place?.longitude?.toDouble() ?: 0.0)
 
-    var isLoading by remember {
-        mutableStateOf(true)
-    }
-
-
-    var cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(LatLng(21.017917732561727, -101.25808073954296), 17f) // San Francisco como posición inicial
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(LatLng(parkingLocation.latitude, parkingLocation.longitude), 17f)
     }
 
     val sliderState = SliderState(
@@ -92,10 +89,6 @@ fun ParkingBookingScreen(
         steps = 10,
         valueRange = 1f..12f
     )
-
-    LaunchedEffect(Unit) {
-        isLoading = false
-    }
 
     var alertsState by remember {
         mutableStateOf(AlertsExpiration())
@@ -107,22 +100,13 @@ fun ParkingBookingScreen(
         alertsState = x
     }
 
-    val onBookPressed = {
-
-    }
-
-    Scaffold(
-
-    ) { innerPadding ->
+    Scaffold { innerPadding ->
         Box(
             modifier = Modifier
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(LatLng(parkingLocation.latitude, parkingLocation.longitude), 17f)
-            }
-            if(!isLoading) {
+            if(selectedParking != null) {
                 MapFullSize(
                     cameraPositionState = cameraPositionState,
                     onMapClick = {
@@ -367,7 +351,7 @@ fun ParkingBookingScreen(
                             //val roundedTotal = String.format("%.2f", total).toDouble()
 
                             Text(
-                                text = stringResource(id = R.string.lblPrice, String.format("%.2f", total.toDouble())),
+                                text = stringResource(id = R.string.lblPrice, String.format("%.2f", total)),
                                 style = typography.displayMedium
                             )
 
@@ -419,7 +403,7 @@ fun ParkingBookingScreen(
                                     typeVehicle = 2
                                 )
                             )
-                            onBookPressed()
+                            onBookingPressed()
                         },
                         shape = shapes.small,
                         modifier = Modifier

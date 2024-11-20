@@ -125,10 +125,6 @@ fun ParkingHomeScreen(
     val currentUser by profileViewModel.userData.collectAsState()
     val parkings by parkingViewModel.parkings.collectAsState()
 
-    var isLoading by remember {
-        mutableStateOf(true)
-    }
-
     var query by remember {
         mutableStateOf("")
     }
@@ -171,10 +167,6 @@ fun ParkingHomeScreen(
         ParkingCategory(stringResource(R.string.lblBus), Icons.Outlined.DirectionsBus, CategoryVehicle.BUS) { categoryVehicle = CategoryVehicle.BUS},
     )
 
-    if(!parkings.isNullOrEmpty()){
-        isLoading = false
-    }
-
     Scaffold(
         topBar = {
             ParkingSmallTopAppBar(
@@ -188,7 +180,7 @@ fun ParkingHomeScreen(
             )
         }
     ) { innerPadding ->
-        if(!isLoading) {
+        if(parkings != null) {
             Column(
                 modifier = Modifier
                     .padding(innerPadding)

@@ -58,50 +58,11 @@ fun ParkScreen(
     val coroutine = rememberCoroutineScope()
 
 
-    var isLoading by remember {
-        mutableStateOf(true)
-    }
-
     LaunchedEffect(Unit) {
         coroutine.launch {
             parkingViewModel.getReservationsByUser()
-            isLoading = false
         }
     }
-
-    // ontener lista
-    /*
-    val bookingList = listOf(
-        ParkItem(
-            parkingName = "Estacionamiento Central",
-            parkingAddress = "Calle Principal 123, Guanajuato",
-            price = 20.0,
-            total = 100.0,
-            isReserved = true,
-            reference = "REF123456",
-            from = "08:00",
-            until = "14:00",
-            category = "Carro",
-            timeReserverd = "3",
-            enter = "11:00:40",
-            exit = "14:00:20"
-        ),
-        ParkItem(
-            parkingName = "Estacionamiento Norte",
-            parkingAddress = "Avenida Hidalgo 456, Guanajuato",
-            price = 15.0,
-            total = 75.0,
-            isReserved = false,
-            reference = "REF789012",
-            from = "",
-            until = ")",
-            category = "Privado",
-            timeReserverd = "",
-            enter = "09:30:12",
-            exit = "12:30:20"
-        )
-    )
-     */
     
     var onViewRoute by remember { mutableStateOf(false) }
 
@@ -121,7 +82,7 @@ fun ParkScreen(
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            if(!isLoading) {
+            if(reservations != null) {
                 if(reservations?.isEmpty() == true) {
                     NoParks()
                 } else {
