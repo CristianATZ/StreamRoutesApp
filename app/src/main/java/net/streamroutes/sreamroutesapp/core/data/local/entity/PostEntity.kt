@@ -14,9 +14,3 @@ data class PostEntity(
     val totalComments: Int = 0
 )
 
-@Entity(tableName = "users")
-data class UserEntity(
-    @PrimaryKey val idUser: String,
-    val name: String,
-    val email: String
-)
