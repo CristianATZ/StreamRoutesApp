@@ -8,7 +8,8 @@ data class Place(
     val state: String = "",         // Estado
     val street: String = "",        // Calle
     val suburb: String = "",        // Colonia
-    val type: Int = 0               // *Tipo de lugar
+    val type: Int = 0,              // *Tipo de lugar
+    val imageUrl: String = ""        // Url de la imagen
 )
 
 // --- NOTAS ----
