@@ -23,15 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.compose.orange
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 
-@Preview(showBackground = true)
 @Composable
 fun ElementOption(
     // imagen: aqui
@@ -40,7 +41,8 @@ fun ElementOption(
     time: Int = 0,
     price: String? = null,
     calification: String? = null,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    url: String
 ) {
     Column(
         modifier = Modifier
@@ -57,10 +59,14 @@ fun ElementOption(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(150.dp)
-                .background(colorScheme.surfaceContainerHighest, shapes.large)
+                .height(175.dp)
+                .clip(shapes.small)
         ) {
-
+            AsyncImage(
+                model = url,
+                contentScale = ContentScale.FillBounds,
+                contentDescription = null
+            )
         }
 
         Row {

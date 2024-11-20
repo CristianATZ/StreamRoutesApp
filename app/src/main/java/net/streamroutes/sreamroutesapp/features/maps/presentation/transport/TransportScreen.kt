@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
@@ -170,7 +169,8 @@ fun TransportScreen(
                         isOpen = !isOpen
                     },
                     title = route.route.name,
-                    time = route.route.arriveTime
+                    time = route.route.arriveTime,
+                    url = route.route.imageUrl
                 )
                 Spacer(Modifier.size(16.dp))
             }

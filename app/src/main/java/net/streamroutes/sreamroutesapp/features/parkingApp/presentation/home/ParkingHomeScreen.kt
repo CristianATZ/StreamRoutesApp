@@ -65,7 +65,6 @@ import net.streamroutes.sreamroutesapp.features.parkingApp.components.CategoryIt
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingDrawerContent
 import net.streamroutes.sreamroutesapp.features.parkingApp.components.ParkingSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.ProfileViewModel
-import kotlin.math.log
 
 @Composable
 fun ParkingMain(
@@ -402,7 +401,8 @@ fun ParkingHomeScreen(
                             onClick = {
                                 parkingViewModel.selectParking(parking)
                                 onSelectParking()
-                            }
+                            },
+                            url = parking.place.imageUrl
                         )
                     }
                 }

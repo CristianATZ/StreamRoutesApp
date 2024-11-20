@@ -34,7 +34,6 @@ import net.streamroutes.sreamroutesapp.features.components.MapAllOptions
 import net.streamroutes.sreamroutesapp.features.components.ShimmerMapAllOptions
 import net.streamroutes.sreamroutesapp.features.maps.components.ElementOption
 import net.streamroutes.sreamroutesapp.features.maps.components.ShimmerElementOption
-import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismModalBottomSheet
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,7 +142,7 @@ fun TourismListScreen(
 
 
             items(turisticPoints ?: emptyList()) { turisticPoint ->
-                val nextStopTime = turisticPoint?.turisticPoint?.nextStop ?: 0
+                val nextStopTime = turisticPoint.turisticPoint.nextStop
                 ElementOption(
                     title = turisticPoint.place.name,
                     description = stringResource(id = R.string.lblTimeNextStop, nextStopTime),
@@ -152,7 +151,8 @@ fun TourismListScreen(
                         //selectedTp = turisticPoint
                         tourismViewModel.selectTPRoute(turisticPoint)
                         isOpen = !isOpen
-                    }
+                    },
+                    url = turisticPoint.place.imageUrl
                 )
 
                 Spacer(modifier = Modifier.size(16.dp))
