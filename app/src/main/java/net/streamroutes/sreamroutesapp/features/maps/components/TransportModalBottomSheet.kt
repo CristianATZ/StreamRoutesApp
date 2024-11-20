@@ -137,18 +137,10 @@ fun TransportModalBottomSheetContent(
         LazyRow(
             contentPadding = PaddingValues(16.dp)
         ) {
-            /*
-            items(routeInformation.officialStops) {
-                CardOption(
-                    modifier = Modifier.size(200.dp)
-                )
-
-                Spacer(modifier = Modifier.size(16.dp))
-            }*/
             items(selectedRoute?.turisticPoint ?: emptyList()){ place ->
                 CardOption(
                     modifier = Modifier.size(200.dp),
-                    url = "",
+                    url = place.imageUrl,
                     text = place.name
                 )
                 Spacer(modifier = Modifier.size(16.dp))
