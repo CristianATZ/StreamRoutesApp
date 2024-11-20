@@ -70,9 +70,9 @@ fun LoginScreen(
     loginResult?.let { success ->
         LaunchedEffect(success) {
             if (success) {
-                Toast.makeText(context, "USUARIO AUTENTICADO ORA VALEEEEE", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Usuario autenticado. Bienvenido.", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(context, "NO SE PUDO INICIAR SESION VALE", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "NO fue posible iniciar sesión. Ingresa las credenciales correctas.", Toast.LENGTH_SHORT).show()
             }
         }
     }

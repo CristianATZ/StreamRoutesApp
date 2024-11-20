@@ -11,5 +11,4 @@ data class Parking(
     val closeHour: String = "",     // Hora de cierre
     val description: String = "",   // Descripción del estacionamiento
     val currentEntrances: Int = 0,  // Cantidad actual de espacios ocupados
-    val imageUrl: String = ""
 )
