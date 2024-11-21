@@ -2,6 +2,7 @@ package net.streamroutes.sreamroutesapp.features.forum.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -102,6 +103,29 @@ class ForumViewModel @Inject constructor(
     fun getCommentsByPost(){
         viewModelScope.launch {
             _comments.value = selectedPost.value?.post?.let { forumRepository.getCommentsByPost(it.idPost) }
+        }
+    }
+
+
+    /**
+     * Método usado para obtener todos los posts guardados localmentre
+     * en el dispositivo
+     */
+    fun getAllPostsLocal(){
+        viewModelScope.launch {
+            _posts.value = forumRepository.getAllPostsLocal()
+        }
+    }
+
+
+    /**
+     * Método usado para saber guardar un post en Room
+     */
+    fun savePost(){
+        viewModelScope.launch {
+            if(_selectedPost.value != null){
+                forumRepository.savePost(_selectedPost.value!!)
+            }
         }
     }
 }

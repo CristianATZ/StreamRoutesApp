@@ -11,6 +11,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,8 +45,14 @@ fun SavedPostScreen(
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
 
+    LaunchedEffect(Unit) {
+        forumViewModel.getAllPostsLocal()
+    }
+
+    val posts by forumViewModel.posts.collectAsState()
 
     // ELIMINAR ESTAS LISTAS
+    /*
     val samplePostTemps = listOf(
         PostTemp(
             postId = "001",
@@ -150,6 +158,7 @@ fun SavedPostScreen(
             commentDate = LocalDateTime.of(2023, 7, 1, 12, 0),
         )
     )
+     */
 
     var isOpen by remember {
         mutableStateOf(false)
@@ -180,32 +189,36 @@ fun SavedPostScreen(
             )
         }
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            item {
-                Text(
-                    text = stringResource(id = R.string.lblPostSavedAmount, sampleComments.size),
-                    style = typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth()
-                        .graphicsLayer(alpha = 0.5f)
-                )
-            }
+        if(posts != null){
+            LazyColumn(
+                modifier = Modifier
+                    .padding(it)
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                item {
+                    Text(
+                        text = stringResource(id = R.string.lblPostSavedAmount, posts?.size ?: 0),
+                        style = typography.bodyMedium,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .padding(16.dp)
+                            .fillMaxWidth()
+                            .graphicsLayer(alpha = 0.5f)
+                    )
+                }
 
-            /*
-            items(samplePostTemps) { post ->
-                PostItem(
-                    post = post,
-                    isSaved = true,
-                    onCommentPressed = openBottomSheet
-                )
-            }*/
+                items(posts!!) { post ->
+                    PostItem(
+                        post = post,
+                        isSaved = true,
+                        onCommentPressed = openBottomSheet
+                    )
+                }
+            }
+        } else {
+            Text("cargando...")
         }
+
     }
 }

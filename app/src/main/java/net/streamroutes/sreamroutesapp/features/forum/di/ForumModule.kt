@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.streamroutes.sreamroutesapp.core.data.local.dao.PostDao
+import net.streamroutes.sreamroutesapp.core.data.local.dao.UserDao
 import net.streamroutes.sreamroutesapp.core.data.local.database.LocalDatabase
 import net.streamroutes.sreamroutesapp.core.data.repository.ForumRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
@@ -20,8 +21,8 @@ import javax.inject.Singleton
 object ForumModule {
     @Singleton
     @Provides
-    fun provideForumRepository(db: FirebaseFirestore, postDao: PostDao) : ForumRepository {
-        return ForumRepository(db, postDao)
+    fun provideForumRepository(db: FirebaseFirestore, postDao: PostDao, userDao: UserDao) : ForumRepository {
+        return ForumRepository(db, postDao, userDao)
     }
 
 }

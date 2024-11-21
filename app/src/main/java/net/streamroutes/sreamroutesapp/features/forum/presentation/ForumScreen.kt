@@ -63,6 +63,7 @@ fun ForumScreen(
     profileViewModel: ProfileViewModel
 ) {
     val currentUser by profileViewModel.userData.collectAsState()
+    val selectedPost by forumViewModel.selectedPost.collectAsState()
 
     var seeComments by remember {
         mutableStateOf(false)
@@ -103,6 +104,7 @@ fun ForumScreen(
     }
     val onSavePost = {
         // GUARDAR PUBLICACION EN ROOM
+        forumViewModel.savePost()
     }
     val onHidePost = {
         // OCULTAR EN FIREABSE
@@ -168,7 +170,8 @@ fun ForumScreen(
                 onDismiss = openMoreBottomSheet,
                 onSavePressed = onSavePost,
                 onHidePost = onHidePost,
-                info = it
+                info = it,
+                forumViewModel = forumViewModel
             )
         }
     }
@@ -377,6 +380,7 @@ fun ForumScreenContent(
                         val localHour = LocalTime.parse(post.post.hour)
                         val localDateTime = LocalDateTime.of(localDate, localHour)
                         updateMoreSelect(Pair(post.user.username, localDateTime))
+                        forumViewModel.selectPost(post)
                         openMoreBottomSheet()
                     }
                 )

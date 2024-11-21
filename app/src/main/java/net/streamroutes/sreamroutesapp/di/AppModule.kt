@@ -10,6 +10,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import net.streamroutes.sreamroutesapp.core.data.local.dao.PostDao
+import net.streamroutes.sreamroutesapp.core.data.local.dao.UserDao
 import net.streamroutes.sreamroutesapp.core.data.local.database.LocalDatabase
 import net.streamroutes.sreamroutesapp.core.domain.network.OpenRouteServiceApi
 import retrofit2.Retrofit
@@ -61,5 +62,10 @@ object AppModule {
     @Provides
     fun providePostDao(database: LocalDatabase): PostDao {
         return database.postDao()
+    }
+
+    @Provides
+    fun provideUserDao(database: LocalDatabase): UserDao {
+        return database.userDao()
     }
 }

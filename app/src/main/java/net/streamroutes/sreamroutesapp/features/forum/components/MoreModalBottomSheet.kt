@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel
 import net.streamroutes.sreamroutesapp.utils.DateUtils
 import java.time.LocalDateTime
 
@@ -36,7 +37,8 @@ fun MoreModalBottomSheet(
     onDismiss: () -> Unit,
     onSavePressed: () -> Unit,
     onHidePost: () -> Unit,
-    info: Pair<String, LocalDateTime>
+    info: Pair<String, LocalDateTime>,
+    forumViewModel: ForumViewModel
 ) {
     ModalBottomSheet(
         sheetState = sheetState,
