@@ -395,7 +395,7 @@ fun ParkingHomeScreen(
                     items(parkings!!) { parking ->
                         ElementOption(
                             title = parking.place.name,
-                            description = parking.parking.description,
+                            description = "${parking.place.street}, ${parking.place.suburb}, ${parking.place.state}",
                             price = parking.parking.feePerHour.toString(),
                             calification = parking.parking.rating.toString(),
                             onClick = {
