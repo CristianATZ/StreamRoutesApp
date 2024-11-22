@@ -2,6 +2,11 @@ package net.streamroutes.sreamroutesapp.core.data.repository
 
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
+import net.streamroutes.sreamroutesapp.core.data.local.dao.PlaceDao
+import net.streamroutes.sreamroutesapp.core.data.local.dao.RouteDao
+import net.streamroutes.sreamroutesapp.core.data.local.dao.UserDao
+import net.streamroutes.sreamroutesapp.core.data.local.entity.PlaceEntity
+import net.streamroutes.sreamroutesapp.core.data.local.entity.RouteEntity
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.Route
 import javax.inject.Inject
@@ -9,7 +14,9 @@ import javax.inject.Singleton
 
 @Singleton
 class RouteRepository @Inject constructor(
-    private val db: FirebaseFirestore
+    private val db: FirebaseFirestore,
+    private val routeDao: RouteDao,
+    private val placeDao: PlaceDao
 ) {
     /**
      * Método usado para obtener todas las rutas de transporte público
@@ -93,6 +100,126 @@ class RouteRepository @Inject constructor(
             emptyList()
         }
     }
+
+
+    /**
+     * Método usado para obtener todas las rutas guardas en el
+     * dispositivo
+     */
+    suspend fun getAllRoutesLocal(): List<RouteWithPlaces> {
+        return try {
+            val routes = routeDao.getAllRoutes()
+            val routesWithPlaces = mutableListOf<RouteWithPlaces>()
+
+            for(route in routes){
+                val startPlace = placeDao.getPlace(route.idStartPlace)
+                val endPlace = placeDao.getPlace(route.idEndPlace)
+
+                if(startPlace != null){
+                    val startPlaceLocal = Place(
+                        idPlace = startPlace.idPlace,
+                        name = startPlace.name,
+                        latitude = startPlace.latitude,
+                        longitude = startPlace.longitude,
+                        state = startPlace.state,
+                        street = startPlace.street,
+                        suburb = startPlace.suburb,
+                        type = startPlace.type,
+                        imageUrl = startPlace.imageUrl
+                    )
+
+                    val endPlaceLocal = Place(
+                        idPlace = endPlace.idPlace,
+                        name = endPlace.name,
+                        latitude = endPlace.latitude,
+                        longitude = endPlace.longitude,
+                        state = endPlace.state,
+                        street = endPlace.street,
+                        suburb = endPlace.suburb,
+                        type = endPlace.type,
+                        imageUrl = endPlace.imageUrl
+                    )
+
+                    val routeLocal = Route(
+                        idRoute = route.idRoute,
+                        idStartPlace = route.idStartPlace,
+                        idEndPlace = route.idEndPlace,
+                        name = route.name,
+                        arriveTime = route.arriveTime,
+                        noStops = route.noStops,
+                        time = route.time
+                    )
+
+                    routesWithPlaces.add(
+                        RouteWithPlaces(
+                            routeLocal, startPlaceLocal, endPlaceLocal, emptyList()
+                        )
+                    )
+                }
+            }
+
+            return routesWithPlaces
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+            emptyList()
+        }
+    }
+
+
+    suspend fun saveRoute(route: RouteWithPlaces): Boolean {
+        return try {
+            val existsRoute = routeDao.existsRoute(route.route.idRoute)
+
+            if(existsRoute == 0){
+                val routeRoom = RouteEntity(
+                    idRoute = route.route.idRoute,
+                    idEndPlace = route.route.idEndPlace,
+                    idStartPlace = route.route.idStartPlace,
+                    name = route.route.name,
+                    arriveTime = route.route.arriveTime,
+                    time = route.route.time
+                )
+                routeDao.insertRoute(routeRoom)
+            }
+
+            val existsStartPlace = placeDao.existsPlace(route.startPlace.idPlace)
+            if(existsStartPlace == 0){
+                val startPlaceRoom = PlaceEntity(
+                    idPlace = route.startPlace.idPlace,
+                    name = route.startPlace.name,
+                    latitude = route.startPlace.latitude,
+                    longitude = route.startPlace.longitude,
+                    state = route.startPlace.state,
+                    street = route.startPlace.street,
+                    suburb = route.startPlace.suburb,
+                    type = route.startPlace.type
+                )
+                placeDao.insertPlace(startPlaceRoom)
+            }
+
+            val existsEndPlace = placeDao.existsPlace(route.endPlace.idPlace)
+            if(existsEndPlace == 0){
+                val endPlaceRoom = PlaceEntity(
+                    idPlace = route.endPlace.idPlace,
+                    name = route.endPlace.name,
+                    latitude = route.endPlace.latitude,
+                    longitude = route.endPlace.longitude,
+                    state = route.endPlace.state,
+                    street = route.endPlace.street,
+                    suburb = route.endPlace.suburb,
+                    type = route.endPlace.type
+                )
+                placeDao.insertPlace(endPlaceRoom)
+            }
+
+            return true
+        } catch (e: Exception) {
+            println("Error: ${e.message}")
+            return false
+        }
+    }
+
+
 }
 
 // Modelo usado para unir ruta con lugares

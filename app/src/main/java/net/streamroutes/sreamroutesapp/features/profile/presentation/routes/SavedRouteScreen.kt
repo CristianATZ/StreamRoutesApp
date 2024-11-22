@@ -9,6 +9,9 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -18,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.domain.model.SavedRoute
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.profile.components.SavedRouteItem
 import java.time.LocalDateTime
@@ -25,12 +29,20 @@ import java.time.LocalDateTime
 @Composable
 fun SavedRouteScreen(
     modifier: Modifier = Modifier,
-    onBackPressed: () -> Unit
+    onBackPressed: () -> Unit,
+    transportViewModel: TransportViewModel
 ) {
     // no pasar el modifier, solo en caso de que no se coloree
     // si no se colorea, usar scaffold para encapsular las cosas
 
+    LaunchedEffect(Unit){
+        transportViewModel.getAllRoutesLocal()
+    }
+
+    val routes by transportViewModel.routes.collectAsState()
+
     // ELIMINAR LISTA
+    /*
     val savedRoutes = listOf(
         SavedRoute(
             name = "Ruta 1",
@@ -68,6 +80,7 @@ fun SavedRouteScreen(
             saveDate = LocalDateTime.of(2024, 9, 30, 18, 20)
         )
     )
+     */
 
     Scaffold(
         topBar = {
@@ -85,7 +98,7 @@ fun SavedRouteScreen(
         ) {
             item {
                 Text(
-                    text = stringResource(id = R.string.lblRoutesSavedAmount, savedRoutes.size),
+                    text = stringResource(id = R.string.lblRoutesSavedAmount, routes?.size ?: 0),
                     style = typography.bodyMedium,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier
@@ -95,9 +108,18 @@ fun SavedRouteScreen(
                 )
             }
 
+            /*
             items(savedRoutes) { route ->
                 SavedRouteItem(route = route)
             }
+             */
+
+            if(routes != null) {
+                items(routes!!) { route ->
+                    SavedRouteItem(route = route)
+                }
+            }
+
         }
     }
 }

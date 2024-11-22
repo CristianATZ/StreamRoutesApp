@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.profile.presentation.history.HistoryScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.posts.SavedPostScreen
 import net.streamroutes.sreamroutesapp.features.profile.presentation.profile.EditAccountScreen
@@ -21,7 +22,8 @@ fun ProfileNavigation(
     navHostController: NavHostController,
     onBackPressed: () -> Unit,
     profileViewModel: ProfileViewModel,
-    forumViewModel: ForumViewModel
+    forumViewModel: ForumViewModel,
+    transportViewModel: TransportViewModel
 ) {
     val slideInFromLeft = slideInHorizontally(
         initialOffsetX = { -it } // Entra desde la izquierda
@@ -141,7 +143,8 @@ fun ProfileNavigation(
             SavedRouteScreen(
                 onBackPressed = {
                     navHostController.popBackStack()
-                }
+                },
+                transportViewModel = transportViewModel
             )
         }
 

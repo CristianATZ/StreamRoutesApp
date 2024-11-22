@@ -11,6 +11,12 @@ interface RouteDao {
     @Query("SELECT * FROM routes ORDER BY name DESC")
     suspend fun getAllRoutes(): List<RouteEntity>
 
+    @Query("SELECT * FROM routes WHERE idRoute = :idRoute")
+    suspend fun getRoute(idRoute: String): RouteEntity
+
+    @Query("SELECT COUNT(*) FROM routes WHERE idRoute = :idRoute")
+    suspend fun existsRoute(idRoute: String): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertRoute(route: RouteEntity)
 }

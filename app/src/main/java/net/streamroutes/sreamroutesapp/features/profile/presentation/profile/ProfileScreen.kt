@@ -28,6 +28,7 @@ import net.streamroutes.sreamroutesapp.R
 import net.streamroutes.sreamroutesapp.core.navigation.ProfileNavigation
 import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel
+import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileItem
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileTopBar
 import net.streamroutes.sreamroutesapp.utils.DateUtils.formatDate
@@ -38,6 +39,7 @@ import net.streamroutes.sreamroutesapp.utils.DateUtils.formatPhoneNumber
 fun EditProfileMain(
     profileViewModel: ProfileViewModel = hiltViewModel(),
     forumViewModel: ForumViewModel = hiltViewModel(),
+    transportViewModel: TransportViewModel = hiltViewModel(),
     onBackPressed: () -> Unit
 ) {
     val profileNavHostController = rememberNavController()
@@ -45,7 +47,8 @@ fun EditProfileMain(
         navHostController = profileNavHostController,
         onBackPressed = onBackPressed,
         profileViewModel = profileViewModel,
-        forumViewModel = forumViewModel
+        forumViewModel = forumViewModel,
+        transportViewModel = transportViewModel
     )
 }
 

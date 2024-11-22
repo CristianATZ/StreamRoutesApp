@@ -1,6 +1,7 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
 data class Route(
+    val idRoute: String = "",       // ID de la ruta
     val idStartPlace: String = "",  // ID punto A
     val idEndPlace: String = "",    // ID punto B
     val name: String = "",          // Nombre de ruta

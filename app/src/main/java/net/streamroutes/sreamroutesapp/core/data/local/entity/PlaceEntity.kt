@@ -12,5 +12,6 @@ data class PlaceEntity (
     val state: String = "",         // Estado
     val street: String = "",        // Calle
     val suburb: String = "",        // Colonia
-    val type: Int = 0               // *Tipo de lugar
+    val type: Int = 0 ,             // *Tipo de lugar
+    val imageUrl: String = ""       // URL de la imagen
 )

@@ -88,7 +88,7 @@ fun TransportScreen(
                 closeSheet(false)
             },
             onDownloadRoute = {
-
+                transportViewModel.saveRoute()
             },
             onSelectRoute = {
                 closeSheet(true)

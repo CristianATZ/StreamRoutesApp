@@ -9,7 +9,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.streamroutes.sreamroutesapp.core.data.local.dao.PlaceDao
 import net.streamroutes.sreamroutesapp.core.data.local.dao.PostDao
+import net.streamroutes.sreamroutesapp.core.data.local.dao.RouteDao
 import net.streamroutes.sreamroutesapp.core.data.local.dao.UserDao
 import net.streamroutes.sreamroutesapp.core.data.local.database.LocalDatabase
 import net.streamroutes.sreamroutesapp.core.domain.network.OpenRouteServiceApi
@@ -48,7 +50,9 @@ object AppModule {
     }
 
 
-    // Inyección de dependencias de room
+    /**
+     * Inyección de dependencias de room
+     */
     @Provides
     @Singleton
     fun provideLocalDatabase(@ApplicationContext context: Context): LocalDatabase {
@@ -67,5 +71,15 @@ object AppModule {
     @Provides
     fun provideUserDao(database: LocalDatabase): UserDao {
         return database.userDao()
+    }
+
+    @Provides
+    fun provideRouteDao(database: LocalDatabase): RouteDao {
+        return database.routeDao()
+    }
+
+    @Provides
+    fun providePlaceDao(database: LocalDatabase): PlaceDao {
+        return database.placeDao()
     }
 }

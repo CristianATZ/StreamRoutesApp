@@ -5,6 +5,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import net.streamroutes.sreamroutesapp.core.data.local.dao.PlaceDao
+import net.streamroutes.sreamroutesapp.core.data.local.dao.RouteDao
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
 import javax.inject.Singleton
 
@@ -13,7 +15,7 @@ import javax.inject.Singleton
 object MapsModule {
     @Singleton
     @Provides
-    fun provideRouteRepository(db: FirebaseFirestore) : RouteRepository {
-        return RouteRepository(db)
+    fun provideRouteRepository(db: FirebaseFirestore, routeDao: RouteDao, placeDao: PlaceDao) : RouteRepository {
+        return RouteRepository(db, routeDao, placeDao)
     }
 }

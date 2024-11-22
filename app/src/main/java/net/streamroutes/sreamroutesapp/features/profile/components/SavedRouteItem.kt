@@ -24,13 +24,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
+import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.core.domain.model.SavedRoute
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import java.time.LocalDateTime
 
-@Preview(showBackground = true)
 @Composable
 fun SavedRouteItem(
+    /*
     route: SavedRoute = SavedRoute(
         name = "Ruta 11 - El charco",
         start = "C. Pipila, Col. Ninos Heroes",
@@ -38,12 +39,14 @@ fun SavedRouteItem(
         officialSpotsCount = 16,
         saveDate = LocalDateTime.of(2023, 10, 1, 12, 0)
     )
+     */
+    route: RouteWithPlaces
 ) {
     val onDeletePressed = {
 
     }
 
-    val saveDate = fullDateFormat(postDateTime = route.saveDate)
+    //val saveDate = fullDateFormat(postDateTime = route.route.)
 
     Column(
         modifier = Modifier
@@ -65,15 +68,17 @@ fun SavedRouteItem(
         ) {
             Column {
                 Text(
-                    text = route.name, // Acceso directo
+                    text = route.route.name, // Acceso directo
                     style = typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
+                /*
                 Text(
                     text = saveDate,
                     style = typography.labelSmall,
                     modifier = Modifier.graphicsLayer(alpha = 0.5f)
                 )
+                 */
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -93,19 +98,19 @@ fun SavedRouteItem(
                 .fillMaxWidth()
         ) {
             Text(
-                text = stringResource(id = R.string.lblOfficialStops, route.officialSpotsCount),
+                text = stringResource(id = R.string.lblOfficialStops, route.route.noStops),
                 style = typography.labelLarge,
                 modifier = Modifier.padding(bottom = 8.dp).graphicsLayer(alpha = 0.5f)
             )
 
             Text(
-                text = stringResource(id = R.string.lblStartRoute, route.start),
+                text = stringResource(id = R.string.lblStartRoute, "INICIO"),
                 style = typography.labelLarge,
                 modifier = Modifier.padding(bottom = 8.dp).graphicsLayer(alpha = 0.5f)
             )
 
             Text(
-                text = stringResource(id = R.string.lblEndRoute, route.end),
+                text = stringResource(id = R.string.lblEndRoute, "FIN"),
                 style = typography.labelLarge,
                 modifier = Modifier.padding(bottom = 8.dp).graphicsLayer(alpha = 0.5f)
             )

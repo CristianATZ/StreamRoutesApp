@@ -263,4 +263,24 @@ class TransportViewModel @Inject constructor(
     }
 
 
+    /**
+     * Método usado para pbtener todas las rutas de transporte guardadas
+     * localmente en los dispositivos
+     */
+    fun getAllRoutesLocal(){
+        viewModelScope.launch {
+            _routes.value = routeRepository.getAllRoutesLocal()
+        }
+    }
+
+
+    fun saveRoute(){
+        viewModelScope.launch {
+            if(_selectedRoute.value != null){
+                routeRepository.saveRoute(_selectedRoute.value!!)
+            }
+        }
+    }
+
+
 }
