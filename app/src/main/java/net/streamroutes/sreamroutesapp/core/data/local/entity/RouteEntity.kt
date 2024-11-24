@@ -3,6 +3,10 @@ package net.streamroutes.sreamroutesapp.core.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Entidad de Room del usada para las rutas de transporte
+ * Similar al modelo Route.kt
+ */
 @Entity(tableName = "routes")
 data class RouteEntity(
     @PrimaryKey val idRoute: String = "",   // ID de la ruta

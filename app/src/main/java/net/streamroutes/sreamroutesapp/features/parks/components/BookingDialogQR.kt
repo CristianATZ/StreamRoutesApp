@@ -24,8 +24,7 @@ import com.example.compose.orange
 import com.example.compose.primary
 import com.example.compose.yellow
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
-import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkItem
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.utils.QrUtils.generateQRCode
 
 @Composable

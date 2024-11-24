@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+/**
+ * Modelo usado para un usuario
+ */
 data class User(
     var idUser: String = "",
     val names: String = "",         // Nombres

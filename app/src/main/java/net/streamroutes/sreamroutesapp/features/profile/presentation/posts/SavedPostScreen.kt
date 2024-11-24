@@ -25,9 +25,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.domain.model.Comment
-import net.streamroutes.sreamroutesapp.core.domain.model.PostTemp
-import net.streamroutes.sreamroutesapp.features.authentication.presentation.login.LoginViewModel
 import net.streamroutes.sreamroutesapp.features.components.CommentModalBottomSheet
 import net.streamroutes.sreamroutesapp.features.components.PostItem
 import net.streamroutes.sreamroutesapp.features.forum.presentation.ForumViewModel

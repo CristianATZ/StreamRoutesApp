@@ -38,9 +38,8 @@ import androidx.compose.ui.unit.sp
 import com.example.compose.orange
 import kotlinx.coroutines.selects.whileSelect
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
-import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
-import net.streamroutes.sreamroutesapp.core.domain.model.History
+import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParkingWithInfo
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 import java.time.LocalDate

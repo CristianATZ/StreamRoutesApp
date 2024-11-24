@@ -5,9 +5,12 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.toObject
 import kotlinx.coroutines.tasks.await
 import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParking
+import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParkingWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Parking
+import net.streamroutes.sreamroutesapp.core.domain.model.ParkingWithPlace
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.ReservationParking
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Service
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import javax.inject.Inject
@@ -189,21 +192,3 @@ class ParkingRepository @Inject constructor(
     }
 }
 
-
-data class ParkingWithPlace(
-    val parking: Parking,
-    val place: Place
-)
-
-data class HistoricalParkingWithInfo (
-    val historicalParking: HistoricalParking,
-    val place: Place,
-    val user: User
-)
-
-data class ReservationWithInfo(
-    val reservation: ReservationParking,
-    val parking: Parking,
-    val place: Place,
-    val user: User
-)

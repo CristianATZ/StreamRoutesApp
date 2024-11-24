@@ -7,12 +7,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.core.data.repository.CommentWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.ForumRepository
-import net.streamroutes.sreamroutesapp.core.data.repository.PostWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
+import net.streamroutes.sreamroutesapp.core.domain.model.CommentWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
+import net.streamroutes.sreamroutesapp.core.domain.model.PostWithInfo
 import javax.inject.Inject
 
 @HiltViewModel

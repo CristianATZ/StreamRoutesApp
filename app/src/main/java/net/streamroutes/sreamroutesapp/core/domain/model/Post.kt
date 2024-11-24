@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+/**
+ * Modelo usado para una publicacicón
+ */
 data class Post(
     var idPost: String = "",        // ID del documento
     var idUser: String = "",        // ID del usuario que posteo

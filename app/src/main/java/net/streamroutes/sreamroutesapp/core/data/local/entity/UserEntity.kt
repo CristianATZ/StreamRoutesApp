@@ -3,6 +3,11 @@ package net.streamroutes.sreamroutesapp.core.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+
+/**
+ * Entidad de Room usada para los usuarios
+ * Similar al modelo User.kt
+ */
 @Entity(tableName = "users")
 data class UserEntity(
     @PrimaryKey val idUser: String = "",

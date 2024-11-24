@@ -7,10 +7,18 @@ import net.streamroutes.sreamroutesapp.core.data.local.dao.RouteDao
 import net.streamroutes.sreamroutesapp.core.data.local.dao.UserDao
 import net.streamroutes.sreamroutesapp.core.data.local.entity.PlaceEntity
 import net.streamroutes.sreamroutesapp.core.data.local.entity.RouteEntity
+import net.streamroutes.sreamroutesapp.core.domain.model.Day
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
 import net.streamroutes.sreamroutesapp.core.domain.model.Route
+import net.streamroutes.sreamroutesapp.core.domain.model.RouteWithPlaces
+import net.streamroutes.sreamroutesapp.core.domain.model.TuristicPoint
+import net.streamroutes.sreamroutesapp.core.domain.model.TuristicPointWithInfo
 import javax.inject.Inject
 import javax.inject.Singleton
+
+/**
+ * Repositorio usado para Rutas de transporte público
+ */
 
 @Singleton
 class RouteRepository @Inject constructor(
@@ -166,6 +174,10 @@ class RouteRepository @Inject constructor(
     }
 
 
+    /**
+     * Método usado para guardar una ruta de transporte público en la base de datos
+     * local de Room
+     */
     suspend fun saveRoute(route: RouteWithPlaces): Boolean {
         return try {
             val existsRoute = routeDao.existsRoute(route.route.idRoute)
@@ -222,31 +234,6 @@ class RouteRepository @Inject constructor(
 
 }
 
-// Modelo usado para unir ruta con lugares
-data class RouteWithPlaces(
-    val route: Route,
-    val startPlace: Place,
-    val endPlace: Place,
-    val turisticPoint: List<Place>
-)
-
-// Modelo de turisticPoint
-data class TuristicPoint(
-    val idPlace: String = "",
-    val totalRoutes: Int = 0,
-    val fee: Int = 0,
-    val nextStop: Int = 0,
-    val days: List<Day> = emptyList(),
-    val description: String = ""
-)
-
-data class Day(
-    val startTime: String = "",
-    val endTime: String = ""
-)
 
 
-data class TuristicPointWithInfo(
-    val turisticPoint: TuristicPoint,
-    val place: Place
-)
+

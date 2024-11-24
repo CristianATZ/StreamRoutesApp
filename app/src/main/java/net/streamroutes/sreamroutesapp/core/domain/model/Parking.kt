@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+/**
+ * Modelo usado para los estacionamientos
+ */
 data class Parking(
     val idParking: String = "",     // ID del parking
     val idPlace: String = "",       // ID de lugar

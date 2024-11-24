@@ -40,8 +40,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.core.domain.model.RouteInformation
+import net.streamroutes.sreamroutesapp.core.domain.model.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.features.components.CardOption
 import net.streamroutes.sreamroutesapp.utils.shimmerEffect
 

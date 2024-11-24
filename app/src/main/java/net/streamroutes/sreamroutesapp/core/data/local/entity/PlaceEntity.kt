@@ -3,6 +3,10 @@ package net.streamroutes.sreamroutesapp.core.data.local.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+/**
+ * Entidad de Rooom usada para los lugares
+ * Similar al modelo Place.kt
+ */
 @Entity(tableName = "places")
 data class PlaceEntity (
     @PrimaryKey val idPlace: String = "",

@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+/**
+ * Modelo anterior de rutas
+ */
 data class RouteInformation(
     val name: String,
     val countTurism: Int,

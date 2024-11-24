@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+/**
+ * Modelo usado para la reservación de un estacionamiento
+ */
 data class ReservationParking(
     var reference: String = "",
     var idUser: String = "",                // ID de usuario

@@ -20,7 +20,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.domain.model.SavedRoute
 import net.streamroutes.sreamroutesapp.features.maps.presentation.transport.TransportViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.ProfileSmallTopAppBar
 import net.streamroutes.sreamroutesapp.features.profile.components.SavedRouteItem

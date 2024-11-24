@@ -7,13 +7,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import net.streamroutes.sreamroutesapp.core.data.repository.HistoricalParkingWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.ParkingRepository
-import net.streamroutes.sreamroutesapp.core.data.repository.ParkingWithPlace
-import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.core.data.repository.UserRepository
 import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParking
+import net.streamroutes.sreamroutesapp.core.domain.model.HistoricalParkingWithInfo
+import net.streamroutes.sreamroutesapp.core.domain.model.ParkingWithPlace
 import net.streamroutes.sreamroutesapp.core.domain.model.ReservationParking
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationWithInfo
 import javax.inject.Inject
 
 @HiltViewModel

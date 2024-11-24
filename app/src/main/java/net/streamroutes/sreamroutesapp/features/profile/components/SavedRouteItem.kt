@@ -24,8 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
-import net.streamroutes.sreamroutesapp.core.domain.model.SavedRoute
+import net.streamroutes.sreamroutesapp.core.domain.model.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.utils.DateUtils.fullDateFormat
 import java.time.LocalDateTime
 

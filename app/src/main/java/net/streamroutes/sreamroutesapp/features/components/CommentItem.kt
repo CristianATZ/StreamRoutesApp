@@ -24,8 +24,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import net.streamroutes.sreamroutesapp.core.data.repository.CommentWithInfo
-import net.streamroutes.sreamroutesapp.core.domain.model.Comment
+import net.streamroutes.sreamroutesapp.core.domain.model.CommentWithInfo
 import net.streamroutes.sreamroutesapp.utils.TextUtils.viewMoreTextOverflow
 import net.streamroutes.sreamroutesapp.utils.formatPostDateTime
 import java.time.LocalDate
@@ -37,7 +36,6 @@ import java.time.format.DateTimeFormatter
 fun CommentItem(
     modifier: Modifier = Modifier,
     comment: CommentWithInfo
-    //comment: Comment = Comment(commenterName = "CristianToZa", description = "Hola como estas amigo", commentDate = LocalDateTime.now())
 ) {
     var isExpanded by remember { mutableStateOf(false) } // Solo se necesita este estado
 

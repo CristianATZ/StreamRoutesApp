@@ -12,6 +12,10 @@ import net.streamroutes.sreamroutesapp.utils.DateUtils.getCurrentDate
 import javax.inject.Inject
 import javax.inject.Singleton
 
+/**
+ * Repositorio de usuarios
+ */
+
 @Singleton
 class UserRepository @Inject constructor(
     private val auth: FirebaseAuth,

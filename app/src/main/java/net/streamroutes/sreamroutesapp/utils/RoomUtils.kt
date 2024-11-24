@@ -5,7 +5,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import net.streamroutes.sreamroutesapp.core.data.local.entity.PostEntity
 import net.streamroutes.sreamroutesapp.core.data.local.entity.UserEntity
-import net.streamroutes.sreamroutesapp.core.data.repository.PostWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
 
 /**

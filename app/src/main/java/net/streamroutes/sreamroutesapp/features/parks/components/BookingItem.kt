@@ -31,8 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.ReservationWithInfo
-import net.streamroutes.sreamroutesapp.features.parks.presentation.parks.ParkItem
+import net.streamroutes.sreamroutesapp.core.domain.model.ReservationWithInfo
 import net.streamroutes.sreamroutesapp.features.components.ParkingDescription
 import net.streamroutes.sreamroutesapp.features.parking.components.InformationChip
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel

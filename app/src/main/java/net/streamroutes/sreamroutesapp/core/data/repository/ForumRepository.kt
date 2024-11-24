@@ -9,8 +9,10 @@ import net.streamroutes.sreamroutesapp.core.data.local.dao.PostDao
 import net.streamroutes.sreamroutesapp.core.data.local.dao.UserDao
 import net.streamroutes.sreamroutesapp.core.data.local.entity.PostEntity
 import net.streamroutes.sreamroutesapp.core.data.local.entity.UserEntity
+import net.streamroutes.sreamroutesapp.core.domain.model.CommentWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Post
 import net.streamroutes.sreamroutesapp.core.domain.model.PostComment
+import net.streamroutes.sreamroutesapp.core.domain.model.PostWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.User
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -232,12 +234,4 @@ class ForumRepository @Inject constructor(
 
 }
 
-data class PostWithInfo(
-    val user: User,
-    val post: Post
-)
 
-data class CommentWithInfo(
-    val user: User,
-    val comment: PostComment
-)

@@ -25,9 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
 import net.streamroutes.sreamroutesapp.core.domain.model.Place
-import net.streamroutes.sreamroutesapp.core.domain.model.TurismInformation
+import net.streamroutes.sreamroutesapp.core.domain.model.TuristicPointWithInfo
 
 @Composable
 fun TurismInformationBottomSheet(

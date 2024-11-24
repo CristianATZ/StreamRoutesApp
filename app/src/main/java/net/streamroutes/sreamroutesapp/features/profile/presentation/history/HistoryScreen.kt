@@ -22,7 +22,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.domain.model.History
 import net.streamroutes.sreamroutesapp.features.parkingApp.presentation.home.ParkingViewModel
 import net.streamroutes.sreamroutesapp.features.profile.components.HistoryItem
 import net.streamroutes.sreamroutesapp.features.profile.components.HistoryModalBottomSheet

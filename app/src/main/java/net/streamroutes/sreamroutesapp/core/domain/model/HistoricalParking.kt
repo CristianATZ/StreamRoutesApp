@@ -1,9 +1,12 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+/**
+ * Modelo para historial de un estacionamiento
+ */
 data class HistoricalParking(
     val reference: String = "",
     val idUser: String = "",            // ID del usuario
-    val idPlace: String = "",            // ID del lugar
+    val idPlace: String = "",           // ID del lugar
     val typeVehicle: Int = 0,           // *Tipo de vehículo
     val entranceHour: String = "",      // Hora de entrada
     val entranceDate: String = "",      // Fecha de entrada

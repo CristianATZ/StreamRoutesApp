@@ -1,5 +1,8 @@
 package net.streamroutes.sreamroutesapp.core.domain.model
 
+/**
+ * Modelo usado para los lugares
+ */
 data class Place(
     val idPlace: String = "",
     val name: String = "",          // Nombre

@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.data.repository.OrsRepository
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
-import net.streamroutes.sreamroutesapp.core.data.repository.RouteWithPlaces
+import net.streamroutes.sreamroutesapp.core.domain.model.RouteWithPlaces
 import net.streamroutes.sreamroutesapp.core.domain.network.OpenRouteServiceClient
 import javax.inject.Inject
 

@@ -36,7 +36,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.R
-import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
+import net.streamroutes.sreamroutesapp.core.domain.model.TuristicPointWithInfo
 import net.streamroutes.sreamroutesapp.features.components.MapFullSize
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismBottomSheet
 import net.streamroutes.sreamroutesapp.features.turism.components.TurismInformationBottomSheet

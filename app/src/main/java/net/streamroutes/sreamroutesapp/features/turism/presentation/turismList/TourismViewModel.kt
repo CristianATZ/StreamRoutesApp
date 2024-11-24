@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import net.streamroutes.sreamroutesapp.core.data.repository.RouteRepository
-import net.streamroutes.sreamroutesapp.core.data.repository.TuristicPointWithInfo
+import net.streamroutes.sreamroutesapp.core.domain.model.TuristicPointWithInfo
 import javax.inject.Inject
 
 @HiltViewModel
