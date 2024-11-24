@@ -38,7 +38,7 @@ fun SavedRouteScreen(
         transportViewModel.getAllRoutesLocal()
     }
 
-    val routes by transportViewModel.routes.collectAsState()
+    val routes by transportViewModel.downloadedRoutes.collectAsState()
 
     // ELIMINAR LISTA
     /*
@@ -107,11 +107,6 @@ fun SavedRouteScreen(
                 )
             }
 
-            /*
-            items(savedRoutes) { route ->
-                SavedRouteItem(route = route)
-            }
-             */
 
             if(routes != null) {
                 items(routes!!) { route ->

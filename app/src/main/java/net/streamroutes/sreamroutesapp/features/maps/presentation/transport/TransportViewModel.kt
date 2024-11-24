@@ -42,6 +42,11 @@ class TransportViewModel @Inject constructor(
     private val _markerAddress = MutableStateFlow<String?>(null)
     val markerAdress: StateFlow<String?> = _markerAddress
 
+    // Variable usada para guardar todas las rutas de transporte público de Room
+    private val _downloadedRoutes = MutableStateFlow<List<RouteWithPlaces>?>(null)
+    val downloadedRoutes: StateFlow<List<RouteWithPlaces>?> = _downloadedRoutes
+
+
     // --------------------------------------------------------------------------
     /**
      * Sección para planifica tu viaje
@@ -269,7 +274,7 @@ class TransportViewModel @Inject constructor(
      */
     fun getAllRoutesLocal(){
         viewModelScope.launch {
-            _routes.value = routeRepository.getAllRoutesLocal()
+            _downloadedRoutes.value = routeRepository.getAllRoutesLocal()
         }
     }
 

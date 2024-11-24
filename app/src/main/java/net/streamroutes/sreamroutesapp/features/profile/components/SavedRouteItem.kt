@@ -103,13 +103,13 @@ fun SavedRouteItem(
             )
 
             Text(
-                text = stringResource(id = R.string.lblStartRoute, "INICIO"),
+                text = stringResource(id = R.string.lblStartRoute, "${route.startPlace.street}, ${route.startPlace.suburb}, ${route.startPlace.state}"),
                 style = typography.labelLarge,
                 modifier = Modifier.padding(bottom = 8.dp).graphicsLayer(alpha = 0.5f)
             )
 
             Text(
-                text = stringResource(id = R.string.lblEndRoute, "FIN"),
+                text = stringResource(id = R.string.lblEndRoute, "${route.startPlace.street}, ${route.startPlace.suburb}, ${route.startPlace.state}"),
                 style = typography.labelLarge,
                 modifier = Modifier.padding(bottom = 8.dp).graphicsLayer(alpha = 0.5f)
             )

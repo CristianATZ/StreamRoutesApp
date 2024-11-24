@@ -189,7 +189,8 @@ class RouteRepository @Inject constructor(
                     idStartPlace = route.route.idStartPlace,
                     name = route.route.name,
                     arriveTime = route.route.arriveTime,
-                    time = route.route.time
+                    time = route.route.time,
+                    noStops = route.route.noStops
                 )
                 routeDao.insertRoute(routeRoom)
             }
